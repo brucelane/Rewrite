@@ -56,7 +56,8 @@ namespace videodromm
 		int								mInputTextureIndex;
 		//! shader
 		gl::GlslProgRef					mShader;
-		string							mName = "";
+		string							mShaderName = "";
+		string							mTextureName = "";
 		std::string						mFragmentShaderString;
 		std::string						mFileNameWithExtension;
 		fs::path						mFragFile;
@@ -71,7 +72,6 @@ namespace videodromm
 		//gl::FboRef						mThumbFbo;
 		gl::Texture::Format				fmt;
 		gl::Fbo::Format					fboFmt;
-		std::string						mFboName;
 		Area							mSrcArea;
 		//bool							mFlipV;
 		//bool							mFlipH;
@@ -79,7 +79,6 @@ namespace videodromm
 		bool							isReady;
 		ci::gl::Texture2dRef			mRenderedTexture;
 		ci::gl::Texture2dRef			getFboTexture();
-		gl::GlslProgRef					getShader();
 		VDAnimationRef					mVDAnimation;
 	};
 }

@@ -125,6 +125,7 @@ void RewriteApp::draw()
 		}
 
 	}
+	getWindow()->setTitle(mVDSettings->sFps + " fps");
 }
 void RewriteApp::cleanup()
 {

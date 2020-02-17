@@ -8,8 +8,9 @@ namespace videodromm {
 		shaderInclude = "#version 150\n"
 			"// shadertoy specific\n"
 			"uniform vec3      	RENDERSIZE;\n"
-			"uniform vec3 	iResolution;\n"
+			"uniform vec3 		iResolution;\n"
 			"uniform float     	TIME;\n"
+			"uniform float     	iZoom;\n"
 			"uniform vec4      	iMouse;\n"
 			"uniform bool       iFlipH;\n"
 			"uniform bool       iFlipV;\n"
@@ -25,13 +26,15 @@ namespace videodromm {
 		mInputTextureIndex = 0;
 		mSrcArea = Area(0, 0, 10, 10);
 		mVDAnimation = VDAnimation::create(mVDSettings);
-		fs::path texPath = getAssetPath("") / mVDSettings->mAssetsPath / "0.jpg";
+		mTextureName = "0.jpg";
+		fs::path texPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;
 		if (fs::exists(texPath)) {
 			mTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 			mRenderedTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 		}
 		else {
-			fs::path helpPath = getAssetPath("") / mVDSettings->mAssetsPath / "help.jpg";
+			mTextureName = "help.jpg";
+			fs::path helpPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;
 			if (fs::exists(helpPath)) {
 				mTexture = gl::Texture::create(loadImage(helpPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 				mRenderedTexture = gl::Texture::create(loadImage(helpPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
@@ -49,13 +52,14 @@ namespace videodromm {
 		mFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, fboFmt);
 		//mThumbFbo = gl::Fbo::create(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight, fboFmt);
 		mError = "";
-		// init with passthru shader
-		//mShaderName = "0";
-		mFboName = "default";
+		 
+		mShaderName = "inputImage.fs";
+		//mShaderName = "PerlinNoiseInPolarCoordinate.fs";
 		//mValid = false;
 		mActive = true;
 
-		mValid = loadFragmentStringFromFile("inputImage.fs");
+		//mValid = loadFragmentStringFromFile("inputImage.fs");
+		mValid = loadFragmentStringFromFile(mShaderName);
 
 		if (mValid) {
 			CI_LOG_V("VDShaders constructor success");
@@ -152,7 +156,7 @@ namespace videodromm {
 			mFragmentShaderString = aFragmentShaderString;
 			mVDSettings->mMsg = aName + " loaded and compiled";
 			// name of the shader
-			mName = aName;
+			mShaderName = aName;
 			mValid = true;
 
 			auto &uniforms = mShader->getActiveUniforms();
@@ -229,87 +233,13 @@ namespace videodromm {
 		return mValid;
 	}
 
-	gl::GlslProgRef VDWarp::getShader() {
-		/*int index = 300;
-		int texIndex = 0;
-		string name;
-		auto &uniforms = mShader->getActiveUniforms();
-		for (const auto &uniform : uniforms) {
-			name = uniform.getName();
-			//CI_LOG_V(mShader->getLabel() + ", getShader uniform name:" + uniform.getName());
-			if (mVDAnimation->isExistingUniform(name)) {
-				int uniformType = mVDAnimation->getUniformType(name);
-				switch (uniformType)
-				{
-				case 0:
-					// float
-					mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
-					break;
-				case 1:
-					// sampler2D
-					mShader->uniform(name, mInputTextureIndex);// cinder::gl::GlslProg::logUniformWrongType[1021] Uniform type mismatch for "iChannel0", expected SAMPLER_2D and received uint32_t
-					break;
-				case 2:
-					// vec2
-					mShader->uniform(name, mVDAnimation->getVec2UniformValueByName(name));
-					break;
-				case 3:
-					// vec3
-					mShader->uniform(name, mVDAnimation->getVec3UniformValueByName(name));
-					break;
-				case 4:
-					// vec4
-					mShader->uniform(name, mVDAnimation->getVec4UniformValueByName(name));
-					break;
-				case 5:
-					// int
-					mShader->uniform(name, mVDAnimation->getIntUniformValueByName(name));
-					break;
-				case 6:
-					// bool
-					mShader->uniform(name, mVDAnimation->getBoolUniformValueByName(name));
-					break;
-				default:
-					break;
-				}
-			}
-			else {
-				if (name != "ciModelViewProjection") {
-					mVDSettings->mMsg = mFboName + ", uniform not found:" + name + " type:" + toString(uniform.getType());
-					CI_LOG_V(mVDSettings->mMsg);
-					int firstDigit = name.find_first_of("0123456789");
-					// if valid image sequence (contains a digit)
-					if (firstDigit > -1) {
-						index = std::stoi(name.substr(firstDigit));
-					}
-					switch (uniform.getType())
-					{
-					case 5126:
-						mVDAnimation->createFloatUniform(name, 400 + index, 0.31f, 0.0f, 1000.0f);
-						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
-						break;
-					case 35664:
-						//mVDAnimation->createvec2(uniform.getName(), 310 + , 0);
-						//++;
-						break;
-					case 35678:
-						mVDAnimation->createSampler2DUniform(uniform.getName(), 310 + texIndex, 0);
-						texIndex++;
-						break;
-					default:
-						break;
-					}
-				}
-			}
-		}*/
-		return mShader;
-	}
-
 	ci::gl::Texture2dRef VDWarp::getFboTexture() {
 		// TODO move this:
 		if (mValid) {
+			// TODO move to session.cpp update globally
+			mVDSettings->sFps = toString(floor(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFPS)));
 			mVDAnimation->update();
-			//getShader();
+			// END TODO
 			gl::ScopedFramebuffer fbScp(mFbo);
 			gl::clear(Color::black());
 
@@ -323,32 +253,25 @@ namespace videodromm {
 					int uniformType = mVDAnimation->getUniformType(name);
 					switch (uniformType)
 					{
-					case 0:
-						// float
+					case 0: // float
 						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
 						break;
-					case 1:
-						// sampler2D
+					case 1: // sampler2D
 						mShader->uniform(name, mInputTextureIndex);
 						break;
-					case 2:
-						// vec2
+					case 2: // vec2
 						mShader->uniform(name, mVDAnimation->getVec2UniformValueByName(name));
 						break;
-					case 3:
-						// vec3
+					case 3: // vec3
 						mShader->uniform(name, mVDAnimation->getVec3UniformValueByName(name));
 						break;
-					case 4:
-						// vec4
+					case 4: // vec4
 						mShader->uniform(name, mVDAnimation->getVec4UniformValueByName(name));
 						break;
-					case 5:
-						// int
+					case 5: // int
 						mShader->uniform(name, mVDAnimation->getIntUniformValueByName(name));
 						break;
-					case 6:
-						// bool
+					case 6: // bool
 						mShader->uniform(name, mVDAnimation->getBoolUniformValueByName(name));
 						break;
 					default:
@@ -364,16 +287,18 @@ namespace videodromm {
 				mShader->uniform("RENDERSIZE", vec3(mTexture->getWidth(), mTexture->getHeight(), 1.0));
 			}
 			mShader->uniform("TIME", (float)getElapsedSeconds());// mVDAnimation->getFloatUniformValueByIndex(0));
-			//mShader->uniform("iFlipH", mFlipH);
-			//mShader->uniform("iFlipV", mFlipV);
-			gl::ScopedGlslProg glslScope(mShader);
-			// TODO: test gl::ScopedViewport sVp(0, 0, mFbo->getWidth(), mFbo->getHeight());
 
-			//gl::drawSolidRect(Rectf(0, 0, mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
-			gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+			gl::ScopedGlslProg glslScope(mShader);
+			// TODO: test gl::ScopedViewport sVp(0, 0, mFbo->getWidth(), mFbo->getHeight());			
+			if (!isReady) {
+				gl::drawSolidRect(Rectf(0, 0, mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
+			}
+			else {
+				gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+			}
 			mRenderedTexture = mFbo->getColorTexture();
 			if (!isReady) {
-				string filename = mFboName + ".jpg";
+				string filename = mShaderName + ".jpg";
 				fs::path fr = getAssetPath("") / "thumbs" / filename;
 
 				if (!fs::exists(fr)) {
