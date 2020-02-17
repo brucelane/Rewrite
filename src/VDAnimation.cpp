@@ -206,6 +206,8 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 
 		// vec2
 		createVec2Uniform("resolution", mVDSettings->RESOLUTION, vec2(1280.0f, 720.0f)); // 120
+		createVec2Uniform("RENDERSIZE", 121, vec2(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"))); // 121
+
 		// floats for warps
 		// srcArea 
 		createFloatUniform("srcXLeft", mVDSettings->SRCXLEFT, 0.0f, 0.0f, 4280.0f); // 130

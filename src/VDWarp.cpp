@@ -7,7 +7,7 @@ namespace videodromm {
 		CI_LOG_V("VDWarp constructor");
 		shaderInclude = "#version 150\n"
 			"// shadertoy specific\n"
-			"uniform vec3      	RENDERSIZE;\n"
+			"uniform vec2      	RENDERSIZE;\n"
 			"uniform vec3 		iResolution;\n"
 			"uniform float     	TIME;\n"
 			"uniform float     	iZoom;\n"
@@ -109,8 +109,6 @@ namespace videodromm {
 
 		string mOriginalFragmentString = aFragmentShaderString;
 		string fileName = "";
-		string mCurrentUniformsString = "// active uniforms start\n";
-		string mProcessedShaderString = "";
 		mError = "";
 
 		// we would like a name without extension
@@ -158,7 +156,7 @@ namespace videodromm {
 			// name of the shader
 			mShaderName = aName;
 			mValid = true;
-
+			/*
 			auto &uniforms = mShader->getActiveUniforms();
 			string uniformName;
 			for (const auto &uniform : uniforms) {
@@ -214,9 +212,7 @@ namespace videodromm {
 					}
 				}
 			}
-
-
-
+			*/
 		}
 		catch (gl::GlslProgCompileExc &exc)
 		{
@@ -278,13 +274,21 @@ namespace videodromm {
 						break;
 					}
 				}
+				else {
+					if (name != "ciModelViewProjection") {
+						mVDSettings->mNewMsg = true;
+						mError = "uniform not found " + name;
+						mVDSettings->mMsg = mError;
+						CI_LOG_E(mError);
+					}
+				}
 			}
 			
 			if (!isReady) {
-				mShader->uniform("RENDERSIZE", vec3(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight, 1.0));
+				mShader->uniform("RENDERSIZE", vec2(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
 			}
 			else {
-				mShader->uniform("RENDERSIZE", vec3(mTexture->getWidth(), mTexture->getHeight(), 1.0));
+				mShader->uniform("RENDERSIZE", vec2(mTexture->getWidth(), mTexture->getHeight()));
 			}
 			mShader->uniform("TIME", (float)getElapsedSeconds());// mVDAnimation->getFloatUniformValueByIndex(0));
 
