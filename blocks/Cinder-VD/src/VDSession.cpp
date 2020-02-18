@@ -192,12 +192,8 @@ void VDSession::toggleTempo(unsigned int aCtrl) {
 void VDSession::resetAutoAnimation(unsigned int aIndex) {
 	mVDWebsocket->resetAutoAnimation(aIndex);
 }
-float VDSession::getMinUniformValueByIndex(unsigned int aIndex) {
-	return mVDAnimation->getMinUniformValueByIndex(aIndex);
-}
-float VDSession::getMaxUniformValueByIndex(unsigned int aIndex) {
-	return mVDAnimation->getMaxUniformValueByIndex(aIndex);
-}
+
+
 
 void VDSession::updateMixUniforms() {
 	//vec4 mouse = mVDAnimation->getVec4UniformValueByName("iMouse");
@@ -1119,6 +1115,7 @@ unsigned int VDSession::createShaderFbo(string aShaderFilename, unsigned int aFb
 	unsigned int rtn = 0;
 	VDFboRef fboRef = VDFbo::create(mVDSettings, aShaderFilename);
 	mFboList.push_back(fboRef);
+	rtn = mFboList.size() - 1;
 	/*string fName = aShaderFilename;
 	string currentShaderListFileName = "";
 	//string ext = "";
@@ -1345,9 +1342,7 @@ ci::gl::TextureRef VDSession::getCachedTexture(unsigned int aTextureIndex, strin
 string VDSession::getInputTextureName(unsigned int aTextureIndex) {
 	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getName();
 }
-unsigned int VDSession::getInputTexturesCount() {
-	return mTextureList.size();
-}
+
 unsigned int VDSession::getInputTextureOriginalWidth(unsigned int aTextureIndex) {
 	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getOriginalWidth();
 }

@@ -11,9 +11,9 @@
 // Utils
 /*include "VDUtils.h"
 // Message router
-#include "VDRouter.h"
+#include "VDRouter.h"*/
 // Websocket
-#include "VDWebsocket.h"*/
+#include "VDWebsocket.h"
 // Animation
 #include "VDAnimation.h"
 // Fbos
@@ -79,9 +79,14 @@ namespace videodromm {
 		void							toggleAuto(unsigned int aCtrl);
 		void							toggleTempo(unsigned int aCtrl);
 
-		void							resetAutoAnimation(unsigned int aIndex);
-		float							getMinUniformValueByIndex(unsigned int aIndex);
-		float							getMaxUniformValueByIndex(unsigned int aIndex);
+		void							resetAutoAnimation(unsigned int aIndex);*/
+		float							getMinUniformValueByIndex(unsigned int aIndex) {
+	return mVDAnimation->getMinUniformValueByIndex(aIndex);
+};
+		float							getMaxUniformValueByIndex(unsigned int aIndex) {
+			return mVDAnimation->getMaxUniformValueByIndex(aIndex);
+		};
+		
 		vec2							getVec2UniformValueByIndex(unsigned int aIndex) {
 			return mVDAnimation->getVec2UniformValueByIndex(aIndex);
 		};
@@ -124,7 +129,7 @@ namespace videodromm {
 		void							setFloatUniformValueByIndex(unsigned int aCtrl, float aValue) {
 			// done in router mVDAnimation->changeFloatValue(aCtrl, aValue);
 			mVDWebsocket->changeFloatValue(aCtrl, aValue);
-		};
+		};/*
 		void							setIntUniformValueByIndex(unsigned int aCtrl, int aValue) {
 			mVDWebsocket->changeIntValue(aCtrl, aValue);
 		};
@@ -199,10 +204,10 @@ namespace videodromm {
 		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex = 0);
 		ci::gl::TextureRef				getFboThumb(unsigned int aBlendIndex) { return mBlendFbos[aBlendIndex]->getColorTexture(); };
 		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);
-		string							getFboName(unsigned int aFboIndex) { return mFboList[aFboIndex]->getName(); };
 		//int								getFboTextureWidth(unsigned int aFboIndex);
 		//int								getFboTextureHeight(unsigned int aFboIndex);*/
 		// fbos
+		string							getFboName(unsigned int aFboIndex) { return mFboList[aFboIndex]->getName(); };
 
 		unsigned int					getFboListSize() { return mFboList.size(); };
 		unsigned int 					createShaderFbo(string aShaderFilename, unsigned int aFboShaderIndex = 4);
@@ -254,13 +259,15 @@ namespace videodromm {
 		// blendmodes
 		unsigned int					getFboBlendCount() { return mBlendFbos.size(); };
 		void							useBlendmode(unsigned int aBlendIndex) { mVDSettings->iBlendmode = aBlendIndex; };
-
+		*/
 		// textures
-		ci::gl::TextureRef				getInputTexture(unsigned int aTextureIndex);
+		unsigned int					getInputTexturesCount() {
+			return mTextureList.size();
+		}
+		/*ci::gl::TextureRef				getInputTexture(unsigned int aTextureIndex);
 		ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, string aFilename);
 		//ci::gl::TextureRef				getNextInputTexture(unsigned int aTextureIndex);
 		string							getInputTextureName(unsigned int aTextureIndex);
-		unsigned int					getInputTexturesCount();
 		void							loadImageFile(string aFile, unsigned int aTextureIndex);
 		void							loadAudioFile(string aFile);
 		void							loadMovie(string aFile, unsigned int aTextureIndex);
@@ -367,13 +374,13 @@ namespace videodromm {
 		// Utils
 		/*VDUtilsRef						mVDUtils;
 		// Message router
-		VDRouterRef						mVDRouter;
+		VDRouterRef						mVDRouter;*/
 		// VDWebsocket
 		VDWebsocketRef					mVDWebsocket;
 		// Animation
 		VDAnimationRef					mVDAnimation;
 		// Log
-		VDLogRef						mVDLog;
+		/*VDLogRef						mVDLog;
 
 		const string					sessionFileName = "session.json";
 		fs::path						sessionPath;
@@ -447,10 +454,10 @@ namespace videodromm {
 
 		//! Shaders
 		VDShaderList					mShaderList;
-		void							initShaderList();
+		void							initShaderList();*/
 		//! Textures
 		VDTextureList					mTextureList;
-		fs::path						mTexturesFilepath;
+		/*fs::path						mTexturesFilepath;
 		bool							initTextureList();
 		//! Modes
 		map<int, string>				mModesList;

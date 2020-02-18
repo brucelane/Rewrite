@@ -13,6 +13,9 @@
 #include "VDSettings.h"
 // Animation
 #include "VDAnimation.h"
+// textures
+#include "VDTexture.h"
+
 #include <atomic>
 #include <vector>
 
@@ -51,11 +54,13 @@ namespace videodromm
 		};
 		bool							isFlipH() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV); };
 		bool							isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };
-		
+		std::string						getName() { return mShaderName; };
 	private:
 		// Settings
 		VDSettingsRef					mVDSettings;
+		//! Input textures
 
+		VDTextureList					mTextureList;
 		gl::TextureRef					mTexture;
 		int								mInputTextureIndex;
 		//! shader

@@ -106,9 +106,15 @@ void RewriteApp::loadWarps() {
 			JsonTree json(loadFile(jsonFile));
 			warp->fromJson(json);
 			if (json[0].hasChild("warp")) {
-				JsonTree warp(json[0].getChild("warp"));
-				string shaderFileName = (warp.hasChild("ashaderfilename")) ? warp.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
+				JsonTree warpJsonTree(json[0].getChild("warp"));
+				string shaderFileName = (warpJsonTree.hasChild("ashaderfilename")) ? warpJsonTree.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
 				mVDSession->createShaderFbo(shaderFileName, i);
+				warp->setAFboIndex(i) ;
+				warp->setBFboIndex(i);
+				warp->setAShaderIndex(i);
+				warp->setBShaderIndex(i) ;
+				warp->setAShaderFilename(shaderFileName);
+				warp->setBShaderFilename(shaderFileName) ;
 			}
 			i++;
 		}
@@ -143,7 +149,7 @@ void RewriteApp::draw()
 }
 void RewriteApp::cleanup()
 {
-
+	saveWarps();
 	// save warp settings
 	Warp::writeSettings(mWarpList, writeFile(mSettings));
 }
