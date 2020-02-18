@@ -199,7 +199,7 @@ void RewriteApp::saveWarps()
 }
 void RewriteApp::update()
 {
-
+	mVDSession->update();
 }
 void RewriteApp::resize()
 {

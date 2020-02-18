@@ -304,10 +304,9 @@ void VDSession::updateBlendUniforms() {
 	mGlslBlend->uniform("iContour", mVDAnimation->getFloatUniformValueByName("iContour"));
 	mGlslBlend->uniform("iSobel", mVDAnimation->getFloatUniformValueByName("iSobel"));
 
-}
+}*/
 void VDSession::update(unsigned int aClassIndex) {
-
-	if (mVDRouter->hasFBOAChanged()) {
+	/*if (mVDRouter->hasFBOAChanged()) {
 		setFboFragmentShaderIndex(0, mVDRouter->selectedFboA());
 	}
 	if (mVDRouter->hasFBOBChanged()) {
@@ -333,27 +332,27 @@ void VDSession::update(unsigned int aClassIndex) {
 		}
 		if (mVDWebsocket->hasReceivedUniforms()) {
 			mHydraUniformsValuesString = mVDWebsocket->getReceivedUniforms();
-		}*/
-		/* TODO: CHECK index if (mVDSettings->iGreyScale)
-		{
-			mVDWebsocket->changeFloatValue(1, mVDAnimation->getFloatUniformValueByIndex(3));
-			mVDWebsocket->changeFloatValue(2, mVDAnimation->getFloatUniformValueByIndex(3));
-			mVDWebsocket->changeFloatValue(5, mVDAnimation->getFloatUniformValueByIndex(7));
-			mVDWebsocket->changeFloatValue(6, mVDAnimation->getFloatUniformValueByIndex(7));
-		}*/
-
+		}
+		// TODO: CHECK index if (mVDSettings->iGreyScale)
+		//{
+		//	mVDWebsocket->changeFloatValue(1, mVDAnimation->getFloatUniformValueByIndex(3));
+		//	mVDWebsocket->changeFloatValue(2, mVDAnimation->getFloatUniformValueByIndex(3));
+		//	mVDWebsocket->changeFloatValue(5, mVDAnimation->getFloatUniformValueByIndex(7));
+		//	mVDWebsocket->changeFloatValue(6, mVDAnimation->getFloatUniformValueByIndex(7));
+		//}
+		*/
 		// fps calculated in main app
-	/*
+
 	mVDSettings->sFps = toString(floor(getFloatUniformValueByIndex(mVDSettings->IFPS)));
-		mVDAnimation->update();
-	}
+	mVDAnimation->update();
+	/*}
 	else {
 		// aClassIndex == 1 (audio analysis only)
 		updateAudio();
-	}
+	}*/
 	// all cases
 	mVDWebsocket->update();
-	if (mFreqWSSend) {
+	/*if (mFreqWSSend) {
 		mVDWebsocket->changeFloatValue(mVDSettings->IFREQ0, getFreq(0), true);
 		mVDWebsocket->changeFloatValue(mVDSettings->IFREQ1, getFreq(1), true);
 		mVDWebsocket->changeFloatValue(mVDSettings->IFREQ2, getFreq(2), true);
@@ -371,9 +370,9 @@ void VDSession::update(unsigned int aClassIndex) {
 	if (mVDAnimation->renderBlend()) {
 		updateBlendUniforms();
 		renderBlend();
-	}
+	}*/
 }
-bool VDSession::save()
+/*bool VDSession::save()
 {
 
 	// save uniforms settings

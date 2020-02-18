@@ -169,12 +169,9 @@ namespace videodromm {
 	}
 
 	ci::gl::Texture2dRef VDFbo::getFboTexture() {
-		// TODO move this:
+		
 		if (mValid) {
-			// TODO move to session.cpp update globally
-			mVDSettings->sFps = toString(floor(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFPS)));
-			mVDAnimation->update();
-			// END TODO
+
 			gl::ScopedFramebuffer fbScp(mFbo);
 			gl::clear(Color::black());
 

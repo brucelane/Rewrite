@@ -41,7 +41,7 @@ namespace videodromm {
 		static VDSessionRef				create(VDSettingsRef aVDSettings);
 		bool							handleKeyDown(KeyEvent &event);
 		bool							handleKeyUp(KeyEvent &event);
-
+void							update(unsigned int aClassIndex = 0);
 		//!
 		/*void							fromXml(const ci::XmlTree &xml);
 
@@ -53,7 +53,7 @@ namespace videodromm {
 		bool							handleMouseDrag(MouseEvent &event);
 		bool							handleMouseUp(MouseEvent &event);
 		void							resize(){mRenderFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);}
-		void							update(unsigned int aClassIndex = 0);
+		
 		bool							save();
 		void							restore();
 		void							reset();
@@ -352,11 +352,10 @@ namespace videodromm {
 		void							wsConnect();
 		void							wsPing();
 		void							wsWrite(std::string msg);
-		/*void							sendFragmentShader(unsigned int aShaderIndex);
+		/*void							sendFragmentShader(unsigned int aShaderIndex);*/
 		// midi
 		void							midiSetup() { mVDRouter->midiSetup(); };
 		void							midiOutSendNoteOn(int i, int channel, int pitch, int velocity) { mVDRouter->midiOutSendNoteOn(i, channel, pitch, velocity); };
-
 		int								getMidiInPortsCount() { return mVDRouter->getMidiInPortsCount(); };
 		string							getMidiInPortName(int i) { return mVDRouter->getMidiInPortName(i); };
 		bool							isMidiInConnected(int i) { return mVDRouter->isMidiInConnected(i); };
@@ -368,7 +367,7 @@ namespace videodromm {
 		void							openMidiOutPort(int i) { mVDRouter->openMidiOutPort(i); };
 		void							closeMidiOutPort(int i) { mVDRouter->closeMidiOutPort(i); };
 		//! window management
-		void							createWindow() { cmd = 0; };
+		/*void							createWindow() { cmd = 0; };
 		void							deleteWindow() { cmd = 1; };
 		int								getCmd() { int rtn = cmd; cmd = -1; return rtn; };
 		// utils

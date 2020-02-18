@@ -12,7 +12,8 @@ VDUIMidi::~VDUIMidi() {
 
 void VDUIMidi::Run(const char* title) {
 #if defined( CINDER_MSW )
-	/*ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiSmallH), ImGuiSetCond_Once);
+
+	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 1.76), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
 
 	ImGui::Begin("MIDI");
@@ -94,6 +95,6 @@ void VDUIMidi::Run(const char* title) {
 		}
 		ImGui::TextWrapped(">%s", mVDSettings->mMidiMsg.c_str());
 	}
-	ImGui::End();*/
+	ImGui::End();
 #endif
 }
