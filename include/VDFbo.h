@@ -25,7 +25,9 @@ namespace videodromm
 {
 	// stores the pointer to the VDFbo instance
 	typedef std::shared_ptr<class VDFbo> 			VDFboRef;
-	class VDFbo  {
+	typedef std::vector<VDFboRef>					VDFboList;
+
+	class VDFbo  { // TODO : public VDTexture ?
 	public:
 		VDFbo(VDSettingsRef aVDSettings);
 		~VDFbo(void);
@@ -47,6 +49,8 @@ namespace videodromm
 		void							flipH() { 
 			mVDAnimation->setBoolUniformValueByIndex(mVDSettings->IFLIPH, !mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH));
 		};
+		bool							isFlipH() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV); };
+		bool							isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };
 		
 	private:
 		// Settings

@@ -26,7 +26,7 @@
 #include "cinder/Rand.h"
 
 #include "Warp.h"
-#include "VDFbo.h"
+#include "VDSession.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -56,9 +56,11 @@ public:
 private:
 	// Settings
 	VDSettingsRef					mVDSettings;
+	// Session
+	VDSessionRef					mVDSession;
 	fs::path						mSettings;
 	WarpList						mWarpList;
-	map<int, VDFboRef>				fbos;
+	//map<int, VDFboRef>				fbos;
 	bool							mFadeInDelay = true;
 };
 
@@ -72,6 +74,8 @@ void RewriteApp::setup()
 	disableFrameRate();
 	// Settings
 	mVDSettings = VDSettings::create("Rewrite");
+	// Session
+	mVDSession = VDSession::create(mVDSettings);
 	// initialize warps
 	mSettings = getAssetPath("") / "warps.xml";
 	if (fs::exists(mSettings)) {
@@ -87,13 +91,11 @@ void RewriteApp::setup()
 
 	// load test image
 	try {
-		//mImage = gl::Texture::create( loadImage( loadAsset( "help.png" ) ), 
-		//							  gl::Texture2d::Format().loadTopDown(mFlipV).mipmap( true ).minFilter( GL_LINEAR_MIPMAP_LINEAR ) );
-
-		//mSrcArea = mImage->getBounds();
-		fbos[0] = VDFbo::create(mVDSettings);
-		// adjust the content size of the fbos
-		Warp::setSize(mWarpList, fbos[0]->getRenderedTexture()->getSize());
+		
+		//fbos[0] = VDFbo::create(mVDSettings);
+		mVDSession->createShaderFbo("inputImage.fs", 0);
+		// adjust the content size of the warps
+		Warp::setSize(mWarpList, mVDSession->getFboRenderedTexture(0)->getSize());
 	}
 	catch (const std::exception &e) {
 		console() << e.what() << std::endl;
@@ -117,9 +119,9 @@ void RewriteApp::draw()
 		// iterate over the fbos and draw their content
 		int i = 0;
 		for (auto &warp : mWarpList) {
-			i = math<int>::min(i, fbos.size() - 1);
-			if (fbos[0]->isValid()) {
-				warp->draw(fbos[i]->getRenderedTexture(), fbos[i]->getSrcArea());
+			i = math<int>::min(i, mVDSession->getFboListSize() - 1);
+			if (mVDSession->isFboValid(i)) {
+				warp->draw(mVDSession->getFboRenderedTexture(i), mVDSession->getFboSrcArea(i));
 			}
 			i++;
 		}
@@ -194,13 +196,13 @@ void RewriteApp::keyDown(KeyEvent event)
 			Warp::enableEditMode(!Warp::isEditModeEnabled());
 			break;
 		case KeyEvent::KEY_v:
-			fbos[0]->flipV();
+			mVDSession->fboFlipV(0);// TODO other indexes	fbos[0]->flipV();
 		//mImage = gl::Texture::create(loadImage(loadAsset("help.png")),
 		//	gl::Texture2d::Format().loadTopDown(mFlipV).mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 
 		break;
 	case KeyEvent::KEY_h:
-		fbos[0]->flipH();
+		mVDSession->fboFlipH(0);
 		break;
 		}
 		//case KeyEvent::KEY_v:

@@ -148,6 +148,7 @@
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketServer.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.h" />
     <ClInclude Include="..\include\VDAnimation.h" />
+    <ClInclude Include="..\include\VDSession.h" />
     <ClInclude Include="..\include\VDSettings.h" />
     <ClInclude Include="..\include\VDFbo.h" />
     <ClInclude Include="..\include\Watchdog.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketServer.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.cpp" />
     <ClCompile Include="..\src\VDAnimation.cpp" />
+    <ClCompile Include="..\src\VDSession.cpp" />
     <ClCompile Include="..\src\VDSettings.cpp" />
     <ClCompile Include="..\src\VDFbo.cpp" />
   </ItemGroup>
