@@ -433,5 +433,8 @@
     <None Include="..\assets\Intro\warp0.json">
       <Filter>assets</Filter>
     </None>
+    <None Include="..\assets\Intro\default.fs">
+      <Filter>assets</Filter>
+    </None>
   </ItemGroup>
 </Project>

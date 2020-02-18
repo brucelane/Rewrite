@@ -10,6 +10,8 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 {
 	CI_LOG_V("VDSession ctor");
 	mVDSettings = aVDSettings;
+	mDefaultTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
+	createShaderFbo("default.fs", 0);
 	// allow log to file
 	/*mVDLog = VDLog::create();
 	// Utils
@@ -1548,6 +1550,7 @@ ci::gl::TextureRef VDSession::getFboTexture(unsigned int aFboIndex) {
 	return mFboList[aFboIndex]->getFboTexture();
 }*/
 ci::gl::TextureRef VDSession::getFboRenderedTexture(unsigned int aFboIndex) {
+	if (mFboList.size() == 0) return mDefaultTexture;
 	if (aFboIndex > mFboList.size() - 1) aFboIndex = 0;
 	return mFboList[aFboIndex]->getRenderedTexture();
 }

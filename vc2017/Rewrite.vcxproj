@@ -111,6 +111,7 @@
     <Xml Include="x64\Debug\VDRewrite.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\assets\Intro\default.fs" />
     <None Include="..\assets\Intro\warp0.json" />
   </ItemGroup>
   <ItemGroup>

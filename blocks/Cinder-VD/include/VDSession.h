@@ -29,12 +29,12 @@ namespace videodromm {
 
 	typedef std::shared_ptr<class VDSession> VDSessionRef;
 
-	struct VDMixFbo
+	/*struct VDMixFbo
 	{
 		ci::gl::FboRef					fbo;
 		ci::gl::Texture2dRef			texture;
 		string							name;
-	};
+	};*/
 	class VDSession {
 	public:
 		VDSession(VDSettingsRef aVDSettings);
@@ -377,6 +377,7 @@ namespace videodromm {
 		}*/
 	private:
 		int								mMode;
+		gl::TextureRef					mDefaultTexture;
 		// Settings
 		VDSettingsRef					mVDSettings;
 		// Utils
