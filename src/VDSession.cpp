@@ -1117,7 +1117,7 @@ unsigned int VDSession::createShaderFboFromString(string aFragmentShaderString, 
 unsigned int VDSession::createShaderFbo(string aShaderFilename, unsigned int aFboShaderIndex) {
 	// initialize rtn to 0 to force creation
 	unsigned int rtn = 0;
-	VDFboRef fboRef = VDFbo::create(mVDSettings);
+	VDFboRef fboRef = VDFbo::create(mVDSettings, aShaderFilename);
 	mFboList.push_back(fboRef);
 	/*string fName = aShaderFilename;
 	string currentShaderListFileName = "";

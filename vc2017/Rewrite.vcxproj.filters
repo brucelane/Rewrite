@@ -284,14 +284,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\assets\PerlinNoiseInPolarCoordinate.fs">
-      <Filter>assets</Filter>
-    </None>
-    <None Include="..\assets\inputImage.fs">
-      <Filter>assets</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Xml Include="x64\Debug\VDRewrite.xml">
       <Filter>debug</Filter>
     </Xml>

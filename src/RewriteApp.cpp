@@ -1,8 +1,8 @@
 /*
- Copyright (c) 2010-2015, Paul Houx - All rights reserved.
+ Copyright (c) 2013-2020, Bruce Lane - All rights reserved.
  This code is intended for use with the Cinder C++ library: http://libcinder.org
 
- This file is part of Cinder-Warping.
+ Using Cinder-Warping from Paul Houx.
 
  Cinder-Warping is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -24,7 +24,8 @@
 #include "cinder/gl/Texture.h"
 
 #include "cinder/Rand.h"
-
+ // json
+#include "cinder/Json.h"
 #include "Warp.h"
 #include "VDSession.h"
 
@@ -62,6 +63,8 @@ private:
 	WarpList						mWarpList;
 	//map<int, VDFboRef>				fbos;
 	bool							mFadeInDelay = true;
+	void							loadWarps();
+	void							saveWarps();
 };
 
 void RewriteApp::prepare(Settings *settings)
@@ -77,7 +80,7 @@ void RewriteApp::setup()
 	// Session
 	mVDSession = VDSession::create(mVDSettings);
 	// initialize warps
-	mSettings = getAssetPath("") / "warps.xml";
+	mSettings = getAssetPath("") / mVDSettings->mAssetsPath / "warps.xml";
 	if (fs::exists(mSettings)) {
 		// load warp settings from file if one exists
 		mWarpList = Warp::readSettings(loadFile(mSettings));
@@ -88,19 +91,28 @@ void RewriteApp::setup()
 		mWarpList.push_back(WarpPerspective::create());
 		mWarpList.push_back(WarpPerspectiveBilinear::create());
 	}
-
-	// load test image
-	try {
-		
-		//fbos[0] = VDFbo::create(mVDSettings);
-		mVDSession->createShaderFbo("inputImage.fs", 0);
-		// adjust the content size of the warps
-		Warp::setSize(mWarpList, mVDSession->getFboRenderedTexture(0)->getSize());
+	
+	loadWarps();
+	// adjust the content size of the warps
+	Warp::setSize(mWarpList, mVDSession->getFboRenderedTexture(0)->getSize());
+}
+void RewriteApp::loadWarps() {
+	int i = 0;
+	for (auto &warp : mWarpList) {
+		i = math<int>::min(i, mWarpList.size() - 1);
+		string jsonFileName = "warp" + toString(i) + ".json";
+		fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
+		if (fs::exists(jsonFile)) {
+			JsonTree json(loadFile(jsonFile));
+			warp->fromJson(json);
+			if (json[0].hasChild("warp")) {
+				JsonTree warp(json[0].getChild("warp"));
+				string shaderFileName = (warp.hasChild("ashaderfilename")) ? warp.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
+				mVDSession->createShaderFbo(shaderFileName, i);
+			}
+			i++;
+		}
 	}
-	catch (const std::exception &e) {
-		console() << e.what() << std::endl;
-	}
-
 }
 
 void RewriteApp::draw()
@@ -110,7 +122,7 @@ void RewriteApp::draw()
 	gl::color(Color::white());
 	if (mFadeInDelay) {
 		mVDSettings->iAlpha = 0.0f;
-		if (getElapsedFrames() > 10.0){// mVDSession->getFadeInDelay()) {
+		if (getElapsedFrames() > 10.0) {// mVDSession->getFadeInDelay()) {
 			mFadeInDelay = false;
 			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 1.5f, EaseInCubic());
 		}
@@ -131,13 +143,26 @@ void RewriteApp::draw()
 }
 void RewriteApp::cleanup()
 {
+
 	// save warp settings
 	Warp::writeSettings(mWarpList, writeFile(mSettings));
 }
-
+void RewriteApp::saveWarps()
+{
+	int i = 0;
+	for (auto &warp : mWarpList) {
+		JsonTree		json;
+		string jsonFileName = "warpfbo" + toString(i) + ".json";
+		fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
+		// write file
+		json.pushBack(warp->toJson());
+		json.write(jsonFile);
+		i++;
+	}
+}
 void RewriteApp::update()
 {
-	
+
 }
 void RewriteApp::resize()
 {
@@ -200,10 +225,10 @@ void RewriteApp::keyDown(KeyEvent event)
 		//mImage = gl::Texture::create(loadImage(loadAsset("help.png")),
 		//	gl::Texture2d::Format().loadTopDown(mFlipV).mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 
-		break;
-	case KeyEvent::KEY_h:
-		mVDSession->fboFlipH(0);
-		break;
+			break;
+		case KeyEvent::KEY_h:
+			mVDSession->fboFlipH(0);
+			break;
 		}
 		//case KeyEvent::KEY_v:
 	//	// toggle vertical sync

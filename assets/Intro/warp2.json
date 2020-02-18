@@ -1,0 +1,65 @@
+[
+   {
+      "adaptive" : true,
+      "linear" : false,
+      "resolution" : 16,
+      "warp" : {
+         "afboindex" : 0,
+         "ashaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
+         "ashaderindex" : 0,
+         "bfboindex" : 0,
+         "brightness" : 1,
+         "bshaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
+         "bshaderindex" : 0,
+         "controlpoints" : [
+            {
+               "controlpoint" : 0,
+               "x" : 0,
+               "y" : 0
+            },
+            {
+               "controlpoint" : 1,
+               "x" : 0,
+               "y" : 1
+            },
+            {
+               "controlpoint" : 2,
+               "x" : 1,
+               "y" : 0
+            },
+            {
+               "controlpoint" : 3,
+               "x" : 1,
+               "y" : 1
+            }
+         ],
+         "corners" : [
+            {
+               "corner" : 0,
+               "x" : 0.14166699999999999,
+               "y" : 0.252222
+            },
+            {
+               "corner" : 1,
+               "x" : 0.53125,
+               "y" : 0.281111
+            },
+            {
+               "corner" : 2,
+               "x" : 0.60138899999999995,
+               "y" : 0.72222200000000003
+            },
+            {
+               "corner" : 3,
+               "x" : 0.17222199999999999,
+               "y" : 0.64000000000000001
+            }
+         ],
+         "crossfade" : -431602080,
+         "height" : 2,
+         "method" : "perspectivebilinear",
+         "mixfboindex" : 0,
+         "width" : 2
+      }
+   }
+]

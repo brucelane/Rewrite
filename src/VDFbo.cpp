@@ -1,10 +1,11 @@
 #include "VDFbo.h"
 
 namespace videodromm {
-	VDFbo::VDFbo(VDSettingsRef aVDSettings)
+	VDFbo::VDFbo(VDSettingsRef aVDSettings, string aShaderFilename)
 		:mValid(false)
 	{
 		CI_LOG_V("VDFbo constructor");
+		mShaderName = aShaderFilename;
 		shaderInclude = "#version 150\n"
 			"// shadertoy specific\n"
 			"uniform vec2      	RENDERSIZE;\n"
@@ -52,13 +53,7 @@ namespace videodromm {
 		mFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, fboFmt);
 		//mThumbFbo = gl::Fbo::create(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight, fboFmt);
 		mError = "";
-		 
-		mShaderName = "inputImage.fs";
-		//mShaderName = "PerlinNoiseInPolarCoordinate.fs";
-		//mValid = false;
 		mActive = true;
-
-		//mValid = loadFragmentStringFromFile("inputImage.fs");
 		mValid = loadFragmentStringFromFile(mShaderName);
 
 		if (mValid) {

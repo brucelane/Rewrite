@@ -29,10 +29,10 @@ namespace videodromm
 
 	class VDFbo  { // TODO : public VDTexture ?
 	public:
-		VDFbo(VDSettingsRef aVDSettings);
+		VDFbo(VDSettingsRef aVDSettings, string aShaderFilename);
 		~VDFbo(void);
-		static VDFboRef create(VDSettingsRef aVDSettings) {
-			return std::make_shared<VDFbo>(aVDSettings);
+		static VDFboRef create(VDSettingsRef aVDSettings, string aShaderFilename) {
+			return std::make_shared<VDFbo>(aVDSettings, aShaderFilename);
 		}		
 		ci::gl::Texture2dRef getRenderedTexture();
 		Area getSrcArea() { 
