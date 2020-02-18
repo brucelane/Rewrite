@@ -23,14 +23,14 @@ using namespace std;
 
 namespace videodromm
 {
-	// stores the pointer to the VDWarp instance
-	typedef std::shared_ptr<class VDWarp> 			VDWarpRef;
-	class VDWarp  {
+	// stores the pointer to the VDFbo instance
+	typedef std::shared_ptr<class VDFbo> 			VDFboRef;
+	class VDFbo  {
 	public:
-		VDWarp(VDSettingsRef aVDSettings);
-		~VDWarp(void);
-		static VDWarpRef create(VDSettingsRef aVDSettings) {
-			return std::make_shared<VDWarp>(aVDSettings);
+		VDFbo(VDSettingsRef aVDSettings);
+		~VDFbo(void);
+		static VDFboRef create(VDSettingsRef aVDSettings) {
+			return std::make_shared<VDFbo>(aVDSettings);
 		}		
 		ci::gl::Texture2dRef getRenderedTexture();
 		Area getSrcArea() { 

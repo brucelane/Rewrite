@@ -149,7 +149,7 @@
     <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.h" />
     <ClInclude Include="..\include\VDAnimation.h" />
     <ClInclude Include="..\include\VDSettings.h" />
-    <ClInclude Include="..\include\VDWarp.h" />
+    <ClInclude Include="..\include\VDFbo.h" />
     <ClInclude Include="..\include\Watchdog.h" />
   </ItemGroup>
   <ItemGroup>
@@ -174,7 +174,7 @@
     <ClCompile Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.cpp" />
     <ClCompile Include="..\src\VDAnimation.cpp" />
     <ClCompile Include="..\src\VDSettings.cpp" />
-    <ClCompile Include="..\src\VDWarp.cpp" />
+    <ClCompile Include="..\src\VDFbo.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

@@ -239,9 +239,6 @@
     <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.h">
       <Filter>Blocks\OSC\src\cinder\osc</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\VDWarp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\VDAnimation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -251,12 +248,12 @@
     <ClCompile Include="..\src\LiveParam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\VDFbo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\VDWarp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\VDAnimation.h">
@@ -269,6 +266,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\include\Watchdog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\VDFbo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

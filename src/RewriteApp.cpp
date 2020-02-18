@@ -26,7 +26,7 @@
 #include "cinder/Rand.h"
 
 #include "Warp.h"
-#include "VDWarp.h"
+#include "VDFbo.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -58,7 +58,7 @@ private:
 	VDSettingsRef					mVDSettings;
 	fs::path						mSettings;
 	WarpList						mWarpList;
-	map<int, VDWarpRef>				warps;
+	map<int, VDFboRef>				fbos;
 	bool							mFadeInDelay = true;
 };
 
@@ -91,9 +91,9 @@ void RewriteApp::setup()
 		//							  gl::Texture2d::Format().loadTopDown(mFlipV).mipmap( true ).minFilter( GL_LINEAR_MIPMAP_LINEAR ) );
 
 		//mSrcArea = mImage->getBounds();
-		warps[0] = VDWarp::create(mVDSettings);
-		// adjust the content size of the warps
-		Warp::setSize(mWarpList, warps[0]->getRenderedTexture()->getSize());
+		fbos[0] = VDFbo::create(mVDSettings);
+		// adjust the content size of the fbos
+		Warp::setSize(mWarpList, fbos[0]->getRenderedTexture()->getSize());
 	}
 	catch (const std::exception &e) {
 		console() << e.what() << std::endl;
@@ -114,12 +114,12 @@ void RewriteApp::draw()
 		}
 	}
 	else {
-		// iterate over the warps and draw their content
+		// iterate over the fbos and draw their content
 		int i = 0;
 		for (auto &warp : mWarpList) {
-			i = math<int>::min(i, warps.size() - 1);
-			if (warps[0]->isValid()) {
-				warp->draw(warps[i]->getRenderedTexture(), warps[i]->getSrcArea());
+			i = math<int>::min(i, fbos.size() - 1);
+			if (fbos[0]->isValid()) {
+				warp->draw(fbos[i]->getRenderedTexture(), fbos[i]->getSrcArea());
 			}
 			i++;
 		}
@@ -139,7 +139,7 @@ void RewriteApp::update()
 }
 void RewriteApp::resize()
 {
-	// tell the warps our window has been resized, so they properly scale up or down
+	// tell the fbos our window has been resized, so they properly scale up or down
 	Warp::handleResize(mWarpList);
 }
 
@@ -194,13 +194,13 @@ void RewriteApp::keyDown(KeyEvent event)
 			Warp::enableEditMode(!Warp::isEditModeEnabled());
 			break;
 		case KeyEvent::KEY_v:
-			warps[0]->flipV();
+			fbos[0]->flipV();
 		//mImage = gl::Texture::create(loadImage(loadAsset("help.png")),
 		//	gl::Texture2d::Format().loadTopDown(mFlipV).mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 
 		break;
 	case KeyEvent::KEY_h:
-		warps[0]->flipH();
+		fbos[0]->flipH();
 		break;
 		}
 		//case KeyEvent::KEY_v:

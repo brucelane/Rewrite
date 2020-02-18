@@ -1,10 +1,10 @@
-#include "VDWarp.h"
+#include "VDFbo.h"
 
 namespace videodromm {
-	VDWarp::VDWarp(VDSettingsRef aVDSettings)
+	VDFbo::VDFbo(VDSettingsRef aVDSettings)
 		:mValid(false)
 	{
-		CI_LOG_V("VDWarp constructor");
+		CI_LOG_V("VDFbo constructor");
 		shaderInclude = "#version 150\n"
 			"// shadertoy specific\n"
 			"uniform vec2      	RENDERSIZE;\n"
@@ -68,10 +68,10 @@ namespace videodromm {
 			CI_LOG_V("VDShaders constructor failed, do not use");
 		}
 	}
-	VDWarp::~VDWarp(void) {
+	VDFbo::~VDFbo(void) {
 	}
 
-	bool VDWarp::loadFragmentStringFromFile(string aFileName) {
+	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
 		mValid = false;
 		// load fragment shader
 		CI_LOG_V("loadFragmentStringFromFile, loading " + aFileName);
@@ -105,7 +105,7 @@ namespace videodromm {
 		return mValid;
 	}
 	// aName = fullpath
-	bool VDWarp::setFragmentString(string aFragmentShaderString, string aName) {
+	bool VDFbo::setFragmentString(string aFragmentShaderString, string aName) {
 
 		string mOriginalFragmentString = aFragmentShaderString;
 		string fileName = "";
@@ -156,63 +156,7 @@ namespace videodromm {
 			// name of the shader
 			mShaderName = aName;
 			mValid = true;
-			/*
-			auto &uniforms = mShader->getActiveUniforms();
-			string uniformName;
-			for (const auto &uniform : uniforms) {
-				uniformName = uniform.getName();
-				CI_LOG_V(aName + ", uniform name:" + uniformName);
-				// if uniform is handled
-				if (mVDAnimation->isExistingUniform(uniformName)) {
-					int uniformType = mVDAnimation->getUniformType(uniformName);
-					switch (uniformType)
-					{
-					case 0:
-						// float
-						mShader->uniform(uniformName, mVDAnimation->getFloatUniformValueByName(uniformName));
-						//mCurrentUniformsString += "uniform float " + uniformName + "; // " + toString(mVDAnimation->getFloatUniformValueByName(uniformName)) + "\n";
-						break;
-					case 1:
-						// sampler2D
-						mShader->uniform(uniformName, mVDAnimation->getSampler2DUniformValueByName(uniformName));
-						//mCurrentUniformsString += "uniform sampler2D " + uniformName + "; // " + toString(mVDAnimation->getSampler2DUniformValueByName(uniformName)) + "\n";
-						break;
-					case 2:
-						// vec2
-						mShader->uniform(uniformName, mVDAnimation->getVec2UniformValueByName(uniformName));
-						//mCurrentUniformsString += "uniform vec2 " + uniformName + "; // " + toString(mVDAnimation->getVec2UniformValueByName(uniformName)) + "\n";
-						break;
-					case 3:
-						// vec3
-						mShader->uniform(uniformName, mVDAnimation->getVec3UniformValueByName(uniformName));
-						//mCurrentUniformsString += "uniform vec3 " + uniformName + "; // " + toString(mVDAnimation->getVec3UniformValueByName(uniformName)) + "\n";
-						break;
-					case 4:
-						// vec4
-						mShader->uniform(uniformName, mVDAnimation->getVec4UniformValueByName(uniformName));
-						//mCurrentUniformsString += "uniform vec4 " + uniformName + "; // " + toString(mVDAnimation->getVec4UniformValueByName(uniformName)) + "\n";
-						break;
-					case 5:
-						// int
-						mShader->uniform(uniformName, mVDAnimation->getIntUniformValueByName(uniformName));
-						//mCurrentUniformsString += "uniform int " + uniformName + "; // " + toString(mVDAnimation->getIntUniformValueByName(uniformName)) + "\n";
-						break;
-					case 6:
-						// bool
-						mShader->uniform(uniformName, mVDAnimation->getBoolUniformValueByName(uniformName));
-						//mCurrentUniformsString += "uniform bool " + uniformName + "; // " + toString(mVDAnimation->getBoolUniformValueByName(uniformName)) + "\n";
-						break;
-					default:
-						break;
-					}
-				}
-				else {
-					if (uniformName != "ciModelViewProjection") {
-						mNotFoundUniformsString += "not found " + uniformName + "\n";
-					}
-				}
-			}
-			*/
+			
 		}
 		catch (gl::GlslProgCompileExc &exc)
 		{
@@ -229,7 +173,7 @@ namespace videodromm {
 		return mValid;
 	}
 
-	ci::gl::Texture2dRef VDWarp::getFboTexture() {
+	ci::gl::Texture2dRef VDFbo::getFboTexture() {
 		// TODO move this:
 		if (mValid) {
 			// TODO move to session.cpp update globally
@@ -314,7 +258,7 @@ namespace videodromm {
 		}
 		return mRenderedTexture;
 	}
-	ci::gl::Texture2dRef VDWarp::getRenderedTexture() {
+	ci::gl::Texture2dRef VDFbo::getRenderedTexture() {
 		if (mValid) {
 			if (!isReady) {
 				// render once for thumb
