@@ -144,8 +144,9 @@ void							update(unsigned int aClassIndex = 0);
 		void							setBoolUniformValueByIndex(unsigned int aCtrl, float aValue) {
 			// done in router mVDAnimation->changeFloatValue(aCtrl, aValue);
 			mVDWebsocket->changeBoolValue(aCtrl, aValue);
-		};/*
+		};
 		// tempo
+		float							getMaxVolume() { return mVDAnimation->maxVolume; };
 		float							getBpm() { return mVDAnimation->getBpm(); };
 		void							setBpm(float aBpm) { mVDAnimation->setBpm(aBpm); };
 		void							tapTempo() { mVDAnimation->tapTempo(); };
@@ -154,7 +155,6 @@ void							update(unsigned int aClassIndex = 0);
 		bool							getUseTimeWithTempo() { return mVDAnimation->getUseTimeWithTempo(); };
 		void							setTimeFactor(const int &aTimeFactor) { mVDAnimation->setTimeFactor(aTimeFactor); };
 		// audio
-		float							getMaxVolume() { return mVDAnimation->maxVolume; };
 		float *							getFreqs() { return mVDAnimation->iFreqs; };
 		int								getFreqIndexSize() { return mVDAnimation->getFreqIndexSize(); };
 		float							getFreq(unsigned int aFreqIndex) { return mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFREQ0 + aFreqIndex); };
@@ -166,7 +166,7 @@ void							update(unsigned int aClassIndex = 0);
 		bool							getUseLineIn() { return mVDAnimation->getUseLineIn(); };
 		void							setUseLineIn(bool useLineIn) { mVDAnimation->setUseLineIn(useLineIn); };
 		void							toggleUseLineIn() { mVDAnimation->toggleUseLineIn(); };
-		bool							getFreqWSSend() { return mFreqWSSend; };
+		/*bool							getFreqWSSend() { return mFreqWSSend; };
 		void							toggleFreqWSSend() { mFreqWSSend = !mFreqWSSend; };
 		// uniforms
 		//void							setMixCrossfade(unsigned int aWarpIndex, float aCrossfade) { mVDSettings->xFade = aCrossfade; mVDSettings->xFadeChanged = true; };
@@ -406,7 +406,7 @@ void							update(unsigned int aClassIndex = 0);
 		VDAnimationRef					mVDAnimation;
 		// Log
 		VDLogRef						mVDLog;
-/*
+
 		const string					sessionFileName = "session.json";
 		fs::path						sessionPath;
 		// tempo
@@ -416,7 +416,7 @@ void							update(unsigned int aClassIndex = 0);
 		// audio
 		bool							mFreqWSSend;
 		// files and paths
-		string							mWaveFileName;
+		/*string							mWaveFileName;
 		string							mMovieFileName;
 		string							mImageSequencePath;
 		// delay

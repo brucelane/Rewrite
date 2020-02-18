@@ -145,7 +145,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::PlotLines("F", &values.front(), (int)values.size(), values_offset, mVDSettings->sFps.c_str(), 0.0f, 100.0f, ImVec2(0, 30));
 		if (mVDSession->getFloatUniformValueByIndex(mVDSettings->IFPS) < 12.0) ImGui::PopStyleColor();
 		// audio
-		/*ImGui::SameLine();
+		ImGui::SameLine();
 		static ImVector<float> timeValues; if (timeValues.empty()) { timeValues.resize(40); memset(&timeValues.front(), 0, timeValues.size() * sizeof(float)); }
 		static int timeValues_offset = 0;
 		// audio maxVolume
@@ -165,12 +165,12 @@ void VDUI::Run(const char* title, unsigned int fps) {
 
 		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(0))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+/*		ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(0))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		ImGui::SameLine();
 		ImGui::Image((void*)mVDSession->getMixTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		ImGui::SameLine();
 		ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(1))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-
+		*/
 
 
 		multx = mVDSession->getFloatUniformValueByIndex(mVDSettings->IAUDIOX); // 13
@@ -197,7 +197,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::SameLine();
 		// flip vertically
 		int hue = 0;
-		mVDSession->isFlipV() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		/*mVDSession->isFlipV() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
 		if (ImGui::Button("FlipV")) {

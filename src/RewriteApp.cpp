@@ -199,6 +199,7 @@ void RewriteApp::saveWarps()
 }
 void RewriteApp::update()
 {
+	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
 	mVDSession->update();
 }
 void RewriteApp::resize()
