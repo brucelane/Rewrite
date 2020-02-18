@@ -11,7 +11,7 @@
 // Utils
 #include "VDUtils.h"
 // Message router
-/*#include "VDRouter.h"*/
+#include "VDRouter.h"
 // Websocket
 #include "VDWebsocket.h"
 // Animation
@@ -400,7 +400,7 @@ namespace videodromm {
 		// Utils
 		VDUtilsRef						mVDUtils;
 		// Message router
-		//VDRouterRef						mVDRouter;
+		VDRouterRef						mVDRouter;
 		// VDWebsocket
 		VDWebsocketRef					mVDWebsocket;
 		// Animation

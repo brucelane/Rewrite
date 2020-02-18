@@ -4,13 +4,13 @@
       "linear" : false,
       "resolution" : 16,
       "warp" : {
-         "afboindex" : 0,
+         "afboindex" : 2,
          "ashaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
-         "ashaderindex" : 0,
-         "bfboindex" : 0,
+         "ashaderindex" : 2,
+         "bfboindex" : 2,
          "brightness" : 1,
          "bshaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
-         "bshaderindex" : 0,
+         "bshaderindex" : 2,
          "controlpoints" : [
             {
                "controlpoint" : 0,
@@ -36,29 +36,29 @@
          "corners" : [
             {
                "corner" : 0,
-               "x" : 0.14166699999999999,
-               "y" : 0.252222
+               "x" : 0.39930599999999999,
+               "y" : 0.17555599999999999
             },
             {
                "corner" : 1,
-               "x" : 0.53125,
-               "y" : 0.281111
+               "x" : 0.63402800000000004,
+               "y" : 0.13555600000000001
             },
             {
                "corner" : 2,
-               "x" : 0.60138899999999995,
-               "y" : 0.72222200000000003
+               "x" : 0.692361,
+               "y" : 0.41666700000000001
             },
             {
                "corner" : 3,
-               "x" : 0.17222199999999999,
-               "y" : 0.64000000000000001
+               "x" : 0.35694399999999998,
+               "y" : 0.42333300000000001
             }
          ],
          "crossfade" : -431602080,
          "height" : 2,
          "method" : "perspectivebilinear",
-         "mixfboindex" : 0,
+         "mixfboindex" : 3452816845,
          "width" : 2
       }
    }

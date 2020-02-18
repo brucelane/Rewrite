@@ -189,7 +189,7 @@ void RewriteApp::saveWarps()
 	int i = 0;
 	for (auto &warp : mWarpList) {
 		JsonTree		json;
-		string jsonFileName = "warpfbo" + toString(i) + ".json";
+		string jsonFileName = "warp" + toString(i) + ".json";
 		fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
 		// write file
 		json.pushBack(warp->toJson());
@@ -204,6 +204,7 @@ void RewriteApp::update()
 void RewriteApp::resize()
 {
 	mVDUI->resize();
+	
 	// tell the fbos our window has been resized, so they properly scale up or down
 	Warp::handleResize(mWarpList);
 }

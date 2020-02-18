@@ -39,11 +39,11 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mModesList[6] = "F7 Fbo3";
 	mModesList[7] = "F8 Mixette";
 	// Websocket
-	/*mVDWebsocket = VDWebsocket::create(mVDSettings, mVDAnimation);
+	mVDWebsocket = VDWebsocket::create(mVDSettings, mVDAnimation);
 	// Message router
 	mVDRouter = VDRouter::create(mVDSettings, mVDAnimation, mVDWebsocket);
 	// warping
-	gl::enableDepthRead();
+	/*gl::enableDepthRead();
 	gl::enableDepthWrite();
 
 	// reset no matter what, so we don't miss anything
