@@ -12,7 +12,7 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	// UIAnimation
 	mUIAnimation = VDUIAnimation::create(mVDSettings, mVDSession);
 	// UIMidi
-	/*mUIMidi = VDUIMidi::create(mVDSettings, mVDSession);
+	mUIMidi = VDUIMidi::create(mVDSettings, mVDSession);
 	// UIAudio
 	mUIAudio = VDUIAudio::create(mVDSettings, mVDSession);
 	// UIColor
@@ -30,7 +30,7 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	// UIShaders
 	mUIShaders = VDUIShaders::create(mVDSettings, mVDSession);
 	// UIRender
-	mUIRender = VDUIRender::create(mVDSettings, mVDSession);*/
+	mUIRender = VDUIRender::create(mVDSettings, mVDSession);
 	// imgui
 	mouseGlobal = false;
 	mIsResizing = true;
@@ -358,7 +358,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	switch (currentWindowRow1) {
 	case 0:
 		// Tempo
-		//mUITempo->Run("Tempo");
+		mUITempo->Run("Tempo");
 		break;
 	case 1:
 		// Animation
@@ -366,33 +366,33 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		break;
 	case 2:
 		// Mouse
-		//mUIMouse->Run("Mouse");
+		mUIMouse->Run("Mouse");
 		break;
 	case 3:
 		// Render
-		//mUIRender->Run("Render");
+		mUIRender->Run("Render");
 		// Blend
-		//mUIBlend->Run("Blend");
+		mUIBlend->Run("Blend");
 		break;
 	case 4:
 		// Audio
-		//mUIAudio->Run("Audio");
+		mUIAudio->Run("Audio");
 		break;
 	case 5:
 		// Color
-		//mUIColor->Run("Color");
+		mUIColor->Run("Color");
 		break;
 	case 6:
 		// Osc
-		//mUIOsc->Run("Osc");
+		mUIOsc->Run("Osc");
 		break;
 	case 7:
 		// Websockets
-		//mUIWebsockets->Run("Websockets");
+		mUIWebsockets->Run("Websockets");
 		break;
 	case 8:
 		// Midi
-		//mUIMidi->Run("Midi");
+		mUIMidi->Run("Midi");
 		break;
 	}
 	//mVDSession->blendRenderEnable(currentWindowRow1 == 3);

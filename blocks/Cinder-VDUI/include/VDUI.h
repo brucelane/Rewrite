@@ -16,7 +16,7 @@
 // Animation
 #include "VDUIAnimation.h"
 // Midi
-/*#include "VDUIMidi.h"
+#include "VDUIMidi.h"
 // Audio
 #include "VDUIAudio.h"
 // Color
@@ -34,7 +34,7 @@
 // Shaders
 #include "VDUIShaders.h"
 // Render
-#include "VDUIRender.h"*/
+#include "VDUIRender.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -73,7 +73,7 @@ namespace videodromm
 		VDUIAnimationRef			mUIAnimation;
 		bool						showUIAnimation;
 		// UIMidi
-		/*VDUIMidiRef					mUIMidi;
+		VDUIMidiRef					mUIMidi;
 		bool						showUIMidi;
 		// UIAudio
 		VDUIAudioRef				mUIAudio;
@@ -101,7 +101,7 @@ namespace videodromm
 		bool						showUIShaders;
 		// UIRender
 		VDUIRenderRef				mUIRender;
-		bool						showUIRender;*/
+		bool						showUIRender;
 		
 		float						getMinUniformValueByIndex(unsigned int aIndex);
 		float						getMaxUniformValueByIndex(unsigned int aIndex);

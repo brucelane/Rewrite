@@ -28,7 +28,10 @@
 #include "cinder/Json.h"
 #include "Warp.h"
 #include "VDSession.h"
-
+// UI
+#define IMGUI_DISABLE_OBSOLETE_FUNCTIONS 1
+#include "VDUI.h"
+#define IM_ARRAYSIZE(_ARR)			((int)(sizeof(_ARR)/sizeof(*_ARR)))
 using namespace ci;
 using namespace ci::app;
 using namespace ph::warping;
@@ -59,12 +62,15 @@ private:
 	VDSettingsRef					mVDSettings;
 	// Session
 	VDSessionRef					mVDSession;
+	// UI
+	VDUIRef							mVDUI;
 	fs::path						mSettings;
 	WarpList						mWarpList;
 	//map<int, VDFboRef>				fbos;
 	bool							mFadeInDelay = true;
 	void							loadWarps();
 	void							saveWarps();
+	void							toggleCursorVisibility(bool visible);
 };
 
 void RewriteApp::prepare(Settings *settings)
@@ -74,11 +80,20 @@ void RewriteApp::prepare(Settings *settings)
 
 void RewriteApp::setup()
 {
-	disableFrameRate();
+	
 	// Settings
 	mVDSettings = VDSettings::create("Rewrite");
 	// Session
 	mVDSession = VDSession::create(mVDSettings);
+	mVDSession->getWindowsResolution();
+	toggleCursorVisibility(mVDSettings->mCursorVisible);
+	mVDSession->toggleUI();
+	mVDSession->setMode(1);
+
+	mFadeInDelay = true;
+	// UI
+	mVDUI = VDUI::create(mVDSettings, mVDSession);
+
 	// initialize warps
 	mSettings = getAssetPath("") / mVDSettings->mAssetsPath / "warps.xml";
 	if (fs::exists(mSettings)) {
@@ -120,7 +135,17 @@ void RewriteApp::loadWarps() {
 		}
 	}
 }
-
+void RewriteApp::toggleCursorVisibility(bool visible)
+{
+	if (visible)
+	{
+		showCursor();
+	}
+	else
+	{
+		hideCursor();
+	}
+}
 void RewriteApp::draw()
 {
 	// clear the window and set the drawing color to white
@@ -144,6 +169,12 @@ void RewriteApp::draw()
 			i++;
 		}
 
+	}
+	// imgui
+	if (mVDSession->showUI()) {
+		mVDUI->Run("UI", (int)getAverageFps());
+		if (mVDUI->isReady()) {
+		}
 	}
 	getWindow()->setTitle(mVDSettings->sFps + " fps");
 }
@@ -172,6 +203,7 @@ void RewriteApp::update()
 }
 void RewriteApp::resize()
 {
+	mVDUI->resize();
 	// tell the fbos our window has been resized, so they properly scale up or down
 	Warp::handleResize(mWarpList);
 }
@@ -213,52 +245,45 @@ void RewriteApp::keyDown(KeyEvent event)
 	// pass this key event to the warp editor first
 	if (!Warp::handleKeyDown(mWarpList, event)) {
 		// warp editor did not handle the key, so handle it here
-		switch (event.getCode()) {
-		case KeyEvent::KEY_F12:
-			// quit the application
-			quit();
-			break;
-		case KeyEvent::KEY_f:
-			// toggle full screen
-			setFullScreen(!isFullScreen());
-			break;
-		case KeyEvent::KEY_w:
-			// toggle warp edit mode
-			Warp::enableEditMode(!Warp::isEditModeEnabled());
-			break;
-		case KeyEvent::KEY_v:
-			mVDSession->fboFlipV(0);// TODO other indexes	fbos[0]->flipV();
-		//mImage = gl::Texture::create(loadImage(loadAsset("help.png")),
-		//	gl::Texture2d::Format().loadTopDown(mFlipV).mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
+		if (!mVDSession->handleKeyDown(event)) {
+			switch (event.getCode()) {
+			case KeyEvent::KEY_F12:
+				// quit the application
+				quit();
+				break;
+			case KeyEvent::KEY_f:
+				// toggle full screen
+				setFullScreen(!isFullScreen());
+				break;
+			case KeyEvent::KEY_w:
+				// toggle warp edit mode
+				Warp::enableEditMode(!Warp::isEditModeEnabled());
+				break;
 
-			break;
-		case KeyEvent::KEY_h:
-			mVDSession->fboFlipH(0);
-			break;
+				//case KeyEvent::KEY_v:
+			//	// toggle vertical sync
+			//	gl::enableVerticalSync( !gl::isVerticalSyncEnabled() );
+			//	break;
+
+			/*case KeyEvent::KEY_a:
+				// toggle drawing a random region of the image
+				if( mSrcArea.getWidth() != mImage->getWidth() || mSrcArea.getHeight() != mImage->getHeight() )
+					mSrcArea = mImage->getBounds();
+				else {
+					int x1 = Rand::randInt( 0, mImage->getWidth() - 150 );
+					int y1 = Rand::randInt( 0, mImage->getHeight() - 150 );
+					int x2 = Rand::randInt( x1 + 150, mImage->getWidth() );
+					int y2 = Rand::randInt( y1 + 150, mImage->getHeight() );
+					mSrcArea = Area( x1, y1, x2, y2 );
+				}
+				break;
+			case KeyEvent::KEY_SPACE:
+				// toggle drawing mode
+				mUseBeginEnd = !mUseBeginEnd;
+
+				break;*/
+			}
 		}
-		//case KeyEvent::KEY_v:
-	//	// toggle vertical sync
-	//	gl::enableVerticalSync( !gl::isVerticalSyncEnabled() );
-	//	break;
-
-	/*case KeyEvent::KEY_a:
-		// toggle drawing a random region of the image
-		if( mSrcArea.getWidth() != mImage->getWidth() || mSrcArea.getHeight() != mImage->getHeight() )
-			mSrcArea = mImage->getBounds();
-		else {
-			int x1 = Rand::randInt( 0, mImage->getWidth() - 150 );
-			int y1 = Rand::randInt( 0, mImage->getHeight() - 150 );
-			int x2 = Rand::randInt( x1 + 150, mImage->getWidth() );
-			int y2 = Rand::randInt( y1 + 150, mImage->getHeight() );
-			mSrcArea = Area( x1, y1, x2, y2 );
-		}
-		break;
-	case KeyEvent::KEY_SPACE:
-		// toggle drawing mode
-		mUseBeginEnd = !mUseBeginEnd;
-
-		break;*/
-
 	}
 }
 
@@ -267,6 +292,13 @@ void RewriteApp::keyUp(KeyEvent event)
 	// pass this key event to the warp editor first
 	if (!Warp::handleKeyUp(mWarpList, event)) {
 		// let your application perform its keyUp handling here
+		if (!mVDSession->handleKeyUp(event)) {
+			switch (event.getCode()) {
+			default:
+				CI_LOG_V("main keyup: " + toString(event.getCode()));
+				break;
+			}
+		}
 	}
 }
 

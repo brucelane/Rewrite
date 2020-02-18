@@ -24,11 +24,6 @@ float VDUtils::formatFloat(float f)
 	return (float)i;
 }
 
-void VDUtils::setup()
-{
-	
-}
-
 int VDUtils::getWindowsResolution()
 {
 	mVDSettings->mDisplayCount = 0;
@@ -102,30 +97,4 @@ void VDUtils::splitWarp(int fboWidth, int fboHeight) {
 	mSrcAreaRightOrBottom = Area(x1RightOrBottom, y1RightOrBottom, x2RightOrBottom, y2RightOrBottom);
 
 }
-void VDUtils::moveX1LeftOrTop(int x1) {
-	x1LeftOrTop = x1;
-	mSrcAreaLeftOrTop = Area(x1LeftOrTop, y1LeftOrTop, x2LeftOrTop, y2LeftOrTop);
-}
-void VDUtils::moveY1LeftOrTop(int y1) {
-	y1LeftOrTop = y1;
-	mSrcAreaLeftOrTop = Area(x1LeftOrTop, y1LeftOrTop, x2LeftOrTop, y2LeftOrTop);
-}
 
-Area VDUtils::getSrcAreaLeftOrTop() {
-	return mSrcAreaLeftOrTop;
-}
-Area VDUtils::getSrcAreaRightOrBottom() {
-	return mSrcAreaRightOrBottom;
-}
-
-fs::path VDUtils::getPath(string path)
-{
-	fs::path p = app::getAssetPath("");
-	if (path.length() > 0) { p += fs::path("/" + path); }
-	return p;
-}
-string VDUtils::getFileNameFromFullPath(string path)
-{
-	fs::path fullPath = path;
-	return fullPath.filename().string();
-}

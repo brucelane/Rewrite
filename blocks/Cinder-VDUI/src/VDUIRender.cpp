@@ -201,7 +201,7 @@ void VDUIRender::Run(const char* title) {
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Auto Layout for render window");
 
 		// Auto Layout for render window
-		/*if (mVDSession->isAutoLayout()) {
+		if (mVDSession->isAutoLayout()) {
 			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.9f, 1.0f, 0.5f));
 		}
 		else {
@@ -221,7 +221,7 @@ void VDUIRender::Run(const char* title) {
 				//mVDSession->setRenderHeight(rh);
 				mVDSettings->mRenderHeight = rh;
 			}
-		}*/
+		}
 		ImGui::PopStyleColor(3);
 
 		/*if (ImGui::Button("Create Window")) {

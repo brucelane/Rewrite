@@ -12,24 +12,23 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mVDSettings = aVDSettings;
 	mDefaultTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 	createShaderFbo("default.fs", 0);
-	// allow log to file
-	/*mVDLog = VDLog::create();
+
 	// Utils
 	mVDUtils = VDUtils::create(mVDSettings);
 	// Animation
 	mVDAnimation = VDAnimation::create(mVDSettings);
 	// TODO: needed? mVDAnimation->tapTempo();
-		// allow log to file
+	// allow log to file
 	mVDLog = VDLog::create();
 	// init fbo format
 	//fmt.setWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
-	//fmt.setBorderColor(Color::black());		
-	// uncomment this to enable 4x antialiasing	
-	//fboFmt.setSamples( 4 ); 
-	fboFmt.setColorTextureFormat(fmt);
+	//fmt.setBorderColor(Color::black());
+	// uncomment this to enable 4x antialiasing
+	//fboFmt.setSamples( 4 );
+	/*fboFmt.setColorTextureFormat(fmt);
 	mPosX = mPosY = 0.0f;
 	mZoom = 1.0f;
-	mSelectedWarp = 0;
+	mSelectedWarp = 0;*/
 	// Modes
 	mModesList[0] = "F1 Mixette";
 	mModesList[1] = "F2 Mix";
@@ -40,7 +39,7 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mModesList[6] = "F7 Fbo3";
 	mModesList[7] = "F8 Mixette";
 	// Websocket
-	mVDWebsocket = VDWebsocket::create(mVDSettings, mVDAnimation);
+	/*mVDWebsocket = VDWebsocket::create(mVDSettings, mVDAnimation);
 	// Message router
 	mVDRouter = VDRouter::create(mVDSettings, mVDAnimation, mVDWebsocket);
 	// warping
@@ -60,7 +59,7 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mTexturesFilepath = getAssetPath("") / mVDSettings->mAssetsPath / "textures.xml";
 	initTextureList();
 
-	// initialize the shaders list 
+	// initialize the shaders list
 	initShaderList();
 	// check to see if VDSession.xml file exists and restore if it does
 	sessionPath = getAssetPath("") / mVDSettings->mAssetsPath / sessionFileName;
@@ -76,7 +75,7 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 		save();
 	}
 	mMixesFilepath = getAssetPath("") / "mixes.xml";
-	
+
 	//if (fs::exists(mMixesFilepath)) {
 		// load textures from file if one exists
 		// TODO readSettings(mVDSettings, mVDAnimation, loadFile(mMixesFilepath));
@@ -100,45 +99,45 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 		mGlslRender = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getPostFragmentShaderString());
 */
 
-		/*fs::path mPostFilePath = getAssetPath("") / "post.glsl";
-		if (!fs::exists(mPostFilePath)) {
-			mError = mPostFilePath.string() + " does not exist";
-			CI_LOG_V(mError);
-		}
-		mGlslRender = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), loadString(loadFile(mPostFilePath)));
+/*fs::path mPostFilePath = getAssetPath("") / "post.glsl";
+if (!fs::exists(mPostFilePath)) {
+	mError = mPostFilePath.string() + " does not exist";
+	CI_LOG_V(mError);
+}
+mGlslRender = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), loadString(loadFile(mPostFilePath)));
 
 
-		fs::path mMixetteFilePath = getAssetPath("") / "mixette.glsl";
-		if (!fs::exists(mMixetteFilePath)) {
-			mError = mMixetteFilePath.string() + " does not exist";
-			CI_LOG_V(mError);
-		}
-		mGlslMixette = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), loadString(loadFile(mMixetteFilePath)));*/
+fs::path mMixetteFilePath = getAssetPath("") / "mixette.glsl";
+if (!fs::exists(mMixetteFilePath)) {
+	mError = mMixetteFilePath.string() + " does not exist";
+	CI_LOG_V(mError);
+}
+mGlslMixette = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), loadString(loadFile(mMixetteFilePath)));*/
 
-	/*
-	}
-	catch (gl::GlslProgCompileExc &exc)
-	{
-		mError = "mix error:" + string(exc.what());
-		CI_LOG_V("setFragmentString, unable to compile live fragment shader:" + mError);
-	}
-	catch (const std::exception &e)
-	{
-		mError = "mix exception:" + string(e.what());
-		CI_LOG_V("setFragmentString, error on live fragment shader:" + mError);
-	}
-	mVDSettings->mMsg = mError;
-	mVDAnimation->setIntUniformValueByIndex(mVDSettings->IFBOA, 0);
-	mVDAnimation->setIntUniformValueByIndex(mVDSettings->IFBOB, 1);
-	//mAFboIndex = 0;
-	//mBFboIndex = 1;
-	mMode = 0;
-	mShaderLeft = "";
-	mShaderRight = "";
-	// hydra
-	mHydraUniformsValuesString = "";
-	mHydraFbo = gl::Fbo::create(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY), fboFmt);
-	mRenderFbo = gl::Fbo::create(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY), fboFmt);
+/*
+}
+catch (gl::GlslProgCompileExc &exc)
+{
+	mError = "mix error:" + string(exc.what());
+	CI_LOG_V("setFragmentString, unable to compile live fragment shader:" + mError);
+}
+catch (const std::exception &e)
+{
+	mError = "mix exception:" + string(e.what());
+	CI_LOG_V("setFragmentString, error on live fragment shader:" + mError);
+}
+mVDSettings->mMsg = mError;
+mVDAnimation->setIntUniformValueByIndex(mVDSettings->IFBOA, 0);
+mVDAnimation->setIntUniformValueByIndex(mVDSettings->IFBOB, 1);
+//mAFboIndex = 0;
+//mBFboIndex = 1;
+mMode = 0;
+mShaderLeft = "";
+mShaderRight = "";
+// hydra
+mHydraUniformsValuesString = "";
+mHydraFbo = gl::Fbo::create(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY), fboFmt);
+mRenderFbo = gl::Fbo::create(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY), fboFmt);
 */
 }
 
@@ -160,7 +159,7 @@ void VDSession::readSettings(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimat
 		CI_LOG_V("VDSession xml doc error");
 	}
 
-	// check if this is a valid file 
+	// check if this is a valid file
 	bool isOK = doc.hasChild("fbos");
 	if (!isOK) return;
 
@@ -201,7 +200,7 @@ void VDSession::updateMixUniforms() {
 	mGlslMix->uniform("iWeight2", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT2));	// weight of channel 2
 	mGlslMix->uniform("iWeight3", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT3)); // texture
 	mGlslMix->uniform("iWeight4", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT4)); // texture
-	mGlslMix->uniform("iChannel0", 0); // fbo shader 
+	mGlslMix->uniform("iChannel0", 0); // fbo shader
 	mGlslMix->uniform("iChannel1", 1); // fbo shader
 	mGlslMix->uniform("iChannel2", 2); // texture 1
 	mGlslMix->uniform("iChannel3", 3); // texture 2
@@ -252,7 +251,7 @@ void VDSession::updateBlendUniforms() {
 	mGlslBlend->uniform("iWeight2", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT2));	// weight of channel 2
 	mGlslBlend->uniform("iWeight3", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT3)); // texture
 	mGlslBlend->uniform("iWeight4", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT4)); // texture
-	mGlslBlend->uniform("iChannel0", 0); // fbo shader 
+	mGlslBlend->uniform("iChannel0", 0); // fbo shader
 	mGlslBlend->uniform("iChannel1", 1); // fbo shader
 	mGlslBlend->uniform("iChannel2", 2); // texture 1
 	mGlslBlend->uniform("iChannel3", 3); // texture 2
@@ -406,179 +405,177 @@ bool VDSession::save()
 
 	doc.write(writeFile(sessionPath), JsonTree::WriteOptions());
 	*/
-/*	return true;
-}*/
-/*
-void VDSession::restore()
-{
-	// save load settings
-	load();
+	/*	return true;
+	}*/
+	/*
+	void VDSession::restore()
+	{
+		// save load settings
+		load();
 
-	// check to see if json file exists
-	if (!fs::exists(sessionPath)) {
-		return;
+		// check to see if json file exists
+		if (!fs::exists(sessionPath)) {
+			return;
+		}
+
+		try {
+			JsonTree doc(loadFile(sessionPath));
+			if (doc.hasChild("shaders")) {
+				JsonTree shaders(doc.getChild("shaders"));
+				if (shaders.hasChild("0")) createShaderFbo(shaders.getValueForKey<string>("0"));
+				if (shaders.hasChild("1")) createShaderFbo(shaders.getValueForKey<string>("1"));
+				if (shaders.hasChild("2")) createShaderFbo(shaders.getValueForKey<string>("2"));
+				if (shaders.hasChild("3")) createShaderFbo(shaders.getValueForKey<string>("3"));
+			}
+			if (doc.hasChild("settings")) {
+				JsonTree settings(doc.getChild("settings"));
+				if (settings.hasChild("bpm")) {
+					mOriginalBpm = settings.getValueForKey<float>("bpm", 166.0f);
+					CI_LOG_W("getBpm" + toString(mVDAnimation->getBpm()) + " mOriginalBpm " + toString(mOriginalBpm));
+					mVDAnimation->setBpm(mOriginalBpm);
+					CI_LOG_W("getBpm" + toString(mVDAnimation->getBpm()));
+				};
+				if (settings.hasChild("beatsperbar")) mVDAnimation->setIntUniformValueByName("iBeatsPerBar", settings.getValueForKey<int>("beatsperbar"));
+				if (mVDAnimation->getIntUniformValueByName("iBeatsPerBar") < 1) mVDAnimation->setIntUniformValueByName("iBeatsPerBar", 4);
+				if (settings.hasChild("fadeindelay")) mFadeInDelay = settings.getValueForKey<int>("fadeindelay");
+				if (settings.hasChild("fadeoutdelay")) mFadeOutDelay = settings.getValueForKey<int>("fadeoutdelay");
+				if (settings.hasChild("endframe")) mVDAnimation->mEndFrame = settings.getValueForKey<int>("endframe");
+				CI_LOG_W("getBpm" + toString(mVDAnimation->getBpm()) + " mTargetFps " + toString(mTargetFps));
+				mTargetFps = mVDAnimation->getBpm() / 60.0f * mFpb;
+				CI_LOG_W("getBpm" + toString(mVDAnimation->getBpm()) + " mTargetFps " + toString(mTargetFps));
+			}
+
+			if (doc.hasChild("assets")) {
+				JsonTree assets(doc.getChild("assets"));
+				if (assets.hasChild("wavefile")) mWaveFileName = assets.getValueForKey<string>("wavefile");
+				if (assets.hasChild("waveplaybackdelay")) mWavePlaybackDelay = assets.getValueForKey<int>("waveplaybackdelay");
+				if (assets.hasChild("moviefile")) mMovieFileName = assets.getValueForKey<string>("moviefile");
+				if (assets.hasChild("movieplaybackdelay")) mMoviePlaybackDelay = assets.getValueForKey<int>("movieplaybackdelay");
+				if (assets.hasChild("imagesequencepath")) mImageSequencePath = assets.getValueForKey<string>("imagesequencepath");
+				if (assets.hasChild("text")) mText = assets.getValueForKey<string>("text");
+				if (assets.hasChild("textplaybackdelay")) mTextPlaybackDelay = assets.getValueForKey<int>("textplaybackdelay");
+				if (assets.hasChild("textplaybackend")) mTextPlaybackEnd = assets.getValueForKey<int>("textplaybackend");
+			}
+
+		}
+		catch (const JsonTree::ExcJsonParserError& exc) {
+			CI_LOG_W(exc.what());
+		}
 	}
 
-	try {
-		JsonTree doc(loadFile(sessionPath));
-		if (doc.hasChild("shaders")) {
-			JsonTree shaders(doc.getChild("shaders"));
-			if (shaders.hasChild("0")) createShaderFbo(shaders.getValueForKey<string>("0"));
-			if (shaders.hasChild("1")) createShaderFbo(shaders.getValueForKey<string>("1"));
-			if (shaders.hasChild("2")) createShaderFbo(shaders.getValueForKey<string>("2"));
-			if (shaders.hasChild("3")) createShaderFbo(shaders.getValueForKey<string>("3"));
-		}
-		if (doc.hasChild("settings")) {
-			JsonTree settings(doc.getChild("settings"));
-			if (settings.hasChild("bpm")) {
-				mOriginalBpm = settings.getValueForKey<float>("bpm", 166.0f);
-				CI_LOG_W("getBpm" + toString(mVDAnimation->getBpm()) + " mOriginalBpm " + toString(mOriginalBpm));
-				mVDAnimation->setBpm(mOriginalBpm);
-				CI_LOG_W("getBpm" + toString(mVDAnimation->getBpm()));
-			};
-			if (settings.hasChild("beatsperbar")) mVDAnimation->setIntUniformValueByName("iBeatsPerBar", settings.getValueForKey<int>("beatsperbar"));
-			if (mVDAnimation->getIntUniformValueByName("iBeatsPerBar") < 1) mVDAnimation->setIntUniformValueByName("iBeatsPerBar", 4);
-			if (settings.hasChild("fadeindelay")) mFadeInDelay = settings.getValueForKey<int>("fadeindelay");
-			if (settings.hasChild("fadeoutdelay")) mFadeOutDelay = settings.getValueForKey<int>("fadeoutdelay");
-			if (settings.hasChild("endframe")) mVDAnimation->mEndFrame = settings.getValueForKey<int>("endframe");
-			CI_LOG_W("getBpm" + toString(mVDAnimation->getBpm()) + " mTargetFps " + toString(mTargetFps));
-			mTargetFps = mVDAnimation->getBpm() / 60.0f * mFpb;
-			CI_LOG_W("getBpm" + toString(mVDAnimation->getBpm()) + " mTargetFps " + toString(mTargetFps));
-		}
-
-		if (doc.hasChild("assets")) {
-			JsonTree assets(doc.getChild("assets"));
-			if (assets.hasChild("wavefile")) mWaveFileName = assets.getValueForKey<string>("wavefile");
-			if (assets.hasChild("waveplaybackdelay")) mWavePlaybackDelay = assets.getValueForKey<int>("waveplaybackdelay");
-			if (assets.hasChild("moviefile")) mMovieFileName = assets.getValueForKey<string>("moviefile");
-			if (assets.hasChild("movieplaybackdelay")) mMoviePlaybackDelay = assets.getValueForKey<int>("movieplaybackdelay");
-			if (assets.hasChild("imagesequencepath")) mImageSequencePath = assets.getValueForKey<string>("imagesequencepath");
-			if (assets.hasChild("text")) mText = assets.getValueForKey<string>("text");
-			if (assets.hasChild("textplaybackdelay")) mTextPlaybackDelay = assets.getValueForKey<int>("textplaybackdelay");
-			if (assets.hasChild("textplaybackend")) mTextPlaybackEnd = assets.getValueForKey<int>("textplaybackend");
-		}
-
+	void VDSession::resetSomeParams() {
+		// parameters not exposed in json file
+		mFpb = 16;
+		mVDAnimation->setBpm(mOriginalBpm);
+		mTargetFps = mOriginalBpm / 60.0f * mFpb;
 	}
-	catch (const JsonTree::ExcJsonParserError& exc) {
-		CI_LOG_W(exc.what());
+
+	void VDSession::reset()
+	{
+		// parameters exposed in json file
+		mOriginalBpm = 166;
+		mWaveFileName = "";
+		mWavePlaybackDelay = 10;
+		mMovieFileName = "";
+		mImageSequencePath = "";
+		mMoviePlaybackDelay = 10;
+		mFadeInDelay = 5;
+		mFadeOutDelay = 1;
+		mVDAnimation->mEndFrame = 20000000;
+		mText = "";
+		mTextPlaybackDelay = 10;
+		mTextPlaybackEnd = 2020000;
+
+		resetSomeParams();
 	}
-}
 
-void VDSession::resetSomeParams() {
-	// parameters not exposed in json file
-	mFpb = 16;
-	mVDAnimation->setBpm(mOriginalBpm);
-	mTargetFps = mOriginalBpm / 60.0f * mFpb;
-}
+	void VDSession::blendRenderEnable(bool render) {
+		mVDAnimation->blendRenderEnable(render);
+	}
 
-void VDSession::reset()
-{
-	// parameters exposed in json file
-	mOriginalBpm = 166;
-	mWaveFileName = "";
-	mWavePlaybackDelay = 10;
-	mMovieFileName = "";
-	mImageSequencePath = "";
-	mMoviePlaybackDelay = 10;
-	mFadeInDelay = 5;
-	mFadeOutDelay = 1;
-	mVDAnimation->mEndFrame = 20000000;
-	mText = "";
-	mTextPlaybackDelay = 10;
-	mTextPlaybackEnd = 2020000;
+	void VDSession::fileDrop(FileDropEvent event) {
+		string ext = "";
+		//string fileName = "";
 
-	resetSomeParams();
-}
-int VDSession::getWindowsResolution() {
-	return mVDUtils->getWindowsResolution();
-}
-void VDSession::blendRenderEnable(bool render) {
-	mVDAnimation->blendRenderEnable(render);
-}
+		unsigned int index = (int)(event.getX() / (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin));
+		int y = (int)(event.getY());
+		//if (index < 2 || y < mVDSettings->uiYPosRow3 || y > mVDSettings->uiYPosRow3 + mVDSettings->uiPreviewH) index = 0;
+		ci::fs::path mPath = event.getFile(event.getNumFiles() - 1);
+		string absolutePath = mPath.string();
+		// use the last of the dropped files
+		int dotIndex = absolutePath.find_last_of(".");
+		int slashIndex = absolutePath.find_last_of("\\");
 
-void VDSession::fileDrop(FileDropEvent event) {
-	string ext = "";
-	//string fileName = "";
-
-	unsigned int index = (int)(event.getX() / (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin));
-	int y = (int)(event.getY());
-	//if (index < 2 || y < mVDSettings->uiYPosRow3 || y > mVDSettings->uiYPosRow3 + mVDSettings->uiPreviewH) index = 0;
-	ci::fs::path mPath = event.getFile(event.getNumFiles() - 1);
-	string absolutePath = mPath.string();
-	// use the last of the dropped files
-	int dotIndex = absolutePath.find_last_of(".");
-	int slashIndex = absolutePath.find_last_of("\\");
-
-	if (dotIndex != std::string::npos && dotIndex > slashIndex) {
-		ext = absolutePath.substr(dotIndex + 1);
-		//fileName = absolutePath.substr(slashIndex + 1, dotIndex - slashIndex - 1);
+		if (dotIndex != std::string::npos && dotIndex > slashIndex) {
+			ext = absolutePath.substr(dotIndex + 1);
+			//fileName = absolutePath.substr(slashIndex + 1, dotIndex - slashIndex - 1);
 
 
-		if (ext == "wav" || ext == "mp3") {
-			loadAudioFile(absolutePath);
-		}
-		else if (ext == "png" || ext == "jpg") {
-			if (index < 1) index = 1;
-			if (index > 3) index = 3;
-			loadImageFile(absolutePath, index);
-		}
-		else if (ext == "glsl" || ext == "frag" || ext == "fs") {
-			loadFragmentShader(absolutePath, index);
-		}
-		else if (ext == "xml") {
-		}
-		else if (ext == "json") {
-			// TODO load track with textures, shaders
-		}
-		else if (ext == "mov") {
-			loadMovie(absolutePath, index);
-		}
-		else if (ext == "txt") {
-		}
-		else if (ext == "") {
-			// try loading image sequence from dir
-			if (!loadImageSequence(absolutePath, index)) {
-				// try to load a folder of shaders
-				loadShaderFolder(absolutePath);
+			if (ext == "wav" || ext == "mp3") {
+				loadAudioFile(absolutePath);
+			}
+			else if (ext == "png" || ext == "jpg") {
+				if (index < 1) index = 1;
+				if (index > 3) index = 3;
+				loadImageFile(absolutePath, index);
+			}
+			else if (ext == "glsl" || ext == "frag" || ext == "fs") {
+				loadFragmentShader(absolutePath, index);
+			}
+			else if (ext == "xml") {
+			}
+			else if (ext == "json") {
+				// TODO load track with textures, shaders
+			}
+			else if (ext == "mov") {
+				loadMovie(absolutePath, index);
+			}
+			else if (ext == "txt") {
+			}
+			else if (ext == "") {
+				// try loading image sequence from dir
+				if (!loadImageSequence(absolutePath, index)) {
+					// try to load a folder of shaders
+					loadShaderFolder(absolutePath);
+				}
 			}
 		}
 	}
-}
-#pragma region events
-bool VDSession::handleMouseMove(MouseEvent &event)
-{
-	// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
-	// pass this mouse event to the warp editor first	
-	bool handled = false;
-	event.setHandled(handled);
-	return event.isHandled();
-}
+	#pragma region events
+	bool VDSession::handleMouseMove(MouseEvent &event)
+	{
+		// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
+		// pass this mouse event to the warp editor first
+		bool handled = false;
+		event.setHandled(handled);
+		return event.isHandled();
+	}
 
-bool VDSession::handleMouseDown(MouseEvent &event)
-{
-	bool handled = false;
-	// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
-	event.setHandled(handled);
-	return event.isHandled();
-}
+	bool VDSession::handleMouseDown(MouseEvent &event)
+	{
+		bool handled = false;
+		// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
+		event.setHandled(handled);
+		return event.isHandled();
+	}
 
-bool VDSession::handleMouseDrag(MouseEvent &event)
-{
-	bool handled = false;
-	// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
-	event.setHandled(handled);
-	return event.isHandled();
-}
+	bool VDSession::handleMouseDrag(MouseEvent &event)
+	{
+		bool handled = false;
+		// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
+		event.setHandled(handled);
+		return event.isHandled();
+	}
 
-bool VDSession::handleMouseUp(MouseEvent &event)
-{
-	bool handled = false;
-	// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
-	event.setHandled(handled);
-	return event.isHandled();
-}
-*/
-/*
+	bool VDSession::handleMouseUp(MouseEvent &event)
+	{
+		bool handled = false;
+		// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
+		event.setHandled(handled);
+		return event.isHandled();
+	}
+	*/
+
 bool VDSession::handleKeyDown(KeyEvent &event)
 {
 	bool handled = true;
@@ -604,14 +601,9 @@ bool VDSession::handleKeyDown(KeyEvent &event)
 				// handled in main app
 				handled = false;
 			}
-			break;*/
-			/*case KeyEvent::KEY_v:
-				mVDSettings->mFlipV = !mVDSettings->mFlipV;
-				break;
-			case KeyEvent::KEY_h:
-				mVDSettings->mFlipH = !mVDSettings->mFlipH;
-				break;*/
-		/*case KeyEvent::KEY_F1:
+			break;
+
+		case KeyEvent::KEY_F1:
 			mMode = 0;
 			break;
 		case KeyEvent::KEY_F2:
@@ -707,7 +699,7 @@ bool VDSession::handleKeyDown(KeyEvent &event)
 		case KeyEvent::KEY_z:
 			// zoom
 			mVDWebsocket->changeFloatValue(mVDSettings->IZOOM, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IZOOM) - 0.05f);
-			break;*/
+			break;
 			/* removed temp for Sky Project case KeyEvent::KEY_LEFT:
 				//mVDTextures->rewindMovie();
 				if (mVDAnimation->getFloatUniformValueByIndex(21) > 0.1f) mVDWebsocket->changeFloatValue(21, mVDAnimation->getFloatUniformValueByIndex(21) - 0.1f);
@@ -716,7 +708,7 @@ bool VDSession::handleKeyDown(KeyEvent &event)
 				//mVDTextures->fastforwardMovie();
 				if (mVDAnimation->getFloatUniformValueByIndex(21) < 1.0f) mVDWebsocket->changeFloatValue(21, mVDAnimation->getFloatUniformValueByIndex(21) + 0.1f);
 				break;*/
-		/*case KeyEvent::KEY_PAGEDOWN:
+		case KeyEvent::KEY_PAGEDOWN:
 		case KeyEvent::KEY_RIGHT:
 			// crossfade right
 			if (mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IXFADE) < 1.0f) mVDWebsocket->changeFloatValue(mVDSettings->IXFADE, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IXFADE) + 0.1f);
@@ -734,12 +726,19 @@ bool VDSession::handleKeyDown(KeyEvent &event)
 			// imgseq next
 			decrementSequencePosition();
 			break;
+		case KeyEvent::KEY_v:
+			if (isModDown) fboFlipV(0);// TODO other indexes mVDSettings->mFlipV = !mVDSettings->mFlipV; useless?
+			break;
 		case KeyEvent::KEY_h:
-			// ui visibility
-			toggleUI();
+			if (isModDown) {
+				fboFlipH(0);// TODO other indexes mVDSettings->mFlipH = !mVDSettings->mFlipH; useless?
+			}
+			else {
+				// ui visibility
+				toggleUI();
+			}
 			break;
 		case KeyEvent::KEY_d:
-
 			if (isAltDown) {
 				setSpeed(0, getSpeed(0) - 0.01f);
 			}
@@ -756,8 +755,8 @@ bool VDSession::handleKeyDown(KeyEvent &event)
 	CI_LOG_V((handled ? "session keydown handled " : "session keydown not handled "));
 	event.setHandled(handled);
 	return event.isHandled();
-}*/
-/*
+}
+
 bool VDSession::handleKeyUp(KeyEvent &event) {
 	bool handled = true;
 
@@ -802,7 +801,7 @@ bool VDSession::handleKeyUp(KeyEvent &event) {
 	CI_LOG_V((handled ? "session keyup handled " : "session keyup not handled "));
 	event.setHandled(handled);
 	return event.isHandled();
-}*/
+}
 #pragma endregion events
 // fbos
 #pragma region fbos
@@ -874,7 +873,7 @@ void VDSession::setFboBIndex(unsigned int aIndex, unsigned int aFboIndex) {
 
 // websockets
 #pragma region websockets
-/*
+
 void VDSession::wsConnect() {
 	mVDWebsocket->wsConnect();
 }
@@ -884,7 +883,7 @@ void VDSession::wsPing() {
 void VDSession::wsWrite(string msg)
 {
 	mVDWebsocket->wsWrite(msg);
-}*/
+}
 #pragma endregion websockets
 
 // mix
@@ -1056,49 +1055,49 @@ void VDSession::updateHydraUniforms() {
 					case 5126:
 
 					} */
-				/*}
+					/*}
+				}
 			}
 		}
+		mGlslHydra->uniform("time", mVDAnimation->getFloatUniformValueByIndex(0));
+		mGlslHydra->uniform("resolution", vec2(mVDAnimation->getFloatUniformValueByName("iResolutionX"), mVDAnimation->getFloatUniformValueByName("iResolutionY")));
+
+
 	}
-	mGlslHydra->uniform("time", mVDAnimation->getFloatUniformValueByIndex(0));
-	mGlslHydra->uniform("resolution", vec2(mVDAnimation->getFloatUniformValueByName("iResolutionX"), mVDAnimation->getFloatUniformValueByName("iResolutionY")));
-
-
-}
-string VDSession::getHydraFragmentShaderString() {
-	return mShaderList[0]->getFragmentString();
-}
-
-unsigned int VDSession::createShaderFboFromString(string aFragmentShaderString, string aShaderFilename) {
-	unsigned int rtn = 0;
-	// create new shader
-	VDShaderRef s(new VDShader(mVDSettings, mVDAnimation, aShaderFilename, aFragmentShaderString));
-	if (s->isValid()) {
-		mShaderList.push_back(s);
-		rtn = mShaderList.size() - 1;
-		// each shader element has a fbo
-		VDFboRef f(new VDFbo(mVDSettings, mVDAnimation));
-		// create fbo xml
-		XmlTree			fboXml;
-		fboXml.setTag(aShaderFilename);
-		fboXml.setAttribute("id", rtn);
-		fboXml.setAttribute("width", "1280");
-		fboXml.setAttribute("height", "720");
-		fboXml.setAttribute("shadername", mShaderList[rtn]->getName());
-		fboXml.setAttribute("inputtextureindex", math<int>::min(rtn, mTextureList.size() - 1));
-		f->fromXml(fboXml);
-		//f->setShaderIndex(rtn);
-		f->setFragmentShader(rtn, mShaderList[rtn]->getFragmentString(), mShaderList[rtn]->getName());
-		mFboList.push_back(f);
-		setFboInputTexture(mFboList.size() - 1, math<int>::min(rtn, mTextureList.size() - 1));// TODO load tex idx from file 20200216 
+	string VDSession::getHydraFragmentShaderString() {
+		return mShaderList[0]->getFragmentString();
 	}
-	return rtn;
-}
-*/
-/*string VDSession::getVertexShaderString(unsigned int aShaderIndex) {
-	if (aShaderIndex > mShaderList.size() - 1) aShaderIndex = mShaderList.size() - 1;
-	return mShaderList[aShaderIndex]->getVertexString();
-}*/
+
+	unsigned int VDSession::createShaderFboFromString(string aFragmentShaderString, string aShaderFilename) {
+		unsigned int rtn = 0;
+		// create new shader
+		VDShaderRef s(new VDShader(mVDSettings, mVDAnimation, aShaderFilename, aFragmentShaderString));
+		if (s->isValid()) {
+			mShaderList.push_back(s);
+			rtn = mShaderList.size() - 1;
+			// each shader element has a fbo
+			VDFboRef f(new VDFbo(mVDSettings, mVDAnimation));
+			// create fbo xml
+			XmlTree			fboXml;
+			fboXml.setTag(aShaderFilename);
+			fboXml.setAttribute("id", rtn);
+			fboXml.setAttribute("width", "1280");
+			fboXml.setAttribute("height", "720");
+			fboXml.setAttribute("shadername", mShaderList[rtn]->getName());
+			fboXml.setAttribute("inputtextureindex", math<int>::min(rtn, mTextureList.size() - 1));
+			f->fromXml(fboXml);
+			//f->setShaderIndex(rtn);
+			f->setFragmentShader(rtn, mShaderList[rtn]->getFragmentString(), mShaderList[rtn]->getName());
+			mFboList.push_back(f);
+			setFboInputTexture(mFboList.size() - 1, math<int>::min(rtn, mTextureList.size() - 1));// TODO load tex idx from file 20200216
+		}
+		return rtn;
+	}
+	*/
+	/*string VDSession::getVertexShaderString(unsigned int aShaderIndex) {
+		if (aShaderIndex > mShaderList.size() - 1) aShaderIndex = mShaderList.size() - 1;
+		return mShaderList[aShaderIndex]->getVertexString();
+	}*/
 
 unsigned int VDSession::createShaderFbo(string aShaderFilename, unsigned int aFboShaderIndex) {
 	// initialize rtn to 0 to force creation
@@ -1123,7 +1122,7 @@ unsigned int VDSession::createShaderFbo(string aShaderFilename, unsigned int aFb
 				fName = mFragFile.filename().string();
 				dotIndex = fName.find_last_of(".");
 				slashIndex = fName.find_last_of("\\");
-				
+
 				// init with drag drop position
 				if (aFboShaderIndex > 4 && aFboShaderIndex < mShaderList.size() - 1) {
 					rtn = aFboShaderIndex;
@@ -1443,23 +1442,7 @@ void VDSession::reverse(unsigned int aTextureIndex) {
 	mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->reverse();
 }
 
-void VDSession::setSpeed(unsigned int aTextureIndex, float aSpeed) {
-	//if (aTextureIndex > mTextureList.size() - 1) aTextureIndex = mTextureList.size() - 1;
-	//mTextureList[aTextureIndex]->setSpeed(aSpeed);
-	for (int i = 0; i < mTextureList.size() - 1; i++)
-	{
-		mTextureList[i]->setSpeed(aSpeed);
-	}
-}
-int VDSession::getPosition(unsigned int aTextureIndex) {
-	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getPosition();
-}
-void VDSession::setPlayheadPosition(unsigned int aTextureIndex, int aPosition) {
-	mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->setPlayheadPosition(aPosition);
-}
-int VDSession::getMaxFrame(unsigned int aTextureIndex) {
-	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getMaxFrame();
-}*/
+*/
 #pragma endregion textures
 /*void VDSession::load()
 {
@@ -1534,7 +1517,7 @@ ci::gl::Texture2dRef VDSession::getRenderTexture()
 ci::gl::TextureRef VDSession::getMixTexture(unsigned int aMixFboIndex) {
 	if (aMixFboIndex > mMixFbos.size() - 1) aMixFboIndex = 0;
 	if (!mMixFbos[aMixFboIndex].texture) {
-		// should never happen 
+		// should never happen
 		mMixFbos[aMixFboIndex].texture = gl::Texture2d::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight);
 	}
 	if (!mMixFbos[aMixFboIndex].fbo) {
@@ -1582,7 +1565,7 @@ void VDSession::renderHydra() {
 		if (!mMixFbos[0].fbo) mMixFbos[0].fbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, fboFmt);
 		gl::ScopedFramebuffer scopedFbo(mMixFbos[0].fbo);
 		gl::clear(Color::black());
-		// render A and B fbos 
+		// render A and B fbos
 		mFboList[mVDAnimation->getIntUniformValueByName("iFboA")]->getFboTexture();
 		mFboList[mVDAnimation->getIntUniformValueByName("iFboB")]->getFboTexture();
 		// texture binding must be before ScopedGlslProg

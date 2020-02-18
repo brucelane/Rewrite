@@ -25,18 +25,36 @@ namespace videodromm
 		{
 			return shared_ptr<VDUtils>(new VDUtils(aVDSettings));
 		}
-		void						setup();
 		// TODO move to private when shadamixa upgraded
 		void						splitWarp(int fboWidth, int fboHeight);
 		int							getWindowsResolution();
 		float						formatFloat(float f);
-		Area						getSrcAreaLeftOrTop();
-		Area						getSrcAreaRightOrBottom();
-		void						moveX1LeftOrTop(int x1);
-		void						moveY1LeftOrTop(int y1);
+
+
+		Area						getSrcAreaLeftOrTop() {
+			return mSrcAreaLeftOrTop;
+		};
+		Area						getSrcAreaRightOrBottom() {
+			return mSrcAreaRightOrBottom;
+		};
+		void						moveX1LeftOrTop(int x1) {
+			x1LeftOrTop = x1;
+			mSrcAreaLeftOrTop = Area(x1LeftOrTop, y1LeftOrTop, x2LeftOrTop, y2LeftOrTop);
+		};
+		void						moveY1LeftOrTop(int y1) {
+			y1LeftOrTop = y1;
+			mSrcAreaLeftOrTop = Area(x1LeftOrTop, y1LeftOrTop, x2LeftOrTop, y2LeftOrTop);
+		};
 		// file system
-		fs::path					getPath(string path);
-		string						getFileNameFromFullPath(string path);
+		fs::path					getPath(string path) {
+			fs::path p = app::getAssetPath("");
+			if (path.length() > 0) { p += fs::path("/" + path); }
+			return p;
+		};
+		string						getFileNameFromFullPath(string path) {
+			fs::path fullPath = path;
+			return fullPath.filename().string();
+		};
 	private:
 		// Settings
 		VDSettingsRef				mVDSettings;

@@ -9,9 +9,9 @@
 // Settings
 #include "VDSettings.h"
 // Utils
-/*include "VDUtils.h"
+#include "VDUtils.h"
 // Message router
-#include "VDRouter.h"*/
+/*#include "VDRouter.h"*/
 // Websocket
 #include "VDWebsocket.h"
 // Animation
@@ -19,7 +19,7 @@
 // Fbos
 #include "VDFbo.h"
 // Logger
-/*#include "VDLog.h"*/
+#include "VDLog.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -39,6 +39,8 @@ namespace videodromm {
 	public:
 		VDSession(VDSettingsRef aVDSettings);
 		static VDSessionRef				create(VDSettingsRef aVDSettings);
+		bool							handleKeyDown(KeyEvent &event);
+		bool							handleKeyUp(KeyEvent &event);
 
 		//!
 		/*void							fromXml(const ci::XmlTree &xml);
@@ -50,8 +52,6 @@ namespace videodromm {
 		bool							handleMouseDown(MouseEvent &event);
 		bool							handleMouseDrag(MouseEvent &event);
 		bool							handleMouseUp(MouseEvent &event);
-		bool							handleKeyDown(KeyEvent &event);
-		bool							handleKeyUp(KeyEvent &event);
 		void							resize(){mRenderFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);}
 		void							update(unsigned int aClassIndex = 0);
 		bool							save();
@@ -199,7 +199,7 @@ namespace videodromm {
 		void							updateShaderThumbFile(unsigned int aShaderIndex);
 		void							removeShader(unsigned int aShaderIndex);
 		// utils
-		int								getWindowsResolution();
+		
 		float							getTargetFps() { return mTargetFps; };
 		void							blendRenderEnable(bool render);
 
@@ -214,6 +214,10 @@ namespace videodromm {
 		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);
 		//int								getFboTextureWidth(unsigned int aFboIndex);
 		//int								getFboTextureHeight(unsigned int aFboIndex);*/
+		// utils
+		int								getWindowsResolution() {
+			return mVDUtils->getWindowsResolution();
+		};
 		// fbos
 		string							getFboName(unsigned int aFboIndex) { return mFboList[aFboIndex]->getName(); };
 
@@ -257,7 +261,6 @@ namespace videodromm {
 		void							toggleEnabledAlphaBlending() { mEnabledAlphaBlending = !mEnabledAlphaBlending; }
 		bool							isRenderTexture() { return mRenderTexture; };
 		void							toggleRenderTexture() { mRenderTexture = !mRenderTexture; }
-		bool							isAutoLayout() { return mVDSettings->mAutoLayout; };
 		bool							isFlipH() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };
 		bool							isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV); };
 		void							flipH(){mVDAnimation->setBoolUniformValueByIndex(mVDSettings->IFLIPH, !mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH));};
@@ -267,6 +270,7 @@ namespace videodromm {
 		unsigned int					getFboBlendCount() { return mBlendFbos.size(); };
 		void							useBlendmode(unsigned int aBlendIndex) { mVDSettings->iBlendmode = aBlendIndex; };
 		*/
+		bool							isAutoLayout() { return mVDSettings->mAutoLayout; };
 		void							toggleAutoLayout() { mVDSettings->mAutoLayout = !mVDSettings->mAutoLayout; }
 		// textures
 		unsigned int					getInputTexturesCount() {
@@ -311,11 +315,18 @@ namespace videodromm {
 		bool							isLoadingFromDisk(unsigned int aTextureIndex);
 		void							toggleLoadingFromDisk(unsigned int aTextureIndex);
 		void							syncToBeat(unsigned int aTextureIndex);
-		void							reverse(unsigned int aTextureIndex);
+		void							reverse(unsigned int aTextureIndex);*/
 		float							getSpeed(unsigned int aTextureIndex) {
 			return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getSpeed();
 		};
-		void							setSpeed(unsigned int aTextureIndex, float aSpeed);
+		void							setSpeed(unsigned int aTextureIndex, float aSpeed) {
+			//if (aTextureIndex > mTextureList.size() - 1) aTextureIndex = mTextureList.size() - 1;
+			//mTextureList[aTextureIndex]->setSpeed(aSpeed);
+			for (int i = 0; i < mTextureList.size() - 1; i++)
+			{
+				mTextureList[i]->setSpeed(aSpeed);
+			}
+		};
 		void							incrementSequencePosition() {
 			for (unsigned int i = 0; i < mTextureList.size() - 1; i++)
 			{
@@ -328,14 +339,20 @@ namespace videodromm {
 				setPlayheadPosition(i, getPosition(i) - 1);
 			}
 		}
-		int								getPosition(unsigned int aTextureIndex);
-		void							setPlayheadPosition(unsigned int aTextureIndex, int aPosition);
-		int								getMaxFrame(unsigned int aTextureIndex);
+		int								getPosition(unsigned int aTextureIndex) {
+			return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getPosition();
+		};
+		void							setPlayheadPosition(unsigned int aTextureIndex, int aPosition) {
+			mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->setPlayheadPosition(aPosition);
+		};
+		int								getMaxFrame(unsigned int aTextureIndex) {
+			return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getMaxFrame();
+		};
 		// websockets
 		void							wsConnect();
 		void							wsPing();
 		void							wsWrite(std::string msg);
-		void							sendFragmentShader(unsigned int aShaderIndex);
+		/*void							sendFragmentShader(unsigned int aShaderIndex);
 		// midi
 		void							midiSetup() { mVDRouter->midiSetup(); };
 		void							midiOutSendNoteOn(int i, int channel, int pitch, int velocity) { mVDRouter->midiOutSendNoteOn(i, channel, pitch, velocity); };
@@ -363,9 +380,9 @@ namespace videodromm {
 		void							updateBlendUniforms();
 		// hydra
 		string							getHydraUniformsString() { return mHydraUniformsValuesString; };
-		ci::gl::TextureRef				getHydraTexture() { return mHydraFbo->getColorTexture(); };
-		// modeint
+		ci::gl::TextureRef				getHydraTexture() { return mHydraFbo->getColorTexture(); };*/
 
+		// modeint
 		int								getMode() { return mMode; };
 		void							setMode(int aMode) { mMode = aMode; };;
 		int								getModesCount() { return mModesList.size() - 1; };
@@ -374,23 +391,23 @@ namespace videodromm {
 		string							getModeName(unsigned int aMode) {
 			if (aMode > mModesList.size() - 1) aMode = mModesList.size() - 1;
 			return mModesList[aMode];
-		}*/
+		}
 	private:
 		int								mMode;
 		gl::TextureRef					mDefaultTexture;
 		// Settings
 		VDSettingsRef					mVDSettings;
 		// Utils
-		/*VDUtilsRef						mVDUtils;
+		VDUtilsRef						mVDUtils;
 		// Message router
-		VDRouterRef						mVDRouter;*/
+		//VDRouterRef						mVDRouter;
 		// VDWebsocket
 		VDWebsocketRef					mVDWebsocket;
 		// Animation
 		VDAnimationRef					mVDAnimation;
 		// Log
-		/*VDLogRef						mVDLog;
-
+		VDLogRef						mVDLog;
+/*
 		const string					sessionFileName = "session.json";
 		fs::path						sessionPath;
 		// tempo
@@ -439,13 +456,13 @@ namespace videodromm {
 		float							mPosX;
 		float							mPosY;
 		float							mZoom;
-		void							updateStream(string * aStringPtr);
+		void							updateStream(string * aStringPtr);*/
 		//! window management
 		int								cmd;
 		bool							mShowUI = false;
 		// mix
 
-
+/*
 		std::string						mFbosPath;
 
 		//! mix shader
@@ -467,12 +484,12 @@ namespace videodromm {
 		//! Textures
 		VDTextureList					mTextureList;
 		/*fs::path						mTexturesFilepath;
-		bool							initTextureList();
+		bool							initTextureList();*/
 		//! Modes
 		map<int, string>				mModesList;
 		// blendmodes fbos
 		map<int, ci::gl::FboRef>		mBlendFbos;
-		int								mCurrentBlend;
+		/*int								mCurrentBlend;
 		gl::GlslProgRef					mGlslMix, mGlslBlend, mGlslFeedback, mGlslMixette;
 		// render
 		void							renderMix();
