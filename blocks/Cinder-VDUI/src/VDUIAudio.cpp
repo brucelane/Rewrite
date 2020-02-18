@@ -13,7 +13,7 @@ VDUIAudio::~VDUIAudio() {
 void VDUIAudio::Run(const char* title) {
 	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 1.76), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
-	sprintf(buf, "%s##inpt", mVDSession->getInputTextureName(0).c_str());
+	/* TODO 20200218 sprintf(buf, "%s##inpt", mVDSession->getInputTextureName(0).c_str());
 	ImGui::Begin(buf);
 	{
 		if (ImGui::CollapsingHeader("Audio", NULL, true, true))
@@ -140,5 +140,5 @@ void VDUIAudio::Run(const char* title) {
 
 	}
 	ImGui::End();
-
+*/
 }

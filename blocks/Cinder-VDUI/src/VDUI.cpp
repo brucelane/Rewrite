@@ -141,10 +141,11 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			values_offset = (values_offset + 1) % values.size();
 		}
 		if (mVDSession->getFloatUniformValueByIndex(mVDSettings->IFPS) < 12.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
-		ImGui::PlotLines("F", &values.front(), (int)values.size(), values_offset, mVDSettings->sFps.c_str(), 0.0f, mVDSession->getTargetFps(), ImVec2(0, 30));
+		// TODO ImGui::PlotLines("F", &values.front(), (int)values.size(), values_offset, mVDSettings->sFps.c_str(), 0.0f, mVDSession->getTargetFps(), ImVec2(0, 30));
+		ImGui::PlotLines("F", &values.front(), (int)values.size(), values_offset, mVDSettings->sFps.c_str(), 0.0f, 100.0f, ImVec2(0, 30));
 		if (mVDSession->getFloatUniformValueByIndex(mVDSettings->IFPS) < 12.0) ImGui::PopStyleColor();
 		// audio
-		ImGui::SameLine();
+		/*ImGui::SameLine();
 		static ImVector<float> timeValues; if (timeValues.empty()) { timeValues.resize(40); memset(&timeValues.front(), 0, timeValues.size() * sizeof(float)); }
 		static int timeValues_offset = 0;
 		// audio maxVolume
@@ -262,7 +263,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 			ImGui::PopStyleColor(3);
 		}
-
+		*/
 		// line 3
 		ImGui::RadioButton("Warp", &currentWindowRow1, 0); ImGui::SameLine();
 		ImGui::RadioButton("Anim", &currentWindowRow1, 1); ImGui::SameLine();
@@ -275,7 +276,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Midi", &currentWindowRow1, 8); 
 	
 		// modes
-		for (int m = 0; m < mVDSession->getModesCount(); m++) {
+		/*for (int m = 0; m < mVDSession->getModesCount(); m++) {
 			if (m > 0) ImGui::SameLine();
 			switch (m)
 			{
@@ -334,7 +335,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 			ImGui::PopStyleColor(3);
-		}
+		}*/
 		ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
 		ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
 		ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());

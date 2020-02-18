@@ -34,7 +34,7 @@ VDUIShaders::~VDUIShaders() {
 }
 
 void VDUIShaders::Run(const char* title) {
-	static int shaderToEdit = -1;
+	/* TODO 20200218 static int shaderToEdit = -1;
 
 	xPos = mVDSettings->uiMargin;
 	yPos = mVDSettings->uiYPosRow3;
@@ -123,22 +123,22 @@ void VDUIShaders::Run(const char* title) {
 			if (ImGui::Button(buf)) mVDSession->updateShaderThumbFile(s);
 			ImGui::Text("wh %dx%d", mVDSession->getFboRenderedTexture(s)->getWidth(), mVDSession->getFboRenderedTexture(s)->getHeight());
 
-			/*
-			for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {
-				if (f > 0 && (f % 6 != 0)) ImGui::SameLine();
-				if (mVDSession->getFboFragmentShaderIndex(f) == s) {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
-				}
-				else {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
-				}
-				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
-				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
-				sprintf(buf, "%d##sf%d", f, s);
-				if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set shader to fbo");
-				ImGui::PopStyleColor(3);
-			} */
+			
+			//for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {
+			//	if (f > 0 && (f % 6 != 0)) ImGui::SameLine();
+			//	if (mVDSession->getFboFragmentShaderIndex(f) == s) {
+			//		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+			//	}
+			//	else {
+			//		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+			//	}
+			//	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
+			//	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+			//	sprintf(buf, "%d##sf%d", f, s);
+			//	if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
+			//	if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set shader to fbo");
+			//	ImGui::PopStyleColor(3);
+			//}
 			ImGui::PopID();
 			ImGui::PopItemWidth();
 		}
@@ -178,8 +178,8 @@ void VDUIShaders::Run(const char* title) {
 					"}\n";
 				// check if shader text needs to be loaded in the editor
 				if (mVDSettings->shaderEditIndex != shaderToEdit) {
-					/* ptr error
-					*/
+					// ptr error
+					
 					mFboTextureFragmentShaderString = mVDSession->getFragmentShaderString(shaderToEdit);
 					mVDSettings->shaderEditIndex = shaderToEdit;
 					// delete content
@@ -204,9 +204,9 @@ void VDUIShaders::Run(const char* title) {
 						CI_LOG_V("live.frag loaded and compiled");
 						mFboTextureFragmentShaderString = mShaderText;
 						stringstream sParams;
-						sParams << "/*{ \"title\" : \"" << getElapsedSeconds() << "\" }*/ " << mFboTextureFragmentShaderString;
+						sParams << "//{ \"title\" : \"" << getElapsedSeconds() << "\" } " << mFboTextureFragmentShaderString;
 						mVDSession->wsWrite(sParams.str());
-						//OK mVDRouter->wsWrite("/*{ \"title\" : \"live\" }*/ " + mFboTextureFragmentShaderString);
+						
 						mError = "";
 						// compiles, update the shader for display
 						mVDSession->setFragmentShaderString(shaderToEdit, mFboTextureFragmentShaderString);
@@ -229,6 +229,6 @@ void VDUIShaders::Run(const char* title) {
 			ImGui::End();
 		}
 #pragma endregion Editor
-	}
+	}*/
 
 }

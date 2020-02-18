@@ -179,19 +179,7 @@ void VDSession::fromXml(const XmlTree &xml) {
 		}
 	}
 }
-// control values
-void VDSession::toggleValue(unsigned int aCtrl) {
-	mVDWebsocket->toggleValue(aCtrl);
-}
-void VDSession::toggleAuto(unsigned int aCtrl) {
-	mVDWebsocket->toggleAuto(aCtrl);
-}
-void VDSession::toggleTempo(unsigned int aCtrl) {
-	mVDWebsocket->toggleTempo(aCtrl);
-}
-void VDSession::resetAutoAnimation(unsigned int aIndex) {
-	mVDWebsocket->resetAutoAnimation(aIndex);
-}
+
 
 
 

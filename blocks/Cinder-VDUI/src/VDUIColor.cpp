@@ -116,7 +116,7 @@ void VDUIColor::Run(const char* title) {
 
 			ImGui::PopItemWidth();
 		}
-		if (ImGui::CollapsingHeader("Websockets", NULL, true, true))
+		/* TODO 20200218 if (ImGui::CollapsingHeader("Websockets", NULL, true, true))
 		{
 			// websockets
 			if (mVDSettings->mIsWebSocketsServer)
@@ -170,7 +170,7 @@ void VDUIColor::Run(const char* title) {
 			ImGui::TextWrapped(">%s", mVDSettings->mWebSocketsMsg.c_str());
 			//ImGui::PopItemWidth();
 
-		}
+		}*/
 	}
 	ImGui::End();
 }

@@ -12,7 +12,7 @@ VDUITextures::~VDUITextures() {
 
 void VDUITextures::Run(const char* title) {
 
-	static int XLeft[64];
+	/*static int XLeft[64];
 	static int YTop[64];
 	static int XRight[64];
 	static int YBottom[64];
@@ -30,7 +30,7 @@ void VDUITextures::Run(const char* title) {
 			ImGui::PushID(t);
 			ImGui::Image((void*)mVDSession->getInputTexture(t)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth * 0.7);
-			
+			*/
 			/* obsolete? 
 			for (unsigned int f = 0; f < mVDMix->getWarpCount(); f++) {
 				if (f > 0) ImGui::SameLine();
@@ -59,7 +59,7 @@ void VDUITextures::Run(const char* title) {
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Send texture file name via WebSockets");
 			*/
 			
-			if (mVDSession->isSequence(t) || mVDSession->isMovie(t)) {
+			/*if (mVDSession->isSequence(t) || mVDSession->isMovie(t)) {
 				sprintf(buf, "p##s%d", t);
 				if (ImGui::Button(buf))
 				{
@@ -120,11 +120,11 @@ void VDUITextures::Run(const char* title) {
 				}
 
 
-			} // end seq
+			}*/ // end seq
 			//else {
 				//if (!mVDSession->isMovie(t)) {
 					// not a sequence nor video, animate x y...
-					XLeft[t] = mVDSession->getInputTextureXLeft(t);
+					/*XLeft[t] = mVDSession->getInputTextureXLeft(t);
 					if (anim[t]) {
 						if (rnd[t]) {
 							XLeft[t] += xStep * Rand::randBool();
@@ -204,15 +204,15 @@ void VDUITextures::Run(const char* title) {
 					rnd[t] ^= ImGui::Button(buf);
 					ImGui::PopStyleColor(3);
 					hue++;
-
+					*/
 					
 				//}
 			//}
-			ImGui::PopItemWidth();
+			/*ImGui::PopItemWidth();
 			ImGui::PopID();
 			ImGui::PopItemWidth();
 		}
 		ImGui::End();
-	}
+	}*/
 
 }

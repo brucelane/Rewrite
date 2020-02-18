@@ -296,7 +296,7 @@ ImGui::End();
 		yPos = mVDSettings->uiYPosRow2;
 		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
-		sprintf(buf, "%s##fbolbl%d", mVDSession->getFboName(f).c_str(), f);
+		/*sprintf(buf, "%s##fbolbl%d", mVDSession->getFboName(f).c_str(), f);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
 			ImGui::PushID(f);
@@ -335,7 +335,7 @@ ImGui::End();
 			ImGui::Text("wh %dx%d", mVDSession->getFboRenderedTexture(f)->getWidth(), mVDSession->getFboRenderedTexture(f)->getHeight());
 			ImGui::PopID();
 		}
-		ImGui::End();
+		ImGui::End();*/
 	}
 	
 #pragma endregion fbos

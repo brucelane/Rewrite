@@ -45,7 +45,7 @@ namespace videodromm {
 
 		//! read a xml file and pass back a vector of VDMixs
 		void							readSettings(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const ci::DataSourceRef &source);
-	
+
 		bool							handleMouseMove(MouseEvent &event);
 		bool							handleMouseDown(MouseEvent &event);
 		bool							handleMouseDrag(MouseEvent &event);
@@ -64,8 +64,8 @@ namespace videodromm {
 		string							getMovieFileName() { return mMovieFileName; };
 		int								getMoviePlaybackDelay() { return mMoviePlaybackDelay; };
 		bool							hasMovie() { return mMovieFileName.length() > 0; };
-		unsigned int					getFadeInDelay() { 
-			return mFadeInDelay; 
+		unsigned int					getFadeInDelay() {
+			return mFadeInDelay;
 		};
 		unsigned int					getFadeOutDelay() { return mFadeOutDelay; };
 		string							getImageSequencePath() { return mImageSequencePath; };
@@ -74,19 +74,27 @@ namespace videodromm {
 		int								getTextStart() { return mTextPlaybackDelay; };
 		int								getTextEnd() { return mTextPlaybackEnd; };
 		bool							hasText() { return mText.length() > 0; };
+		*/
 		// control values
-		void							toggleValue(unsigned int aCtrl);
-		void							toggleAuto(unsigned int aCtrl);
-		void							toggleTempo(unsigned int aCtrl);
-
-		void							resetAutoAnimation(unsigned int aIndex);*/
+		void							toggleValue(unsigned int aCtrl) {
+			mVDWebsocket->toggleValue(aCtrl);
+		};
+		void							toggleAuto(unsigned int aCtrl) {
+			mVDWebsocket->toggleAuto(aCtrl);
+		};
+		void							toggleTempo(unsigned int aCtrl) {
+			mVDWebsocket->toggleTempo(aCtrl);
+		};
+		void							resetAutoAnimation(unsigned int aIndex) {
+			mVDWebsocket->resetAutoAnimation(aIndex);
+		};
 		float							getMinUniformValueByIndex(unsigned int aIndex) {
-	return mVDAnimation->getMinUniformValueByIndex(aIndex);
-};
+			return mVDAnimation->getMinUniformValueByIndex(aIndex);
+		};
 		float							getMaxUniformValueByIndex(unsigned int aIndex) {
 			return mVDAnimation->getMaxUniformValueByIndex(aIndex);
 		};
-		
+
 		vec2							getVec2UniformValueByIndex(unsigned int aIndex) {
 			return mVDAnimation->getVec2UniformValueByIndex(aIndex);
 		};
@@ -129,14 +137,14 @@ namespace videodromm {
 		void							setFloatUniformValueByIndex(unsigned int aCtrl, float aValue) {
 			// done in router mVDAnimation->changeFloatValue(aCtrl, aValue);
 			mVDWebsocket->changeFloatValue(aCtrl, aValue);
-		};/*
+		};
 		void							setIntUniformValueByIndex(unsigned int aCtrl, int aValue) {
 			mVDWebsocket->changeIntValue(aCtrl, aValue);
 		};
 		void							setBoolUniformValueByIndex(unsigned int aCtrl, float aValue) {
 			// done in router mVDAnimation->changeFloatValue(aCtrl, aValue);
 			mVDWebsocket->changeBoolValue(aCtrl, aValue);
-		};
+		};/*
 		// tempo
 		float							getBpm() { return mVDAnimation->getBpm(); };
 		void							setBpm(float aBpm) { mVDAnimation->setBpm(aBpm); };
@@ -250,7 +258,6 @@ namespace videodromm {
 		bool							isRenderTexture() { return mRenderTexture; };
 		void							toggleRenderTexture() { mRenderTexture = !mRenderTexture; }
 		bool							isAutoLayout() { return mVDSettings->mAutoLayout; };
-		void							toggleAutoLayout() { mVDSettings->mAutoLayout = !mVDSettings->mAutoLayout; }
 		bool							isFlipH() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };
 		bool							isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV); };
 		void							flipH(){mVDAnimation->setBoolUniformValueByIndex(mVDSettings->IFLIPH, !mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH));};
@@ -260,6 +267,7 @@ namespace videodromm {
 		unsigned int					getFboBlendCount() { return mBlendFbos.size(); };
 		void							useBlendmode(unsigned int aBlendIndex) { mVDSettings->iBlendmode = aBlendIndex; };
 		*/
+		void							toggleAutoLayout() { mVDSettings->mAutoLayout = !mVDSettings->mAutoLayout; }
 		// textures
 		unsigned int					getInputTexturesCount() {
 			return mTextureList.size();
@@ -348,7 +356,7 @@ namespace videodromm {
 		int								getCmd() { int rtn = cmd; cmd = -1; return rtn; };
 		// utils
 		float							formatFloat(float f) { return mVDUtils->formatFloat(f); };
-		
+
 		void							load();
 		void							updateAudio() {mTextureList[0]->getTexture();}
 		void							updateMixUniforms();
@@ -357,7 +365,7 @@ namespace videodromm {
 		string							getHydraUniformsString() { return mHydraUniformsValuesString; };
 		ci::gl::TextureRef				getHydraTexture() { return mHydraFbo->getColorTexture(); };
 		// modeint
-		
+
 		int								getMode() { return mMode; };
 		void							setMode(int aMode) { mMode = aMode; };;
 		int								getModesCount() { return mModesList.size() - 1; };
@@ -399,7 +407,7 @@ namespace videodromm {
 		int								mMoviePlaybackDelay;
 		unsigned int					mFadeInDelay;
 		unsigned int					mFadeOutDelay;
-		// font and text 
+		// font and text
 		string							mText;
 		int								mTextPlaybackDelay;
 		int								mTextPlaybackEnd;
@@ -407,7 +415,7 @@ namespace videodromm {
 		// maintain a list of fbo for right only or left/right or more fbos specific to this mix
 		//VDFboList						mFboList;
 		fs::path						mFbosFilepath;
-		// fbo 
+		// fbo
 		gl::Texture::Format				fmt;
 		gl::Fbo::Format					fboFmt;
 		bool							mEnabledAlphaBlending;
@@ -435,7 +443,7 @@ namespace videodromm {
 		int								cmd;
 		bool							mShowUI = false;
 		// mix
-	
+
 
 		std::string						mFbosPath;
 
