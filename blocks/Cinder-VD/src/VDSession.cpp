@@ -11,7 +11,7 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	CI_LOG_V("VDSession ctor");
 	mVDSettings = aVDSettings;
 	mDefaultTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
-	createShaderFbo("default.fs", 0);
+	createFboShaderTexture("default.fs", "0.jpg");
 
 	// Utils
 	mVDUtils = VDUtils::create(mVDSettings);
@@ -1097,11 +1097,29 @@ void VDSession::updateHydraUniforms() {
 		if (aShaderIndex > mShaderList.size() - 1) aShaderIndex = mShaderList.size() - 1;
 		return mShaderList[aShaderIndex]->getVertexString();
 	}*/
-
-unsigned int VDSession::createShaderFbo(string aShaderFilename, unsigned int aFboShaderIndex) {
+unsigned int VDSession::fboFromJson(const JsonTree &json) {
+	unsigned int rtn = 0;
+	string shaderFileName = (json.hasChild("ashaderfilename")) ? json.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
+	string textureFileName = (json.hasChild("atexturefilename")) ? json.getValueForKey<string>("atexturefilename") : "0.jpg";
+	rtn = createFboShaderTexture(shaderFileName, textureFileName);
+	return rtn;
+}
+void VDSession::saveFbos()
+{
+	int i = 0;
+	for (auto &fbo : mFboList) {
+		JsonTree		json = fbo->toJson(true);
+		//string jsonFileName = "fbo" + toString(i) + ".json";
+		//fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
+		// write file
+		//json.write(jsonFile);
+		i++;
+	}
+}
+unsigned int VDSession::createFboShaderTexture(string aShaderFilename, string aTextureFilename) {
 	// initialize rtn to 0 to force creation
 	unsigned int rtn = 0;
-	VDFboRef fboRef = VDFbo::create(mVDSettings, aShaderFilename);
+	VDFboRef fboRef = VDFbo::create(mVDSettings, aShaderFilename, aTextureFilename);
 	mFboList.push_back(fboRef);
 	rtn = mFboList.size() - 1;
 	/*string fName = aShaderFilename;

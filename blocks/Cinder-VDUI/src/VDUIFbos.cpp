@@ -296,26 +296,30 @@ ImGui::End();
 		yPos = mVDSettings->uiYPosRow2;
 		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
-		/*sprintf(buf, "%s##fbolbl%d", mVDSession->getFboName(f).c_str(), f);
+		sprintf(buf, "%s##fbolbl%d", mVDSession->getFboName(f).c_str(), f);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
 			ImGui::PushID(f);
 			ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			// causes loss of resolution: 
 			//if (ImGui::IsItemHovered()) mVDSession->getFboTexture(f);
-			for (unsigned int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
+			for (unsigned int t = 0; t < mVDSession->getFboInputTexturesCount(f); t++) {
 				if (t > 0 && (t % 6 != 0)) ImGui::SameLine();
-				if (mVDSession->getFboInputTextureIndex(f) == t) {
+				//if (mVDSession->getFboInputTextureIndex(f) == t) {
 					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
-				}
+				/*}
 				else {
 					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
 				}
+				
 				sprintf(buf, "%d##fboit%d%d", t, f, t);
 				if (ImGui::Button(buf)) mVDSession->setFboInputTexture(f, t);
 
 				sprintf(buf, "Set input texture to %s", mVDSession->getInputTextureName(t).c_str());
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
+				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);*/
+				sprintf(buf, "%d##fboit%d%d", t, f, t);
+				if (ImGui::Button(buf)) mVDSession->getFboInputTextureName(f);
+				ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 				ImGui::PopStyleColor(1);
 			}
 			if (mVDSession->isFboFlipV(f)) {
@@ -329,13 +333,13 @@ ImGui::End();
 			sprintf(buf, "FlipV##fboflipv%d", f);
 			if (ImGui::Button(buf)) mVDSession->fboFlipV(f);
 			ImGui::PopStyleColor(3);
-			ImGui::SameLine();
+			/*ImGui::SameLine();
 			sprintf(buf, "T##fboupd%d", f);
-			if (ImGui::Button(buf)) mVDSession->updateShaderThumbFile(f);
-			ImGui::Text("wh %dx%d", mVDSession->getFboRenderedTexture(f)->getWidth(), mVDSession->getFboRenderedTexture(f)->getHeight());
+			i/f (ImGui::Button(buf)) mVDSession->updateShaderThumbFile(f);*
+			ImGui::Text("wh %dx%d", mVDSession->getFboRenderedTexture(f)->getWidth(), mVDSession->getFboRenderedTexture(f)->getHeight());*/
 			ImGui::PopID();
 		}
-		ImGui::End();*/
+		ImGui::End();
 	}
 	
 #pragma endregion fbos

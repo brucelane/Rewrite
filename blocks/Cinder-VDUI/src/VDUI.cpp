@@ -399,6 +399,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 
 	// textures
 	mUITextures->Run("Textures");
+	// Fbos
+	mUIFbos->Run("Fbos");
 	
 	// Shaders
 	//mUIShaders->Run("Shaders");

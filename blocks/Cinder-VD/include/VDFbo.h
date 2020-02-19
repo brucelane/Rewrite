@@ -32,10 +32,10 @@ namespace videodromm
 
 	class VDFbo  { // TODO : public VDTexture ?
 	public:
-		VDFbo(VDSettingsRef aVDSettings, string aShaderFilename);
+		VDFbo(VDSettingsRef aVDSettings, string aShaderFilename, string aTextureFilename);
 		~VDFbo(void);
-		static VDFboRef create(VDSettingsRef aVDSettings, string aShaderFilename) {
-			return std::make_shared<VDFbo>(aVDSettings, aShaderFilename);
+		static VDFboRef create(VDSettingsRef aVDSettings, string aShaderFilename, string aTextureFilename) {
+			return std::make_shared<VDFbo>(aVDSettings, aShaderFilename,  aTextureFilename);
 		}		
 		ci::gl::Texture2dRef getRenderedTexture();
 		Area getSrcArea() { 
@@ -55,6 +55,9 @@ namespace videodromm
 		bool							isFlipH() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV); };
 		bool							isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };
 		std::string						getName() { return mShaderName; };
+		std::string						getTextureName() { return mTextureName; };
+		ci::gl::Texture2dRef			getInputTexture() { return mTexture;  };
+		ci::JsonTree toJson(bool save = false) const;
 	private:
 		// Settings
 		VDSettingsRef					mVDSettings;

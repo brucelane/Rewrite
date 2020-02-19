@@ -123,66 +123,21 @@ void RewriteApp::loadWarps() {
 			if (json[0].hasChild("warp")) {
 				JsonTree warpJsonTree(json[0].getChild("warp"));
 				string shaderFileName = (warpJsonTree.hasChild("ashaderfilename")) ? warpJsonTree.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
-				mVDSession->createShaderFbo(shaderFileName, i);
+				string textureFileName = (warpJsonTree.hasChild("atexturefilename")) ? warpJsonTree.getValueForKey<string>("atexturefilename") : "0.jpg";
+				//mVDSession->createFboShaderTexture(shaderFileName, textureFileName);
+				mVDSession->fboFromJson(warpJsonTree);
 				warp->setAFboIndex(i) ;
 				warp->setBFboIndex(i);
 				warp->setAShaderIndex(i);
 				warp->setBShaderIndex(i) ;
 				warp->setAShaderFilename(shaderFileName);
-				warp->setBShaderFilename(shaderFileName) ;
+				warp->setBShaderFilename(shaderFileName);
+				warp->setATextureFilename(textureFileName);
+				warp->setBTextureFilename(textureFileName);
 			}
 			i++;
 		}
 	}
-}
-void RewriteApp::toggleCursorVisibility(bool visible)
-{
-	if (visible)
-	{
-		showCursor();
-	}
-	else
-	{
-		hideCursor();
-	}
-}
-void RewriteApp::draw()
-{
-	// clear the window and set the drawing color to white
-	gl::clear();
-	gl::color(Color::white());
-	if (mFadeInDelay) {
-		mVDSettings->iAlpha = 0.0f;
-		if (getElapsedFrames() > 10.0) {// mVDSession->getFadeInDelay()) {
-			mFadeInDelay = false;
-			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 1.5f, EaseInCubic());
-		}
-	}
-	else {
-		// iterate over the fbos and draw their content
-		int i = 0;
-		for (auto &warp : mWarpList) {
-			i = math<int>::min(i, mVDSession->getFboListSize() - 1);
-			if (mVDSession->isFboValid(i)) {
-				warp->draw(mVDSession->getFboRenderedTexture(i), mVDSession->getFboSrcArea(i));
-			}
-			i++;
-		}
-
-	}
-	// imgui
-	if (mVDSession->showUI()) {
-		mVDUI->Run("UI", (int)getAverageFps());
-		if (mVDUI->isReady()) {
-		}
-	}
-	getWindow()->setTitle(mVDSettings->sFps + " fps");
-}
-void RewriteApp::cleanup()
-{
-	saveWarps();
-	// save warp settings
-	Warp::writeSettings(mWarpList, writeFile(mSettings));
 }
 void RewriteApp::saveWarps()
 {
@@ -197,15 +152,23 @@ void RewriteApp::saveWarps()
 		i++;
 	}
 }
-void RewriteApp::update()
+void RewriteApp::toggleCursorVisibility(bool visible)
 {
-	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
-	mVDSession->update();
+	if (visible)
+	{
+		showCursor();
+	}
+	else
+	{
+		hideCursor();
+	}
 }
+
+
 void RewriteApp::resize()
 {
 	mVDUI->resize();
-	
+
 	// tell the fbos our window has been resized, so they properly scale up or down
 	Warp::handleResize(mWarpList);
 }
@@ -302,6 +265,55 @@ void RewriteApp::keyUp(KeyEvent event)
 			}
 		}
 	}
+}
+void RewriteApp::cleanup()
+{
+	CI_LOG_V("cleanup and save");
+	ui::Shutdown();
+	mVDSession->saveFbos();
+	saveWarps();
+	// save warp settings
+	Warp::writeSettings(mWarpList, writeFile(mSettings));
+	mVDSettings->save();
+	CI_LOG_V("quit");
+}
+
+void RewriteApp::update()
+{
+	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
+	mVDSession->update();
+}
+void RewriteApp::draw()
+{
+	// clear the window and set the drawing color to white
+	gl::clear();
+	gl::color(Color::white());
+	if (mFadeInDelay) {
+		mVDSettings->iAlpha = 0.0f;
+		if (getElapsedFrames() > 10.0) {// mVDSession->getFadeInDelay()) {
+			mFadeInDelay = false;
+			timeline().apply(&mVDSettings->iAlpha, 0.0f, 1.0f, 1.5f, EaseInCubic());
+		}
+	}
+	else {
+		// iterate over the fbos and draw their content
+		int i = 0;
+		for (auto &warp : mWarpList) {
+			i = math<int>::min(i, mVDSession->getFboListSize() - 1);
+			if (mVDSession->isFboValid(i)) {
+				warp->draw(mVDSession->getFboRenderedTexture(i), mVDSession->getFboSrcArea(i));
+			}
+			i++;
+		}
+
+	}
+	// imgui
+	if (mVDSession->showUI()) {
+		mVDUI->Run("UI", (int)getAverageFps());
+		if (mVDUI->isReady()) {
+		}
+	}
+	getWindow()->setTitle(mVDSettings->sFps + " fps");
 }
 
 

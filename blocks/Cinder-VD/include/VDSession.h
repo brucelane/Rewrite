@@ -222,7 +222,9 @@ void							update(unsigned int aClassIndex = 0);
 		string							getFboName(unsigned int aFboIndex) { return mFboList[aFboIndex]->getName(); };
 
 		unsigned int					getFboListSize() { return mFboList.size(); };
-		unsigned int 					createShaderFbo(string aShaderFilename, unsigned int aFboShaderIndex = 4);
+		unsigned int 					createFboShaderTexture(string aShaderFilename, string aTextureFilename);
+		unsigned int					fboFromJson(const JsonTree &json);
+		void							saveFbos();
 		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex);
 		bool							isFboValid(unsigned int aFboIndex) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->isValid();
@@ -242,6 +244,15 @@ void							update(unsigned int aClassIndex = 0);
 		bool							isFboFlipH(unsigned int aFboIndex) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->isFlipH();
 		};
+		unsigned int					getFboInputTexturesCount(unsigned int aFboIndex = 0) {
+			return 1;
+		}
+		string							getFboInputTextureName(unsigned int aFboIndex = 0) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getTextureName();
+		}
+		ci::gl::Texture2dRef							getFboInputTexture(unsigned int aFboIndex = 0) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getInputTexture();
+		}
 
 		//string							getFboFragmentShaderText(unsigned int aFboIndex);
 		// feedback get/set
@@ -275,7 +286,7 @@ void							update(unsigned int aClassIndex = 0);
 		// textures
 		unsigned int					getInputTexturesCount() {
 			return mTextureList.size();
-		}
+		}		
 		/*ci::gl::TextureRef				getInputTexture(unsigned int aTextureIndex);
 		ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, string aFilename);
 		//ci::gl::TextureRef				getNextInputTexture(unsigned int aTextureIndex);

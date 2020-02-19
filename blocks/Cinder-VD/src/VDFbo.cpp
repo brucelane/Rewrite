@@ -1,11 +1,12 @@
 #include "VDFbo.h"
 
 namespace videodromm {
-	VDFbo::VDFbo(VDSettingsRef aVDSettings, string aShaderFilename)
+	VDFbo::VDFbo(VDSettingsRef aVDSettings, string aShaderFilename, string aTextureFilename)
 		:mValid(false)
 	{
 		CI_LOG_V("VDFbo constructor");
 		mShaderName = aShaderFilename;
+		mTextureName = aTextureFilename;
 		shaderInclude = "#version 150\n"
 			"// shadertoy specific\n"
 			"uniform vec2      	RENDERSIZE;\n"
@@ -19,31 +20,23 @@ namespace videodromm {
 			"uniform sampler2D 	inputImage;\n"
 			"out vec4 fragColor;\n"
 			"#define IMG_NORM_PIXEL texture2D\n";
-		//"#define RENDERSIZE iResolution\n";
-		//"vec2  fragCoord = gl_FragCoord.xy; // keep the 2 spaces between vec2 and fragCoord\n";
+
 		mVDSettings = aVDSettings;
 		mUseBeginEnd = false;
 		isReady = false;
 		mInputTextureIndex = 0;
 		mSrcArea = Area(0, 0, 10, 10);
 		mVDAnimation = VDAnimation::create(mVDSettings);
-		mTextureName = "0.jpg";
+
+		if (mTextureName == "") { mTextureName = "help.jpg"; }
 		fs::path texPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;
 		if (fs::exists(texPath)) {
 			mTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 			mRenderedTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 		}
 		else {
-			mTextureName = "help.jpg";
-			fs::path helpPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;
-			if (fs::exists(helpPath)) {
-				mTexture = gl::Texture::create(loadImage(helpPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
-				mRenderedTexture = gl::Texture::create(loadImage(helpPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
-			}
-			else {
-				mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
-				mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
-			}
+			mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
+			mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		}
 
 		mSrcArea = mTexture->getBounds();
@@ -151,7 +144,7 @@ namespace videodromm {
 			// name of the shader
 			mShaderName = aName;
 			mValid = true;
-			
+
 		}
 		catch (gl::GlslProgCompileExc &exc)
 		{
@@ -169,7 +162,7 @@ namespace videodromm {
 	}
 
 	ci::gl::Texture2dRef VDFbo::getFboTexture() {
-		
+
 		if (mValid) {
 
 			gl::ScopedFramebuffer fbScp(mFbo);
@@ -219,7 +212,7 @@ namespace videodromm {
 					}
 				}
 			}
-			
+
 			if (!isReady) {
 				mShader->uniform("RENDERSIZE", vec2(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
 			}
@@ -260,5 +253,18 @@ namespace videodromm {
 			getFboTexture();
 		}
 		return mRenderedTexture;
+	}
+	//! to json
+	JsonTree	VDFbo::toJson(bool save) const
+	{
+		JsonTree		json;
+		json.addChild(ci::JsonTree("shadername", mShaderName));
+		json.addChild(ci::JsonTree("texturename", mTextureName));
+		if (save) {
+			string jsonFileName = mShaderName + ".json";
+			fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
+			json.write(jsonFile);
+		}
+		return json;
 	}
 }
