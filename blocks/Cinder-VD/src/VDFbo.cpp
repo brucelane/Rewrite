@@ -112,7 +112,7 @@ namespace videodromm {
 			}
 		}
 
-		string mNotFoundUniformsString = "/* " + aName + "\n";
+		string mNotFoundmUniformsString = "/* " + aName + "\n";
 		// filename to save
 		mValid = false;
 		// load fragment shader
@@ -121,7 +121,7 @@ namespace videodromm {
 		{
 			std::size_t foundUniform = mOriginalFragmentString.find("uniform ");
 			if (foundUniform == std::string::npos) {
-				CI_LOG_V("loadFragmentStringFromFile, no uniforms found, we add from shadertoy.inc");
+				CI_LOG_V("loadFragmentStringFromFile, no mUniforms found, we add from shadertoy.inc");
 				aFragmentShaderString = "/* " + aName + " */\n" + shaderInclude + mOriginalFragmentString;
 			}
 			else {
@@ -136,7 +136,7 @@ namespace videodromm {
 			mFragReceived.close();
 			CI_LOG_V("file saved:" + receivedFile.string());
 
-			// try to compile a first time to get active uniforms
+			// try to compile a first time to get active mUniforms
 			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
 			// update only if success
 			mFragmentShaderString = aFragmentShaderString;
@@ -170,10 +170,11 @@ namespace videodromm {
 
 			mTexture->bind(0);
 			string name;
-			auto &uniforms = mShader->getActiveUniforms();
-			for (const auto &uniform : uniforms) {
+			
+			mUniforms = mShader->getActiveUniforms();
+			for (const auto &uniform : mUniforms) {
 				name = uniform.getName();
-				//CI_LOG_V(mShader->getLabel() + ", getShader uniform name:" + uniform.getName());
+				CI_LOG_V(mShader->getLabel() + ", getShader uniform name:" + uniform.getName() + ", type:" + toString( uniform.getType() ));
 				if (mVDAnimation->isExistingUniform(name)) {
 					int uniformType = mVDAnimation->getUniformType(name);
 					switch (uniformType)
@@ -204,7 +205,7 @@ namespace videodromm {
 					}
 				}
 				else {
-					if (name != "ciModelViewProjection") {
+					if (name != "ciModelViewProjection") {//type 35676
 						mVDSettings->mNewMsg = true;
 						mError = "uniform not found " + name;
 						mVDSettings->mMsg = mError;

@@ -5,6 +5,11 @@ using namespace videodromm;
 VDUIFbos::VDUIFbos(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mVDSettings = aVDSettings;
 	mVDSession = aVDSession;
+
+	for (int c = 0; c < 128; c++)
+	{
+		localValues[c] = mVDSession->getFloatUniformValueByIndex(c);
+	}
 }
 
 void VDUIFbos::Run(const char* title) {
@@ -143,7 +148,7 @@ void VDUIFbos::Run(const char* title) {
 						else {
 							XLeft[t] += xStep;
 						}
-						// check bounds 
+						// check bounds
 						if (XLeft[t] < 1) {
 							xStep = -xStep;
 						}
@@ -226,92 +231,149 @@ void VDUIFbos::Run(const char* title) {
 	*/
 
 #pragma region mix
-int w = 0;
-xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1;
-yPos = mVDSettings->uiYPosRow2;// - mVDSettings->uiLargePreviewH
+	int w = 0;
+	xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1;
+	yPos = mVDSettings->uiYPosRow2;// - mVDSettings->uiLargePreviewH
 
-ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
-ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
-/*
-sprintf(buf, "%s##sh%d", "mix", 0);
-ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
-{
-	ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-	ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-	// crossfade
-	float xFade = mVDSession->getCrossfade();// getWarpCrossfade(w);
-	sprintf(buf, "xfade##xf%d", w);
-	if (ImGui::SliderFloat(buf, &xFade, 0.0f, 1.0f))
+	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
+	/*
+	sprintf(buf, "%s##sh%d", "mix", 0);
+	ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 	{
-		mVDSession->setCrossfade(xFade);
-	}
+		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+		ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		// crossfade
+		float xFade = mVDSession->getCrossfade();// getWarpCrossfade(w);
+		sprintf(buf, "xfade##xf%d", w);
+		if (ImGui::SliderFloat(buf, &xFade, 0.0f, 1.0f))
+		{
+			mVDSession->setCrossfade(xFade);
+		}
 
-	for (int s = 0; s < mVDSession->getShadersCount(); s++) {
-		int f = 0;
-		if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
-			
-		if (mVDSession->getFboFragmentShaderIndex(f) == s) {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
-		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
-		}
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
-		sprintf(buf, "%d##sf%d", s, f);
-		if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set fbo to left");
-		ImGui::PopStyleColor(3);
-	}
-	for (int s = 0; s < mVDSession->getShadersCount(); s++) {
-		int f = 1;
-		if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
+		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
+			int f = 0;
+			if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
 
-		if (mVDSession->getFboFragmentShaderIndex(f) == s) {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+			if (mVDSession->getFboFragmentShaderIndex(f) == s) {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+			}
+			else {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+			}
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+			sprintf(buf, "%d##sf%d", s, f);
+			if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set fbo to left");
+			ImGui::PopStyleColor(3);
 		}
-		else {
-			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
-		}
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
-		sprintf(buf, "%d##sf%d", s, f);
-		if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set shader to right");
-		ImGui::PopStyleColor(3);
-	}
+		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
+			int f = 1;
+			if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
 
-	ImGui::PopItemWidth();
-}
-ImGui::End();
-*/
+			if (mVDSession->getFboFragmentShaderIndex(f) == s) {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 1.0f, 0.5f));
+			}
+			else {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+			}
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.0f, 0.8f, 0.8f));
+			sprintf(buf, "%d##sf%d", s, f);
+			if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Set shader to right");
+			ImGui::PopStyleColor(3);
+		}
+
+		ImGui::PopItemWidth();
+	}
+	ImGui::End();
+	*/
 #pragma endregion mix
 #pragma region fbos
 
 	/*
 	** fbos
 	*/
-	for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {//mVDSession->getFboListSize() or 2
+	for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {
 		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * (f));//+1
 		yPos = mVDSettings->uiYPosRow2;
 		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
+
 		sprintf(buf, "%s##fbolbl%d", mVDSession->getFboName(f).c_str(), f);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
 			ImGui::PushID(f);
+			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 			ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			// uniforms
+			//std::vector<ci::gl::GlslProg::Uniform> u = mVDSession->getUniforms(f);
+			int uc = 0;
+			int hue = 0;
+			for (auto u : mVDSession->getUniforms(f)) {
+				string uName = u.getName();
+					ctrl = mVDSession->getUniformIndexForName(uName);
+				switch (u.getType()) {
+				case 35670:
+					// boolean
+
+					(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+					sprintf(buf, "%s##booluniform%d", uName.c_str(), uc);
+					if (ImGui::Button(buf)) {
+						toggleValue(ctrl);
+					}
+					ImGui::PopStyleColor(3);
+					hue++;
+					break;
+				case 35678:
+					// sampler2d
+					break;
+				case 5126:
+					// float
+					localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+					sprintf(buf, "%s##floatuniform%d", uName.c_str(), uc);
+					if (ImGui::DragFloat(buf, &localValues[ctrl], 0.1f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+					{
+						setValue(ctrl, localValues[ctrl]);
+					}
+					break;
+				case 35664:
+					// vec2
+					break;
+
+				default:
+
+					//ciModelViewProjection 35676
+					sprintf(buf, "unknown%s%d##unknownuniform%d", uName.c_str(), u.getType(), uc);
+					if (ImGui::Button(buf)) {
+						
+					}
+					break;
+				}
+				uc++;
+			} //for uniforms
+
+				/*
+				|verbose| videodromm::VDFbo::getFboTexture[177] , getShader uniform name:RENDERSIZE, type:35664
+|verbose| videodromm::VDFbo::getFboTexture[177] , getShader uniform name:iFlipH, type:35670
+|verbose| videodromm::VDFbo::getFboTexture[177] , getShader uniform name:iFlipV, type:35670
+|verbose| videodromm::VDFbo::getFboTexture[177] , getShader uniform name:inputImage, type:35678
+					*/
 			// causes loss of resolution: 
 			//if (ImGui::IsItemHovered()) mVDSession->getFboTexture(f);
 			for (unsigned int t = 0; t < mVDSession->getFboInputTexturesCount(f); t++) {
 				if (t > 0 && (t % 6 != 0)) ImGui::SameLine();
 				//if (mVDSession->getFboInputTextureIndex(f) == t) {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
 				/*}
 				else {
 					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
 				}
-				
+
 				sprintf(buf, "%d##fboit%d%d", t, f, t);
 				if (ImGui::Button(buf)) mVDSession->setFboInputTexture(f, t);
 
@@ -337,11 +399,12 @@ ImGui::End();
 			sprintf(buf, "T##fboupd%d", f);
 			i/f (ImGui::Button(buf)) mVDSession->updateShaderThumbFile(f);*
 			ImGui::Text("wh %dx%d", mVDSession->getFboRenderedTexture(f)->getWidth(), mVDSession->getFboRenderedTexture(f)->getHeight());*/
+			ImGui::PopItemWidth();
 			ImGui::PopID();
 		}
 		ImGui::End();
-	}
-	
+	} // for getFboList
+
 #pragma endregion fbos
 
 }

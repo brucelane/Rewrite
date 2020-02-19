@@ -56,7 +56,8 @@ namespace videodromm
 		bool							isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };
 		std::string						getName() { return mShaderName; };
 		std::string						getTextureName() { return mTextureName; };
-		ci::gl::Texture2dRef			getInputTexture() { return mTexture;  };
+		ci::gl::Texture2dRef			getInputTexture() { return mTexture; };
+		std::vector<ci::gl::GlslProg::Uniform> getUniforms() { return mUniforms; };
 		ci::JsonTree toJson(bool save = false) const;
 	private:
 		// Settings
@@ -68,6 +69,7 @@ namespace videodromm
 		int								mInputTextureIndex;
 		//! shader
 		gl::GlslProgRef					mShader;
+		std::vector<ci::gl::GlslProg::Uniform> mUniforms;
 		string							mShaderName = "";
 		string							mTextureName = "";
 		std::string						mFragmentShaderString;

@@ -4,30 +4,32 @@
          "afboindex" : 1,
          "ashaderfilename" : "Radiography.fs",
          "ashaderindex" : 1,
+         "atexturefilename" : "",
          "bfboindex" : 1,
          "brightness" : 1,
          "bshaderfilename" : "Radiography.fs",
          "bshaderindex" : 1,
+         "btexturefilename" : "",
          "controlpoints" : [
             {
                "controlpoint" : 0,
-               "x" : 0.44305600000000001,
-               "y" : 0.46333299999999999
+               "x" : 0.58819399999999999,
+               "y" : 0.082222199999999995
             },
             {
                "controlpoint" : 1,
-               "x" : 0.90277799999999997,
-               "y" : 0.49666700000000003
+               "x" : 0.82499999999999996,
+               "y" : 0.112222
             },
             {
                "controlpoint" : 2,
-               "x" : 0.95277800000000001,
-               "y" : 0.95444399999999996
+               "x" : 0.86180599999999996,
+               "y" : 0.54777799999999999
             },
             {
                "controlpoint" : 3,
-               "x" : 0.46458300000000002,
-               "y" : 0.97888900000000001
+               "x" : 0.588889,
+               "y" : 0.63444400000000001
             }
          ],
          "crossfade" : -431602080,

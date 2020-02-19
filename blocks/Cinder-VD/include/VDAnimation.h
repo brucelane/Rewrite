@@ -118,7 +118,12 @@ namespace videodromm
 		// shaders
 		bool							isExistingUniform(string aName);
 		int								getUniformType(string aName);
-		string							getUniformNameForIndex(int aIndex);
+		string							getUniformNameForIndex(int aIndex) {
+			return controlIndexes[aIndex];
+		};
+		int								getUniformIndexForName(string aName) {
+			return shaderUniforms[aName].index;
+		};
 		bool							toggleAuto(unsigned int aIndex);
 		bool							toggleValue(unsigned int aIndex);
 		bool							toggleTempo(unsigned int aIndex);

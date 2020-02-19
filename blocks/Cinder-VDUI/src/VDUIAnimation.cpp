@@ -16,42 +16,7 @@ VDUIAnimation::VDUIAnimation(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
 VDUIAnimation::~VDUIAnimation() {
 
 }
-float VDUIAnimation::getValue(unsigned int aCtrl) {
-	return mVDSession->getFloatUniformValueByIndex(aCtrl);
-}
-void VDUIAnimation::setValue(unsigned int aCtrl, float aValue) {
-	mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
-}
-bool VDUIAnimation::getBoolValue(unsigned int aCtrl) {
-	return mVDSession->getBoolUniformValueByIndex(aCtrl);
-}
-void VDUIAnimation::toggleValue(unsigned int aCtrl) {
-	mVDSession->toggleValue(aCtrl);
-}
-void VDUIAnimation::toggleAuto(unsigned int aCtrl) {
-	mVDSession->toggleAuto(aCtrl);
-}
-void VDUIAnimation::toggleTempo(unsigned int aCtrl) {
-	mVDSession->toggleTempo(aCtrl);
-}
-void VDUIAnimation::toggleBass(unsigned int aCtrl) {
-	//mVDSession->toggleBass(aCtrl);
-}
-void VDUIAnimation::toggleMid(unsigned int aCtrl) {
-	//mVDSession->toggleMid(aCtrl);
-}
-void VDUIAnimation::toggleTreble(unsigned int aCtrl) {
-	//mVDSession->toggleTreble(aCtrl);
-}
-void VDUIAnimation::resetAutoAnimation(unsigned int aCtrl) {
-	mVDSession->resetAutoAnimation(aCtrl);
-}
-float VDUIAnimation::getMinUniformValueByIndex(unsigned int aIndex) {
-	return mVDSession->getMinUniformValueByIndex(aIndex);
-}
-float VDUIAnimation::getMaxUniformValueByIndex(unsigned int aIndex) {
-	return mVDSession->getMaxUniformValueByIndex(aIndex);
-}
+
 void VDUIAnimation::Run(const char* title) {
 	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 1.76), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);

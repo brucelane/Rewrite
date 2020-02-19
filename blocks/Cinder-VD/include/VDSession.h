@@ -245,7 +245,7 @@ void							update(unsigned int aClassIndex = 0);
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->isFlipH();
 		};
 		unsigned int					getFboInputTexturesCount(unsigned int aFboIndex = 0) {
-			return 1;
+			return 1; //TODO support several textures
 		}
 		string							getFboInputTextureName(unsigned int aFboIndex = 0) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getTextureName();
@@ -253,7 +253,12 @@ void							update(unsigned int aClassIndex = 0);
 		ci::gl::Texture2dRef							getFboInputTexture(unsigned int aFboIndex = 0) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getInputTexture();
 		}
-
+		std::vector<ci::gl::GlslProg::Uniform>			getUniforms(unsigned int aFboIndex = 0) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getUniforms();
+		}
+		int								getUniformIndexForName(string aName) {
+			return mVDAnimation->getUniformIndexForName(aName);
+		};
 		//string							getFboFragmentShaderText(unsigned int aFboIndex);
 		// feedback get/set
 		/*int								getFeedbackFrames() {
