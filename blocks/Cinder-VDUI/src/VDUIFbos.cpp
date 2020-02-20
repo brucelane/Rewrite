@@ -425,7 +425,7 @@ void VDUIFbos::Run(const char* title) {
 				sprintf(buf, "%d##fboit%d%d", t, f, t);
 				if (ImGui::Button(buf)) mVDSession->getFboInputTextureName(f);
 
-				ImGui::PopStyleColor(1);
+				//ImGui::PopStyleColor(1);
 			}
 			if (mVDSession->isFboFlipV(f)) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(f / 7.0f, 1.0f, 1.0f));

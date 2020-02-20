@@ -7,7 +7,7 @@
          "atexturefilename" : "",
          "bfboindex" : 1,
          "brightness" : 1,
-         "bshaderfilename" : "NoiseAnimation3D.fs",
+         "bshaderfilename" : "SphericalPolyhedra.fs",
          "bshaderindex" : 1,
          "btexturefilename" : "",
          "controlpoints" : [
