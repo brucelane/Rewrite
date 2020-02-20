@@ -69,5 +69,5 @@ void main(void)
 	//mat2 rotate = mat2(cos(rad),sin(rad),-sin(rad),cos(rad));
 	//uv = rotate * (uv - 0.5) + 0.5;
     vec3 rgb = IMG_NORM_PIXEL(inputImage, uv).xyz;
-    fragColor=vec4(rgb * vec3(sin(TIME),0.0,0.0), 1.0);	
+    fragColor=vec4(rgb, 1.0);	
 }

@@ -407,8 +407,8 @@ void VDUIFbos::Run(const char* title) {
 					// causes loss of resolution: 
 					//if (ImGui::IsItemHovered()) mVDSession->getFboTexture(f);
 			//for (unsigned int t = 0; t < mVDSession->getFboInputTexturesCount(f); t++) {
-			for (int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
-				if (t > 0 && (t % 6 != 0)) ImGui::SameLine();
+			/*for (int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
+				if (t > 0 && (t % 6 != 0)) ImGui::SameLine();*/
 				//if (mVDSession->getFboInputTextureIndex(f) == t) {
 					ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 				//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
@@ -417,16 +417,16 @@ void VDUIFbos::Run(const char* title) {
 				//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
 				//}
 
-				sprintf(buf, "%d##fboit%d%d", t, f, t);
-				if (ImGui::Button(buf)) mVDSession->setFboInputTexture(f, t);
+				//sprintf(buf, "%d##fboit%d%d", t, f, t);
+				//if (ImGui::Button(buf)) mVDSession->setFboInputTexture(f, t);
 
-				sprintf(buf, "Set input texture to %s", mVDSession->getInputTextureName(t).c_str());
+				//sprintf(buf, "Set input texture to %s", mVDSession->getInputTextureName(t).c_str());
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-				sprintf(buf, "%d##fboit%d%d", t, f, t);
+				//sprintf(buf, "%d##fboit%d%d", t, f, t);
 				if (ImGui::Button(buf)) mVDSession->getFboInputTextureName(f);
 
 				//ImGui::PopStyleColor(1);
-			}
+			//}
 			if (mVDSession->isFboFlipV(f)) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(f / 7.0f, 1.0f, 1.0f));
 			}

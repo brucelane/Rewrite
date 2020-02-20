@@ -215,7 +215,7 @@ namespace videodromm {
 		//int								getFboTextureWidth(unsigned int aFboIndex);
 		//int								getFboTextureHeight(unsigned int aFboIndex);*/
 		void VDSession::setFboInputTexture(unsigned int aFboIndex, unsigned int aInputTextureIndex) {
-			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->setInputTexture(mTextureList[aInputTextureIndex]->getTexture());
+			//mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->setInputTexture(mTextureList[aInputTextureIndex]->getTexture());
 		}
 		// utils
 		int								getWindowsResolution() {
@@ -292,12 +292,12 @@ namespace videodromm {
 		bool							isAutoLayout() { return mVDSettings->mAutoLayout; };
 		void							toggleAutoLayout() { mVDSettings->mAutoLayout = !mVDSettings->mAutoLayout; }
 		// textures
-		unsigned int					getInputTexturesCount() {
+		/*unsigned int					getInputTexturesCount() {
 			return mTextureList.size();
 		}
 		string VDSession::getInputTextureName(unsigned int aTextureIndex) {
 			return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getName();
-		}
+		}*/
 		ci::gl::TextureRef				getInputTexture(unsigned int aTextureIndex);
 		/*ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, string aFilename);
 		//ci::gl::TextureRef				getNextInputTexture(unsigned int aTextureIndex);
@@ -338,7 +338,7 @@ namespace videodromm {
 		void							toggleLoadingFromDisk(unsigned int aTextureIndex);
 		void							syncToBeat(unsigned int aTextureIndex);
 		void							reverse(unsigned int aTextureIndex);*/
-		float							getSpeed(unsigned int aTextureIndex) {
+		/*float							getSpeed(unsigned int aTextureIndex) {
 			return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getSpeed();
 		};
 		void							setSpeed(unsigned int aTextureIndex, float aSpeed) {
@@ -369,7 +369,7 @@ namespace videodromm {
 		};
 		int								getMaxFrame(unsigned int aTextureIndex) {
 			return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getMaxFrame();
-		};
+		};*/
 		// websockets
 		void							wsConnect();
 		void							wsPing();
@@ -503,7 +503,7 @@ namespace videodromm {
 		VDShaderList					mShaderList;
 		void							initShaderList();*/
 		//! Textures
-		VDTextureList					mTextureList;
+		//VDTextureList					mTextureList;
 		//fs::path						mTexturesFilepath;
 		bool							initTextureList();
 		//! Modes

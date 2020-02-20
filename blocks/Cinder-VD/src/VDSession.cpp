@@ -719,11 +719,11 @@ bool VDSession::handleKeyDown(KeyEvent &event)
 			break;
 		case KeyEvent::KEY_UP:
 			// imgseq next
-			incrementSequencePosition();
+			//incrementSequencePosition();
 			break;
 		case KeyEvent::KEY_DOWN:
 			// imgseq next
-			decrementSequencePosition();
+			//decrementSequencePosition();
 			break;
 		case KeyEvent::KEY_v:
 			if (isModDown) fboFlipV(0);// TODO other indexes mVDSettings->mFlipV = !mVDSettings->mFlipV; useless?
@@ -738,12 +738,12 @@ bool VDSession::handleKeyDown(KeyEvent &event)
 			}
 			break;
 		case KeyEvent::KEY_d:
-			if (isAltDown) {
+			/*if (isAltDown) {
 				setSpeed(0, getSpeed(0) - 0.01f);
 			}
 			else {
 				setSpeed(0, getSpeed(0) + 0.01f);
-			}
+			}*/
 			break;
 		default:
 			CI_LOG_V("session keydown: " + toString(event.getCode()));
@@ -1102,11 +1102,11 @@ unsigned int VDSession::fboFromJson(const JsonTree &json) {
 	string shaderFileName = (json.hasChild("ashaderfilename")) ? json.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
 	string textureFileName = (json.hasChild("atexturefilename")) ? json.getValueForKey<string>("atexturefilename") : "0.jpg";
 	rtn = createFboShaderTexture(shaderFileName, textureFileName);
-	JsonTree		jsonTexture;
+	/*JsonTree		jsonTexture;
 	jsonTexture.addChild(ci::JsonTree("path", textureFileName));
 	TextureImageRef t(new TextureImage());
 	t->fromJson(jsonTexture);
-	mTextureList.push_back(t);
+	mTextureList.push_back(t);*/
 	return rtn;
 }
 void VDSession::saveFbos()
@@ -1233,7 +1233,7 @@ void VDSession::initShaderList() {
 }*/
 bool VDSession::initTextureList() {
 	bool isFirstLaunch = false;
-	if (mTextureList.size() == 0) {
+	/*if (mTextureList.size() == 0) {
 		CI_LOG_V("VDSession::init mTextureList");
 		isFirstLaunch = true;
 		// add an audio texture as first texture
@@ -1242,92 +1242,9 @@ bool VDSession::initTextureList() {
 		TextureAudioRef t(new TextureAudio(mVDAnimation));
 		t->fromJson(jsonTexture);
 		mTextureList.push_back(t);
-		/*TextureAudioRef t(new TextureAudio(mVDAnimation));
-
-		// add texture xml
-		XmlTree			textureXml;
-		textureXml.setTag("texture");
-		textureXml.setAttribute("id", "0");
-		textureXml.setAttribute("texturetype", "audio");
-
-		t->fromXml(textureXml);
-		mTextureList.push_back(t);
-		// then read textures.xml
-		if (fs::exists(mTexturesFilepath)) {
-			// load textures from file if one exists
-			//mTextureList = VDTexture::readSettings(mVDAnimation, loadFile(mTexturesFilepath));
-			XmlTree			doc;
-			try { doc = XmlTree(loadFile(mTexturesFilepath)); }
-			catch (...) { CI_LOG_V("could not load textures.xml"); }
-			if (doc.hasChild("textures")) {
-				XmlTree xml = doc.getChild("textures");
-				for (XmlTree::ConstIter textureChild = xml.begin("texture"); textureChild != xml.end(); ++textureChild) {
-					CI_LOG_V("texture ");
-
-					string texturetype = textureChild->getAttributeValue<string>("texturetype", "unknown");
-					CI_LOG_V("texturetype " + texturetype);
-					XmlTree detailsXml = textureChild->getChild("details");
-					// read or add the assets path
-					string mFolder = detailsXml.getAttributeValue<string>("folder", "");
-					if (mFolder.length() == 0) detailsXml.setAttribute("folder", mVDSettings->mAssetsPath);
-					// create the texture
-					if (texturetype == "image") {
-						TextureImageRef t(TextureImage::create());
-						t->fromXml(detailsXml);
-						mTextureList.push_back(t);
-					}
-					else if (texturetype == "imagesequence") {
-						TextureImageSequenceRef t(new TextureImageSequence(mVDAnimation));
-						t->fromXml(detailsXml);
-						mTextureList.push_back(t);
-					}
-					else if (texturetype == "camera") {
-#if (defined(  CINDER_MSW) ) || (defined( CINDER_MAC ))
-						TextureCameraRef t(new TextureCamera());
-						t->fromXml(detailsXml);
-						mTextureList.push_back(t);
-#else
-						// camera not supported on this platform
-						CI_LOG_V("camera not supported on this platform");
-						XmlTree		xml;
-						xml.setTag("details");
-						xml.setAttribute("path", "0.jpg");
-						xml.setAttribute("width", 640);
-						xml.setAttribute("height", 480);
-						t->fromXml(xml);
-						mTextureList.push_back(t);
-#endif
-					}
-					else if (texturetype == "shared") {
-						// TODO CHECK USELESS? #if defined( CINDER_MSW )
-						TextureSharedRef t(new TextureShared());
-						t->fromXml(detailsXml);
-						mTextureList.push_back(t);
-						//#endif
-					}
-					else if (texturetype == "audio") {
-						// audio texture done in initTextures
-					}
-					else if (texturetype == "stream") {
-						// stream texture done when websocket texture received
-					}
-					else {
-						// unknown texture type
-						CI_LOG_V("unknown texture type");
-						TextureImageRef t(new TextureImage());
-						XmlTree		xml;
-						xml.setTag("details");
-						xml.setAttribute("path", "0.jpg");
-						xml.setAttribute("width", 1280);
-						xml.setAttribute("height", 720);
-						t->fromXml(xml);
-						mTextureList.push_back(t);
-					}
-				}
-			}
-		}*/
-	}
-	return isFirstLaunch;
+		
+	}*/
+	return true;// isFirstLaunch;
 }
 
 
@@ -1344,10 +1261,10 @@ bool VDSession::initTextureList() {
 		return mTextureList[aTextureIndex]->getTexture();
 	}
 
-}*/
+}
 ci::gl::TextureRef VDSession::getInputTexture(unsigned int aTextureIndex) {
 	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getTexture();
-}
+}*/
 /*ci::gl::TextureRef VDSession::getCachedTexture(unsigned int aTextureIndex, string aFilename) {
 	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getCachedTexture(aFilename);
 }

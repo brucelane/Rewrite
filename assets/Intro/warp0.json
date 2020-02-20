@@ -7,32 +7,32 @@
          "afboindex" : 0,
          "ashaderfilename" : "inputImage.fs",
          "ashaderindex" : 0,
-         "atexturefilename" : "",
+         "atexturefilename" : "help.jpg",
          "bfboindex" : 0,
          "brightness" : 1,
          "bshaderfilename" : "inputImage.fs",
          "bshaderindex" : 0,
-         "btexturefilename" : "",
+         "btexturefilename" : "help.jpg",
          "controlpoints" : [
             {
                "controlpoint" : 0,
-               "x" : 0.21875,
-               "y" : 0.69444399999999995
+               "x" : 0.0458333,
+               "y" : 0.43333300000000002
             },
             {
                "controlpoint" : 1,
-               "x" : 0.20277800000000001,
-               "y" : 0.88222199999999995
+               "x" : 0.018749999999999999,
+               "y" : 0.80333299999999996
             },
             {
                "controlpoint" : 2,
-               "x" : 0.84513899999999997,
-               "y" : 0.64222199999999996
+               "x" : 0.25902799999999998,
+               "y" : 0.43111100000000002
             },
             {
                "controlpoint" : 3,
-               "x" : 0.82777800000000001,
-               "y" : 0.85777800000000004
+               "x" : 0.26041700000000001,
+               "y" : 0.83222200000000002
             }
          ],
          "crossfade" : -431602080,

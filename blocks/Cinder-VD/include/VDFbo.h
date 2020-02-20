@@ -65,7 +65,7 @@ namespace videodromm
 		VDSettingsRef					mVDSettings;
 		//! Input textures
 
-		VDTextureList					mTextureList;
+		//VDTextureList					mTextureList;
 		gl::TextureRef					mTexture;
 		int								mInputTextureIndex;
 		//! shader
