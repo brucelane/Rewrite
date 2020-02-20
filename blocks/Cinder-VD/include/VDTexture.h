@@ -84,13 +84,15 @@ namespace videodromm
 		unsigned int					getOriginalWidth();
 		unsigned int					getOriginalHeight();
 		//!
-		virtual bool					fromXml(const ci::XmlTree &xml);
+		//virtual bool					fromXml(const ci::XmlTree &xml);
+		virtual bool					fromJson(const ci::JsonTree &json);
+		virtual ci::JsonTree			toJson() const;
 		//!
-		virtual XmlTree					toXml() const;
+		//virtual XmlTree					toXml() const;
 		//! read a xml file and pass back a vector of VDTextures
-		static VDTextureList			readSettings(VDAnimationRef aVDAnimation, const ci::DataSourceRef &source);
+		//static VDTextureList			readSettings(VDAnimationRef aVDAnimation, const ci::DataSourceRef &source);
 		//! write a xml file
-		static void						writeSettings(const VDTextureList &vdtexturelist, const ci::DataTargetRef &target);
+		//static void						writeSettings(const VDTextureList &vdtexturelist, const ci::DataTargetRef &target);
 		virtual bool					loadFromFullPath(string aPath);
 		string							getStatus() { return mStatus; };
 		//! area to display
@@ -160,9 +162,11 @@ namespace videodromm
 		//
 		static TextureImageRef	create() { return std::make_shared<TextureImage>(); }
 		//!
-		bool					fromXml(const XmlTree &xml) override;
+		//bool					fromXml(const XmlTree &xml) override;
+		bool					fromJson(const ci::JsonTree &json) override;
 		//!
-		virtual	XmlTree			toXml() const override;
+		virtual ci::JsonTree	toJson() const override;
+		//virtual	XmlTree		toXml() const override;
 		virtual bool			loadFromFullPath(string aPath) override;
 
 	public:
@@ -188,9 +192,11 @@ namespace videodromm
 		//
 		static TextureImageSequenceRef	create(VDAnimationRef aVDAnimation) { return std::make_shared<TextureImageSequence>(aVDAnimation); }
 		//!
-		bool					fromXml(const XmlTree &xml) override;
+		//bool					fromXml(const XmlTree &xml) override;
+		bool					fromJson(const ci::JsonTree &json) override;
 		//!
-		virtual	XmlTree			toXml() const override;
+		virtual ci::JsonTree	toJson() const override;
+		//virtual	XmlTree		toXml() const override;
 		//!
 		virtual bool			loadFromFullPath(string aPath) override;
 		TextureImageSequence(VDAnimationRef aVDAnimation);
@@ -251,9 +257,11 @@ namespace videodromm
 		//
 		static TextureCameraRef create() { return std::make_shared<TextureCamera>(); }
 		//!
-		bool				fromXml(const XmlTree &xml) override;
+		//bool				fromXml(const XmlTree &xml) override;
+		bool					fromJson(const ci::JsonTree &json) override;
 		//!
-		virtual	XmlTree	toXml() const override;
+		virtual ci::JsonTree	toJson() const override;
+		//virtual	XmlTree	toXml() const override;
 
 	public:
 		TextureCamera();
@@ -283,9 +291,11 @@ namespace videodromm
 		//
 		static TextureSharedRef create() { return std::make_shared<TextureShared>(); }
 		//!
-		bool				fromXml(const XmlTree &xml) override;
+		//bool				fromXml(const XmlTree &xml) override;
+		bool					fromJson(const ci::JsonTree &json) override;
 		//!
-		virtual	XmlTree	toXml() const override;
+		virtual ci::JsonTree	toJson() const override;
+		//virtual	XmlTree	toXml() const override;
 
 	public:
 		TextureShared();
@@ -320,9 +330,11 @@ namespace videodromm
 		//
 		static TextureAudioRef	create(VDAnimationRef aVDAnimation) { return std::make_shared<TextureAudio>(aVDAnimation); }
 		//!
-		bool					fromXml(const XmlTree &xml) override;
+		//bool					fromXml(const XmlTree &xml) override;
+		bool					fromJson(const ci::JsonTree &json) override;
 		//!
-		virtual	XmlTree			toXml() const override;
+		virtual ci::JsonTree	toJson() const override;
+		//virtual	XmlTree			toXml() const override;
 		//!
 		virtual bool			loadFromFullPath(string aPath) override;
 
@@ -375,9 +387,11 @@ namespace videodromm
 		//
 		static TextureStreamRef	create(VDAnimationRef aVDAnimation) { return std::make_shared<TextureStream>(aVDAnimation); }
 		//!
-		bool					fromXml(const XmlTree &xml) override;
+		//bool					fromXml(const XmlTree &xml) override;
+		bool					fromJson(const ci::JsonTree &json) override;
 		//!
-		virtual	XmlTree			toXml() const override;
+		virtual ci::JsonTree	toJson() const override;
+		//virtual	XmlTree			toXml() const override;
 		//!
 		virtual bool			loadFromFullPath(string aStream) override;
 

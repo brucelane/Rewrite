@@ -309,7 +309,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 				break;
 			}
 		}*/
-		for (int m = 0; m < mVDSession->getModesCount(); m++) {
+		/*for (int m = 0; m < mVDSession->getModesCount(); m++) {
 			if (m > 0) ImGui::SameLine();
 			ctrl = mVDSettings->IWEIGHT0 + m;
 			float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
@@ -326,28 +326,17 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			}
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(m / 7.0f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(m / 7.0f, 0.8f, 0.8f));
-		}
-		for (int m = 0; m < mVDSession->getModesCount(); m++) {
+			ImGui::PopStyleColor(3);
+		}*/
+		/*for (int m = 0; m < mVDSession->getModesCount(); m++) {
 			if (m > 0) ImGui::SameLine();
 
 			sprintf(buf, "%s##mode", mVDSession->getModeName(m).c_str());
 			if (ImGui::Button(buf)) mVDSession->setMode(m);
 			sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-			ImGui::PopStyleColor(3);
 		}
-		ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
-		ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
-		ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());
-		ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
-		/*hue++;
-
-		ImGui::RadioButton("Textures", &currentWindowRow2, 0); ImGui::SameLine();
-		ImGui::RadioButton("Fbos", &currentWindowRow2, 1); ImGui::SameLine();
-		ImGui::RadioButton("Shaders", &currentWindowRow2, 2); ImGui::SameLine();
-		ImGui::RadioButton("Blend", &currentWindowRow2, 3); */
-		
-		
+		*/
 		if (ImGui::TreeNode("Vertical Sliders"))
 		{
 			ImGui::Unindent();
@@ -363,6 +352,20 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			for (int m = 0; m < mVDSession->getModesCount(); m++)
 			{
 				if (m > 0) ImGui::SameLine();
+				if (mVDSession->getMode() == m) {
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 7.0f, 1.0f, 0.5f));
+				}
+				else {
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 7.0f, 0.1f, 0.1f));
+				}
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(m / 7.0f, 0.7f, 0.7f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(m / 7.0f, 0.8f, 0.8f));
+				sprintf(buf, "%s##mode", mVDSession->getModeName(m).c_str());
+				if (ImGui::Button(buf)) mVDSession->setMode(m);
+				sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
+				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
+				ImGui::PopStyleColor(3);
+ImGui::SameLine();
 				ctrl = mVDSettings->IWEIGHT0 + m;
 				float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
 				ImGui::PushID(m);
@@ -390,7 +393,16 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::TreePop();
 		}
 
+		ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
+		ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
+		ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());
+		ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
+		/*hue++;
 
+		ImGui::RadioButton("Textures", &currentWindowRow2, 0); ImGui::SameLine();
+		ImGui::RadioButton("Fbos", &currentWindowRow2, 1); ImGui::SameLine();
+		ImGui::RadioButton("Shaders", &currentWindowRow2, 2); ImGui::SameLine();
+		ImGui::RadioButton("Blend", &currentWindowRow2, 3); */
 
 		ImGui::PopItemWidth();
 	}

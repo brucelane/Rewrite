@@ -61,5 +61,8 @@ namespace videodromm
 		void							toggleValue(unsigned int aCtrl) {
 			mVDSession->toggleValue(aCtrl);
 		};
+		// mouse
+		float						mouseX, mouseY;
+		bool						mouseZ;
 	};
 }

@@ -2,12 +2,12 @@
    {
       "warp" : {
          "afboindex" : 1,
-         "ashaderfilename" : "ExplodedMandelbulb.fs",
+         "ashaderfilename" : "SphericalPolyhedra.fs",
          "ashaderindex" : 1,
          "atexturefilename" : "",
          "bfboindex" : 1,
          "brightness" : 1,
-         "bshaderfilename" : "ExplodedMandelbulb.fs",
+         "bshaderfilename" : "NoiseAnimation3D.fs",
          "bshaderindex" : 1,
          "btexturefilename" : "",
          "controlpoints" : [

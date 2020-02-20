@@ -58,7 +58,7 @@ namespace videodromm {
 	}
 	VDFbo::~VDFbo(void) {
 	}
-
+	
 	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
 		mValid = false;
 		// load fragment shader

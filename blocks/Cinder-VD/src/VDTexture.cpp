@@ -44,7 +44,7 @@ namespace videodromm {
 	VDTexture::~VDTexture(void) {
 
 	}
-	VDTextureList VDTexture::readSettings(VDAnimationRef aVDAnimation, const DataSourceRef &source)
+	/*VDTextureList VDTexture::readSettings(VDAnimationRef aVDAnimation, const DataSourceRef &source)
 	{
 		XmlTree			doc;
 		VDTextureList	vdtexturelist;
@@ -175,6 +175,10 @@ namespace videodromm {
 
 		// write file
 		doc.write(target);
+	}*/
+	/*bool VDTexture::fromXml(const XmlTree &xml)
+	{
+		return true;
 	}
 	XmlTree	VDTexture::toXml() const
 	{
@@ -185,11 +189,16 @@ namespace videodromm {
 		xml.setAttribute("height", mHeight);
 
 		return xml;
+	}*/
+
+	bool VDTexture::fromJson(const ci::JsonTree &json) { 
+		return true; 
 	}
 
-	bool VDTexture::fromXml(const XmlTree &xml)
-	{
-		return true;
+	ci::JsonTree VDTexture::toJson() const {
+		JsonTree		json;
+		json.addChild(ci::JsonTree("path", mPath));
+		return json;
 	}
 	void VDTexture::toggleLoadingFromDisk() {
 
@@ -307,7 +316,7 @@ namespace videodromm {
 	TextureImage::TextureImage() {
 		mType = IMAGE;
 	}
-	XmlTree	TextureImage::toXml() const {
+	/*XmlTree	TextureImage::toXml() const {
 		XmlTree xml = VDTexture::toXml();
 
 		// add attributes specific to this type of texture
@@ -327,6 +336,18 @@ namespace videodromm {
 			loadFromFullPath(fullPath.string());
 		}
 		return true;
+	}*/
+	bool TextureImage::fromJson(const ci::JsonTree &json) {
+		// useless VDTexture::fromJson(json);
+		// TODO 20200220 do not load into texturelist
+		mName = (json.hasChild("path")) ? json.getValueForKey<string>("path") : "0.jpg";
+		return true;
+	}
+
+	ci::JsonTree TextureImage::toJson() const {
+		JsonTree		json;
+		json.addChild(ci::JsonTree("path", mPath));
+		return json;
 	}
 	bool TextureImage::loadFromFullPath(string aPath) {
 		if (fs::exists(aPath)) {
@@ -462,7 +483,7 @@ namespace videodromm {
 		}
 		return validFile;
 	}
-	bool TextureImageSequence::fromXml(const XmlTree &xml)
+	/*bool TextureImageSequence::fromXml(const XmlTree &xml)
 	{
 		bool rtn = false;
 		// init		
@@ -487,6 +508,18 @@ namespace videodromm {
 		// add attributes specific to this type of texture
 		xml.setAttribute("path", mPath);
 		return xml;
+	}*/
+	bool TextureImageSequence::fromJson(const ci::JsonTree &json) {
+		// useless VDTexture::fromJson(json);
+		// TODO 20200220 do not load into texturelist
+		mName = (json.hasChild("path")) ? json.getValueForKey<string>("path") : "0.jpg";
+		return true;
+	}
+
+	ci::JsonTree TextureImageSequence::toJson() const {
+		JsonTree		json;
+		json.addChild(ci::JsonTree("path", mPath));
+		return json;
 	}
 	void TextureImageSequence::loadNextImageFromDisk() {
 		// can't pause if UI not ready anyways if (!mLoadingPaused) {
@@ -709,7 +742,7 @@ namespace videodromm {
 			CI_LOG_EXCEPTION("Failed to init capture ", exc);
 		}
 	}
-	bool TextureCamera::fromXml(const XmlTree &xml) {
+	/*bool TextureCamera::fromXml(const XmlTree &xml) {
 		// init		
 		mTexture = ci::gl::Texture::create(mWidth, mHeight, ci::gl::Texture::Format().loadTopDown());
 		// retrieve attributes specific to this type of texture
@@ -724,6 +757,18 @@ namespace videodromm {
 		xml.setAttribute("camera", mFirstCameraDeviceName);
 		xml.setAttribute("path", mPath);
 		return xml;
+	}*/
+	bool TextureCamera::fromJson(const ci::JsonTree &json) {
+		// useless VDTexture::fromJson(json);
+		// TODO 20200220 do not load into texturelist
+		string mName = "camera";
+		return true;
+	}
+
+	ci::JsonTree TextureCamera::toJson() const {
+		JsonTree		json;
+		json.addChild(ci::JsonTree("path", "camera"));
+		return json;
 	}
 	ci::gl::Texture2dRef TextureCamera::getTexture() {
 		if (mCapture && mCapture->checkNewFrame()) {
@@ -767,7 +812,7 @@ namespace videodromm {
 		mClientSyphon.bind();
 #endif
 	}
-	bool TextureShared::fromXml(const XmlTree &xml)
+	/*bool TextureShared::fromXml(const XmlTree &xml)
 	{
 		// init		
 		mTexture = ci::gl::Texture::create(mWidth, mHeight, ci::gl::Texture::Format().loadTopDown());
@@ -782,8 +827,21 @@ namespace videodromm {
 		// add attributes specific to this type of texture
 		xml.setAttribute("path", mPath);
 		return xml;
+	}*/
+	bool TextureShared::fromJson(const ci::JsonTree &json) {
+		// useless VDTexture::fromJson(json);
+		// TODO 20200220 do not load into texturelist
+		mName = "shared";
+		// init		
+		mTexture = ci::gl::Texture::create(mWidth, mHeight, ci::gl::Texture::Format().loadTopDown());
+		return true;
 	}
 
+	ci::JsonTree TextureShared::toJson() const {
+		JsonTree		json;
+		json.addChild(ci::JsonTree("path", mPath));
+		return json;
+	}
 	ci::gl::Texture2dRef TextureShared::getTexture() {
 #if defined( CINDER_MSW )
 
@@ -820,6 +878,17 @@ namespace videodromm {
 		for (int i = 0; i < 128; ++i) dTexture[i] = (unsigned char)(Rand::randUint() & 0xFF);
 		mTexture = gl::Texture::create(dTexture, GL_RED, 64, 2, fmt);
 	}
+	/*bool TextureAudio::fromXml(const XmlTree &xml)
+	{
+		VDTexture::fromXml(xml);
+		// retrieve attributes specific to this type of texture
+		// prevent linein not present crash mVDAnimation->setUseLineIn(xml.getAttributeValue<bool>("uselinein", "true"));
+		mName = (mVDAnimation->getUseLineIn()) ? "mic" : "wave";
+		auto fmt = gl::Texture2d::Format().swizzleMask(GL_RED, GL_RED, GL_RED, GL_ONE).internalFormat(GL_RED);
+		for (int i = 0; i < 128; ++i) dTexture[i] = (unsigned char)(Rand::randUint() & 0xFF);
+		mTexture = gl::Texture::create(dTexture, GL_RED, 64, 2, fmt);
+		return true;
+	}
 	XmlTree	TextureAudio::toXml() const {
 		XmlTree xml = VDTexture::toXml();
 
@@ -828,19 +897,25 @@ namespace videodromm {
 		xml.setAttribute("uselinein", mVDAnimation->getUseLineIn());
 
 		return xml;
-	}
-
-	bool TextureAudio::fromXml(const XmlTree &xml)
-	{
-		VDTexture::fromXml(xml);
-		// retrieve attributes specific to this type of texture
-		// prevent linein not present crash mVDAnimation->setUseLineIn(xml.getAttributeValue<bool>("uselinein", "true"));
-		mName = (mVDAnimation->getUseLineIn()) ? "line in" : "wave";
+	}*/
+	bool TextureAudio::fromJson(const ci::JsonTree &json) {
+		// useless VDTexture::fromJson(json);
+		// TODO 20200220 do not load into texturelist
+		mName = (mVDAnimation->getUseLineIn()) ? "mic" : "wave";
 		auto fmt = gl::Texture2d::Format().swizzleMask(GL_RED, GL_RED, GL_RED, GL_ONE).internalFormat(GL_RED);
 		for (int i = 0; i < 128; ++i) dTexture[i] = (unsigned char)(Rand::randUint() & 0xFF);
 		mTexture = gl::Texture::create(dTexture, GL_RED, 64, 2, fmt);
+		// init		
+		
 		return true;
 	}
+
+	ci::JsonTree TextureAudio::toJson() const {
+		JsonTree		json;
+		json.addChild(ci::JsonTree("path", mPath));
+		return json;
+	}
+	
 	bool TextureAudio::loadFromFullPath(string aPath)
 	{
 		CI_LOG_V("TextureAudio::loadFromFullPath: " + aPath);
@@ -1003,7 +1078,7 @@ namespace videodromm {
 		mName = "stream";
 		mTexture = gl::Texture::create(mWidth, mHeight);
 	}
-	XmlTree	TextureStream::toXml() const {
+	/*XmlTree	TextureStream::toXml() const {
 		XmlTree xml = VDTexture::toXml();
 
 		// add attributes specific to this type of texture
@@ -1017,6 +1092,20 @@ namespace videodromm {
 		// retrieve attributes specific to this type of texture
 		mTexture = gl::Texture::create(mWidth, mHeight);
 		return true;
+	}*/
+	bool TextureStream::fromJson(const ci::JsonTree &json) {
+		// useless VDTexture::fromJson(json);
+		// TODO 20200220 do not load into texturelist
+		mName = (json.hasChild("path")) ? json.getValueForKey<string>("path") : "stream";	
+		// init		
+		mTexture = gl::Texture::create(mWidth, mHeight);
+		return true;
+	}
+
+	ci::JsonTree TextureStream::toJson() const {
+		JsonTree		json;
+		json.addChild(ci::JsonTree("path", mPath));
+		return json;
 	}
 	bool TextureStream::loadFromFullPath(string aStream)
 	{

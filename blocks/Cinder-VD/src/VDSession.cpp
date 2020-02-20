@@ -56,9 +56,9 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mEnabledAlphaBlending = true;
 	// mix
 			// initialize the textures list with audio texture
-	mTexturesFilepath = getAssetPath("") / mVDSettings->mAssetsPath / "textures.xml";
+	mTexturesFilepath = getAssetPath("") / mVDSettings->mAssetsPath / "textures.xml";*/
 	initTextureList();
-
+	/*
 	// initialize the shaders list
 	initShaderList();
 	// check to see if VDSession.xml file exists and restore if it does
@@ -1102,6 +1102,11 @@ unsigned int VDSession::fboFromJson(const JsonTree &json) {
 	string shaderFileName = (json.hasChild("ashaderfilename")) ? json.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
 	string textureFileName = (json.hasChild("atexturefilename")) ? json.getValueForKey<string>("atexturefilename") : "0.jpg";
 	rtn = createFboShaderTexture(shaderFileName, textureFileName);
+	JsonTree		jsonTexture;
+	jsonTexture.addChild(ci::JsonTree("path", textureFileName));
+	TextureImageRef t(new TextureImage());
+	t->fromJson(jsonTexture);
+	mTextureList.push_back(t);
 	return rtn;
 }
 void VDSession::saveFbos()
@@ -1194,11 +1199,7 @@ unsigned int VDSession::createFboShaderTexture(string aShaderFilename, string aT
 	}*/
 	return rtn;
 }
-/*void VDSession::setFboInputTexture(unsigned int aFboIndex, unsigned int aInputTextureIndex) {
-	if (aFboIndex > mFboList.size() - 1) aFboIndex = mFboList.size() - 1;
-	if (aInputTextureIndex > mTextureList.size() - 1) aInputTextureIndex = mTextureList.size() - 1;
-	mFboList[aFboIndex]->setInputTexture(mTextureList, aInputTextureIndex);
-}
+/*
 unsigned int VDSession::getFboInputTextureIndex(unsigned int aFboIndex) {
 	if (aFboIndex > mFboList.size() - 1) aFboIndex = mFboList.size() - 1;
 	return mFboList[aFboIndex]->getInputTextureIndex();
@@ -1230,13 +1231,18 @@ void VDSession::initShaderList() {
 		createShaderFboFromString("void main(void){vec2 uv = gl_FragCoord.xy / iResolution.xy;fragColor = texture(iChannel0, uv);}", "tex1");
 	}
 }*/
-/*bool VDSession::initTextureList() {
+bool VDSession::initTextureList() {
 	bool isFirstLaunch = false;
 	if (mTextureList.size() == 0) {
 		CI_LOG_V("VDSession::init mTextureList");
 		isFirstLaunch = true;
 		// add an audio texture as first texture
+		JsonTree		jsonTexture;
+		jsonTexture.addChild(ci::JsonTree("path", "audio"));
 		TextureAudioRef t(new TextureAudio(mVDAnimation));
+		t->fromJson(jsonTexture);
+		mTextureList.push_back(t);
+		/*TextureAudioRef t(new TextureAudio(mVDAnimation));
 
 		// add texture xml
 		XmlTree			textureXml;
@@ -1319,10 +1325,10 @@ void VDSession::initShaderList() {
 					}
 				}
 			}
-		}
+		}*/
 	}
 	return isFirstLaunch;
-}*/
+}
 
 
 #pragma endregion mix
@@ -1339,15 +1345,13 @@ void VDSession::initShaderList() {
 	}
 
 }*/
-/*ci::gl::TextureRef VDSession::getInputTexture(unsigned int aTextureIndex) {
+ci::gl::TextureRef VDSession::getInputTexture(unsigned int aTextureIndex) {
 	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getTexture();
 }
-ci::gl::TextureRef VDSession::getCachedTexture(unsigned int aTextureIndex, string aFilename) {
+/*ci::gl::TextureRef VDSession::getCachedTexture(unsigned int aTextureIndex, string aFilename) {
 	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getCachedTexture(aFilename);
 }
-string VDSession::getInputTextureName(unsigned int aTextureIndex) {
-	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getName();
-}
+
 
 unsigned int VDSession::getInputTextureOriginalWidth(unsigned int aTextureIndex) {
 	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getOriginalWidth();

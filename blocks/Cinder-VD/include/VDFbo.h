@@ -41,24 +41,25 @@ namespace videodromm
 		Area getSrcArea() { 
 			return mSrcArea; 
 		};
-		bool							setFragmentString(string aFragmentShaderString, string aName = "");
-		bool							loadFragmentStringFromFile(string aFileName);		
-		bool							isValid() {
+		bool									setFragmentString(string aFragmentShaderString, string aName = "");
+		bool									loadFragmentStringFromFile(string aFileName);		
+		bool									isValid() {
 			return mValid; 
 		};
-		void							flipV() {
+		void									flipV() {
 			mVDAnimation->setBoolUniformValueByIndex(mVDSettings->IFLIPV, !mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV));
 		};
-		void							flipH() { 
+		void									flipH() { 
 			mVDAnimation->setBoolUniformValueByIndex(mVDSettings->IFLIPH, !mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH));
 		};
-		bool							isFlipH() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV); };
-		bool							isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };
-		std::string						getName() { return mShaderName; };
-		std::string						getTextureName() { return mTextureName; };
-		ci::gl::Texture2dRef			getInputTexture() { return mTexture; };
-		std::vector<ci::gl::GlslProg::Uniform> getUniforms() { return mUniforms; };
-		ci::JsonTree toJson(bool save = false) const;
+		bool									isFlipH() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV); };
+		bool									isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };
+		std::string								getName() { return mShaderName; };
+		std::string								getTextureName() { return mTextureName; };
+		ci::gl::Texture2dRef					getInputTexture() { return mTexture; };
+		void									setInputTexture(ci::gl::Texture2dRef aTextureRef) { mTexture = aTextureRef; };
+		std::vector<ci::gl::GlslProg::Uniform>	getUniforms() { return mUniforms; };
+		ci::JsonTree							toJson(bool save = false) const;
 	private:
 		// Settings
 		VDSettingsRef					mVDSettings;

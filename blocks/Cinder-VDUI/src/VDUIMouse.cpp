@@ -45,7 +45,7 @@ void VDUIMouse::Run(const char* title) {
 		{
 			setValue(mVDSettings->IMOUSEY, mouseY);
 		}
-		/*mouseZ ^= ImGui::Button("mouse click");
+		mouseZ ^= ImGui::Button("mouse click");
 		if (mouseZ)
 		{
 			setValue(mVDSettings->IMOUSEZ, 1.0f);
@@ -53,7 +53,7 @@ void VDUIMouse::Run(const char* title) {
 		else
 		{
 			setValue(mVDSettings->IMOUSEZ, 0.0f);
-		}*/
+		}
 	}
 	ImGui::End();
 #pragma endregion mouse

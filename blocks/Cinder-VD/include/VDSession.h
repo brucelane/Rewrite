@@ -41,7 +41,7 @@ namespace videodromm {
 		static VDSessionRef				create(VDSettingsRef aVDSettings);
 		bool							handleKeyDown(KeyEvent &event);
 		bool							handleKeyUp(KeyEvent &event);
-void							update(unsigned int aClassIndex = 0);
+		void							update(unsigned int aClassIndex = 0);
 		//!
 		/*void							fromXml(const ci::XmlTree &xml);
 
@@ -53,7 +53,7 @@ void							update(unsigned int aClassIndex = 0);
 		bool							handleMouseDrag(MouseEvent &event);
 		bool							handleMouseUp(MouseEvent &event);
 		void							resize(){mRenderFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);}
-		
+
 		bool							save();
 		void							restore();
 		void							reset();
@@ -199,7 +199,7 @@ void							update(unsigned int aClassIndex = 0);
 		void							updateShaderThumbFile(unsigned int aShaderIndex);
 		void							removeShader(unsigned int aShaderIndex);
 		// utils
-		
+
 		float							getTargetFps() { return mTargetFps; };
 		void							blendRenderEnable(bool render);
 
@@ -208,12 +208,15 @@ void							update(unsigned int aClassIndex = 0);
 		void							fileDrop(FileDropEvent event);
 
 		unsigned int					getFboInputTextureIndex(unsigned int aFboIndex) ;
-		void							setFboInputTexture(unsigned int aFboIndex, unsigned int aInputTextureIndex);
+		
 		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex = 0);
 		ci::gl::TextureRef				getFboThumb(unsigned int aBlendIndex) { return mBlendFbos[aBlendIndex]->getColorTexture(); };
 		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);
 		//int								getFboTextureWidth(unsigned int aFboIndex);
 		//int								getFboTextureHeight(unsigned int aFboIndex);*/
+		void VDSession::setFboInputTexture(unsigned int aFboIndex, unsigned int aInputTextureIndex) {
+			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->setInputTexture(mTextureList[aInputTextureIndex]->getTexture());
+		}
 		// utils
 		int								getWindowsResolution() {
 			return mVDUtils->getWindowsResolution();
@@ -291,11 +294,14 @@ void							update(unsigned int aClassIndex = 0);
 		// textures
 		unsigned int					getInputTexturesCount() {
 			return mTextureList.size();
-		}		
-		/*ci::gl::TextureRef				getInputTexture(unsigned int aTextureIndex);
-		ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, string aFilename);
+		}
+		string VDSession::getInputTextureName(unsigned int aTextureIndex) {
+			return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getName();
+		}
+		ci::gl::TextureRef				getInputTexture(unsigned int aTextureIndex);
+		/*ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, string aFilename);
 		//ci::gl::TextureRef				getNextInputTexture(unsigned int aTextureIndex);
-		string							getInputTextureName(unsigned int aTextureIndex);
+		
 		void							loadImageFile(string aFile, unsigned int aTextureIndex);
 		void							loadAudioFile(string aFile);
 		void							loadMovie(string aFile, unsigned int aTextureIndex);
@@ -498,8 +504,8 @@ void							update(unsigned int aClassIndex = 0);
 		void							initShaderList();*/
 		//! Textures
 		VDTextureList					mTextureList;
-		/*fs::path						mTexturesFilepath;
-		bool							initTextureList();*/
+		//fs::path						mTexturesFilepath;
+		bool							initTextureList();
 		//! Modes
 		map<int, string>				mModesList;
 		// blendmodes fbos

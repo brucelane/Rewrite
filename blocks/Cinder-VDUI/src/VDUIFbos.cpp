@@ -23,21 +23,21 @@ void VDUIFbos::Run(const char* title) {
 	static int YBottom[64];
 	static bool rnd[64];
 	static bool anim[64];
-	/*
-	for (int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
+
+	/*for (int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
 		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * t);
 		yPos = mVDSettings->uiYPosRow2;
 
 		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 		int hue = 0;
-		sprintf(buf, "%s##s%d", mVDSession->getInputTextureName(t).c_str(), t);
+		printf(buf, "%s##s%d", mVDSession->getInputTextureName(t).c_str(), t);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 			ImGui::PushID(t);
 			ImGui::Image((void*)mVDSession->getInputTexture(t)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth * 0.7);
+			/*ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth * 0.7);
 			// flip vertically
 			mVDSession->isFlipVInputTexture(t) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
@@ -227,8 +227,8 @@ void VDUIFbos::Run(const char* title) {
 			ImGui::PopItemWidth();
 		}
 		ImGui::End();
-	}
-	*/
+	}*/
+
 
 #pragma region mix
 	int w = 0;
@@ -299,7 +299,7 @@ void VDUIFbos::Run(const char* title) {
 	for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {
 		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * (f));//+1
 		yPos = mVDSettings->uiYPosRow2;
-		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH*2), ImGuiSetCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH * 2), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 
 		sprintf(buf, "%s##fbolbl%d", mVDSession->getFboName(f).c_str(), f);
@@ -332,7 +332,7 @@ void VDUIFbos::Run(const char* title) {
 					// sampler2d
 					sprintf(buf, "%s##texuniform%d", uName.c_str(), uc);
 					if (ImGui::Button(buf)) {
-						
+
 					}
 					break;
 				case 5126:
@@ -353,17 +353,31 @@ void VDUIFbos::Run(const char* title) {
 					break;
 				case 35665:
 					// vec3
-					sprintf(buf, "! %s %d##v3uniform%d", uName.c_str(), u.getType(), uc);
+					sprintf(buf, "vec3 %s %d##v3uniform%d", uName.c_str(), u.getType(), uc);
 					if (ImGui::Button(buf)) {
 
 					}
 					break;
 				case 35666:
 					// vec4
-					sprintf(buf, "! %s %d##v4uniform%d", uName.c_str(), u.getType(), uc);
+					sprintf(buf, "vec4 %s %d##v4uniform%d", uName.c_str(), u.getType(), uc);
 					if (ImGui::Button(buf)) {
 
 					}
+					if (ctrl == mVDSettings->IMOUSE) {
+						mouseX = getValue(mVDSettings->IMOUSEX);
+						if (ImGui::SliderFloat("MouseX", &mouseX, 0.0f, mVDSettings->mFboWidth, "%.4f", 3.0f))
+						{
+							setValue(mVDSettings->IMOUSEX, mouseX);
+						}
+						mouseY = getValue(mVDSettings->IMOUSEY);
+						if (ImGui::SliderFloat("MouseY", &mouseY, 0.0f, mVDSettings->mFboHeight, "%.4f", 0.3f))
+						{
+							setValue(mVDSettings->IMOUSEY, mouseY);
+						}
+					}
+
+
 					break;
 
 
@@ -374,9 +388,10 @@ void VDUIFbos::Run(const char* title) {
 						GL_FLOAT_VEC3                     0x8B51
 						GL_FLOAT_VEC4                     0x8B52
 					*/
-					sprintf(buf, "! %s %d##unknownuniform%d", uName.c_str(), u.getType(), uc);
-					if (ImGui::Button(buf)) {
-
+					if (uName != "ciModelViewProjection") {
+						sprintf(buf, "! %s %d##unknownuniform%d", uName.c_str(), u.getType(), uc);
+						if (ImGui::Button(buf)) {
+						}
 					}
 					break;
 				}
@@ -391,23 +406,25 @@ void VDUIFbos::Run(const char* title) {
 					*/
 					// causes loss of resolution: 
 					//if (ImGui::IsItemHovered()) mVDSession->getFboTexture(f);
-			for (unsigned int t = 0; t < mVDSession->getFboInputTexturesCount(f); t++) {
+			//for (unsigned int t = 0; t < mVDSession->getFboInputTexturesCount(f); t++) {
+			for (int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
 				if (t > 0 && (t % 6 != 0)) ImGui::SameLine();
 				//if (mVDSession->getFboInputTextureIndex(f) == t) {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
-				/*}
-				else {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
-				}
+					ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
+				//}
+				//else {
+				//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
+				//}
 
 				sprintf(buf, "%d##fboit%d%d", t, f, t);
 				if (ImGui::Button(buf)) mVDSession->setFboInputTexture(f, t);
 
 				sprintf(buf, "Set input texture to %s", mVDSession->getInputTextureName(t).c_str());
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);*/
+				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 				sprintf(buf, "%d##fboit%d%d", t, f, t);
 				if (ImGui::Button(buf)) mVDSession->getFboInputTextureName(f);
-				ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+
 				ImGui::PopStyleColor(1);
 			}
 			if (mVDSession->isFboFlipV(f)) {
