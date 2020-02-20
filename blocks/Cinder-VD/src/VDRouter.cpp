@@ -567,6 +567,7 @@ void VDRouter::closeMidiOutPort(int i) {
 
 void VDRouter::midiListener(midi::Message msg) {
 	stringstream ss;
+	ss << "MIDI port: " << mMidiIn0.getPortName(msg.port);
 	midiChannel = msg.channel;
 	switch (msg.status)
 	{
@@ -575,7 +576,7 @@ void VDRouter::midiListener(midi::Message msg) {
 		midiControl = msg.control;
 		midiValue = msg.value;
 		midiNormalizedValue = lmap<float>(midiValue, 0.0, 127.0, 0.0, 1.0);
-		ss << "MIDI cc Chn: " << midiChannel << " CC: " << midiControl  << " Val: " << midiValue << " NVal: " << midiNormalizedValue;
+		ss << " cc Chn: " << midiChannel << " CC: " << midiControl  << " Val: " << midiValue << " NVal: " << midiNormalizedValue;
 		CI_LOG_V("Midi: " + ss.str());
 
 		if (midiControl > 20 && midiControl < 49) {
@@ -614,8 +615,7 @@ void VDRouter::midiListener(midi::Message msg) {
 				mVDAnimation->setIntUniformValueByIndex(mVDSettings->IFBOB, mSelectedFboB);
 			}
 		*/
-		//midiControlType = "/on";
-		//midiPitch = msg.pitch;
+		midiControlType = "/on";
 		//midiVelocity = msg.velocity;
 		//midiNormalizedValue = lmap<float>(midiVelocity, 0.0, 127.0, 0.0, 1.0);
 		//// quick hack!
@@ -641,7 +641,7 @@ void VDRouter::midiListener(midi::Message msg) {
 		if (midiPitch > 17 && midiPitch < 24) {
 			mVDAnimation->setBoolUniformValueByIndex(midiPitch + 80-17, true);
 		}
-		ss << "MIDI noteon Chn: " << midiChannel << " Pitch: " << midiPitch;
+		ss << " noteon Chn: " << midiChannel << " Pitch: " << midiPitch;
 		CI_LOG_V("Midi: " + ss.str());
 		break;
 	case MIDI_NOTE_OFF:
@@ -662,14 +662,24 @@ void VDRouter::midiListener(midi::Message msg) {
 				mVDAnimation->setBoolUniformValueByIndex(midiPitch + 80, !midiStickyPrevValue);
 			}
 		}*/
-		ss << "MIDI noteoff Chn: " << midiChannel << " Pitch: " << midiPitch;
+		ss << " noteoff Chn: " << midiChannel << " Pitch: " << midiPitch;
 		CI_LOG_V("Midi: " + ss.str());
-		/*midiControlType = "/off";
-		midiPitch = msg.pitch;
+		midiControlType = "/off";
+		/*midiPitch = msg.pitch;
 		midiVelocity = msg.velocity;
 		midiNormalizedValue = lmap<float>(midiVelocity, 0.0, 127.0, 0.0, 1.0);*/
 		break;
+	case MIDI_PITCH_BEND:
+		midiControlType = "/pb";
+		midiControl = msg.control;
+		midiValue = msg.value;
+		midiNormalizedValue = lmap<float>(midiValue, 0.0, 127.0, 0.0, 1.0);
+		ss << " pb Chn: " << midiChannel << " CC: " << midiControl << " Val: " << midiValue << " NVal: " << midiNormalizedValue;
+		mVDAnimation->setFloatUniformValueByIndex(mVDSettings->IMOUSEX, midiValue);
+		break;
 	default:
+		ss << " unknown status: " << msg.status;
+		CI_LOG_V("Midi: " + ss.str());
 		break;
 	}
 	//ss << "MIDI Chn: " << midiChannel << " type: " << midiControlType << " CC: " << midiControl << " Pitch: " << midiPitch << " Vel: " << midiVelocity << " Val: " << midiValue << " NVal: " << midiNormalizedValue << std::endl;

@@ -187,7 +187,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		//createVec3Uniform("iChannelResolution[0]", 63, vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
 
 		// vec4
-		createVec4Uniform("iMouse", 70, vec4(320.0f, 240.0f, 0.0f, 0.0f));
+		createVec4Uniform("iMouse", mVDSettings->IMOUSE, vec4(320.0f, 240.0f, 0.0f, 0.0f));
 		createVec4Uniform("iDate", 71, vec4(2019.0f, 12.0f, 1.0f, 5.0f));
 
 		// boolean
@@ -205,8 +205,8 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createBoolUniform("iFlipV", mVDSettings->IFLIPV); // 103
 
 		// vec2
-		createVec2Uniform("resolution", mVDSettings->RESOLUTION, vec2(1280.0f, 720.0f)); // 120
-		createVec2Uniform("RENDERSIZE", 121, vec2(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"))); // 121
+		createVec2Uniform("resolution", mVDSettings->RESOLUTION, vec2(1280.0f, 720.0f)); // hydra 120
+		createVec2Uniform("RENDERSIZE", 121, vec2(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"))); // isf 121
 
 		// floats for warps
 		// srcArea 

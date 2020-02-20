@@ -346,7 +346,49 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Fbos", &currentWindowRow2, 1); ImGui::SameLine();
 		ImGui::RadioButton("Shaders", &currentWindowRow2, 2); ImGui::SameLine();
 		ImGui::RadioButton("Blend", &currentWindowRow2, 3); */
+		
+		
+		if (ImGui::TreeNode("Vertical Sliders"))
+		{
+			ImGui::Unindent();
+			const float spacing = 4;
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
+/*
+			static int int_value = 0;
+			ImGui::VSliderInt("##int", ImVec2(18, 160), &int_value, 0, 5);
+			ImGui::SameLine();
+*/
+			//static float values[7] = { 0.0f, 0.60f, 0.35f, 0.9f, 0.70f, 0.20f, 0.0f };
+			ImGui::PushID("set1");
+			for (int m = 0; m < mVDSession->getModesCount(); m++)
+			{
+				if (m > 0) ImGui::SameLine();
+				ctrl = mVDSettings->IWEIGHT0 + m;
+				float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
+				ImGui::PushID(m);
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 7.0f, 0.5f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 7.0f, 0.6f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 7.0f, 0.7f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 7.0f, 0.9f, 0.9f));
+				if (ImGui::VSliderFloat("##v", ImVec2(18, 160), &iWeight, 0.0f, 1.0f, ""))
+				{
+					setValue(ctrl, iWeight);
+				};
+				if (ImGui::IsItemActive() || ImGui::IsItemHovered())
+					ImGui::SetTooltip("%.3f", iWeight);
+				ImGui::PopStyleColor(4);
+				ImGui::PopID();
+			}
+			ImGui::PopID();
+			
+			
+			ImGui::PopStyleVar();
 
+			ImGui::Indent();
+
+			ImGui::Indent();
+			ImGui::TreePop();
+		}
 
 
 

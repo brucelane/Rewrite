@@ -299,7 +299,7 @@ void VDUIFbos::Run(const char* title) {
 	for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {
 		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * (f));//+1
 		yPos = mVDSettings->uiYPosRow2;
-		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
+		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH*2), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 
 		sprintf(buf, "%s##fbolbl%d", mVDSession->getFboName(f).c_str(), f);
@@ -314,11 +314,10 @@ void VDUIFbos::Run(const char* title) {
 			int hue = 0;
 			for (auto u : mVDSession->getUniforms(f)) {
 				string uName = u.getName();
-					ctrl = mVDSession->getUniformIndexForName(uName);
+				ctrl = mVDSession->getUniformIndexForName(uName);
 				switch (u.getType()) {
 				case 35670:
 					// boolean
-
 					(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
@@ -331,6 +330,10 @@ void VDUIFbos::Run(const char* title) {
 					break;
 				case 35678:
 					// sampler2d
+					sprintf(buf, "%s##texuniform%d", uName.c_str(), uc);
+					if (ImGui::Button(buf)) {
+						
+					}
 					break;
 				case 5126:
 					// float
@@ -343,14 +346,37 @@ void VDUIFbos::Run(const char* title) {
 					break;
 				case 35664:
 					// vec2
+					sprintf(buf, "vec2 %s %d##v2uniform%d", uName.c_str(), u.getType(), uc);
+					if (ImGui::Button(buf)) {
+
+					}
+					break;
+				case 35665:
+					// vec3
+					sprintf(buf, "! %s %d##v3uniform%d", uName.c_str(), u.getType(), uc);
+					if (ImGui::Button(buf)) {
+
+					}
+					break;
+				case 35666:
+					// vec4
+					sprintf(buf, "! %s %d##v4uniform%d", uName.c_str(), u.getType(), uc);
+					if (ImGui::Button(buf)) {
+
+					}
 					break;
 
-				default:
 
+				default:
 					//ciModelViewProjection 35676
-					sprintf(buf, "unknown%s%d##unknownuniform%d", uName.c_str(), u.getType(), uc);
+					/* gl2.h
+						GL_FLOAT_VEC2                     0x8B50
+						GL_FLOAT_VEC3                     0x8B51
+						GL_FLOAT_VEC4                     0x8B52
+					*/
+					sprintf(buf, "! %s %d##unknownuniform%d", uName.c_str(), u.getType(), uc);
 					if (ImGui::Button(buf)) {
-						
+
 					}
 					break;
 				}
@@ -363,8 +389,8 @@ void VDUIFbos::Run(const char* title) {
 |verbose| videodromm::VDFbo::getFboTexture[177] , getShader uniform name:iFlipV, type:35670
 |verbose| videodromm::VDFbo::getFboTexture[177] , getShader uniform name:inputImage, type:35678
 					*/
-			// causes loss of resolution: 
-			//if (ImGui::IsItemHovered()) mVDSession->getFboTexture(f);
+					// causes loss of resolution: 
+					//if (ImGui::IsItemHovered()) mVDSession->getFboTexture(f);
 			for (unsigned int t = 0; t < mVDSession->getFboInputTexturesCount(f); t++) {
 				if (t > 0 && (t % 6 != 0)) ImGui::SameLine();
 				//if (mVDSession->getFboInputTextureIndex(f) == t) {
