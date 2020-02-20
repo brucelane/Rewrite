@@ -260,6 +260,7 @@ namespace videodromm {
 	{
 		JsonTree		json;
 		json.addChild(ci::JsonTree("shadername", mShaderName));
+		json.addChild(ci::JsonTree("shadertype", "fs"));
 		json.addChild(ci::JsonTree("texturename", mTextureName));
 		if (save) {
 			string jsonFileName = mShaderName + ".json";
