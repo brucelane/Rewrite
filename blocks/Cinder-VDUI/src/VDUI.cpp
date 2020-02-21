@@ -165,12 +165,12 @@ void VDUI::Run(const char* title, unsigned int fps) {
 
 		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 		ImGui::SameLine();
-/*		ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(0))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->getMixTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(1))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-		*/
+		/*		ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(0))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::SameLine();
+				ImGui::Image((void*)mVDSession->getMixTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::SameLine();
+				ImGui::Image((void*)mVDSession->getFboRenderedTexture(mVDSession->getFboFragmentShaderIndex(1))->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				*/
 
 
 		multx = mVDSession->getFloatUniformValueByIndex(mVDSettings->IAUDIOX); // 13
@@ -214,7 +214,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			mVDSession->flipH();
 		}
 		ImGui::PopStyleColor(3);
-		
+
 		// shaders A
 		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
 			int f = 0;
@@ -273,8 +273,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Color", &currentWindowRow1, 5); ImGui::SameLine();
 		ImGui::RadioButton("Network", &currentWindowRow1, 6); ImGui::SameLine();
 		ImGui::RadioButton("Hydra", &currentWindowRow1, 7); ImGui::SameLine();
-		ImGui::RadioButton("Midi", &currentWindowRow1, 8); 
-	
+		ImGui::RadioButton("Midi", &currentWindowRow1, 8);
+
 		// modes
 		/*for (int m = 0; m < mVDSession->getModesCount(); m++) {
 			if (m > 0) ImGui::SameLine();
@@ -342,13 +342,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::Unindent();
 			const float spacing = 4;
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
-/*
-			static int int_value = 0;
-			ImGui::VSliderInt("##int", ImVec2(18, 160), &int_value, 0, 5);
-			ImGui::SameLine();
-*/
-			//static float values[7] = { 0.0f, 0.60f, 0.35f, 0.9f, 0.70f, 0.20f, 0.0f };
-			ImGui::PushID("set1");
+			
+			ImGui::PushID("fbomixes");
 			for (int m = 0; m < mVDSession->getModesCount(); m++)
 			{
 				if (m > 0) ImGui::SameLine();
@@ -365,7 +360,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 				sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 				ImGui::PopStyleColor(3);
-ImGui::SameLine();
+				ImGui::SameLine();
 				ctrl = mVDSettings->IWEIGHT0 + m;
 				float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
 				ImGui::PushID(m);
@@ -373,7 +368,7 @@ ImGui::SameLine();
 				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 7.0f, 0.6f, 0.5f));
 				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 7.0f, 0.7f, 0.5f));
 				ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 7.0f, 0.9f, 0.9f));
-				if (ImGui::VSliderFloat("##v", ImVec2(18, 160), &iWeight, 0.0f, 1.0f, ""))
+				if (ImGui::VSliderFloat("##v", ImVec2(18, 60), &iWeight, 0.0f, 1.0f, ""))
 				{
 					setValue(ctrl, iWeight);
 				};
@@ -383,8 +378,8 @@ ImGui::SameLine();
 				ImGui::PopID();
 			}
 			ImGui::PopID();
-			
-			
+
+
 			ImGui::PopStyleVar();
 
 			ImGui::Indent();
@@ -455,7 +450,7 @@ ImGui::SameLine();
 	mUITextures->Run("Textures");
 	// Fbos
 	mUIFbos->Run("Fbos");
-	
+
 	// Shaders
 	//mUIShaders->Run("Shaders");
 

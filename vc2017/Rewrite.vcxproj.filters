@@ -428,6 +428,9 @@
     <Xml Include="x64\Debug\VDRewrite.xml">
       <Filter>debug</Filter>
     </Xml>
+    <Xml Include="x64\Release\VDRewrite.xml">
+      <Filter>release</Filter>
+    </Xml>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\assets\Intro\warp0.json">

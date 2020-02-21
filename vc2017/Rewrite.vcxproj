@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="x64\Debug\VDRewrite.xml" />
+    <Xml Include="x64\Release\VDRewrite.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\assets\Intro\default.fs" />

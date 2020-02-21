@@ -310,7 +310,7 @@ void VDUIFbos::Run(const char* title) {
 			ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			// uniforms
 			//std::vector<ci::gl::GlslProg::Uniform> u = mVDSession->getUniforms(f);
-			int uc = 0;
+
 			int hue = 0;
 			for (auto u : mVDSession->getUniforms(f)) {
 				string uName = u.getName();
@@ -318,19 +318,35 @@ void VDUIFbos::Run(const char* title) {
 				switch (u.getType()) {
 				case 35670:
 					// boolean
-					(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
-					sprintf(buf, "%s##booluniform%d", uName.c_str(), uc);
-					if (ImGui::Button(buf)) {
-						toggleValue(ctrl);
+					if (uName=="iFlipV") {
+						if (mVDSession->isFboFlipV(f)) {
+							ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(f / 7.0f, 1.0f, 1.0f));
+						}
+						else {
+							ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(f / 7.0f, 0.1f, 0.1f));
+						}
+						ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(f / 7.0f, 0.7f, 0.7f));
+						ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(f / 7.0f, 0.8f, 0.8f));
+						sprintf(buf, "FlipV##fboflipv%d", f);
+						if (ImGui::Button(buf)) mVDSession->fboFlipV(f);
+						ImGui::PopStyleColor(3);
 					}
-					ImGui::PopStyleColor(3);
+					else {
+						(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+						ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
+						ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+						sprintf(buf, "%s##booluniform%d", uName.c_str(), f);
+						if (ImGui::Button(buf)) {
+							toggleValue(ctrl);
+						}
+						ImGui::PopStyleColor(3);
+
+					}
 					hue++;
 					break;
 				case 35678:
 					// sampler2d
-					sprintf(buf, "%s##texuniform%d", uName.c_str(), uc);
+					sprintf(buf, "%s##texuniform%d", uName.c_str(), f);
 					if (ImGui::Button(buf)) {
 
 					}
@@ -338,7 +354,7 @@ void VDUIFbos::Run(const char* title) {
 				case 5126:
 					// float
 					localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
-					sprintf(buf, "%s##floatuniform%d", uName.c_str(), uc);
+					sprintf(buf, "%s##floatuniform%d", uName.c_str(), f);
 					if (ImGui::DragFloat(buf, &localValues[ctrl], 0.1f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 					{
 						setValue(ctrl, localValues[ctrl]);
@@ -346,21 +362,21 @@ void VDUIFbos::Run(const char* title) {
 					break;
 				case 35664:
 					// vec2
-					sprintf(buf, "vec2 %s %d##v2uniform%d", uName.c_str(), u.getType(), uc);
+					sprintf(buf, "vec2 %s %d##v2uniform%d", uName.c_str(), u.getType(), f);
 					if (ImGui::Button(buf)) {
 
 					}
 					break;
 				case 35665:
 					// vec3
-					sprintf(buf, "vec3 %s %d##v3uniform%d", uName.c_str(), u.getType(), uc);
+					sprintf(buf, "vec3 %s %d##v3uniform%d", uName.c_str(), u.getType(), f);
 					if (ImGui::Button(buf)) {
 
 					}
 					break;
 				case 35666:
 					// vec4
-					sprintf(buf, "vec4 %s %d##v4uniform%d", uName.c_str(), u.getType(), uc);
+					sprintf(buf, "vec4 %s %d##v4uniform%d", uName.c_str(), u.getType(), f);
 					if (ImGui::Button(buf)) {
 
 					}
@@ -389,55 +405,20 @@ void VDUIFbos::Run(const char* title) {
 						GL_FLOAT_VEC4                     0x8B52
 					*/
 					if (uName != "ciModelViewProjection") {
-						sprintf(buf, "! %s %d##unknownuniform%d", uName.c_str(), u.getType(), uc);
+						sprintf(buf, "! %s %d##unknownuniform%d", uName.c_str(), u.getType(), f);
 						if (ImGui::Button(buf)) {
 						}
 					}
 					break;
 				}
-				uc++;
+
 			} //for uniforms
 
-				/*
-				|verbose| videodromm::VDFbo::getFboTexture[177] , getShader uniform name:RENDERSIZE, type:35664
-|verbose| videodromm::VDFbo::getFboTexture[177] , getShader uniform name:iFlipH, type:35670
-|verbose| videodromm::VDFbo::getFboTexture[177] , getShader uniform name:iFlipV, type:35670
-|verbose| videodromm::VDFbo::getFboTexture[177] , getShader uniform name:inputImage, type:35678
-					*/
-					// causes loss of resolution: 
-					//if (ImGui::IsItemHovered()) mVDSession->getFboTexture(f);
-			//for (unsigned int t = 0; t < mVDSession->getFboInputTexturesCount(f); t++) {
-			/*for (int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
-				if (t > 0 && (t % 6 != 0)) ImGui::SameLine();*/
-				//if (mVDSession->getFboInputTextureIndex(f) == t) {
-					ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-				//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
-				//}
-				//else {
-				//	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
-				//}
+			ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			sprintf(buf, "%s", mVDSession->getFboInputTextureName(f).c_str());
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 
-				//sprintf(buf, "%d##fboit%d%d", t, f, t);
-				//if (ImGui::Button(buf)) mVDSession->setFboInputTexture(f, t);
-
-				//sprintf(buf, "Set input texture to %s", mVDSession->getInputTextureName(t).c_str());
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-				//sprintf(buf, "%d##fboit%d%d", t, f, t);
-				if (ImGui::Button(buf)) mVDSession->getFboInputTextureName(f);
-
-				//ImGui::PopStyleColor(1);
-			//}
-			if (mVDSession->isFboFlipV(f)) {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(f / 7.0f, 1.0f, 1.0f));
-			}
-			else {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(f / 7.0f, 0.1f, 0.1f));
-			}
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(f / 7.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(f / 7.0f, 0.8f, 0.8f));
-			sprintf(buf, "FlipV##fboflipv%d", f);
-			if (ImGui::Button(buf)) mVDSession->fboFlipV(f);
-			ImGui::PopStyleColor(3);
+			
 			/*ImGui::SameLine();
 			sprintf(buf, "T##fboupd%d", f);
 			i/f (ImGui::Button(buf)) mVDSession->updateShaderThumbFile(f);*

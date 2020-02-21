@@ -46,17 +46,14 @@ public:
 	void cleanup() override;
 	void update() override;
 	void draw() override;
-
 	void resize() override;
-
 	void mouseMove(MouseEvent event) override;
 	void mouseDown(MouseEvent event) override;
 	void mouseDrag(MouseEvent event) override;
 	void mouseUp(MouseEvent event) override;
-
 	void keyDown(KeyEvent event) override;
 	void keyUp(KeyEvent event) override;
-
+	void fileDrop(FileDropEvent event) override;
 private:
 	// Settings
 	VDSettingsRef					mVDSettings;
@@ -164,6 +161,10 @@ void RewriteApp::toggleCursorVisibility(bool visible)
 	}
 }
 
+void RewriteApp::fileDrop(FileDropEvent event)
+{
+	mVDSession->fileDrop(event);
+}
 
 void RewriteApp::resize()
 {

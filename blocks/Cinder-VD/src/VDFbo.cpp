@@ -259,9 +259,13 @@ namespace videodromm {
 	JsonTree	VDFbo::toJson(bool save) const
 	{
 		JsonTree		json;
-		json.addChild(ci::JsonTree("shadername", mShaderName));
+		JsonTree shader = ci::JsonTree::makeArray("shader");
+		shader.addChild(ci::JsonTree("shadername", mShaderName));
+		shader.pushBack(ci::JsonTree("shadertype", "fs"));
+		json.addChild(shader);
+		/*json.addChild(ci::JsonTree("shadername", mShaderName));
 		json.addChild(ci::JsonTree("shadertype", "fs"));
-		json.addChild(ci::JsonTree("texturename", mTextureName));
+		json.addChild(ci::JsonTree("texturename", mTextureName));*/
 		if (save) {
 			string jsonFileName = mShaderName + ".json";
 			fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;

@@ -491,7 +491,7 @@ void VDSession::update(unsigned int aClassIndex) {
 	void VDSession::blendRenderEnable(bool render) {
 		mVDAnimation->blendRenderEnable(render);
 	}
-
+	*/
 	void VDSession::fileDrop(FileDropEvent event) {
 		string ext = "";
 		//string fileName = "";
@@ -508,9 +508,18 @@ void VDSession::update(unsigned int aClassIndex) {
 		if (dotIndex != std::string::npos && dotIndex > slashIndex) {
 			ext = absolutePath.substr(dotIndex + 1);
 			//fileName = absolutePath.substr(slashIndex + 1, dotIndex - slashIndex - 1);
-
-
-			if (ext == "wav" || ext == "mp3") {
+			if (ext == "json") {
+				JsonTree json(loadFile(absolutePath));
+				
+				if (json[0].hasChild("shader")) {
+					JsonTree shaderJsonTree(json[0].getChild("warp"));
+					string shaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
+					string textureFileName = (shaderJsonTree.hasChild("texturename")) ? shaderJsonTree.getValueForKey<string>("texturename") : "0.jpg";
+					//loadJson(absolutePath, index);
+					fboFromJson(shaderJsonTree);
+				}
+			}
+			/*else if (ext == "wav" || ext == "mp3") {
 				loadAudioFile(absolutePath);
 			}
 			else if (ext == "png" || ext == "jpg") {
@@ -521,6 +530,7 @@ void VDSession::update(unsigned int aClassIndex) {
 			else if (ext == "glsl" || ext == "frag" || ext == "fs") {
 				loadFragmentShader(absolutePath, index);
 			}
+			
 			else if (ext == "xml") {
 			}
 			else if (ext == "json") {
@@ -537,9 +547,10 @@ void VDSession::update(unsigned int aClassIndex) {
 					// try to load a folder of shaders
 					loadShaderFolder(absolutePath);
 				}
-			}
+			}*/
 		}
 	}
+	/*
 	#pragma region events
 	bool VDSession::handleMouseMove(MouseEvent &event)
 	{

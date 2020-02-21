@@ -205,7 +205,6 @@ namespace videodromm {
 
 		// file operations (filedrop, etc)
 		//int								loadFileFromAbsolutePath(string aAbsolutePath, int aIndex = 0);
-		void							fileDrop(FileDropEvent event);
 
 		unsigned int					getFboInputTextureIndex(unsigned int aFboIndex) ;
 		
@@ -214,6 +213,7 @@ namespace videodromm {
 		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);
 		//int								getFboTextureWidth(unsigned int aFboIndex);
 		//int								getFboTextureHeight(unsigned int aFboIndex);*/
+		void							fileDrop(FileDropEvent event);
 		void VDSession::setFboInputTexture(unsigned int aFboIndex, unsigned int aInputTextureIndex) {
 			//mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->setInputTexture(mTextureList[aInputTextureIndex]->getTexture());
 		}
@@ -298,7 +298,7 @@ namespace videodromm {
 		string VDSession::getInputTextureName(unsigned int aTextureIndex) {
 			return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getName();
 		}*/
-		ci::gl::TextureRef				getInputTexture(unsigned int aTextureIndex);
+		//ci::gl::TextureRef				getInputTexture(unsigned int aTextureIndex);
 		/*ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, string aFilename);
 		//ci::gl::TextureRef				getNextInputTexture(unsigned int aTextureIndex);
 		

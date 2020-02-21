@@ -90,10 +90,10 @@ namespace videodromm {
 		static const int			IBEATSPERBAR = 59;
 		static const int			IMOUSE = 70;
 		// booleans 80 to 110
-		static const int			IGLITCH = 81;
-		static const int			IVIGN = 82;
-		static const int			ITOGGLE = 83;
-		static const int			IINVERT = 86;
+		static const int			IGLITCH = 81;	// A4
+		static const int			IVIGN = 82;		// A#4
+		static const int			ITOGGLE = 83;	// B4
+		static const int			IINVERT = 86;	// D5
 		static const int			IFLIPH = 100;
 		static const int			IXORY = 101;
 		static const int			IFLIPV = 103;
