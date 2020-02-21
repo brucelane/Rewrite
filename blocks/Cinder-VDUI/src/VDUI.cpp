@@ -444,7 +444,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		mUIMidi->Run("Midi");
 		break;
 	}
-	//mVDSession->blendRenderEnable(currentWindowRow1 == 3);
+	mVDSession->blendRenderEnable(currentWindowRow1 == 3);
 
 	// textures
 	mUITextures->Run("Textures");

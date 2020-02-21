@@ -135,8 +135,8 @@ void RewriteApp::loadWarps() {
 				JsonTree warpJsonTree(json[0].getChild("warp"));
 				string shaderFileName = (warpJsonTree.hasChild("ashaderfilename")) ? warpJsonTree.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
 				string textureFileName = (warpJsonTree.hasChild("atexturefilename")) ? warpJsonTree.getValueForKey<string>("atexturefilename") : "0.jpg";
-				//mVDSession->createFboShaderTexture(shaderFileName, textureFileName);
-				mVDSession->fboFromJson(warpJsonTree);
+				mVDSession->createFboShaderTexture(shaderFileName, textureFileName);
+				//mVDSession->fboFromJson(warpJsonTree);
 				warp->setAFboIndex(i) ;
 				warp->setBFboIndex(i);
 				warp->setAShaderIndex(i);

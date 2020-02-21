@@ -6,6 +6,7 @@ namespace videodromm {
 	{
 		CI_LOG_V("VDFbo constructor");
 		mShaderName = aShaderFilename;
+		mShaderFileName = aShaderFilename;
 		mTextureName = aTextureFilename;
 		shaderInclude = "#version 150\n"
 			"// shadertoy specific\n"
@@ -260,9 +261,13 @@ namespace videodromm {
 	{
 		JsonTree		json;
 		JsonTree shader = ci::JsonTree::makeArray("shader");
-		shader.addChild(ci::JsonTree("shadername", mShaderName));
+		shader.addChild(ci::JsonTree("shadername", mShaderFileName));
 		shader.pushBack(ci::JsonTree("shadertype", "fs"));
 		json.addChild(shader);
+		JsonTree texture = ci::JsonTree::makeArray("texture");
+		texture.addChild(ci::JsonTree("texturename", mTextureName));
+		texture.pushBack(ci::JsonTree("texturetype", "image"));
+		json.addChild(texture);
 		/*json.addChild(ci::JsonTree("shadername", mShaderName));
 		json.addChild(ci::JsonTree("shadertype", "fs"));
 		json.addChild(ci::JsonTree("texturename", mTextureName));*/

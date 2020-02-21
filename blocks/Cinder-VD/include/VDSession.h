@@ -43,6 +43,8 @@ namespace videodromm {
 		bool							handleKeyUp(KeyEvent &event);
 		void							update(unsigned int aClassIndex = 0);
 		//!
+		void							reset();
+		void							resetSomeParams();
 		/*void							fromXml(const ci::XmlTree &xml);
 
 		//! read a xml file and pass back a vector of VDMixs
@@ -56,8 +58,6 @@ namespace videodromm {
 
 		bool							save();
 		void							restore();
-		void							reset();
-		void							resetSomeParams();
 
 		string							getWaveFileName() { return mWaveFileName; };
 		int								getWavePlaybackDelay() { return mWavePlaybackDelay; };
@@ -198,10 +198,6 @@ namespace videodromm {
 		string							getHydraFragmentShaderString();
 		void							updateShaderThumbFile(unsigned int aShaderIndex);
 		void							removeShader(unsigned int aShaderIndex);
-		// utils
-
-		float							getTargetFps() { return mTargetFps; };
-		void							blendRenderEnable(bool render);
 
 		// file operations (filedrop, etc)
 		//int								loadFileFromAbsolutePath(string aAbsolutePath, int aIndex = 0);
@@ -213,6 +209,10 @@ namespace videodromm {
 		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);
 		//int								getFboTextureWidth(unsigned int aFboIndex);
 		//int								getFboTextureHeight(unsigned int aFboIndex);*/
+		// utils
+
+		float							getTargetFps() { return mTargetFps; };
+		void							blendRenderEnable(bool render);
 		void							fileDrop(FileDropEvent event);
 		void VDSession::setFboInputTexture(unsigned int aFboIndex, unsigned int aInputTextureIndex) {
 			//mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->setInputTexture(mTextureList[aInputTextureIndex]->getTexture());
@@ -510,8 +510,8 @@ namespace videodromm {
 		map<int, string>				mModesList;
 		// blendmodes fbos
 		map<int, ci::gl::FboRef>		mBlendFbos;
-		/*int								mCurrentBlend;
-		gl::GlslProgRef					mGlslMix, mGlslBlend, mGlslFeedback, mGlslMixette;
+		int								mCurrentBlend;
+		/*gl::GlslProgRef					mGlslMix, mGlslBlend, mGlslFeedback, mGlslMixette;
 		// render
 		void							renderMix();
 		void							renderBlend();

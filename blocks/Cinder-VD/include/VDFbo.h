@@ -72,6 +72,7 @@ namespace videodromm
 		gl::GlslProgRef					mShader;
 		std::vector<ci::gl::GlslProg::Uniform> mUniforms;
 		string							mShaderName = "";
+		string							mShaderFileName = "";
 		string							mTextureName = "";
 		std::string						mFragmentShaderString;
 		std::string						mFileNameWithExtension;

@@ -42,22 +42,23 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mVDWebsocket = VDWebsocket::create(mVDSettings, mVDAnimation);
 	// Message router
 	mVDRouter = VDRouter::create(mVDSettings, mVDAnimation, mVDWebsocket);
+	// reset no matter what, so we don't miss anything
+	cmd = -1;
+	mFreqWSSend = false;
+	reset();
 	// warping
 	/*gl::enableDepthRead();
 	gl::enableDepthWrite();
 
-	// reset no matter what, so we don't miss anything
-	reset();
-
-
-
-	cmd = -1;
-	mFreqWSSend = false;
 	mEnabledAlphaBlending = true;
+
+
+
 	// mix
 			// initialize the textures list with audio texture
 	mTexturesFilepath = getAssetPath("") / mVDSettings->mAssetsPath / "textures.xml";*/
 	initTextureList();
+	mCurrentBlend = 0;
 	/*
 	// initialize the shaders list
 	initShaderList();
@@ -84,7 +85,6 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mRenderFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);
 	mMixetteFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);
 
-	mCurrentBlend = 0;
 	for (size_t i = 0; i < mVDAnimation->getBlendModesCount(); i++)
 	{
 		mBlendFbos[i] = gl::Fbo::create(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight, fboFmt);
@@ -461,7 +461,7 @@ void VDSession::update(unsigned int aClassIndex) {
 			CI_LOG_W(exc.what());
 		}
 	}
-
+*/
 	void VDSession::resetSomeParams() {
 		// parameters not exposed in json file
 		mFpb = 16;
@@ -473,6 +473,7 @@ void VDSession::update(unsigned int aClassIndex) {
 	{
 		// parameters exposed in json file
 		mOriginalBpm = 166;
+		/* TODO 20200221 
 		mWaveFileName = "";
 		mWavePlaybackDelay = 10;
 		mMovieFileName = "";
@@ -480,10 +481,10 @@ void VDSession::update(unsigned int aClassIndex) {
 		mMoviePlaybackDelay = 10;
 		mFadeInDelay = 5;
 		mFadeOutDelay = 1;
-		mVDAnimation->mEndFrame = 20000000;
 		mText = "";
 		mTextPlaybackDelay = 10;
-		mTextPlaybackEnd = 2020000;
+		mTextPlaybackEnd = 2020000;*/
+		mVDAnimation->mEndFrame = 20000000;
 
 		resetSomeParams();
 	}
@@ -491,7 +492,7 @@ void VDSession::update(unsigned int aClassIndex) {
 	void VDSession::blendRenderEnable(bool render) {
 		mVDAnimation->blendRenderEnable(render);
 	}
-	*/
+	
 	void VDSession::fileDrop(FileDropEvent event) {
 		string ext = "";
 		//string fileName = "";
@@ -510,14 +511,14 @@ void VDSession::update(unsigned int aClassIndex) {
 			//fileName = absolutePath.substr(slashIndex + 1, dotIndex - slashIndex - 1);
 			if (ext == "json") {
 				JsonTree json(loadFile(absolutePath));
-				
-				if (json[0].hasChild("shader")) {
-					JsonTree shaderJsonTree(json[0].getChild("warp"));
-					string shaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
-					string textureFileName = (shaderJsonTree.hasChild("texturename")) ? shaderJsonTree.getValueForKey<string>("texturename") : "0.jpg";
+				fboFromJson(json);
+				//if (json.hasChild("shader")) {//[0]
+					//JsonTree shaderJsonTree(json.getChild("shader"));
+					//string shaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
+					//string textureFileName = (shaderJsonTree.hasChild("texturename")) ? shaderJsonTree.getValueForKey<string>("texturename") : "0.jpg";
 					//loadJson(absolutePath, index);
-					fboFromJson(shaderJsonTree);
-				}
+					//fboFromJson(shaderJsonTree);
+				//}
 			}
 			/*else if (ext == "wav" || ext == "mp3") {
 				loadAudioFile(absolutePath);
@@ -1110,8 +1111,19 @@ void VDSession::updateHydraUniforms() {
 	}*/
 unsigned int VDSession::fboFromJson(const JsonTree &json) {
 	unsigned int rtn = 0;
-	string shaderFileName = (json.hasChild("ashaderfilename")) ? json.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
-	string textureFileName = (json.hasChild("atexturefilename")) ? json.getValueForKey<string>("atexturefilename") : "0.jpg";
+	string shaderFileName = "inputImage.fs";
+	string textureFileName = "0.jpg";
+	string shaderType = "fs";
+
+	if (json.hasChild("shader")) {
+		JsonTree shaderJsonTree(json.getChild("shader"));
+		shaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
+		shaderType = (json.hasChild("shadertype")) ? json.getValueForKey<string>("shadertype") : "fs";
+	}
+	if (json.hasChild("texture")) {
+		JsonTree textureJsonTree(json.getChild("texture"));
+		textureFileName = (textureJsonTree.hasChild("texturename")) ? textureJsonTree.getValueForKey<string>("texturename") : "0.jpg";
+	}
 	rtn = createFboShaderTexture(shaderFileName, textureFileName);
 	/*JsonTree		jsonTexture;
 	jsonTexture.addChild(ci::JsonTree("path", textureFileName));
