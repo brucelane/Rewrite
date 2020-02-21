@@ -28,6 +28,8 @@
 #include "cinder/Json.h"
 #include "Warp.h"
 #include "VDSession.h"
+// Spout
+#include "CiSpoutOut.h"
 // UI
 #define IMGUI_DISABLE_OBSOLETE_FUNCTIONS 1
 #include "VDUI.h"
@@ -41,8 +43,8 @@ using namespace std;
 class RewriteApp : public App {
 public:
 	static void prepare(Settings *settings);
-
-	void setup() override;
+	RewriteApp();
+	//void setup() override;
 	void cleanup() override;
 	void update() override;
 	void draw() override;
@@ -63,11 +65,18 @@ private:
 	VDUIRef							mVDUI;
 	fs::path						mSettings;
 	WarpList						mWarpList;
-	//map<int, VDFboRef>				fbos;
+	//! fbos
+	void							renderPostToFbo();
+	void							renderWarpsToFbo();
+	gl::FboRef						mWarpsFbo;
+	gl::FboRef						mPostFbo;
+	//! shaders
+	gl::GlslProgRef					mGlslPost;
 	bool							mFadeInDelay = true;
 	void							loadWarps();
 	void							saveWarps();
 	void							toggleCursorVisibility(bool visible);
+	SpoutOut 						mSpoutOut;
 };
 
 void RewriteApp::prepare(Settings *settings)
@@ -75,7 +84,7 @@ void RewriteApp::prepare(Settings *settings)
 	settings->setWindowSize(1440, 900);
 }
 
-void RewriteApp::setup()
+RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 {
 	
 	// Settings
@@ -90,7 +99,12 @@ void RewriteApp::setup()
 	mFadeInDelay = true;
 	// UI
 	mVDUI = VDUI::create(mVDSettings, mVDSession);
-
+	// fbo
+	gl::Fbo::Format format;
+	//format.setSamples( 4 ); // uncomment this to enable 4x antialiasing
+	mWarpsFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, format.depthTexture());
+	mPostFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, format.depthTexture());
+	mGlslPost = gl::GlslProg::create(gl::GlslProg::Format().vertex(loadAsset("passthrough.vs")).fragment(loadAsset("post.glsl")));
 	// initialize warps
 	mSettings = getAssetPath("") / mVDSettings->mAssetsPath / "warps.xml";
 	if (fs::exists(mSettings)) {
@@ -283,6 +297,51 @@ void RewriteApp::update()
 {
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
 	mVDSession->update();
+	renderPostToFbo();
+	renderWarpsToFbo();
+}
+void RewriteApp::renderPostToFbo()
+{
+	gl::ScopedFramebuffer fbScp(mPostFbo);
+	// clear out the FBO with black
+	gl::clear(Color::gray(0.4f));
+
+	// setup the viewport to match the dimensions of the FBO
+	gl::ScopedViewport scpVp(ivec2(0), mPostFbo->getSize());
+	
+	// texture binding must be before ScopedGlslProg
+	mWarpsFbo->getColorTexture()->bind(0);
+	gl::ScopedGlslProg prog(mGlslPost);
+
+	mGlslPost->uniform("iTime", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITIME) - mVDSettings->iStart);;
+	mGlslPost->uniform("iResolution", vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
+	mGlslPost->uniform("iChannel0", 0); // texture 0
+	mGlslPost->uniform("iSobel", mVDSession->getFloatUniformValueByIndex(mVDSettings->ISOBEL));
+	mGlslPost->uniform("iExposure", mVDSession->getFloatUniformValueByIndex(mVDSettings->IEXPOSURE));
+	mGlslPost->uniform("iChromatic", mVDSession->getFloatUniformValueByIndex(mVDSettings->ICHROMATIC));
+	
+	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+}
+void RewriteApp::renderWarpsToFbo()
+{
+	gl::ScopedFramebuffer fbScp(mWarpsFbo);
+	// clear out the FBO with black
+	gl::clear(Color::gray(0.2f));
+
+	// setup the viewport to match the dimensions of the FBO
+	gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());
+	// iterate over the fbos and draw their content
+	int i = 0;
+	for (auto &warp : mWarpList) {
+		i = math<int>::min(i, mVDSession->getFboListSize() - 1);
+		if (mVDSession->isFboValid(i)) {
+			warp->draw(mVDSession->getFboRenderedTexture(i), mVDSession->getFboSrcArea(i));
+		}
+		i++;
+	}	
+	//gl::color(0.5, 0.0, 1.0, 0.4f);
+	//gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+
 }
 void RewriteApp::draw()
 {
@@ -297,17 +356,12 @@ void RewriteApp::draw()
 		}
 	}
 	else {
-		// iterate over the fbos and draw their content
-		int i = 0;
-		for (auto &warp : mWarpList) {
-			i = math<int>::min(i, mVDSession->getFboListSize() - 1);
-			if (mVDSession->isFboValid(i)) {
-				warp->draw(mVDSession->getFboRenderedTexture(i), mVDSession->getFboSrcArea(i));
-			}
-			i++;
-		}
-
+		gl::draw(mPostFbo->getColorTexture());
 	}
+	// Spout Send
+	// KO mSpoutOut.sendViewport();
+	// OK mSpoutOut.sendTexture(mVDSession->getFboRenderedTexture(1));
+	mSpoutOut.sendTexture(mPostFbo->getColorTexture());
 	// imgui
 	if (mVDSession->showUI()) {
 		mVDUI->Run("UI", (int)getAverageFps());

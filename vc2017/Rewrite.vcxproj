@@ -114,6 +114,7 @@
   <ItemGroup>
     <None Include="..\assets\Intro\default.fs" />
     <None Include="..\assets\Intro\warp0.json" />
+    <None Include="..\assets\post.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />

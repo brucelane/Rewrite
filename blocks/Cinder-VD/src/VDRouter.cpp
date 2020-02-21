@@ -134,8 +134,8 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 			}
 			if (!found)
 			{
-				// from Midithor (i=0 on noteoff)
-				ctrl = "/Midi1";
+				// from Midithor (i=0 on noteoff) Midi1 to Midi8
+				ctrl = "/Midi";
 				index = addr.find(ctrl);
 				if (index != std::string::npos)
 				{
