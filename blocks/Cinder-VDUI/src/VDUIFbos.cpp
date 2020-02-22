@@ -318,7 +318,7 @@ void VDUIFbos::Run(const char* title) {
 				switch (u.getType()) {
 				case 35670:
 					// boolean
-					if (uName=="iFlipV") {
+					if (uName == "iFlipV") {
 						if (mVDSession->isFboFlipV(f)) {
 							ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(f / 7.0f, 1.0f, 1.0f));
 						}
@@ -354,17 +354,34 @@ void VDUIFbos::Run(const char* title) {
 				case 5126:
 					// float
 					localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
-					sprintf(buf, "%s##floatuniform%d", uName.c_str(), f);
-					if (ImGui::DragFloat(buf, &localValues[ctrl], 0.1f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
-					{
-						setValue(ctrl, localValues[ctrl]);
+					if (ctrl == 0) {
+						sprintf(buf, "time %.0f", localValues[ctrl]);
+						ImGui::Text(buf);
+					}
+					else {
+						sprintf(buf, "%s##floatuniform%d", uName.c_str(), f);
+						if (ImGui::DragFloat(buf, &localValues[ctrl], 0.1f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+						{
+							setValue(ctrl, localValues[ctrl]);
+						}
 					}
 					break;
 				case 35664:
-					// vec2
-					sprintf(buf, "vec2 %s %d##v2uniform%d", uName.c_str(), u.getType(), f);
-					if (ImGui::Button(buf)) {
-
+					// vec2					
+					if (uName == "RENDERSIZE") {
+						ctrl = mVDSession->getUniformIndexForName("iResolutionX");
+						localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+						sprintf(buf, "rw %.0f##v2x%d", localValues[ctrl], f);
+						ImGui::Button(buf);
+						ImGui::SameLine();
+						ctrl = mVDSession->getUniformIndexForName("iResolutionY");
+						localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+						sprintf(buf, "rh %.0f##v2y%d", localValues[ctrl], f);
+						ImGui::Button(buf);
+					}
+					else {
+						sprintf(buf, "vec2 %s %d##v2uniform%d", uName.c_str(), u.getType(), f);
+						ImGui::Text(buf);
 					}
 					break;
 				case 35665:
@@ -418,7 +435,7 @@ void VDUIFbos::Run(const char* title) {
 			sprintf(buf, "%s", mVDSession->getFboInputTextureName(f).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 
-			
+
 			/*ImGui::SameLine();
 			sprintf(buf, "T##fboupd%d", f);
 			i/f (ImGui::Button(buf)) mVDSession->updateShaderThumbFile(f);*

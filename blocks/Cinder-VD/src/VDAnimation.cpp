@@ -894,6 +894,7 @@ void VDAnimation::update() {
 		 */
 		 //shaderUniforms["iTime"].floatValue = shaderUniforms["iTempoTime"].floatValue * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
 		shaderUniforms["iTime"].floatValue = shaderUniforms["iTime"].floatValue * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
+		shaderUniforms["TIME"].floatValue = shaderUniforms["iTime"].floatValue;
 		//CI_LOG_W(" shaderUniforms[iTime].floatValue:" + toString(shaderUniforms["iTime"].floatValue));
 		//CI_LOG_W(" getFloatUniformValueByName(iTime):" + toString(getFloatUniformValueByIndex(mVDSettings->ITIME)));
 		shaderUniforms["iElapsed"].floatValue = shaderUniforms["iPhase"].floatValue * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
@@ -901,8 +902,14 @@ void VDAnimation::update() {
 	else
 	{
 		shaderUniforms["iTime"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
+		shaderUniforms["TIME"].floatValue = shaderUniforms["iTime"].floatValue;
 		shaderUniforms["iElapsed"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
 	}
+	// iResolution
+	shaderUniforms["iResolution"].vec3Value = vec3(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"), 1.0);
+	shaderUniforms["resolution"].vec2Value = vec2(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"));
+	shaderUniforms["RENDERSIZE"].vec2Value = vec2(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"));
+	
 
 	// iDate
 	time_t now = time(0);

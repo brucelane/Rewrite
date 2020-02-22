@@ -5,14 +5,14 @@
       "resolution" : 16,
       "warp" : {
          "afboindex" : 2,
-         "ashaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
+         "ashaderfilename" : "debug",
          "ashaderindex" : 2,
-         "atexturefilename" : "help.jpg",
+         "atexturefilename" : "0.jpg",
          "bfboindex" : 2,
          "brightness" : 1,
-         "bshaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
+         "bshaderfilename" : "debug",
          "bshaderindex" : 2,
-         "btexturefilename" : "help.jpg",
+         "btexturefilename" : "0.jpg",
          "controlpoints" : [
             {
                "controlpoint" : 0,
@@ -38,8 +38,8 @@
          "corners" : [
             {
                "corner" : 0,
-               "x" : 0.39930599999999999,
-               "y" : 0.17555599999999999
+               "x" : 0.35069400000000001,
+               "y" : 0.31333299999999997
             },
             {
                "corner" : 1,
@@ -48,8 +48,8 @@
             },
             {
                "corner" : 2,
-               "x" : 0.692361,
-               "y" : 0.41666700000000001
+               "x" : 0.65486100000000003,
+               "y" : 0.343333
             },
             {
                "corner" : 3,

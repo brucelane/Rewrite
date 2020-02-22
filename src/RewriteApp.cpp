@@ -64,7 +64,9 @@ private:
 	// UI
 	VDUIRef							mVDUI;
 	fs::path						mSettings;
+	// warps
 	WarpList						mWarpList;
+	void							createWarp();
 	//! fbos
 	void							renderPostToFbo();
 	void							renderWarpsToFbo();
@@ -122,6 +124,12 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 	// adjust the content size of the warps
 	Warp::setSize(mWarpList, mVDSession->getFboRenderedTexture(0)->getSize());
 }
+void RewriteApp::createWarp() {
+	mWarpList.push_back(WarpBilinear::create());
+	/* TODO auto warp = mWarpList[mWarpList.size() - 1];
+	warp->setAShaderFilename(shaderFileName);
+	warp->setATextureFilename(textureFileName);*/
+}
 void RewriteApp::loadWarps() {
 	int i = 0;
 	for (auto &warp : mWarpList) {
@@ -134,7 +142,7 @@ void RewriteApp::loadWarps() {
 			if (json[0].hasChild("warp")) {
 				JsonTree warpJsonTree(json[0].getChild("warp"));
 				string shaderFileName = (warpJsonTree.hasChild("ashaderfilename")) ? warpJsonTree.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
-				string textureFileName = (warpJsonTree.hasChild("atexturefilename")) ? warpJsonTree.getValueForKey<string>("atexturefilename") : "0.jpg";
+				string textureFileName = (warpJsonTree.hasChild("atexturefilename")) ? warpJsonTree.getValueForKey<string>("atexturefilename") : "audio";
 				mVDSession->createFboShaderTexture(shaderFileName, textureFileName);
 				//mVDSession->fboFromJson(warpJsonTree);
 				warp->setAFboIndex(i) ;
@@ -238,6 +246,9 @@ void RewriteApp::keyDown(KeyEvent event)
 			case KeyEvent::KEY_w:
 				// toggle warp edit mode
 				Warp::enableEditMode(!Warp::isEditModeEnabled());
+				break;
+			case KeyEvent::KEY_l:
+				createWarp();
 				break;
 
 				//case KeyEvent::KEY_v:
@@ -357,6 +368,7 @@ void RewriteApp::draw()
 	}
 	else {
 		gl::draw(mPostFbo->getColorTexture());
+		//gl::draw(mVDSession->getFboRenderedTexture(0));
 	}
 	// Spout Send
 	// KO mSpoutOut.sendViewport();

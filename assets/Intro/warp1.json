@@ -2,14 +2,14 @@
    {
       "warp" : {
          "afboindex" : 1,
-         "ashaderfilename" : "SphericalPolyhedra.fs",
+         "ashaderfilename" : "debug.fs",
          "ashaderindex" : 1,
-         "atexturefilename" : "help.jpg",
+         "atexturefilename" : "0.jpg",
          "bfboindex" : 1,
          "brightness" : 1,
-         "bshaderfilename" : "SphericalPolyhedra.fs",
+         "bshaderfilename" : "debug.fs",
          "bshaderindex" : 1,
-         "btexturefilename" : "help.jpg",
+         "btexturefilename" : "0.jpg",
          "controlpoints" : [
             {
                "controlpoint" : 0,

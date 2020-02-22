@@ -185,7 +185,7 @@ namespace videodromm {
 			gl::ScopedFramebuffer fbScp(mFbo);
 			gl::clear(Color::black());
 			if (mTextureName == "audio") {
-				mTexture = mVDAnimation->getAudioTexture(); // TMP
+				mTexture = mVDAnimation->getAudioTexture();
 			}
 
 			mTexture->bind(0);
