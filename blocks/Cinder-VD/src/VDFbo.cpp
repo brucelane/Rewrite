@@ -1,7 +1,7 @@
 #include "VDFbo.h"
 
 namespace videodromm {
-	VDFbo::VDFbo(VDSettingsRef aVDSettings, string aShaderFilename, string aTextureFilename)
+	VDFbo::VDFbo(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aShaderFilename, string aTextureFilename)
 		:mValid(false)
 	{
 		CI_LOG_V("VDFbo constructor");
@@ -23,11 +23,12 @@ namespace videodromm {
 			"#define IMG_NORM_PIXEL texture2D\n";
 
 		mVDSettings = aVDSettings;
+		mVDAnimation = aVDAnimation;
+		//twice mVDAnimation = VDAnimation::create(mVDSettings);
 		mUseBeginEnd = false;
 		isReady = false;
-		mInputTextureIndex = 0;
+		//mInputTextureIndex = 0;
 		mSrcArea = Area(0, 0, 10, 10);
-		mVDAnimation = VDAnimation::create(mVDSettings);
 
 		if (mTextureName == "") { mTextureName = "help.jpg"; }
 		fs::path texPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;
@@ -183,6 +184,9 @@ namespace videodromm {
 
 			gl::ScopedFramebuffer fbScp(mFbo);
 			gl::clear(Color::black());
+			if (mTextureName == "audio") {
+				mTexture = mVDAnimation->getAudioTexture(); // TMP
+			}
 
 			mTexture->bind(0);
 			string name;
@@ -199,7 +203,7 @@ namespace videodromm {
 						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
 						break;
 					case 1: // sampler2D
-						mShader->uniform(name, mInputTextureIndex);
+						mShader->uniform(name, 0);
 						break;
 					case 2: // vec2
 						mShader->uniform(name, mVDAnimation->getVec2UniformValueByName(name));
@@ -239,7 +243,8 @@ namespace videodromm {
 			mShader->uniform("TIME", (float)getElapsedSeconds());// mVDAnimation->getFloatUniformValueByIndex(0));
 
 			gl::ScopedGlslProg glslScope(mShader);
-			// TODO: test gl::ScopedViewport sVp(0, 0, mFbo->getWidth(), mFbo->getHeight());			
+			// TODO: test gl::ScopedViewport sVp(0, 0, mFbo->getWidth(), mFbo->getHeight());	
+			// for thumb TODO 202020222 create thumb with correct size
 			if (!isReady) {
 				gl::drawSolidRect(Rectf(0, 0, mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
 			}

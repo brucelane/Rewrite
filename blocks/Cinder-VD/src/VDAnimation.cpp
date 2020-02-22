@@ -9,6 +9,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 	mAudioBuffered = false;	mAudioFormat = gl::Texture2d::Format().swizzleMask(GL_RED, GL_RED, GL_RED, GL_ONE).internalFormat(GL_RED);
 	mAudioTexture = ci::gl::Texture::create(64, 2, mAudioFormat);
 	mLineInInitialized = false;
+	mWaveInitialized = false;
 	mAudioName = "not initialized";
 	//setUseLineIn(true);
 	maxVolume = 0.0f;
@@ -143,7 +144,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createFloatUniform("iContour", mVDSettings->ICONTOUR, 0.0f, 0.0f, 0.5f); // 40
 		// RotationSpeed
 		createFloatUniform("iRotationSpeed", mVDSettings->IROTATIONSPEED, 0.0f, -2.0f, 2.0f); // 41
-	
+
 		// iMouseX  
 		createFloatUniform("iMouseX", mVDSettings->IMOUSEX, 320.0f, 0.0f, 1280.0f); // 42
 		// iMouseY  
@@ -454,7 +455,7 @@ JsonTree VDAnimation::uniformToJson(int i)
 void VDAnimation::saveUniforms()
 {
 	string jName;
-	int ctrlSize = math<int>::min(310,controlIndexes.size());
+	int ctrlSize = math<int>::min(310, controlIndexes.size());
 	float jMin, jMax;
 	JsonTree		json;
 	// create uniforms json
@@ -734,10 +735,10 @@ bool VDAnimation::handleKeyUp(KeyEvent &event)
 	return event.isHandled();
 }
 ci::gl::TextureRef VDAnimation::getAudioTexture() {
-	
+
 	mAudioFormat = gl::Texture2d::Format().swizzleMask(GL_RED, GL_RED, GL_RED, GL_ONE).internalFormat(GL_RED);
+	auto ctx = audio::Context::master();
 	if (!mLineInInitialized) {
-		auto ctx = audio::Context::master();
 #if (defined( CINDER_MSW ) || defined( CINDER_MAC ))
 		if (getUseLineIn()) {
 			// linein
@@ -753,12 +754,16 @@ ci::gl::TextureRef VDAnimation::getAudioTexture() {
 			mLineIn->enable();
 			mLineInInitialized = true;
 		}
+	}
 #endif
+	if (!mWaveInitialized) {
 		if (getUseAudio()) {
 			// also initialize wave monitor
 			auto scopeWaveFmt = audio::MonitorSpectralNode::Format().fftSize(mWindowSize * 2).windowSize(mWindowSize);// CHECK is * 2 needed
 			mMonitorWaveSpectralNode = ctx->makeNode(new audio::MonitorSpectralNode(scopeWaveFmt));
 			ctx->enable();
+			mAudioName = "wave";
+			mWaveInitialized = true;
 		}
 	}
 #if (defined( CINDER_MSW ) || defined( CINDER_MAC ))
@@ -839,11 +844,11 @@ ci::gl::TextureRef VDAnimation::getAudioTexture() {
 		float db;
 		unsigned char signal[mWindowSize];
 		for (size_t i = 0; i < mWindowSize; i++) {
-			float f = iFreqs[i];			
+			float f = iFreqs[i];
 			if (f > maxVolume)
 			{
 				maxVolume = f;
-			}			
+			}
 			// update iFreq uniforms 
 			if (i == getFreqIndex(0)) setFloatUniformValueByName("iFreq0", f);
 			if (i == getFreqIndex(1)) setFloatUniformValueByName("iFreq1", f);
@@ -858,9 +863,10 @@ ci::gl::TextureRef VDAnimation::getAudioTexture() {
 		// store it as a 512x2 texture
 		// 20200222 mAudioTexture = gl::Texture::create(signal, GL_RED, 64, 2, mAudioFormat);
 		mAudioTexture = gl::Texture::create(signal, GL_RED, 32, 1, mAudioFormat);
+		mAudioName = "speckthor";
 	}
 
-	return mAudioTexture; 
+	return mAudioTexture;
 };
 void VDAnimation::update() {
 
@@ -886,7 +892,7 @@ void VDAnimation::update() {
 		float g = shaderUniforms["iTime"].floatValue;
 		shaderUniforms["iTime"].floatValue = shaderUniforms["iTempoTime"].floatValue*iTimeFactor;
 		 */
-		//shaderUniforms["iTime"].floatValue = shaderUniforms["iTempoTime"].floatValue * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
+		 //shaderUniforms["iTime"].floatValue = shaderUniforms["iTempoTime"].floatValue * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
 		shaderUniforms["iTime"].floatValue = shaderUniforms["iTime"].floatValue * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
 		//CI_LOG_W(" shaderUniforms[iTime].floatValue:" + toString(shaderUniforms["iTime"].floatValue));
 		//CI_LOG_W(" getFloatUniformValueByName(iTime):" + toString(getFloatUniformValueByIndex(mVDSettings->ITIME)));
@@ -897,7 +903,7 @@ void VDAnimation::update() {
 		shaderUniforms["iTime"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
 		shaderUniforms["iElapsed"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
 	}
-	
+
 	// iDate
 	time_t now = time(0);
 	tm *   t = gmtime(&now);
@@ -910,7 +916,7 @@ void VDAnimation::update() {
 	if (mAutoBeatAnimation) mVDSettings->liveMeter = maxVolume * 2;
 
 	int time = (currentTime - startTime)*1000000.0;
-	
+
 	int elapsed = shaderUniforms["iDeltaTime"].floatValue * 1000000.0;
 	int elapsedBeatPerBar = shaderUniforms["iDeltaTime"].floatValue / (shaderUniforms["iBeatsPerBar"].intValue + 1)*1000000.0;
 	/*if (elapsedBeatPerBar > 0)

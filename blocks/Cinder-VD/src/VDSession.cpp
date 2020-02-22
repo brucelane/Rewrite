@@ -10,14 +10,15 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 {
 	CI_LOG_V("VDSession ctor");
 	mVDSettings = aVDSettings;
-	mDefaultTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
-	createFboShaderTexture("default.fs", "0.jpg");
 
 	// Utils
 	mVDUtils = VDUtils::create(mVDSettings);
 	// Animation
 	mVDAnimation = VDAnimation::create(mVDSettings);
 	// TODO: needed? mVDAnimation->tapTempo();
+	mDefaultTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
+	//createFboShaderTexture("default.fs", "0.jpg");
+	createFboShaderTexture("audio.fs", "audio");
 	// allow log to file
 	mVDLog = VDLog::create();
 	// init fbo format
@@ -1147,7 +1148,7 @@ void VDSession::saveFbos()
 unsigned int VDSession::createFboShaderTexture(string aShaderFilename, string aTextureFilename) {
 	// initialize rtn to 0 to force creation
 	unsigned int rtn = 0;
-	VDFboRef fboRef = VDFbo::create(mVDSettings, aShaderFilename, aTextureFilename);
+	VDFboRef fboRef = VDFbo::create(mVDSettings, mVDAnimation, aShaderFilename, aTextureFilename);
 	mFboList.push_back(fboRef);
 	rtn = mFboList.size() - 1;
 	/*string fName = aShaderFilename;

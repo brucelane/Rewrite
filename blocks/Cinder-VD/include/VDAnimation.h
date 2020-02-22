@@ -109,6 +109,7 @@ namespace videodromm
 		string							getAudioTextureName() { return mAudioName; };
 		float							maxVolume;
 		bool							mLineInInitialized;
+		bool							mWaveInitialized;
 		audio::InputDeviceNodeRef		mLineIn;
 		audio::MonitorSpectralNodeRef	mMonitorLineInSpectralNode;
 		audio::MonitorSpectralNodeRef	mMonitorWaveSpectralNode;

@@ -32,10 +32,10 @@ namespace videodromm
 
 	class VDFbo  { // TODO : public VDTexture ?
 	public:
-		VDFbo(VDSettingsRef aVDSettings, string aShaderFilename, string aTextureFilename);
+		VDFbo(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aShaderFilename, string aTextureFilename);
 		~VDFbo(void);
-		static VDFboRef create(VDSettingsRef aVDSettings, string aShaderFilename, string aTextureFilename) {
-			return std::make_shared<VDFbo>(aVDSettings, aShaderFilename,  aTextureFilename);
+		static VDFboRef create(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aShaderFilename, string aTextureFilename) {
+			return std::make_shared<VDFbo>(aVDSettings, aVDAnimation, aShaderFilename,  aTextureFilename);
 		}		
 		ci::gl::Texture2dRef getRenderedTexture();
 		Area getSrcArea() { 
@@ -63,11 +63,12 @@ namespace videodromm
 	private:
 		// Settings
 		VDSettingsRef					mVDSettings;
+		// Animation
+		VDAnimationRef					mVDAnimation;
 		//! Input textures
-
 		//VDTextureList					mTextureList;
 		gl::TextureRef					mTexture;
-		int								mInputTextureIndex;
+		//int								mInputTextureIndex;
 		//! shader
 		gl::GlslProgRef					mShader;
 		std::vector<ci::gl::GlslProg::Uniform> mUniforms;
@@ -95,6 +96,6 @@ namespace videodromm
 		bool							isReady;
 		ci::gl::Texture2dRef			mRenderedTexture;
 		ci::gl::Texture2dRef			getFboTexture();
-		VDAnimationRef					mVDAnimation;
+		
 	};
 }
