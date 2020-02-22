@@ -118,7 +118,7 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 					for (int i = 0; i < msg.getNumArgs(); i++) {
 						// get the argument type 'f'
 						if (msg.getArgType(i) == ArgType::FLOAT) {
-							float f = msg[i].flt() * 200.0f;
+							float f = msg[i].flt() * 200.0f * mVDAnimation->getFloatUniformValueByName("iAudioMult");
 							if (f > mVDAnimation->maxVolume)
 							{
 								mVDAnimation->maxVolume = f;

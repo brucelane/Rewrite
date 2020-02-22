@@ -250,8 +250,8 @@ namespace videodromm {
 		bool						mIsPlaying;
 		bool						mUseAudio;
 		bool						mUseLineIn;
-		int							mFftSize;
-		int							mWindowSize;
+		//int							mFftSize;
+		//int							mWindowSize;
 		float						iSeed;
 
 		// z EyePointZ

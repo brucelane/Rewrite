@@ -2,7 +2,17 @@
 
 #include "cinder/Cinder.h"
 #include "cinder/app/App.h"
-
+// audio
+#include "cinder/audio/Context.h"
+#include "cinder/audio/MonitorNode.h"
+#include "cinder/audio/Utilities.h"
+#include "cinder/audio/Source.h"
+#include "cinder/audio/Target.h"
+#include "cinder/audio/dsp/Converter.h"
+#include "cinder/audio/SamplePlayerNode.h"
+#include "cinder/audio/SampleRecorderNode.h"
+#include "cinder/audio/NodeEffects.h"
+#include "cinder/Rand.h"
 // json
 #include "cinder/Json.h"
 // Settings
@@ -95,9 +105,26 @@ namespace videodromm
 		bool							handleKeyDown(KeyEvent &event);
 		bool							handleKeyUp(KeyEvent &event);
 		// audio
+		ci::gl::TextureRef				getAudioTexture();
+		string							getAudioTextureName() { return mAudioName; };
 		float							maxVolume;
-		static const int				mWindowSize = 128; // fft window size
+		bool							mLineInInitialized;
+		audio::InputDeviceNodeRef		mLineIn;
+		audio::MonitorSpectralNodeRef	mMonitorLineInSpectralNode;
+		audio::MonitorSpectralNodeRef	mMonitorWaveSpectralNode;
+		audio::SamplePlayerNodeRef		mSamplePlayerNode;
+		audio::SourceFileRef			mSourceFile;
+		audio::MonitorSpectralNodeRef	mScopeLineInFmt;
+		audio::BufferPlayerNodeRef		mBufferPlayerNode;
+
+		vector<float>					mMagSpectrum;
+
+		// number of frequency bands of our spectrum
+		//static const int				kBands = 16; 20200222 use mWindowSize instead?
+		static const int				mWindowSize = 32; // fft window size 20200222 was 128;
 		float							iFreqs[mWindowSize];
+		int								mPosition;
+		string							mAudioName;
 		void							preventLineInCrash(); // at next launch
 		void							saveLineIn();
 		bool							getUseAudio() {
@@ -260,6 +287,9 @@ namespace videodromm
 		VDSettingsRef					mVDSettings;
 		map<int, int>					freqIndexes;
 		bool							mAudioBuffered;
+		ci::gl::TextureRef				mAudioTexture;
+		gl::Texture2d::Format			mAudioFormat;
+		unsigned char					dTexture[256];// MUST be < mWindowSize
 		// Live json params
 		fs::path						mJsonFilePath;
 		Parameter<Color>				mBackgroundColor;

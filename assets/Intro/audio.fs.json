@@ -1,0 +1,10 @@
+{
+   "shader" : {
+      "shadername" : "audio.fs",
+      "shadertype" : "fs"
+   },
+   "texture" : {
+      "texturename" : "help.jpg",
+      "texturetype" : "image"
+   }
+}

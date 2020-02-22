@@ -36,10 +36,10 @@ namespace videodromm {
 			mRenderedTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 		}
 		else {
-			mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
+			mTexture = mVDAnimation->getAudioTexture(); // init with audio texture
+			//mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 			mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		}
-
 		mSrcArea = mTexture->getBounds();
 		// init texture
 		// init the fbo whatever happens next
@@ -59,7 +59,7 @@ namespace videodromm {
 	}
 	VDFbo::~VDFbo(void) {
 	}
-	
+
 	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
 		mValid = false;
 		// load fragment shader
@@ -73,22 +73,37 @@ namespace videodromm {
 			CI_LOG_V(mFragFile.string() + " loaded and compiled");
 		}
 		else {
-			mError = mFragFile.string() + " does not exist";
-			CI_LOG_V(mError);
-			// load default fragment shader
-			try {
-				mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getDefaultFragmentShaderString());
-				mValid = true;
-				CI_LOG_V("fbo default vtx-frag compiled");
+			// file does not exist, try with audio.fs
+
+			mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / "audio.fs";
+			if (fs::exists(mFragFile)) {
+				mShaderName = mShaderFileName = "audio.fs";
+				mFileNameWithExtension = mFragFile.filename().string();
+				mFragmentShaderString = loadString(loadFile(mFragFile));
+				mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
+
+				CI_LOG_V(mFragFile.string() + " loaded and compiled(audio)");
 			}
-			catch (gl::GlslProgCompileExc &exc) {
-				mError = string(exc.what());
-				CI_LOG_V("fbo unable to load/compile vtx-frag shader:" + string(exc.what()));
+			else {
+				mError = mFragFile.string() + " does not exist";
+				CI_LOG_V(mError);
+				// load default fragment shader
+				try {
+					mShaderName = mShaderFileName = "default.fs";
+					mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getDefaultFragmentShaderString());
+					mValid = true;
+					CI_LOG_V("fbo default vtx-frag compiled");
+				}
+				catch (gl::GlslProgCompileExc &exc) {
+					mError = string(exc.what());
+					CI_LOG_V("fbo unable to load/compile vtx-frag shader:" + string(exc.what()));
+				}
+				catch (const std::exception &e) {
+					mError = string(e.what());
+					CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
+				}
 			}
-			catch (const std::exception &e) {
-				mError = string(e.what());
-				CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
-			}
+
 		}
 		if (mError.length() > 0) mVDSettings->mMsg = mError;
 		return mValid;
@@ -171,7 +186,7 @@ namespace videodromm {
 
 			mTexture->bind(0);
 			string name;
-			
+
 			mUniforms = mShader->getActiveUniforms();
 			for (const auto &uniform : mUniforms) {
 				name = uniform.getName();

@@ -14,7 +14,7 @@ void VDUIAudio::Run(const char* title) {
 	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 1.76), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
 	 
-	sprintf(buf, "%s##inpt", mVDSession->getFboName(0));// TODO 20200221 mVDSession->getInputTextureName(0).c_str()
+	sprintf(buf, "%s##inpt", mVDSession->getAudioTextureName().c_str());// TODO 20200221 mVDSession->getInputTextureName(0).c_str()
 	ImGui::Begin(buf);
 	{
 		if (ImGui::CollapsingHeader("Audio", NULL, true, true))
@@ -48,6 +48,7 @@ void VDUIAudio::Run(const char* title) {
 		{
 			mVDSession->setFreqIndex(3, iFreq3);
 		}
+		ImGui::Image((void*)mVDSession->getAudioTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		// TODO 20200221 
 		/*(mVDSession->getFreqWSSend()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(4.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(4.0f, 0.7f, 0.7f));

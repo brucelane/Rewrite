@@ -155,6 +155,8 @@ namespace videodromm {
 		bool							getUseTimeWithTempo() { return mVDAnimation->getUseTimeWithTempo(); };
 		void							setTimeFactor(const int &aTimeFactor) { mVDAnimation->setTimeFactor(aTimeFactor); };
 		// audio
+		ci::gl::TextureRef				getAudioTexture() { return mVDAnimation->getAudioTexture(); };
+		string							getAudioTextureName() { return mVDAnimation->getAudioTextureName(); };
 		float *							getFreqs() { return mVDAnimation->iFreqs; };
 		int								getFreqIndexSize() { return mVDAnimation->getFreqIndexSize(); };
 		float							getFreq(unsigned int aFreqIndex) { return mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFREQ0 + aFreqIndex); };
