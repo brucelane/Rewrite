@@ -28,20 +28,20 @@ namespace videodromm {
 		mUseBeginEnd = false;
 		isReady = false;
 		//mInputTextureIndex = 0;
-		mSrcArea = Area(0, 0, 10, 10);
+		//mSrcArea = Area(0, 0, 10, 10);
 
 		if (mTextureName == "") { mTextureName = "help.jpg"; }
 		fs::path texPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;
 		if (fs::exists(texPath)) {
 			mTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
-			mRenderedTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
+			//mRenderedTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 		}
 		else {
 			mTexture = mVDAnimation->getAudioTexture(); // init with audio texture
 			//mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
-			mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
+			//mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		}
-		mSrcArea = mTexture->getBounds();
+		//mSrcArea = mTexture->getBounds();
 		// init texture
 		// init the fbo whatever happens next
 		fboFmt.setColorTextureFormat(fmt);
@@ -244,24 +244,25 @@ namespace videodromm {
 				}
 			}
 
-			if (!isReady) {
+			/*if (!isReady) {
 				mShader->uniform("RENDERSIZE", vec2(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
 			}
 			else {
 				mShader->uniform("RENDERSIZE", vec2(mTexture->getWidth(), mTexture->getHeight()));
-				//mShader->uniform("RENDERSIZE", vec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
-			}
+			}*/
+			mShader->uniform("RENDERSIZE", vec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			mShader->uniform("TIME", (float)getElapsedSeconds());// mVDAnimation->getFloatUniformValueByIndex(0));
 
 			gl::ScopedGlslProg glslScope(mShader);
 			// TODO: test gl::ScopedViewport sVp(0, 0, mFbo->getWidth(), mFbo->getHeight());	
 			// for thumb TODO 202020222 create thumb with correct size
-			if (!isReady) {
+			/*if (!isReady) {
 				gl::drawSolidRect(Rectf(0, 0, mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
 			}
 			else {
 				gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
-			}
+			}*/
+			gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			mRenderedTexture = mFbo->getColorTexture();
 			if (!isReady) {
 				string filename = mShaderName + ".jpg";

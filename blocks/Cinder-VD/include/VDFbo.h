@@ -38,9 +38,9 @@ namespace videodromm
 			return std::make_shared<VDFbo>(aVDSettings, aVDAnimation, aShaderFilename,  aTextureFilename);
 		}		
 		ci::gl::Texture2dRef getRenderedTexture();
-		Area getSrcArea() { 
+		/*Area getSrcArea() { 
 			return mSrcArea; 
-		};
+		};*/
 		bool									setFragmentString(string aFragmentShaderString, string aName = "");
 		bool									loadFragmentStringFromFile(string aFileName);		
 		bool									isValid() {
@@ -108,7 +108,7 @@ namespace videodromm
 		//gl::FboRef						mThumbFbo;
 		gl::Texture::Format				fmt;
 		gl::Fbo::Format					fboFmt;
-		Area							mSrcArea;
+		//Area							mSrcArea;
 		//bool							mFlipV;
 		//bool							mFlipH;
 		bool							mUseBeginEnd;

@@ -339,7 +339,7 @@ void RewriteApp::renderWarpsToFbo()
 	for (auto &warp : mWarpList) {
 		i = math<int>::min(i, mVDSession->getFboListSize() - 1);
 		if (mVDSession->isFboValid(i)) {
-			warp->draw(mVDSession->getFboRenderedTexture(i), mVDSession->getFboSrcArea(i));
+			warp->draw(mVDSession->getFboRenderedTexture(i));// , mVDSession->getFboSrcArea(i));
 		}
 		i++;
 	}	

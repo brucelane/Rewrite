@@ -154,8 +154,7 @@ float RainbowBump(float x) {
 	return abs(x) > 1.0 ? 0.0 : 1.0 - x * x;
 }
 vec4 Rainbow(vec2 uv) {
-	vec4 color = vec4(0.0);//IMG_NORM_PIXEL( inputImage, uv) ;
-	vec4 soundWave =  IMG_NORM_PIXEL( inputImage, uv);
+	vec4 color = vec4(0.0);
 	float c = 3.0;
 	color.x = RainbowBump(c * (uv.x - 0.75));
 	color.y = RainbowBump(c * (uv.x - 0.5));
@@ -166,15 +165,15 @@ vec4 Rainbow(vec2 uv) {
 	uv.y = abs( uv.y - 0.005 );
 	
 	//vec4 soundWave =  IMG_NORM_PIXEL( inputImage, vec2(abs(0.5-uv.x)+0.005, uv.y) );
-	
-	//color *= line * (1.0 - 2.0 * abs( 0.5 - uv.xxx ) + pow( soundWave.y, 10.0 ) * 30.0 );
-	color *= line + pow( soundWave.x, 10.0 ) * 30.0;// * (1.0 - 2.0 + pow( soundWave.x, 10.0 ) * 30.0 );
-	//color += line * (uv.xxx + pow( soundWave.x, 10.0 ) * 30.0 );
+	vec4 soundWave = IMG_NORM_PIXEL( inputImage, vec2(abs(0.5-uv.x)+0.005, uv.y) );
+	//color *= line * (1.0 - 2.0 * abs( 0.5 - uv.xxxx ) + pow( soundWave.y, 10.0 ) * 30.0 );
+	color *= line * (1.0 - 2.0 * abs( 0.5 - uv.xxxx ) + pow( soundWave.y, 10.0 ) * 60.0 );
+
     return color;
 }
 void main(void)
 {
-   	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;// /50.0
+   	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;// 
 	if (iFlipH)
 	{
 		uv.x = 1.0 - uv.x;
@@ -190,11 +189,6 @@ void main(void)
     vColour = mix( vColour, vec4(1.0, 1.0, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(30.0, 150.0), vFontSize, RENDERSIZE.x, 2.0, 0.0));
     vColour = mix( vColour, vec4(0.7, 0.5, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(100.0, 150.0), vFontSize, RENDERSIZE.y, 2.0, 0.0));
     vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(930.0, 150.0), vFontSize, TIME, 2.0, 1.0));
-    /*vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(350.0, 150.0), vFontSize, iBar, 2.0, 0.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(450.0, 150.0), vFontSize, iBarBeat, 2.0, 0.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(550.0, 150.0), vFontSize, iExposure, 2.0, 2.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(750.0, 150.0), vFontSize, iTimeFactor, 2.0, 3.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(970.0, 150.0), vFontSize, iBpm, 2.0, 2.0));*/
 	fragColor = mix( vec4(1.0, 1.0, 1.0, 1.0), Rainbow(uv), vColour);
   	
 }

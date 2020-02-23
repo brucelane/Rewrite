@@ -235,9 +235,9 @@ namespace videodromm {
 		bool							isFboValid(unsigned int aFboIndex) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->isValid();
 		};
-		Area							getFboSrcArea(unsigned int aFboIndex) {
+		/*Area							getFboSrcArea(unsigned int aFboIndex) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getSrcArea();
-		};
+		};*/
 		// fbo 
 		bool							getFboBoolUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getBoolUniformValueByIndex(aCtrl);
