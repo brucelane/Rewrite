@@ -46,20 +46,39 @@ namespace videodromm
 		bool									isValid() {
 			return mValid; 
 		};
-		void									flipV() {
+		/*void									flipV() {
 			mVDAnimation->setBoolUniformValueByIndex(mVDSettings->IFLIPV, !mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV));
 		};
 		void									flipH() { 
 			mVDAnimation->setBoolUniformValueByIndex(mVDSettings->IFLIPH, !mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH));
 		};
 		bool									isFlipH() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV); };
-		bool									isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };
+		bool									isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };*/
 		std::string								getName() { return mShaderName; };
 		std::string								getTextureName() { return mTextureName; };
 		ci::gl::Texture2dRef					getInputTexture() { return mTexture; };
 		void									setInputTexture(ci::gl::Texture2dRef aTextureRef) { mTexture = aTextureRef; };
 		std::vector<ci::gl::GlslProg::Uniform>	getUniforms() { return mUniforms; };
 		ci::JsonTree							toJson(bool save = false) const;
+		// uniforms
+		string									getUniformNameForIndex(int aIndex) {
+			return controlIndexes[aIndex];
+		};
+		int										getUniformIndexForName(string aName) {
+			return shaderUniforms[aName].index;
+		};
+		bool									getBoolUniformValueByIndex(unsigned int aIndex) {
+			//101 mVDSettings->IFLIPH
+			//102 mVDSettings->IFLIPV
+			return shaderUniforms[getUniformNameForIndex(aIndex)].boolValue;
+		};
+		bool									getBoolUniformValueByName(string aName) {
+			return shaderUniforms[aName].boolValue;
+		}
+		bool									toggleValue(unsigned int aIndex) {
+			shaderUniforms[getUniformNameForIndex(aIndex)].boolValue = !shaderUniforms[getUniformNameForIndex(aIndex)].boolValue;
+			return shaderUniforms[getUniformNameForIndex(aIndex)].boolValue;
+		};
 	private:
 		// Settings
 		VDSettingsRef					mVDSettings;
@@ -96,6 +115,14 @@ namespace videodromm
 		bool							isReady;
 		ci::gl::Texture2dRef			mRenderedTexture;
 		ci::gl::Texture2dRef			getFboTexture();
-		
+		// uniforms
+		map<int, string>				controlIndexes;
+		map<string, VDUniform>			shaderUniforms;
+		void							createBoolUniform(string aName, int aCtrlIndex, bool aValue = false) {
+			controlIndexes[aCtrlIndex] = aName;
+			shaderUniforms[aName].boolValue = aValue;
+			shaderUniforms[aName].index = aCtrlIndex;
+			shaderUniforms[aName].uniformType = 6;
+		}
 	};
 }

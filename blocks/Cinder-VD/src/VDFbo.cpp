@@ -23,6 +23,7 @@ namespace videodromm {
 
 		mVDSettings = aVDSettings;
 		mVDAnimation = aVDAnimation;
+
 		//twice mVDAnimation = VDAnimation::create(mVDSettings);
 		mUseBeginEnd = false;
 		isReady = false;
@@ -189,7 +190,7 @@ namespace videodromm {
 
 			mTexture->bind(0);
 			string name;
-
+			int fger;
 			mUniforms = mShader->getActiveUniforms();
 			for (const auto &uniform : mUniforms) {
 				name = uniform.getName();
@@ -223,7 +224,11 @@ namespace videodromm {
 						mShader->uniform(name, mVDAnimation->getIntUniformValueByName(name));
 						break;
 					case 6: // bool
-						mShader->uniform(name, mVDAnimation->getBoolUniformValueByName(name));
+						createBoolUniform(name, mVDAnimation->getUniformIndexForName(name), getBoolUniformValueByName(name)); // get same index as vdanimation
+						mShader->uniform(name, getBoolUniformValueByName(name));
+						//createBoolUniform("iFlipH", mVDSettings->IFLIPH); // 101
+						//createBoolUniform("iFlipV", mVDSettings->IFLIPV); // 102
+
 						break;
 					default:
 						break;
@@ -243,8 +248,8 @@ namespace videodromm {
 				mShader->uniform("RENDERSIZE", vec2(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
 			}
 			else {
-				//mShader->uniform("RENDERSIZE", vec2(mTexture->getWidth(), mTexture->getHeight()));
-				mShader->uniform("RENDERSIZE", vec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+				mShader->uniform("RENDERSIZE", vec2(mTexture->getWidth(), mTexture->getHeight()));
+				//mShader->uniform("RENDERSIZE", vec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			}
 			mShader->uniform("TIME", (float)getElapsedSeconds());// mVDAnimation->getFloatUniformValueByIndex(0));
 

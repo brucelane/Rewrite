@@ -75,6 +75,7 @@ namespace videodromm {
 		int								getTextEnd() { return mTextPlaybackEnd; };
 		bool							hasText() { return mText.length() > 0; };
 		*/
+		
 		// control values
 		void							toggleValue(unsigned int aCtrl) {
 			mVDWebsocket->toggleValue(aCtrl);
@@ -237,6 +238,17 @@ namespace videodromm {
 		Area							getFboSrcArea(unsigned int aFboIndex) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getSrcArea();
 		};
+		// fbo 
+		bool							getFboBoolUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getBoolUniformValueByIndex(aCtrl);
+		};
+		
+		void							toggleFboValue(unsigned int aCtrl, unsigned int aFboIndex) {
+			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->toggleValue(aCtrl);
+		};
+
+
+		/*
 		void							fboFlipV(unsigned int aFboIndex) {
 			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->flipV();
 		};
@@ -248,7 +260,7 @@ namespace videodromm {
 		};
 		bool							isFboFlipH(unsigned int aFboIndex) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->isFlipH();
-		};
+		};*/
 		unsigned int					getFboInputTexturesCount(unsigned int aFboIndex = 0) {
 			return 1; //TODO support several textures
 		}

@@ -739,11 +739,11 @@ bool VDSession::handleKeyDown(KeyEvent &event)
 			//decrementSequencePosition();
 			break;
 		case KeyEvent::KEY_v:
-			if (isModDown) fboFlipV(0);// TODO other indexes mVDSettings->mFlipV = !mVDSettings->mFlipV; useless?
+			//if (isModDown) fboFlipV(0);// TODO other indexes mVDSettings->mFlipV = !mVDSettings->mFlipV; useless?
 			break;
 		case KeyEvent::KEY_h:
 			if (isModDown) {
-				fboFlipH(0);// TODO other indexes mVDSettings->mFlipH = !mVDSettings->mFlipH; useless?
+				//fboFlipH(0);// TODO other indexes mVDSettings->mFlipH = !mVDSettings->mFlipH; useless?
 			}
 			else {
 				// ui visibility

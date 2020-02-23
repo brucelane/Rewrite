@@ -318,7 +318,7 @@ void VDUIFbos::Run(const char* title) {
 				switch (u.getType()) {
 				case 35670:
 					// boolean
-					if (uName == "iFlipV") {
+					/*if (uName == "iFlipV") {
 						if (mVDSession->isFboFlipV(f)) {
 							ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(f / 7.0f, 1.0f, 1.0f));
 						}
@@ -344,16 +344,16 @@ void VDUIFbos::Run(const char* title) {
 						if (ImGui::Button(buf)) mVDSession->fboFlipH(f);
 						ImGui::PopStyleColor(3);
 					}
-					else {
-						(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+					else {*/
+						(getBoolValue(ctrl, f)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 						ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 						ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
 						sprintf(buf, "%s##booluniform%d", uName.c_str(), f);
 						if (ImGui::Button(buf)) {
-							toggleValue(ctrl);
+							toggleValue(ctrl, f);
 						}
 						ImGui::PopStyleColor(3);
-					}
+					//}
 					hue++;
 					break;
 				case 35678:

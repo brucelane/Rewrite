@@ -55,11 +55,11 @@ namespace videodromm
 		float							getMaxUniformValueByIndex(unsigned int aIndex) {
 			return mVDSession->getMaxUniformValueByIndex(aIndex);
 		};
-		bool							getBoolValue(unsigned int aCtrl) {
-			return mVDSession->getBoolUniformValueByIndex(aCtrl);
+		bool							getBoolValue(unsigned int aCtrl, unsigned int aFboIndex) {
+			return mVDSession->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
 		};
-		void							toggleValue(unsigned int aCtrl) {
-			mVDSession->toggleValue(aCtrl);
+		void							toggleValue(unsigned int aCtrl, unsigned int aFboIndex) {
+			mVDSession->toggleFboValue(aCtrl, aFboIndex);
 		};
 		// mouse
 		float						mouseX, mouseY;
