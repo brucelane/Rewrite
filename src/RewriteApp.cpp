@@ -322,8 +322,8 @@ void RewriteApp::renderPostToFbo()
 	mGlslPost->uniform("iSobel", mVDSession->getFloatUniformValueByIndex(mVDSettings->ISOBEL));
 	mGlslPost->uniform("iExposure", mVDSession->getFloatUniformValueByIndex(mVDSettings->IEXPOSURE));
 	mGlslPost->uniform("iChromatic", mVDSession->getFloatUniformValueByIndex(mVDSettings->ICHROMATIC));
-	mGlslPost->uniform("iFlipH", (int)mVDSession->getBoolUniformValueByIndex(mVDSettings->IFLIPH));
-	mGlslPost->uniform("iFlipV", (int)mVDSession->getBoolUniformValueByIndex(mVDSettings->IFLIPV));
+	mGlslPost->uniform("iFlipH", (int)mVDSession->getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTH));
+	mGlslPost->uniform("iFlipV", (int)mVDSession->getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTV));
 	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 }
 void RewriteApp::renderWarpsToFbo()

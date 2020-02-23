@@ -2,14 +2,14 @@
    {
       "warp" : {
          "afboindex" : 1,
-         "ashaderfilename" : "debug.fs",
+         "ashaderfilename" : "audio.fs",
          "ashaderindex" : 1,
-         "atexturefilename" : "0.jpg",
+         "atexturefilename" : "audio",
          "bfboindex" : 1,
          "brightness" : 1,
-         "bshaderfilename" : "debug.fs",
+         "bshaderfilename" : "audio.fs",
          "bshaderindex" : 1,
-         "btexturefilename" : "0.jpg",
+         "btexturefilename" : "audio",
          "controlpoints" : [
             {
                "controlpoint" : 0,

@@ -154,20 +154,22 @@ float RainbowBump(float x) {
 	return abs(x) > 1.0 ? 0.0 : 1.0 - x * x;
 }
 vec4 Rainbow(vec2 uv) {
-	vec4 color = IMG_NORM_PIXEL( inputImage, uv) ;
+	vec4 color = vec4(0.0);//IMG_NORM_PIXEL( inputImage, uv) ;
+	vec4 soundWave =  IMG_NORM_PIXEL( inputImage, uv);
 	float c = 3.0;
 	color.x = RainbowBump(c * (uv.x - 0.75));
 	color.y = RainbowBump(c * (uv.x - 0.5));
 	color.z = RainbowBump(c * (uv.x - 0.25));
 	color.w = 1.0;
-	/*float line = abs(0.01 / abs(0.5-uv.y) );//abs(0.01 / abs(0.5-uv.y) );
+	float line = abs(0.01 / abs(0.5-uv.y) );//abs(0.01 / abs(0.5-uv.y) );
 	//uv.y = abs( uv.y - 0.5 );
-	uv.y = abs( uv.y - 0.5 );
+	uv.y = abs( uv.y - 0.005 );
 	
 	//vec4 soundWave =  IMG_NORM_PIXEL( inputImage, vec2(abs(0.5-uv.x)+0.005, uv.y) );
-	vec4 soundWave =  IMG_NORM_PIXEL( inputImage, uv);
+	
 	//color *= line * (1.0 - 2.0 * abs( 0.5 - uv.xxx ) + pow( soundWave.y, 10.0 ) * 30.0 );
-	color += line * (uv.xxx + pow( soundWave.x, 10.0 ) * 30.0 );*/
+	color *= line + pow( soundWave.x, 10.0 ) * 30.0;// * (1.0 - 2.0 + pow( soundWave.x, 10.0 ) * 30.0 );
+	//color += line * (uv.xxx + pow( soundWave.x, 10.0 ) * 30.0 );
     return color;
 }
 void main(void)

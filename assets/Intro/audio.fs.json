@@ -4,7 +4,7 @@
       "shadertype" : "fs"
    },
    "texture" : {
-      "texturename" : "audio",
+      "texturename" : "0.jpg",
       "texturetype" : "image"
    }
 }

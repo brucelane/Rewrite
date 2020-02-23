@@ -94,9 +94,12 @@ namespace videodromm {
 		static const int			IVIGN = 82;		// A#4
 		static const int			ITOGGLE = 83;	// B4
 		static const int			IINVERT = 86;	// D5
-		static const int			IFLIPH = 100;
-		static const int			IXORY = 101;
-		static const int			IFLIPV = 103;
+		static const int			IXORY = 100;
+		static const int			IFLIPH = 101;
+		static const int			IFLIPV = 102;
+		static const int			IFLIPPOSTH = 103;
+		static const int			IFLIPPOSTV = 104;
+
 		// global flip
 		bool						mFlipV;
 		bool						mFlipH;
@@ -107,7 +110,7 @@ namespace videodromm {
 		static const int			ILHANDY = 114;
 		static const int			ILHANDZ = 115;*/
 		// vec2
-		static const int			RESOLUTION = 120;
+		static const int			RESOLUTION = 120; // vec2 for ISF and hydra
 		// srcarea
 		static const int			SRCXLEFT = 130;
 		static const int			SRCXRIGHT = 131;

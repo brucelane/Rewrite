@@ -96,7 +96,26 @@ void VDUIRender::Run(const char* title) {
 		{
 			setValue(ctrl, (float)iResolutionY);
 		}
-
+		// post flip		
+		ctrl = mVDSettings->IFLIPPOSTH;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+		if (ImGui::Button("flipPostH")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+		ctrl = mVDSettings->IFLIPPOSTV;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+		if (ImGui::Button("flipPostV")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
 		// mRenderXY
 		static float mx = mVDSettings->mRenderXY.x;
 		if (ImGui::SliderFloat("mx", &mx, 0.01, 1.0))

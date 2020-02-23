@@ -5,14 +5,14 @@
       "resolution" : 16,
       "warp" : {
          "afboindex" : 3,
-         "ashaderfilename" : "debug",
+         "ashaderfilename" : "audio.fs",
          "ashaderindex" : 3,
-         "atexturefilename" : "0.jpg",
+         "atexturefilename" : "audio",
          "bfboindex" : 3,
          "brightness" : 1,
-         "bshaderfilename" : "debug",
+         "bshaderfilename" : "audio.fs",
          "bshaderindex" : 3,
-         "btexturefilename" : "0.jpg",
+         "btexturefilename" : "audio",
          "controlpoints" : [
             {
                "controlpoint" : 0,
