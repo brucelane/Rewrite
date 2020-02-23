@@ -122,7 +122,7 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 	
 	loadWarps();
 	// adjust the content size of the warps
-	Warp::setSize(mWarpList, mVDSession->getFboRenderedTexture(0)->getSize());
+	if (mVDSession->getFboRenderedTexture(0)) Warp::setSize(mWarpList, mVDSession->getFboRenderedTexture(0)->getSize());
 }
 void RewriteApp::createWarp() {
 	mWarpList.push_back(WarpBilinear::create());

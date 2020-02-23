@@ -307,7 +307,7 @@ void VDUIFbos::Run(const char* title) {
 		{
 			ImGui::PushID(f);
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-			ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			if (mVDSession->getFboRenderedTexture(f)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			// uniforms
 			//std::vector<ci::gl::GlslProg::Uniform> u = mVDSession->getUniforms(f);
 
