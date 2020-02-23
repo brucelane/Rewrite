@@ -1,4 +1,4 @@
-uniform vec3 iResolution;uniform sampler2D iChannel0;uniform float iExposure;uniform float iSobel;uniform float iChromatic;
+uniform vec3 iResolution;uniform sampler2D iChannel0;uniform float iExposure;uniform float iSobel;uniform float iChromatic;uniform bool iFlipV;uniform bool iFlipH;
 vec2  fragCoord = gl_FragCoord.xy;
 float intensity(in vec4 c){return sqrt((c.x*c.x)+(c.y*c.y)+(c.z*c.z));}
 vec4 sobel(float stepx, float stepy, vec2 center) {
@@ -14,7 +14,16 @@ vec4 chromatic( vec2 uv ) {
 	return vec4(texture(iChannel0, uv + offset.xy).r,  texture(iChannel0, uv).g, texture(iChannel0, uv + offset.yx).b, 1.0);
 }
 void main() {
-	vec2 uv = gl_FragCoord.xy / iResolution.xy;uv.y = 1.0 - uv.y;
+	vec2 uv = gl_FragCoord.xy / iResolution.xy;
+	if (iFlipH)
+	{
+		uv.x = 1.0 - uv.x;
+	}
+	// flip vertically
+	if (iFlipV)
+	{
+		uv.y = 1.0 - uv.y;
+	}
 	vec4 t0 = texture(iChannel0, uv );vec4 c = vec4(0.0);
 	if (iSobel > 0.03) { t0 = sobel(iSobel * 3.0 /iResolution.x, iSobel * 3.0 /iResolution.y, uv); }
 	if (iChromatic > 0.0) { t0 = chromatic(uv) * t0; }

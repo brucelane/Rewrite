@@ -1,0 +1,10 @@
+{
+   "shader" : {
+      "shadername" : "PerlinNoiseInPolarCoordinate.fs",
+      "shadertype" : "fs"
+   },
+   "texture" : {
+      "texturename" : "help.jpg",
+      "texturetype" : "image"
+   }
+}

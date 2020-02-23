@@ -8,14 +8,14 @@ VDUIShaders::VDUIShaders(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mVDSession = aVDSession;
 	try
 	{
-		fs::path vertexFile = getAssetPath("") / "passthru.vert";
+		fs::path vertexFile = getAssetPath("") / "passthrough.vs";
 		if (fs::exists(vertexFile)) {
-			mPassthruVextexShaderString = loadString(loadAsset("passthru.vert"));
-			CI_LOG_V("passthru.vert loaded");
+			mPassthruVextexShaderString = loadString(loadAsset("passthrough.vs"));
+			CI_LOG_V("passthrough.vs loaded");
 		}
 		else
 		{
-			CI_LOG_V("passthru.vert does not exist, should quit");
+			CI_LOG_V("passthrough.vs does not exist, should quit");
 		}
 	}
 	catch (gl::GlslProgCompileExc &exc)

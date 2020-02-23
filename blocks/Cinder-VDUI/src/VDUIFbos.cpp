@@ -331,6 +331,19 @@ void VDUIFbos::Run(const char* title) {
 						if (ImGui::Button(buf)) mVDSession->fboFlipV(f);
 						ImGui::PopStyleColor(3);
 					}
+					else if (uName == "iFlipH") {
+						if (mVDSession->isFboFlipH(f)) {
+							ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(f / 7.0f, 1.0f, 1.0f));
+						}
+						else {
+							ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(f / 7.0f, 0.1f, 0.1f));
+						}
+						ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(f / 7.0f, 0.7f, 0.7f));
+						ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(f / 7.0f, 0.8f, 0.8f));
+						sprintf(buf, "FlipH##fbofliph%d", f);
+						if (ImGui::Button(buf)) mVDSession->fboFlipH(f);
+						ImGui::PopStyleColor(3);
+					}
 					else {
 						(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 						ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
@@ -340,7 +353,6 @@ void VDUIFbos::Run(const char* title) {
 							toggleValue(ctrl);
 						}
 						ImGui::PopStyleColor(3);
-
 					}
 					hue++;
 					break;
@@ -369,14 +381,18 @@ void VDUIFbos::Run(const char* title) {
 				case 35664:
 					// vec2					
 					if (uName == "RENDERSIZE") {
-						ctrl = mVDSession->getUniformIndexForName("iResolutionX");
-						localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
-						sprintf(buf, "rw %.0f##v2x%d", localValues[ctrl], f);
+						float fw = mVDSession->getFboRenderedTexture(f)->getWidth();
+						//ctrl = mVDSession->getUniformIndexForName("iResolutionX");
+						//localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+						//sprintf(buf, "rw %.0f##v2x%d", localValues[ctrl], f);
+						sprintf(buf, "rw %.0f##rw%d", fw, f);
 						ImGui::Button(buf);
 						ImGui::SameLine();
-						ctrl = mVDSession->getUniformIndexForName("iResolutionY");
-						localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
-						sprintf(buf, "rh %.0f##v2y%d", localValues[ctrl], f);
+						float fh = mVDSession->getFboRenderedTexture(f)->getHeight();
+						//ctrl = mVDSession->getUniformIndexForName("iResolutionY");
+						//localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+						//sprintf(buf, "rh %.0f##v2y%d", localValues[ctrl], f);
+						sprintf(buf, "rh %.0f##rh%d", fh, f);
 						ImGui::Button(buf);
 					}
 					else {
@@ -435,6 +451,13 @@ void VDUIFbos::Run(const char* title) {
 			sprintf(buf, "%s", mVDSession->getFboInputTextureName(f).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 
+			float fw = mVDSession->getFboTextureWidth(f);
+			sprintf(buf, "tw %.0f##tw%d", fw, f);
+			ImGui::Button(buf);
+			ImGui::SameLine();
+			float fh = mVDSession->getFboTextureHeight(f);
+			sprintf(buf, "th %.0f##th%d", fh, f);
+			ImGui::Button(buf);
 
 			/*ImGui::SameLine();
 			sprintf(buf, "T##fboupd%d", f);

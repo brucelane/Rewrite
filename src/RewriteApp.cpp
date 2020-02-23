@@ -188,14 +188,6 @@ void RewriteApp::fileDrop(FileDropEvent event)
 	mVDSession->fileDrop(event);
 }
 
-void RewriteApp::resize()
-{
-	mVDUI->resize();
-
-	// tell the fbos our window has been resized, so they properly scale up or down
-	Warp::handleResize(mWarpList);
-}
-
 void RewriteApp::mouseMove(MouseEvent event)
 {
 	// pass this mouse event to the warp editor first
@@ -315,7 +307,7 @@ void RewriteApp::renderPostToFbo()
 {
 	gl::ScopedFramebuffer fbScp(mPostFbo);
 	// clear out the FBO with black
-	gl::clear(Color::gray(0.4f));
+	gl::clear(Color(0.4f, 0.8f, 0.0f));
 
 	// setup the viewport to match the dimensions of the FBO
 	gl::ScopedViewport scpVp(ivec2(0), mPostFbo->getSize());
@@ -330,14 +322,15 @@ void RewriteApp::renderPostToFbo()
 	mGlslPost->uniform("iSobel", mVDSession->getFloatUniformValueByIndex(mVDSettings->ISOBEL));
 	mGlslPost->uniform("iExposure", mVDSession->getFloatUniformValueByIndex(mVDSettings->IEXPOSURE));
 	mGlslPost->uniform("iChromatic", mVDSession->getFloatUniformValueByIndex(mVDSettings->ICHROMATIC));
-	
+	mGlslPost->uniform("iFlipH", (int)mVDSession->getBoolUniformValueByIndex(mVDSettings->IFLIPH));
+	mGlslPost->uniform("iFlipV", (int)mVDSession->getBoolUniformValueByIndex(mVDSettings->IFLIPV));
 	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 }
 void RewriteApp::renderWarpsToFbo()
 {
 	gl::ScopedFramebuffer fbScp(mWarpsFbo);
 	// clear out the FBO with black
-	gl::clear(Color::gray(0.2f));
+	gl::clear(Color(0.4f, 0.0f, 0.8f));
 
 	// setup the viewport to match the dimensions of the FBO
 	gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());
@@ -354,6 +347,15 @@ void RewriteApp::renderWarpsToFbo()
 	//gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 
 }
+
+void RewriteApp::resize()
+{
+	mVDUI->resize();
+
+	// tell the fbos our window has been resized, so they properly scale up or down
+	Warp::handleResize(mWarpList);
+	Warp::setSize(mWarpList, ivec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+}
 void RewriteApp::draw()
 {
 	// clear the window and set the drawing color to white
@@ -367,7 +369,10 @@ void RewriteApp::draw()
 		}
 	}
 	else {
-		gl::draw(mPostFbo->getColorTexture());
+		gl::setMatricesWindow(mVDSettings->mFboWidth, mVDSettings->mFboHeight, false);
+		gl::draw(mPostFbo->getColorTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
+
+		//gl::draw(mPostFbo->getColorTexture());
 		//gl::draw(mVDSession->getFboRenderedTexture(0));
 	}
 	// Spout Send

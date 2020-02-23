@@ -208,9 +208,9 @@ namespace videodromm {
 		
 		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex = 0);
 		ci::gl::TextureRef				getFboThumb(unsigned int aBlendIndex) { return mBlendFbos[aBlendIndex]->getColorTexture(); };
-		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);
-		//int								getFboTextureWidth(unsigned int aFboIndex);
-		//int								getFboTextureHeight(unsigned int aFboIndex);*/
+		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);*/
+		int								getFboTextureWidth(unsigned int aFboIndex) { return mFboList[aFboIndex]->getInputTexture()->getWidth(); };
+		int								getFboTextureHeight(unsigned int aFboIndex) { return mFboList[aFboIndex]->getInputTexture()->getHeight(); };
 		// utils
 
 		float							getTargetFps() { return mTargetFps; };

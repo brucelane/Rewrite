@@ -1,5 +1,5 @@
 /*{
-	"CREDIT" : "ClonedRainbowSpectrum by Hornet",
+	"CREDIT" : "debug by Bruce Lane",
 	"CATEGORIES" : [
 		"ci"
 	],
@@ -12,7 +12,6 @@
 	],
 }
 */
-
 // Number Printing - @P_Malin
 // License Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.
 
@@ -146,34 +145,18 @@ float PrintValue(const in vec2 vStringCharCoords, const in float fValue, const i
     return SampleDigit(fDigitCharacter, vCharPos);  
 }
 
-float PrintValue(in vec2 ingl_FragCoord, const in vec2 vPixelCoords, const in vec2 vFontSize, const in float fValue, const in float fMaxDigits, const in float fDecimalPlaces)
+float PrintValue(in vec2 inFragCoord, const in vec2 vPixelCoords, const in vec2 vFontSize, const in float fValue, const in float fMaxDigits, const in float fDecimalPlaces)
 {
-    return PrintValue((ingl_FragCoord.xy - vPixelCoords) / vFontSize, fValue, fMaxDigits, fDecimalPlaces);
+    return PrintValue((inFragCoord.xy - vPixelCoords) / vFontSize, fValue, fMaxDigits, fDecimalPlaces);
 }
-float RainbowBump(float x) {
-	return abs(x) > 1.0 ? 0.0 : 1.0 - x * x;
-}
-vec4 Rainbow(vec2 uv) {
+vec4 tex(vec2 uv) {
 	vec4 color = IMG_NORM_PIXEL( inputImage, uv) ;
-	float c = 3.0;
-	color.x = RainbowBump(c * (uv.x - 0.75));
-	color.y = RainbowBump(c * (uv.x - 0.5));
-	color.z = RainbowBump(c * (uv.x - 0.25));
-	color.w = 1.0;
-	/*float line = abs(0.01 / abs(0.5-uv.y) );//abs(0.01 / abs(0.5-uv.y) );
-	//uv.y = abs( uv.y - 0.5 );
-	uv.y = abs( uv.y - 0.5 );
-	
-	//vec4 soundWave =  IMG_NORM_PIXEL( inputImage, vec2(abs(0.5-uv.x)+0.005, uv.y) );
-	vec4 soundWave =  IMG_NORM_PIXEL( inputImage, uv);
-	//color *= line * (1.0 - 2.0 * abs( 0.5 - uv.xxx ) + pow( soundWave.y, 10.0 ) * 30.0 );
-	color += line * (uv.xxx + pow( soundWave.x, 10.0 ) * 30.0 );*/
     return color;
 }
 void main(void)
 {
-   	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;// /50.0
-	if (iFlipH)
+   	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+    if (iFlipH)
 	{
 		uv.x = 1.0 - uv.x;
 	}
@@ -182,18 +165,17 @@ void main(void)
 	{
 		uv.y = 1.0 - uv.y;
 	}
-	// Multiples of 4x5 work best
+    // Multiples of 4x5 work best
     vec2 vFontSize = vec2(20.0, 40.0);
   	vec4 vColour = vec4(0.7);
     vColour = mix( vColour, vec4(1.0, 1.0, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(30.0, 150.0), vFontSize, RENDERSIZE.x, 2.0, 0.0));
     vColour = mix( vColour, vec4(0.7, 0.5, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(100.0, 150.0), vFontSize, RENDERSIZE.y, 2.0, 0.0));
     vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(930.0, 150.0), vFontSize, TIME, 2.0, 1.0));
-    /*vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(350.0, 150.0), vFontSize, iBar, 2.0, 0.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(450.0, 150.0), vFontSize, iBarBeat, 2.0, 0.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(550.0, 150.0), vFontSize, iExposure, 2.0, 2.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(750.0, 150.0), vFontSize, iTimeFactor, 2.0, 3.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(970.0, 150.0), vFontSize, iBpm, 2.0, 2.0));*/
-	fragColor = mix( vec4(1.0, 1.0, 1.0, 1.0), Rainbow(uv), vColour);
-  	
+    /*vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(350.0, 10.0), vFontSize, iBar, 2.0, 0.0));
+    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(450.0, 10.0), vFontSize, iBarBeat, 2.0, 0.0));
+    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(550.0, 10.0), vFontSize, iExposure, 2.0, 2.0));
+    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(750.0, 10.0), vFontSize, iTimeFactor, 2.0, 3.0));
+    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(970.0, 10.0), vFontSize, iBpm, 2.0, 2.0));*/
+    fragColor = mix( vec4(1.0, 1.0, 1.0, 1.0), tex(uv), vColour);
 }
 

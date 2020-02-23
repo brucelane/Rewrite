@@ -15,9 +15,8 @@ namespace videodromm {
 			"uniform float     	TIME;\n"
 			"uniform float     	iZoom;\n"
 			"uniform vec4      	iMouse;\n"
-			"uniform bool       iFlipH;\n"
 			"uniform bool       iFlipV;\n"
-
+			"uniform bool       iFlipH;\n"
 			"uniform sampler2D 	inputImage;\n"
 			"out vec4 fragColor;\n"
 			"#define IMG_NORM_PIXEL texture2D\n";
@@ -206,7 +205,13 @@ namespace videodromm {
 						mShader->uniform(name, 0);
 						break;
 					case 2: // vec2
-						mShader->uniform(name, mVDAnimation->getVec2UniformValueByName(name));
+						if (name == "RENDERSIZE") {
+							//mShader->uniform(name, vec2(mTexture->getWidth(), mTexture->getHeight()));
+							mShader->uniform(name, vec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+						}
+						else {
+							mShader->uniform(name, mVDAnimation->getVec2UniformValueByName(name));
+						}
 						break;
 					case 3: // vec3
 						mShader->uniform(name, mVDAnimation->getVec3UniformValueByName(name));
@@ -238,7 +243,8 @@ namespace videodromm {
 				mShader->uniform("RENDERSIZE", vec2(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
 			}
 			else {
-				mShader->uniform("RENDERSIZE", vec2(mTexture->getWidth(), mTexture->getHeight()));
+				//mShader->uniform("RENDERSIZE", vec2(mTexture->getWidth(), mTexture->getHeight()));
+				mShader->uniform("RENDERSIZE", vec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			}
 			mShader->uniform("TIME", (float)getElapsedSeconds());// mVDAnimation->getFloatUniformValueByIndex(0));
 

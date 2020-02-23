@@ -1,0 +1,10 @@
+{
+   "shader" : {
+      "shadername" : "SphericalPolyhedra.fs",
+      "shadertype" : "fs"
+   },
+   "texture" : {
+      "texturename" : "help.jpg",
+      "texturetype" : "image"
+   }
+}

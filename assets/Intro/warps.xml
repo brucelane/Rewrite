@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<warpconfig version="1.0" profile="default">
+	<profile name="default">
+		<map id="1" display="1">
+			<warp method="bilinear" width="2" height="2" brightness="1" resolution="16" linear="0" adaptive="0">
+				<controlpoint x="0.0373726" y="0.668653"/>
+				<controlpoint x="0.0179687" y="0.9875"/>
+				<controlpoint x="0.472254" y="0.687723"/>
+				<controlpoint x="0.492969" y="0.9875"/>
+				<blend exponent="2">
+					<edges left="0" top="0" right="1" bottom="1"/>
+					<gamma red="1" green="1" blue="1"/>
+					<luminance red="0.5" green="0.5" blue="0.5"/>
+				</blend>
+			</warp>
+		</map>
+		<map id="2" display="1">
+			<warp method="perspective" width="2" height="2" brightness="1">
+				<controlpoint x="0.510759" y="0.589988"/>
+				<controlpoint x="0.939977" y="0.556615"/>
+				<controlpoint x="0.851852" y="0.979412"/>
+				<controlpoint x="0.517187" y="0.963889"/>
+				<blend exponent="2">
+					<edges left="0" top="0" right="1" bottom="1"/>
+					<gamma red="1" green="1" blue="1"/>
+					<luminance red="0.5" green="0.5" blue="0.5"/>
+				</blend>
+			</warp>
+		</map>
+		<map id="3" display="1">
+			<warp method="perspectivebilinear" width="2" height="2" brightness="1" resolution="16" linear="0" adaptive="1">
+				<controlpoint x="0" y="0"/>
+				<controlpoint x="0" y="1"/>
+				<controlpoint x="1" y="0"/>
+				<controlpoint x="1" y="1"/>
+				<blend exponent="2">
+					<edges left="0" top="0" right="1" bottom="1"/>
+					<gamma red="1" green="1" blue="1"/>
+					<luminance red="0.5" green="0.5" blue="0.5"/>
+				</blend>
+				<corner x="0.535156" y="0.0444444"/>
+				<corner x="0.983012" y="0.0488677"/>
+				<corner x="0.976217" y="0.237187"/>
+				<corner x="0.562854" y="0.184744"/>
+			</warp>
+		</map>
+		<map id="4" display="1">
+			<warp method="bilinear" width="2" height="2" brightness="1" resolution="16" linear="0" adaptive="0">
+				<controlpoint x="0.0164062" y="0.0416667"/>
+				<controlpoint x="0.0203125" y="0.622222"/>
+				<controlpoint x="0.488281" y="0.0319444"/>
+				<controlpoint x="0.480469" y="0.663889"/>
+				<blend exponent="2">
+					<edges left="0" top="0" right="1" bottom="1"/>
+					<gamma red="1" green="1" blue="1"/>
+					<luminance red="0.5" green="0.5" blue="0.5"/>
+				</blend>
+			</warp>
+		</map>
+		<map id="5" display="1">
+			<warp method="bilinear" width="2" height="2" brightness="1" resolution="16" linear="0" adaptive="0">
+				<controlpoint x="0.558324" y="0.206198"/>
+				<controlpoint x="0.532276" y="0.519666"/>
+				<controlpoint x="0.989807" y="0.275328"/>
+				<controlpoint x="0.98188" y="0.558999"/>
+				<blend exponent="2">
+					<edges left="0" top="0" right="1" bottom="1"/>
+					<gamma red="1" green="1" blue="1"/>
+					<luminance red="0.5" green="0.5" blue="0.5"/>
+				</blend>
+			</warp>
+		</map>
+	</profile>
+</warpconfig>
+
