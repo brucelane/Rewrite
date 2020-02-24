@@ -5,7 +5,7 @@ using namespace videodromm;
 VDUIFbos::VDUIFbos(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mVDSettings = aVDSettings;
 	mVDSession = aVDSession;
-
+	globalUniforms = true;
 	for (int c = 0; c < 128; c++)
 	{
 		localValues[c] = mVDSession->getFloatUniformValueByIndex(c);
@@ -409,11 +409,7 @@ void VDUIFbos::Run(const char* title) {
 							setValue(mVDSettings->IMOUSEY, mouseY, f);
 						}
 					}
-
-
 					break;
-
-
 				default:
 					//ciModelViewProjection 35676
 					/* gl2.h
@@ -430,7 +426,8 @@ void VDUIFbos::Run(const char* title) {
 				}
 
 			} //for uniforms
-
+			sprintf(buf, "global %d##gu%d", globalUniforms, f);
+			globalUniforms ^= ImGui::Button(buf);
 			if (mVDSession->getFboInputTexture(f)) ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			sprintf(buf, "%s", mVDSession->getFboInputTextureName(f).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);

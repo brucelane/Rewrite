@@ -41,10 +41,18 @@ namespace videodromm
 		int								playheadPositions[12];
 		float							speeds[12];
 		// uniforms
+		bool							globalUniforms = true;
 		unsigned int					ctrl;
 		map<int, float>					localValues;
 		float							getValue(unsigned int aCtrl, unsigned int aFboIndex) {
-			return mVDSession->getFboFloatUniformValueByIndex(aCtrl, aFboIndex);
+			float rtn;
+			if (globalUniforms) {
+				rtn = mVDSession->getFloatUniformValueByIndex(aCtrl);
+			}
+			else {
+				rtn = mVDSession->getFboFloatUniformValueByIndex(aCtrl, aFboIndex);
+			}
+			return rtn;
 		};
 		void							setValue(unsigned int aCtrl, unsigned int aFboIndex, float aValue) {
 			mVDSession->setFboFloatUniformValueByIndex(aCtrl, aFboIndex, aValue);
