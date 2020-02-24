@@ -132,7 +132,7 @@ namespace videodromm {
 			}
 
 		}
-		if (mError.length() > 0) mVDSettings->mMsg = mError;
+		if (mError.length() > 0) mVDSettings->mErrorMsg = mError;
 		return mValid;
 	}
 	// aName = fullpath
@@ -199,8 +199,8 @@ namespace videodromm {
 			mError = aName + string(e.what());
 			CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + aName);
 		}
-		mVDSettings->mNewMsg = true;
-		mVDSettings->mMsg = mError;
+		//mVDSettings->mNewMsg = true;
+		mVDSettings->mErrorMsg = mError;
 		return mValid;
 	}
 
@@ -309,7 +309,7 @@ namespace videodromm {
 					if (name != "ciModelViewProjection") {//type 35676
 						mVDSettings->mNewMsg = true;
 						mError = "uniform not found " + name;
-						mVDSettings->mMsg = mError;
+						mVDSettings->mErrorMsg = mError;
 						CI_LOG_E(mError);
 					}
 				}

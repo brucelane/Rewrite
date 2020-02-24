@@ -587,6 +587,7 @@ void VDSettings::reset()
 	mOSCMsg = "";
 	mOSCNewMsg = false;
 	mMsg = "";
+	mErrorMsg = "";
 	mWebSocketsMsg = "";
 	mNewMsg = false;
 	mWebSocketsNewMsg = false;

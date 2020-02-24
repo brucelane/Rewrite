@@ -358,7 +358,7 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 			else {
 				CI_LOG_E("not handled: " << msg.getNumArgs() << " addr: " << addr);
 				mVDSettings->mOSCMsg = "not handled: " + addr;
-				mVDSettings->mMsg = "osc not handled: " + addr;
+				mVDSettings->mErrorMsg = "osc not handled: " + addr;
 			}
 		});
 

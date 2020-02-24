@@ -475,8 +475,8 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 		mError = aName + string(e.what());
 		CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + aFragmentShaderString);
 	}
-	mVDSettings->mNewMsg = true;
-	mVDSettings->mMsg = mError;
+	//mVDSettings->mNewMsg = true;
+	mVDSettings->mErrorMsg = mError;
 	return mValid;
 }
 

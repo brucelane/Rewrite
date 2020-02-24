@@ -388,6 +388,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::TreePop();
 		}
 
+		ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
 		ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
 		ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
 		ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());

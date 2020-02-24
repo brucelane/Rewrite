@@ -127,10 +127,16 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 	if (mVDSession->getFboRenderedTexture(0)) Warp::setSize(mWarpList, mVDSession->getFboRenderedTexture(0)->getSize());
 }
 void RewriteApp::createWarp() {
+	auto warp = WarpBilinear::create();
+	warp->setAFboIndex(0);
+	warp->setBFboIndex(0);
+	warp->setAShaderIndex(0);
+	warp->setBShaderIndex(0);
+	warp->setAShaderFilename("inputImage.fs");
+	warp->setBShaderFilename("inputImage.fs");
+	warp->setATextureFilename("audio");
+	warp->setBTextureFilename("audio");
 	mWarpList.push_back(WarpBilinear::create());
-	/* TODO auto warp = mWarpList[mWarpList.size() - 1];
-	warp->setAShaderFilename(shaderFileName);
-	warp->setATextureFilename(textureFileName);*/
 }
 void RewriteApp::loadWarps() {
 	int i = 0;
