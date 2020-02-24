@@ -43,11 +43,11 @@ namespace videodromm
 		// uniforms
 		unsigned int					ctrl;
 		map<int, float>					localValues;
-		float							getValue(unsigned int aCtrl) {
-			return mVDSession->getFloatUniformValueByIndex(aCtrl);
+		float							getValue(unsigned int aCtrl, unsigned int aFboIndex) {
+			return mVDSession->getFboFloatUniformValueByIndex(aCtrl, aFboIndex);
 		};
-		void							setValue(unsigned int aCtrl, float aValue) {
-			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+		void							setValue(unsigned int aCtrl, unsigned int aFboIndex, float aValue) {
+			mVDSession->setFboFloatUniformValueByIndex(aCtrl, aFboIndex, aValue);
 		};
 		float							getMinUniformValueByIndex(unsigned int aIndex) {
 			return mVDSession->getMinUniformValueByIndex(aIndex);
@@ -57,6 +57,9 @@ namespace videodromm
 		};
 		bool							getBoolValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			return mVDSession->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
+		};
+		int								getIntValue(unsigned int aCtrl, unsigned int aFboIndex) {
+			return mVDSession->getFboIntUniformValueByIndex(aCtrl, aFboIndex);
 		};
 		void							toggleValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			mVDSession->toggleFboValue(aCtrl, aFboIndex);

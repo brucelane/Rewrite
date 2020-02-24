@@ -32,25 +32,25 @@ namespace videodromm
 	// for profiling
 	typedef std::chrono::high_resolution_clock		Clock;
 
-	class VDFbo  { // TODO : public VDTexture ?
+	class VDFbo { // TODO : public VDTexture ?
 	public:
 		VDFbo(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aShaderFilename, string aTextureFilename);
 		~VDFbo(void);
 		static VDFboRef create(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aShaderFilename, string aTextureFilename) {
-			return std::make_shared<VDFbo>(aVDSettings, aVDAnimation, aShaderFilename,  aTextureFilename);
+			return std::make_shared<VDFbo>(aVDSettings, aVDAnimation, aShaderFilename, aTextureFilename);
 		}
 		typedef enum { UNKNOWN, IMAGE, SEQUENCE, CAMERA, SHARED, AUDIO, STREAM } TextureType;
 		ci::gl::Texture2dRef getRenderedTexture();
-		
+
 		bool									setFragmentString(string aFragmentShaderString, string aName = "");
-		bool									loadFragmentStringFromFile(string aFileName);		
+		bool									loadFragmentStringFromFile(string aFileName);
 		bool									isValid() {
-			return mValid; 
+			return mValid;
 		};
 		/*void									flipV() {
 			mVDAnimation->setBoolUniformValueByIndex(mVDSettings->IFLIPV, !mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV));
 		};
-		void									flipH() { 
+		void									flipH() {
 			mVDAnimation->setBoolUniformValueByIndex(mVDSettings->IFLIPH, !mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH));
 		};
 		bool									isFlipH() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV); };
@@ -69,6 +69,7 @@ namespace videodromm
 		int										getUniformIndexForName(string aName) {
 			return shaderUniforms[aName].index;
 		};
+		// bool
 		bool									getBoolUniformValueByIndex(unsigned int aIndex) {
 			//101 mVDSettings->IFLIPH
 			//102 mVDSettings->IFLIPV
@@ -81,6 +82,52 @@ namespace videodromm
 			shaderUniforms[getUniformNameForIndex(aIndex)].boolValue = !shaderUniforms[getUniformNameForIndex(aIndex)].boolValue;
 			return shaderUniforms[getUniformNameForIndex(aIndex)].boolValue;
 		};
+		// int
+		int										getIntUniformValueByName(string aName) {
+			return shaderUniforms[aName].intValue;
+		};
+		int										getIntUniformValueByIndex(unsigned int aIndex) {
+			return shaderUniforms[getUniformNameForIndex(aIndex)].intValue;
+		};
+		float									getFloatUniformValueByName(string aName) {
+			if (aName.length() > 0) {
+				return shaderUniforms[aName].floatValue;
+			}
+			else {
+				CI_LOG_V("getFloatUniformValueByName name empty");
+				return 1.0f;
+			}
+		}
+		int										getFloatUniformValueByIndex(unsigned int aIndex) {
+			return shaderUniforms[getUniformNameForIndex(aIndex)].floatValue;
+		};
+		bool									setFloatUniformValueByIndex(unsigned int aIndex, float aValue) {
+			bool rtn = false;
+		// we can't change iTime at index 0
+		if (aIndex > 0) {
+			/*if (aIndex == 31) {
+				CI_LOG_V("old value " + toString(shaderUniforms[getUniformNameForIndex(aIndex)].floatValue) + " newvalue " + toString(aValue));
+			}*/
+			string uniformName = getUniformNameForIndex(aIndex);
+			if (shaderUniforms[uniformName].floatValue != aValue) {
+				if ((aValue >= shaderUniforms[uniformName].minValue && aValue <= shaderUniforms[uniformName].maxValue) || shaderUniforms[uniformName].autobass || shaderUniforms[uniformName].automid || shaderUniforms[uniformName].autotreble) {
+					shaderUniforms[uniformName].floatValue = aValue;
+					rtn = true;
+				}
+			}
+			// not all controls are from 0.0 to 1.0
+			/* not working float lerpValue = lerp<float, float>(shaderUniforms[getUniformNameForIndex(aIndex)].minValue, shaderUniforms[getUniformNameForIndex(aIndex)].maxValue, aValue);
+			if (shaderUniforms[getUniformNameForIndex(aIndex)].floatValue != lerpValue) {
+				shaderUniforms[getUniformNameForIndex(aIndex)].floatValue = lerpValue;
+				rtn = true;
+			}*/
+		}
+		else {
+			// no max 
+			if (aIndex == 0) shaderUniforms[getUniformNameForIndex(aIndex)].floatValue = aValue;
+		}
+		return rtn;
+	}
 	private:
 		// Settings
 		VDSettingsRef					mVDSettings;
@@ -130,6 +177,29 @@ namespace videodromm
 			shaderUniforms[aName].boolValue = aValue;
 			shaderUniforms[aName].index = aCtrlIndex;
 			shaderUniforms[aName].uniformType = 6;
+		}
+		void							createIntUniform(string aName, int aCtrlIndex, int aValue = 1) {
+			controlIndexes[aCtrlIndex] = aName;
+			shaderUniforms[aName].index = aCtrlIndex;
+			shaderUniforms[aName].uniformType = 5;
+			shaderUniforms[aName].isValid = true;
+			shaderUniforms[aName].intValue = aValue;
+		};
+		void							createFloatUniform(string aName, int aCtrlIndex, float aValue, float aMin, float aMax) {
+			controlIndexes[aCtrlIndex] = aName;
+			shaderUniforms[aName].minValue = aMin;
+			shaderUniforms[aName].maxValue = aMax;
+			shaderUniforms[aName].defaultValue = aValue;
+			shaderUniforms[aName].boolValue = false;
+			shaderUniforms[aName].autotime = false;
+			shaderUniforms[aName].automatic = false;
+			shaderUniforms[aName].autobass = false;
+			shaderUniforms[aName].automid = false;
+			shaderUniforms[aName].autotreble = false;
+			shaderUniforms[aName].index = aCtrlIndex;
+			shaderUniforms[aName].floatValue = aValue;
+			shaderUniforms[aName].uniformType = 0;
+			shaderUniforms[aName].isValid = true;
 		}
 	};
 }

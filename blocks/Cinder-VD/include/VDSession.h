@@ -210,8 +210,12 @@ namespace videodromm {
 		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex = 0);
 		ci::gl::TextureRef				getFboThumb(unsigned int aBlendIndex) { return mBlendFbos[aBlendIndex]->getColorTexture(); };
 		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);*/
-		int								getFboTextureWidth(unsigned int aFboIndex) { return mFboList[aFboIndex]->getInputTexture()->getWidth(); };
-		int								getFboTextureHeight(unsigned int aFboIndex) { return mFboList[aFboIndex]->getInputTexture()->getHeight(); };
+		int								getFboTextureWidth(unsigned int aFboIndex) { 
+			return mFboList[aFboIndex]->getInputTexture() ? mFboList[aFboIndex]->getInputTexture()->getWidth() : mVDSettings->mFboWidth;
+		};
+		int								getFboTextureHeight(unsigned int aFboIndex) { 
+			return mFboList[aFboIndex]->getInputTexture() ? mFboList[aFboIndex]->getInputTexture()->getHeight() : mVDSettings->mFboHeight; 
+		};
 		// utils
 
 		float							getTargetFps() { return mTargetFps; };
@@ -246,8 +250,16 @@ namespace videodromm {
 		void							toggleFboValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->toggleValue(aCtrl);
 		};
+		int								getFboIntUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getIntUniformValueByIndex(aCtrl);
+		};
 
-
+		float							getFboFloatUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getFloatUniformValueByIndex(aCtrl);
+		};
+		bool							setFboFloatUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex, float aValue) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->setFloatUniformValueByIndex(aCtrl, aValue);
+		};
 		/*
 		void							fboFlipV(unsigned int aFboIndex) {
 			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->flipV();

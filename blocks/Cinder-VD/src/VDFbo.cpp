@@ -219,7 +219,10 @@ namespace videodromm {
 			case IMAGE:
 				break;
 			case SEQUENCE:
-				// TODO IBARBEAT mCurrentSeqFilename = mTextureName + " (" + toString((int)getElapsedSeconds()) + ").jpg";
+				if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 19) {
+					// TODO IBARBEAT 
+					mCurrentSeqFilename = mTextureName + " (" + toString(mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT)) + ").jpg";
+				}
 				if (mCachedTextures[mCurrentSeqFilename]) {
 					CI_LOG_V(mCurrentSeqFilename + " in cache");
 					mLastCachedFilename = mCurrentSeqFilename;
@@ -264,6 +267,7 @@ namespace videodromm {
 					switch (uniformType)
 					{
 					case 0: // float
+						createFloatUniform(name, mVDAnimation->getUniformIndexForName(name), getIntUniformValueByName(name), mVDAnimation->getMinUniformValueByName(name), mVDAnimation->getMaxUniformValueByName(name));
 						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
 						break;
 					case 1: // sampler2D
@@ -285,14 +289,17 @@ namespace videodromm {
 						mShader->uniform(name, mVDAnimation->getVec4UniformValueByName(name));
 						break;
 					case 5: // int
+						// IBEAT 51
+						// IBAR 52
+						// IBARBEAT 53
+						createIntUniform(name, mVDAnimation->getUniformIndexForName(name), getIntUniformValueByName(name));
 						mShader->uniform(name, mVDAnimation->getIntUniformValueByName(name));
 						break;
 					case 6: // bool
+						//IFLIPH 101
+						//IFLIPV 102
 						createBoolUniform(name, mVDAnimation->getUniformIndexForName(name), getBoolUniformValueByName(name)); // get same index as vdanimation
 						mShader->uniform(name, getBoolUniformValueByName(name));
-						//createBoolUniform("iFlipH", mVDSettings->IFLIPH); // 101
-						//createBoolUniform("iFlipV", mVDSettings->IFLIPV); // 102
-
 						break;
 					default:
 						break;
