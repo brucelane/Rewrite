@@ -1,6 +1,6 @@
 [
    {
-      "adaptive" : false,
+      "adaptive" : true,
       "linear" : false,
       "resolution" : 16,
       "warp" : {
@@ -12,32 +12,54 @@
          "brightness" : 1,
          "bshaderfilename" : "inputImage.fs",
          "bshaderindex" : 0,
-         "btexturefilename" : "b",
+         "btexturefilename" : "blue",
          "controlpoints" : [
             {
                "controlpoint" : 0,
-               "x" : 0.037372599999999999,
-               "y" : 0.66865300000000005
+               "x" : 0,
+               "y" : 0
             },
             {
                "controlpoint" : 1,
-               "x" : 0.017968700000000001,
-               "y" : 0.98750000000000004
+               "x" : 0,
+               "y" : 1
             },
             {
                "controlpoint" : 2,
-               "x" : 0.47225400000000001,
-               "y" : 0.68772299999999997
+               "x" : 1,
+               "y" : 0
             },
             {
                "controlpoint" : 3,
-               "x" : 0.49296899999999999,
-               "y" : 0.98750000000000004
+               "x" : 1,
+               "y" : 1
+            }
+         ],
+         "corners" : [
+            {
+               "corner" : 0,
+               "x" : 0.46527800000000002,
+               "y" : 0.048888899999999999
+            },
+            {
+               "corner" : 1,
+               "x" : 0.870139,
+               "y" : 0.042222200000000001
+            },
+            {
+               "corner" : 2,
+               "x" : 0.85486099999999998,
+               "y" : 0.77222199999999996
+            },
+            {
+               "corner" : 3,
+               "x" : 0.48333300000000001,
+               "y" : 0.71999999999999997
             }
          ],
          "crossfade" : -431602080,
          "height" : 2,
-         "method" : "bilinear",
+         "method" : "perspectivebilinear",
          "mixfboindex" : 3452816845,
          "width" : 2
       }
