@@ -19,6 +19,13 @@ namespace videodromm {
 			"uniform vec4      	iMouse;\n"
 			"uniform bool       iFlipV;\n"
 			"uniform bool       iFlipH;\n"
+			"uniform float     	iBarBeat; \n"
+			"uniform float     	iExposure; \n"
+			"uniform float     	iBeat; \n"
+			"uniform float     	iBpm; \n"
+			"uniform float     	iBar; \n"
+			"uniform float     	iTimeFactor; \n"
+			"uniform bool		iDebug; \n"
 			"uniform sampler2D 	inputImage;\n"
 			"out vec4 fragColor;\n"
 			"#define IMG_NORM_PIXEL texture2D\n";
@@ -32,13 +39,15 @@ namespace videodromm {
 		//mInputTextureIndex = 0;
 		//mSrcArea = Area(0, 0, 10, 10);
 		mType = UNKNOWN;
+		mStatus = "";
 		mLastCachedFilename = mTextureName;
-		if (mTextureName == "" || mTextureName == "audio") { 
+		if (mTextureName == "" || mTextureName == "audio") {
 			mTextureName = "audio";
 			mType = AUDIO;
 			mTexture = mVDAnimation->getAudioTexture();
+
 		}
-		fs::path texFileOrPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;	
+		fs::path texFileOrPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;
 		if (fs::exists(texFileOrPath)) {
 			if (fs::is_directory(texFileOrPath)) {
 				mType = SEQUENCE;
@@ -58,6 +67,7 @@ namespace videodromm {
 			//mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 			//mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		}
+		mStatus = mTextureName;
 		//mSrcArea = mTexture->getBounds();
 		// init texture
 		// init the fbo whatever happens next
@@ -78,12 +88,12 @@ namespace videodromm {
 	VDFbo::~VDFbo(void) {
 	}
 
-	bool VDFbo::loadFragmentStringFromFile(string mCurrentSeqFile) {
+	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
 		mValid = false;
 		// load fragment shader
-		CI_LOG_V("loadFragmentStringFromFile, loading " + mCurrentSeqFile);
-		mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / mCurrentSeqFile;
-		if (mCurrentSeqFile.length() > 0 && fs::exists(mFragFile)) {
+		CI_LOG_V("loadFragmentStringFromFile, loading " + aFileName);
+		mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / aFileName;
+		if (aFileName.length() > 0 && fs::exists(mFragFile)) {
 			mFileNameWithExtension = mFragFile.filename().string();
 			mFragmentShaderString = loadString(loadFile(mFragFile));
 			mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
@@ -91,16 +101,15 @@ namespace videodromm {
 			CI_LOG_V(mFragFile.string() + " loaded and compiled");
 		}
 		else {
-			// file does not exist, try with audio.fs
-
-			mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / "audio.fs";
+			// file does not exist, try with parent folder
+			mFragFile = getAssetPath("") / aFileName;
 			if (fs::exists(mFragFile)) {
-				mShaderName = mShaderFileName = "audio.fs";
+				mShaderName = mShaderFileName = aFileName;
 				mFileNameWithExtension = mFragFile.filename().string();
 				mFragmentShaderString = loadString(loadFile(mFragFile));
 				mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
 
-				CI_LOG_V(mFragFile.string() + " loaded and compiled(audio)");
+				CI_LOG_V(mFragFile.string() + " loaded and compiled(parent)");
 			}
 			else {
 				mError = mFragFile.string() + " does not exist";
@@ -210,6 +219,7 @@ namespace videodromm {
 			case IMAGE:
 				break;
 			case SEQUENCE:
+				// TODO IBARBEAT mCurrentSeqFilename = mTextureName + " (" + toString((int)getElapsedSeconds()) + ").jpg";
 				if (mCachedTextures[mCurrentSeqFilename]) {
 					CI_LOG_V(mCurrentSeqFilename + " in cache");
 					mLastCachedFilename = mCurrentSeqFilename;
@@ -227,8 +237,9 @@ namespace videodromm {
 						int milli = msdur.count();
 						mLastCachedFilename = mCurrentSeqFilename;
 						mTexture = mCachedTextures[mCurrentSeqFilename];
-						//mStatus = mCurrentSeqFile + " cached in ms " + toString(milli);
-						//CI_LOG_V(mStatus);
+						mStatus = mCurrentSeqFilename + " " + toString(milli) + "ms";
+						CI_LOG_V(mStatus);
+						mVDSettings->mMsg = mStatus;
 					}
 					else {
 						// we want the last texture repeating
@@ -243,7 +254,7 @@ namespace videodromm {
 
 			mTexture->bind(0);
 			string name;
-			
+
 			mUniforms = mShader->getActiveUniforms();
 			for (const auto &uniform : mUniforms) {
 				name = uniform.getName();
@@ -318,7 +329,7 @@ namespace videodromm {
 			gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			mRenderedTexture = mFbo->getColorTexture();
 			if (!isReady) {
-				string filename = mShaderName + ".jpg";
+				string filename = mShaderName + "-" + mTextureName + ".jpg";
 				fs::path fr = getAssetPath("") / "thumbs" / filename;
 
 				if (!fs::exists(fr)) {

@@ -458,7 +458,8 @@ void VDUIFbos::Run(const char* title) {
 			float fh = mVDSession->getFboTextureHeight(f);
 			sprintf(buf, "th %.0f##th%d", fh, f);
 			ImGui::Button(buf);
-
+			sprintf(buf, "%s", mVDSession->getFboStatus(f).c_str());
+			ImGui::Button(buf);
 			/*ImGui::SameLine();
 			sprintf(buf, "T##fboupd%d", f);
 			i/f (ImGui::Button(buf)) mVDSession->updateShaderThumbFile(f);*

@@ -115,8 +115,6 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 	}
 	else {
 		// otherwise create a warp from scratch
-		mWarpList.push_back(WarpBilinear::create());
-		mWarpList.push_back(WarpPerspective::create());
 		mWarpList.push_back(WarpPerspectiveBilinear::create());
 	}
 	
@@ -298,6 +296,17 @@ void RewriteApp::cleanup()
 
 void RewriteApp::update()
 {
+	switch (mVDSession->getCmd()) {
+	case 0:
+		//createControlWindow();
+		break;
+	case 1:
+		//deleteControlWindows();
+		break;
+	case 2:
+		mWarpList.push_back(WarpPerspectiveBilinear::create());
+		break;
+	}
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
 	mVDSession->update();
 	renderPostToFbo();

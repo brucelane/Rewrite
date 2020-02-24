@@ -18,7 +18,7 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	// TODO: needed? mVDAnimation->tapTempo();
 	mDefaultTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 	//createFboShaderTexture("default.fs", "0.jpg");
-	createFboShaderTexture("audio.fs", "audio");
+	//createFboShaderTexture("audio.fs", "audio");
 	// allow log to file
 	mVDLog = VDLog::create();
 	// init fbo format

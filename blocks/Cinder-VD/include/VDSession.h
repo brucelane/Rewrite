@@ -276,6 +276,9 @@ namespace videodromm {
 		int								getUniformIndexForName(string aName) {
 			return mVDAnimation->getUniformIndexForName(aName);
 		};
+		string							getFboStatus(unsigned int aFboIndex = 0) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getStatus();
+		}
 		//string							getFboFragmentShaderText(unsigned int aFboIndex);
 		// feedback get/set
 		/*int								getFeedbackFrames() {
@@ -404,11 +407,12 @@ namespace videodromm {
 		void							openMidiOutPort(int i) { mVDRouter->openMidiOutPort(i); };
 		void							closeMidiOutPort(int i) { mVDRouter->closeMidiOutPort(i); };
 		//! window management
-		/*void							createWindow() { cmd = 0; };
+		void							createWindow() { cmd = 0; };
 		void							deleteWindow() { cmd = 1; };
+		void							createWarp() { cmd = 2; };
 		int								getCmd() { int rtn = cmd; cmd = -1; return rtn; };
 		// utils
-		float							formatFloat(float f) { return mVDUtils->formatFloat(f); };
+		/*float							formatFloat(float f) { return mVDUtils->formatFloat(f); };
 
 		void							load();
 		void							updateAudio() {mTextureList[0]->getTexture();}
@@ -494,7 +498,7 @@ namespace videodromm {
 		float							mZoom;
 		void							updateStream(string * aStringPtr);*/
 		//! window management
-		int								cmd;
+		int								cmd = -1;
 		bool							mShowUI = false;
 		// mix
 

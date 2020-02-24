@@ -58,6 +58,7 @@ namespace videodromm
 		std::string								getName() { return mShaderName; };
 		std::string								getTextureName() { return mTextureName; };
 		ci::gl::Texture2dRef					getInputTexture() { return mTexture; };
+		string									getStatus() { return mStatus; };
 		void									setInputTexture(ci::gl::Texture2dRef aTextureRef) { mTexture = aTextureRef; };
 		std::vector<ci::gl::GlslProg::Uniform>	getUniforms() { return mUniforms; };
 		ci::JsonTree							toJson(bool save = false) const;
@@ -91,6 +92,7 @@ namespace videodromm
 		map<string, ci::gl::TextureRef>	mCachedTextures;
 		string							mLastCachedFilename;
 		string							mCurrentSeqFilename;
+		string							mStatus;
 		TextureType						mType;
 		//int								mInputTextureIndex;
 		//! shader
