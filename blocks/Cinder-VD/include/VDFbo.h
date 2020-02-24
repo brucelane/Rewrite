@@ -29,6 +29,8 @@ namespace videodromm
 	// stores the pointer to the VDFbo instance
 	typedef std::shared_ptr<class VDFbo> 			VDFboRef;
 	typedef std::vector<VDFboRef>					VDFboList;
+	// for profiling
+	typedef std::chrono::high_resolution_clock		Clock;
 
 	class VDFbo  { // TODO : public VDTexture ?
 	public:
@@ -36,11 +38,10 @@ namespace videodromm
 		~VDFbo(void);
 		static VDFboRef create(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aShaderFilename, string aTextureFilename) {
 			return std::make_shared<VDFbo>(aVDSettings, aVDAnimation, aShaderFilename,  aTextureFilename);
-		}		
+		}
+		typedef enum { UNKNOWN, IMAGE, SEQUENCE, CAMERA, SHARED, AUDIO, STREAM } TextureType;
 		ci::gl::Texture2dRef getRenderedTexture();
-		/*Area getSrcArea() { 
-			return mSrcArea; 
-		};*/
+		
 		bool									setFragmentString(string aFragmentShaderString, string aName = "");
 		bool									loadFragmentStringFromFile(string aFileName);		
 		bool									isValid() {
@@ -87,6 +88,10 @@ namespace videodromm
 		//! Input textures
 		//VDTextureList					mTextureList;
 		gl::TextureRef					mTexture;
+		map<string, ci::gl::TextureRef>	mCachedTextures;
+		string							mLastCachedFilename;
+		string							mCurrentSeqFilename;
+		TextureType						mType;
 		//int								mInputTextureIndex;
 		//! shader
 		gl::GlslProgRef					mShader;

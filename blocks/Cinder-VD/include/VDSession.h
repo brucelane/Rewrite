@@ -312,6 +312,7 @@ namespace videodromm {
 		string VDSession::getInputTextureName(unsigned int aTextureIndex) {
 			return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getName();
 		}*/
+		
 		//ci::gl::TextureRef				getInputTexture(unsigned int aTextureIndex);
 		/*ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, string aFilename);
 		//ci::gl::TextureRef				getNextInputTexture(unsigned int aTextureIndex);

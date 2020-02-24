@@ -1289,9 +1289,7 @@ bool VDSession::initTextureList() {
 ci::gl::TextureRef VDSession::getInputTexture(unsigned int aTextureIndex) {
 	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getTexture();
 }*/
-/*ci::gl::TextureRef VDSession::getCachedTexture(unsigned int aTextureIndex, string aFilename) {
-	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getCachedTexture(aFilename);
-}
+/*
 
 
 unsigned int VDSession::getInputTextureOriginalWidth(unsigned int aTextureIndex) {

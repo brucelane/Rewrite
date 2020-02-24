@@ -8,6 +8,8 @@ namespace videodromm {
 		mShaderName = aShaderFilename;
 		mShaderFileName = aShaderFilename;
 		mTextureName = aTextureFilename;
+		mCurrentSeqFilename = aTextureFilename;
+		mLastCachedFilename = aTextureFilename;
 		shaderInclude = "#version 150\n"
 			"// shadertoy specific\n"
 			"uniform vec2      	RENDERSIZE;\n"
@@ -29,14 +31,29 @@ namespace videodromm {
 		isReady = false;
 		//mInputTextureIndex = 0;
 		//mSrcArea = Area(0, 0, 10, 10);
-
-		if (mTextureName == "") { mTextureName = "help.jpg"; }
-		fs::path texPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;
-		if (fs::exists(texPath)) {
-			mTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
+		mType = UNKNOWN;
+		mLastCachedFilename = mTextureName;
+		if (mTextureName == "" || mTextureName == "audio") { 
+			mTextureName = "audio";
+			mType = AUDIO;
+			mTexture = mVDAnimation->getAudioTexture();
+		}
+		fs::path texFileOrPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;	
+		if (fs::exists(texFileOrPath)) {
+			if (fs::is_directory(texFileOrPath)) {
+				mType = SEQUENCE;
+				mCurrentSeqFilename = mTextureName + " (1).jpg";
+				mLastCachedFilename = mTextureName + " (1).jpg";
+			}
+			else {
+				mTexture = gl::Texture::create(loadImage(texFileOrPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
+				mType = IMAGE;
+			}
 			//mRenderedTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 		}
 		else {
+			mTextureName = "audio";
+			mType = AUDIO;
 			mTexture = mVDAnimation->getAudioTexture(); // init with audio texture
 			//mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 			//mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
@@ -61,12 +78,12 @@ namespace videodromm {
 	VDFbo::~VDFbo(void) {
 	}
 
-	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
+	bool VDFbo::loadFragmentStringFromFile(string mCurrentSeqFile) {
 		mValid = false;
 		// load fragment shader
-		CI_LOG_V("loadFragmentStringFromFile, loading " + aFileName);
-		mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / aFileName;
-		if (aFileName.length() > 0 && fs::exists(mFragFile)) {
+		CI_LOG_V("loadFragmentStringFromFile, loading " + mCurrentSeqFile);
+		mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / mCurrentSeqFile;
+		if (mCurrentSeqFile.length() > 0 && fs::exists(mFragFile)) {
 			mFileNameWithExtension = mFragFile.filename().string();
 			mFragmentShaderString = loadString(loadFile(mFragFile));
 			mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
@@ -184,13 +201,49 @@ namespace videodromm {
 
 			gl::ScopedFramebuffer fbScp(mFbo);
 			gl::clear(Color::black());
-			if (mTextureName == "audio") {
+
+			switch (mType)
+			{
+			case AUDIO:
 				mTexture = mVDAnimation->getAudioTexture();
+				break;
+			case IMAGE:
+				break;
+			case SEQUENCE:
+				if (mCachedTextures[mCurrentSeqFilename]) {
+					CI_LOG_V(mCurrentSeqFilename + " in cache");
+					mLastCachedFilename = mCurrentSeqFilename;
+					mTexture = mCachedTextures[mCurrentSeqFilename];
+				}
+				else {
+					// mTextureName is the path
+					fs::path fullPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName / mCurrentSeqFilename;
+					if (fs::exists(fullPath)) {
+						// start profiling
+						auto start = Clock::now();
+						mCachedTextures[mCurrentSeqFilename] = ci::gl::Texture::create(loadImage(fullPath), gl::Texture::Format().loadTopDown());
+						auto end = Clock::now();
+						auto msdur = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+						int milli = msdur.count();
+						mLastCachedFilename = mCurrentSeqFilename;
+						mTexture = mCachedTextures[mCurrentSeqFilename];
+						//mStatus = mCurrentSeqFile + " cached in ms " + toString(milli);
+						//CI_LOG_V(mStatus);
+					}
+					else {
+						// we want the last texture repeating
+						//CI_LOG_V(mCurrentSeqFile + " does not exist");
+						mTexture = mCachedTextures[mLastCachedFilename];
+					}
+				}
+				break;
+			default:
+				break;
 			}
 
 			mTexture->bind(0);
 			string name;
-			int fger;
+			
 			mUniforms = mShader->getActiveUniforms();
 			for (const auto &uniform : mUniforms) {
 				name = uniform.getName();

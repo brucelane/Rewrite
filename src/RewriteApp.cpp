@@ -369,7 +369,9 @@ void RewriteApp::draw()
 		}
 	}
 	else {
-		gl::setMatricesWindow(mVDSettings->mFboWidth, mVDSettings->mFboHeight, false);
+		//gl::setMatricesWindow(mVDSettings->mFboWidth, mVDSettings->mFboHeight, false);
+		gl::setMatricesWindow(mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTW), mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTH), false);
+
 		gl::draw(mPostFbo->getColorTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
 
 		//gl::draw(mPostFbo->getColorTexture());
