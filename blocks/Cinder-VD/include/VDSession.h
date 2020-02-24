@@ -237,7 +237,11 @@ namespace videodromm {
 		void							saveFbos();
 		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex);
 		bool							isFboValid(unsigned int aFboIndex) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->isValid();
+			bool valid = false;
+			if (mFboList.size() > 0) {
+				valid = mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->isValid();
+			}
+			return valid;
 		};
 		/*Area							getFboSrcArea(unsigned int aFboIndex) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getSrcArea();

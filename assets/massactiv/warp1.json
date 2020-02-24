@@ -1,0 +1,45 @@
+[
+   {
+      "adaptive" : false,
+      "linear" : false,
+      "resolution" : 16,
+      "warp" : {
+         "afboindex" : 0,
+         "ashaderfilename" : "inputImage.fs",
+         "ashaderindex" : 0,
+         "atexturefilename" : "red",
+         "bfboindex" : 0,
+         "brightness" : 1,
+         "bshaderfilename" : "inputImage.fs",
+         "bshaderindex" : 0,
+         "btexturefilename" : "r",
+         "controlpoints" : [
+            {
+               "controlpoint" : 0,
+               "x" : 0.037372599999999999,
+               "y" : 0.66865300000000005
+            },
+            {
+               "controlpoint" : 1,
+               "x" : 0.017968700000000001,
+               "y" : 0.98750000000000004
+            },
+            {
+               "controlpoint" : 2,
+               "x" : 0.47225400000000001,
+               "y" : 0.68772299999999997
+            },
+            {
+               "controlpoint" : 3,
+               "x" : 0.49296899999999999,
+               "y" : 0.98750000000000004
+            }
+         ],
+         "crossfade" : -431602080,
+         "height" : 2,
+         "method" : "bilinear",
+         "mixfboindex" : 3452816845,
+         "width" : 2
+      }
+   }
+]
