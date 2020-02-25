@@ -405,7 +405,7 @@ void VDSession::renderPostToFbo()
 {
 	gl::ScopedFramebuffer fbScp(mPostFbo);
 	// clear out the FBO with black
-	gl::clear(Color(0.4f, 0.8f, 0.0f));
+	gl::clear(ColorA(0.4f, 0.8f, 0.0f, 0.3f));
 
 	// setup the viewport to match the dimensions of the FBO
 	gl::ScopedViewport scpVp(ivec2(0), mPostFbo->getSize());
@@ -428,7 +428,7 @@ void VDSession::renderWarpsToFbo()
 {
 	gl::ScopedFramebuffer fbScp(mWarpsFbo);
 	// clear out the FBO with black
-	gl::clear(Color(0.4f, 0.0f, 0.8f));
+	gl::clear(ColorA(0.4f, 0.0f, 0.8f, 0.3f));
 
 	// setup the viewport to match the dimensions of the FBO
 	gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());

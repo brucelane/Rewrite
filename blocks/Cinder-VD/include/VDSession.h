@@ -57,8 +57,11 @@ namespace videodromm {
 			Warp::setSize(mWarpList, ivec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 		}
 		unsigned int					getWarpCount() { return mWarpList.size(); };
+		string							getWarpName(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getName(); };
+
 		void							createWarp() {
 			auto warp = WarpBilinear::create();
+			warp->setName("New");
 			warp->setAFboIndex(0);
 			warp->setBFboIndex(0);
 			warp->setAShaderIndex(0);
@@ -98,11 +101,6 @@ namespace videodromm {
 
 		//! read a xml file and pass back a vector of VDMixs
 		void							readSettings(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const ci::DataSourceRef &source);
-
-
-
-
-
 		string							getWaveFileName() { return mWaveFileName; };
 		int								getWavePlaybackDelay() { return mWavePlaybackDelay; };
 		string							getMovieFileName() { return mMovieFileName; };
@@ -278,10 +276,7 @@ namespace videodromm {
 		unsigned int					getFboListSize() { return mFboList.size(); };
 		unsigned int 					createFboShaderTexture(string aShaderFilename, string aTextureFilename);
 		unsigned int					fboFromJson(const JsonTree &json);
-		
-			
-			
-		
+	
 		void							saveFbos() {
 			for (auto &fbo : mFboList) {
 				JsonTree		json = fbo->toJson(true);
@@ -638,6 +633,7 @@ namespace videodromm {
 						string textureFileName = (warpJsonTree.hasChild("atexturefilename")) ? warpJsonTree.getValueForKey<string>("atexturefilename") : "audio";
 						createFboShaderTexture(shaderFileName, textureFileName);
 						//mVDSession->fboFromJson(warpJsonTree);
+						warp->setName(shaderFileName + "-" + textureFileName);
 						warp->setAFboIndex(i);
 						warp->setBFboIndex(i);
 						warp->setAShaderIndex(i);

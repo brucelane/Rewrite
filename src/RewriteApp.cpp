@@ -87,7 +87,7 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 	mVDSession->toggleUI();
 	mVDSession->setMode(1);
 	// sos
-	mVDSession->setBpm(160.0f);
+	//mVDSession->setBpm(160.0f);
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IMOUSEX, 0.27710f);
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IMOUSEY, 0.5648f);
 	// sos only mVDSession->setFloatUniformValueByIndex(mVDSettings->IEXPOSURE, 1.93f);

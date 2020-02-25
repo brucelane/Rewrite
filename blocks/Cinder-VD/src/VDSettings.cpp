@@ -507,11 +507,7 @@ void VDSettings::reset()
 	{
 		iChannelTime[i] = i;
 	}
-#ifdef _DEBUG
-	iDebug = true;
-#else
-	iDebug = false;
-#endif  // _DEBUG
+
 	sFps = "60";
 	iShowFps = true;
 

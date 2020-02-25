@@ -15,8 +15,8 @@ void VDUIWarps::Run(const char* title) {
 		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 		//int hue = 0;
-		//sprintf(buf, "%s##sh%d", mVDSession->getWarpName(w).c_str(), w);
-		sprintf(buf, "warp##sh%d", w);
+		sprintf(buf, "%s##sh%d", mVDSession->getWarpName(w).c_str(), w);
+		//sprintf(buf, "warp##sh%d", w);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);

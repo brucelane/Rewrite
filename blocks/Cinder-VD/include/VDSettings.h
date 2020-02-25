@@ -76,6 +76,7 @@ namespace videodromm {
 		static const int			IVFALLOFF = 46;
 		static const int			TIME = 47;
 		static const int			IPHASE = 48;
+		static const int			ITIMEFACTOR = 49;//iTimeFactor
 		
 		// int
 		static const int			IBLENDMODE = 50;
@@ -99,7 +100,7 @@ namespace videodromm {
 		static const int			IFLIPV = 102;
 		static const int			IFLIPPOSTH = 103;
 		static const int			IFLIPPOSTV = 104;
-
+		static const int			IDEBUG = 119;
 		// global flip
 		bool						mFlipV;
 		bool						mFlipH;
@@ -200,7 +201,7 @@ namespace videodromm {
 
 		string						mAssetsPath;
 		bool						iShowFps;
-		bool						iDebug;
+		// now a uniformbool						iDebug;
 		string						sFps;
 		bool						iGreyScale;
 		unsigned int				shaderEditIndex;

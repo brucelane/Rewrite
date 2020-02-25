@@ -158,8 +158,9 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		// hydra time
 		createFloatUniform("time", mVDSettings->TIME, 0.0f); // 47
 		// current beat
-		createFloatUniform("iPhase", mVDSettings->IPHASE, 0.0f); // 48;
-
+		createFloatUniform("iPhase", mVDSettings->IPHASE, 0.0f); // 48
+		// iTimeFactor
+		createFloatUniform("iTimeFactor", mVDSettings->ITIMEFACTOR, 0.0f); // 49
 		// int
 		// blend mode 
 		createIntUniform("iBlendmode", mVDSettings->IBLENDMODE, 0); // 50
@@ -208,6 +209,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createBoolUniform("iFlipV", mVDSettings->IFLIPV); // 102
 		createBoolUniform("iFlipPostH", mVDSettings->IFLIPPOSTH); // 103
 		createBoolUniform("iFlipPostV", mVDSettings->IFLIPPOSTV); // 104
+		createBoolUniform("iDebug", mVDSettings->IDEBUG); // 119
 
 		// vec2
 		createVec2Uniform("resolution", mVDSettings->RESOLUTION, vec2(1280.0f, 720.0f)); // hydra 120

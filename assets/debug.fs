@@ -8,7 +8,13 @@
 		{
 			"NAME": "inputImage",
 			"TYPE" : "image"
-		}
+		},
+        {
+			"NAME": "iDebug",
+			"TYPE" : "bool",
+			"DEFAULT" : 0.0
+		},
+
 	],
 }
 */
@@ -150,7 +156,7 @@ float PrintValue(in vec2 inFragCoord, const in vec2 vPixelCoords, const in vec2 
     return PrintValue((inFragCoord.xy - vPixelCoords) / vFontSize, fValue, fMaxDigits, fDecimalPlaces);
 }
 vec4 tex(vec2 uv) {
-	vec4 color = IMG_NORM_PIXEL( inputImage, uv) ;
+	vec4 color = IMG_NORM_PIXEL( inputImage, uv*2.5) ;
     return color;
 }
 void main(void)
@@ -165,6 +171,7 @@ void main(void)
 	{
 		uv.y = 1.0 - uv.y;
 	}
+    if (iDebug) {
     // Multiples of 4x5 work best
     vec2 vFontSize = vec2(20.0, 40.0);
   	vec4 vColour = vec4(0.7);
@@ -176,6 +183,9 @@ void main(void)
     vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(550.0, 10.0), vFontSize, iExposure, 2.0, 2.0));
     vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(750.0, 10.0), vFontSize, iTimeFactor, 2.0, 3.0));
     vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(970.0, 10.0), vFontSize, iBpm, 2.0, 2.0));*/
-    fragColor = mix( vec4(1.0, 1.0, 1.0, 1.0), tex(uv), vColour);
+    fragColor = mix( vec4(1.0, 0.0, 0.2, 0.5), tex(uv), vColour);
+    }  else {
+		fragColor = tex(uv);
+	}
 }
 

@@ -209,8 +209,8 @@ namespace videodromm {
 		if (mValid) {
 
 			gl::ScopedFramebuffer fbScp(mFbo);
-			gl::clear(Color::black());
-
+			//gl::clear(Color::black());
+			gl::clear(ColorA(0.0f,0.4f, 0.8f,  0.3f));
 			switch (mType)
 			{
 			case AUDIO:
@@ -269,6 +269,10 @@ namespace videodromm {
 					case 0: // float
 						createFloatUniform(name, mVDAnimation->getUniformIndexForName(name), getIntUniformValueByName(name), mVDAnimation->getMinUniformValueByName(name), mVDAnimation->getMaxUniformValueByName(name));
 						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
+						if (name == "TIME") {
+							// globally
+							mShader->uniform(name, mVDAnimation->getFloatUniformValueByName("iTime"));
+						}
 						break;
 					case 1: // sampler2D
 						mShader->uniform(name, 0);
@@ -300,6 +304,10 @@ namespace videodromm {
 						//IFLIPV 102
 						createBoolUniform(name, mVDAnimation->getUniformIndexForName(name), getBoolUniformValueByName(name)); // get same index as vdanimation
 						mShader->uniform(name, getBoolUniformValueByName(name));
+						if (name == "iDebug") {
+							// globally
+							mShader->uniform(name, mVDAnimation->getBoolUniformValueByName(name));
+						}
 						break;
 					default:
 						break;
