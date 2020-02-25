@@ -90,6 +90,10 @@ namespace videodromm {
 		bool							handleMouseDown(MouseEvent &event);
 		bool							handleMouseDrag(MouseEvent &event);
 		bool							handleMouseUp(MouseEvent &event);		
+		bool							save();
+		void							restore();		
+		
+		
 		/*void							fromXml(const ci::XmlTree &xml);
 
 		//! read a xml file and pass back a vector of VDMixs
@@ -97,8 +101,7 @@ namespace videodromm {
 
 
 
-		bool							save();
-		void							restore();
+
 
 		string							getWaveFileName() { return mWaveFileName; };
 		int								getWavePlaybackDelay() { return mWavePlaybackDelay; };
@@ -275,11 +278,10 @@ namespace videodromm {
 		unsigned int					getFboListSize() { return mFboList.size(); };
 		unsigned int 					createFboShaderTexture(string aShaderFilename, string aTextureFilename);
 		unsigned int					fboFromJson(const JsonTree &json);
-		void							save() {
-			saveFbos();
-			saveWarps();
+		
 			
-		};
+			
+		
 		void							saveFbos() {
 			for (auto &fbo : mFboList) {
 				JsonTree		json = fbo->toJson(true);

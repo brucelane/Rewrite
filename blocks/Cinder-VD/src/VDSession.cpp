@@ -86,9 +86,6 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mTexturesFilepath = getAssetPath("") / mVDSettings->mAssetsPath / "textures.xml";*/
 	initTextureList();
 	mCurrentBlend = 0;
-	/*
-	// initialize the shaders list
-	initShaderList();
 	// check to see if VDSession.xml file exists and restore if it does
 	sessionPath = getAssetPath("") / mVDSettings->mAssetsPath / sessionFileName;
 	if (fs::exists(sessionPath))
@@ -102,6 +99,9 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 		oStream.close();
 		save();
 	}
+	/*
+	// initialize the shaders list
+	initShaderList();
 	mMixesFilepath = getAssetPath("") / "mixes.xml";
 
 	//if (fs::exists(mMixesFilepath)) {
@@ -445,24 +445,25 @@ void VDSession::renderWarpsToFbo()
 	//gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 
 }
-/*bool VDSession::save()
+bool VDSession::save()
 {
-
+	saveFbos();
+	saveWarps();
 	// save uniforms settings
-	mVDAnimation->save();*/
+	//mVDAnimation->save();
 	// save in sessionPath
-	/* TODO add shaders section
+	// TODO add shaders section
 	JsonTree doc;
 
 	JsonTree settings = JsonTree::makeArray("settings");
 	settings.addChild(ci::JsonTree("bpm", mOriginalBpm));
 	settings.addChild(ci::JsonTree("beatsperbar", mVDAnimation->getIntUniformValueByName("iBeatsPerBar")));
-	settings.addChild(ci::JsonTree("fadeindelay", mFadeInDelay));
-	settings.addChild(ci::JsonTree("fadeoutdelay", mFadeOutDelay));
+	//settings.addChild(ci::JsonTree("fadeindelay", mFadeInDelay));
+	//settings.addChild(ci::JsonTree("fadeoutdelay", mFadeOutDelay));
 	settings.addChild(ci::JsonTree("endframe", mVDAnimation->mEndFrame));
 	doc.pushBack(settings);
 
-	JsonTree assets = JsonTree::makeArray("assets");
+	/*JsonTree assets = JsonTree::makeArray("assets");
 	if (mWaveFileName.length() > 0) assets.addChild(ci::JsonTree("wavefile", mWaveFileName));
 	assets.addChild(ci::JsonTree("waveplaybackdelay", mWavePlaybackDelay));
 	if (mMovieFileName.length() > 0) assets.addChild(ci::JsonTree("moviefile", mMovieFileName));
@@ -473,17 +474,17 @@ void VDSession::renderWarpsToFbo()
 		assets.addChild(ci::JsonTree("textplaybackdelay", mTextPlaybackDelay));
 		assets.addChild(ci::JsonTree("textplaybackend", mTextPlaybackEnd));
 	}
-	doc.pushBack(assets);
+	doc.pushBack(assets);*/
 
 	doc.write(writeFile(sessionPath), JsonTree::WriteOptions());
-	*/
-	/*	return true;
-	}*/
-	/*
+	
+		return true;
+	}
+	
 	void VDSession::restore()
 	{
 		// save load settings
-		load();
+		//load();
 
 		// check to see if json file exists
 		if (!fs::exists(sessionPath)) {
@@ -492,13 +493,13 @@ void VDSession::renderWarpsToFbo()
 
 		try {
 			JsonTree doc(loadFile(sessionPath));
-			if (doc.hasChild("shaders")) {
+			/*if (doc.hasChild("shaders")) {
 				JsonTree shaders(doc.getChild("shaders"));
 				if (shaders.hasChild("0")) createShaderFbo(shaders.getValueForKey<string>("0"));
 				if (shaders.hasChild("1")) createShaderFbo(shaders.getValueForKey<string>("1"));
 				if (shaders.hasChild("2")) createShaderFbo(shaders.getValueForKey<string>("2"));
 				if (shaders.hasChild("3")) createShaderFbo(shaders.getValueForKey<string>("3"));
-			}
+			}*/
 			if (doc.hasChild("settings")) {
 				JsonTree settings(doc.getChild("settings"));
 				if (settings.hasChild("bpm")) {
@@ -509,15 +510,15 @@ void VDSession::renderWarpsToFbo()
 				};
 				if (settings.hasChild("beatsperbar")) mVDAnimation->setIntUniformValueByName("iBeatsPerBar", settings.getValueForKey<int>("beatsperbar"));
 				if (mVDAnimation->getIntUniformValueByName("iBeatsPerBar") < 1) mVDAnimation->setIntUniformValueByName("iBeatsPerBar", 4);
-				if (settings.hasChild("fadeindelay")) mFadeInDelay = settings.getValueForKey<int>("fadeindelay");
-				if (settings.hasChild("fadeoutdelay")) mFadeOutDelay = settings.getValueForKey<int>("fadeoutdelay");
+				//if (settings.hasChild("fadeindelay")) mFadeInDelay = settings.getValueForKey<int>("fadeindelay");
+				//if (settings.hasChild("fadeoutdelay")) mFadeOutDelay = settings.getValueForKey<int>("fadeoutdelay");
 				if (settings.hasChild("endframe")) mVDAnimation->mEndFrame = settings.getValueForKey<int>("endframe");
 				CI_LOG_W("getBpm" + toString(mVDAnimation->getBpm()) + " mTargetFps " + toString(mTargetFps));
 				mTargetFps = mVDAnimation->getBpm() / 60.0f * mFpb;
 				CI_LOG_W("getBpm" + toString(mVDAnimation->getBpm()) + " mTargetFps " + toString(mTargetFps));
 			}
 
-			if (doc.hasChild("assets")) {
+			/*if (doc.hasChild("assets")) {
 				JsonTree assets(doc.getChild("assets"));
 				if (assets.hasChild("wavefile")) mWaveFileName = assets.getValueForKey<string>("wavefile");
 				if (assets.hasChild("waveplaybackdelay")) mWavePlaybackDelay = assets.getValueForKey<int>("waveplaybackdelay");
@@ -527,14 +528,14 @@ void VDSession::renderWarpsToFbo()
 				if (assets.hasChild("text")) mText = assets.getValueForKey<string>("text");
 				if (assets.hasChild("textplaybackdelay")) mTextPlaybackDelay = assets.getValueForKey<int>("textplaybackdelay");
 				if (assets.hasChild("textplaybackend")) mTextPlaybackEnd = assets.getValueForKey<int>("textplaybackend");
-			}
+			}*/
 
 		}
 		catch (const JsonTree::ExcJsonParserError& exc) {
 			CI_LOG_W(exc.what());
 		}
 	}
-*/
+
 void VDSession::resetSomeParams() {
 	// parameters not exposed in json file
 	mFpb = 16;

@@ -90,28 +90,12 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 	mVDSession->setBpm(160.0f);
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IMOUSEX, 0.27710f);
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IMOUSEY, 0.5648f);
-	mVDSession->setFloatUniformValueByIndex(mVDSettings->IEXPOSURE, 1.93f);
+	// sos only mVDSession->setFloatUniformValueByIndex(mVDSettings->IEXPOSURE, 1.93f);
 	mFadeInDelay = true;
 	// UI
 	mVDUI = VDUI::create(mVDSettings, mVDSession);
 }
-/*void RewriteApp::createWarp() {
-	auto warp = WarpBilinear::create();
-	warp->setAFboIndex(0);
-	warp->setBFboIndex(0);
-	warp->setAShaderIndex(0);
-	warp->setBShaderIndex(0);
-	warp->setAShaderFilename("inputImage.fs");
-	warp->setBShaderFilename("inputImage.fs");
-	warp->setATextureFilename("audio");
-	warp->setBTextureFilename("audio");
-	mWarpList.push_back(WarpBilinear::create());
-}*/
 
-void RewriteApp::saveWarps()
-{
-
-}
 void RewriteApp::toggleCursorVisibility(bool visible)
 {
 	if (visible)
@@ -132,31 +116,31 @@ void RewriteApp::fileDrop(FileDropEvent event)
 void RewriteApp::mouseMove(MouseEvent event)
 {
 	if (!mVDSession->handleMouseMove(event)) {
-		// let your application perform its mouseMove handling here
+		
 	}
 }
 
 void RewriteApp::mouseDown(MouseEvent event)
 {
-	// pass this mouse event to the warp editor first
+	
 	if (!mVDSession->handleMouseDown(event)) {
-		// let your application perform its mouseDown handling here
+		
 	}
 }
 
 void RewriteApp::mouseDrag(MouseEvent event)
 {
-	// pass this mouse event to the warp editor first
+	
 	if (!mVDSession->handleMouseDrag(event)) {
-		// let your application perform its mouseDrag handling here
+		
 	}
 }
 
 void RewriteApp::mouseUp(MouseEvent event)
 {
-	// pass this mouse event to the warp editor first
+	
 	if (!mVDSession->handleMouseUp(event)) {
-		// let your application perform its mouseUp handling here
+		
 	}
 }
 
