@@ -15,12 +15,13 @@ void VDUIWarps::Run(const char* title) {
 		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 		//int hue = 0;
-		sprintf(buf, "%s##sh%d", mVDSession->getWarpName(w).c_str(), w);
+		//sprintf(buf, "%s##sh%d", mVDSession->getWarpName(w).c_str(), w);
+		sprintf(buf, "warp##sh%d", w);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 			ImGui::PushID(w);
-			ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			/*ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(mVDSession->getWarpName(w).c_str());
 			// loop on the fbos
 			for (unsigned int a = 0; a < mVDSession->getFboListSize(); a++) {
@@ -65,7 +66,7 @@ void VDUIWarps::Run(const char* title) {
 			if (ImGui::SliderFloat(buf, &xFade, 0.0f, 1.0f))
 			{
 				mVDSession->setWarpCrossfade(w, xFade);
-			}
+			}*/
 			// nodes
 			/*if (currentNode == w) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.8f, 1.0f, 0.5f));
@@ -83,14 +84,14 @@ void VDUIWarps::Run(const char* title) {
 				}
 				else {
 					currentNode = w;
-					mVDSession->setCurrentEditIndex(w);
+					setCurrentEditIndex(w);
 				}
 			}
 			ImGui::PopStyleColor(3);
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Show nodes");
 			ImGui::SameLine();
 			// spout output
-			if (mVDSession->getSharedMixIndex() == w && mVDSession->isSharedOutputActive()) {
+			if (getSharedMixIndex() == w && isSharedOutputActive()) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.9f, 1.0f, 0.5f));
 			}
 			else {
@@ -100,13 +101,13 @@ void VDUIWarps::Run(const char* title) {
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f));
 			sprintf(buf, "O##sp%d", w);
 			if (ImGui::Button(buf)) {
-				mVDSession->toggleSharedOutput(w);
+				toggleSharedOutput(w);
 			}
 			ImGui::PopStyleColor(3);
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Toggle Spout output");
 			ImGui::SameLine();
 			// active
-			if (mVDSession->isWarpActive(w)) {
+			if (isWarpActive(w)) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.9f, 1.0f, 0.5f));
 				sprintf(buf, "AC##a%d", w);
 			}
@@ -117,13 +118,13 @@ void VDUIWarps::Run(const char* title) {
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.9f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f));
 			if (ImGui::Button(buf)) {
-				mVDSession->toggleWarpActive(w);
+				toggleWarpActive(w);
 			}
 			ImGui::PopStyleColor(3);
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Toggle Warp Active");
 			ImGui::SameLine();
 			// solo
-			if (mVDSession->isWarpSolo(w)) {
+			if (isWarpSolo(w)) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.9f, 1.0f, 0.5f));
 				sprintf(buf, "SOLO##s%d", w);
 			}
@@ -134,13 +135,13 @@ void VDUIWarps::Run(const char* title) {
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.9f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f));
 			if (ImGui::Button(buf)) {
-				mVDSession->toggleWarpSolo(w);
+				toggleWarpSolo(w);
 			}
 			ImGui::PopStyleColor(3);
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Toggle Warp Solo");
 			ImGui::SameLine();
 			// delete
-			if (mVDSession->isWarpDeleted(w)) {
+			if (isWarpDeleted(w)) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.9f, 1.0f, 0.5f));
 			}
 			else {
@@ -150,7 +151,7 @@ void VDUIWarps::Run(const char* title) {
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f));
 			sprintf(buf, "X##x%d", w);
 			if (ImGui::Button(buf)) {
-				mVDSession->toggleDeleteWarp(w);
+				toggleDeleteWarp(w);
 			}
 			ImGui::PopStyleColor(3);
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip("Toggle Delete Warp");
@@ -164,83 +165,83 @@ void VDUIWarps::Run(const char* title) {
 		if (currentNode == w) {
 			// A (left)
 			int t = 0;
-			int fboIndex = mVDSession->getWarpAFboIndex(currentNode);
-			int inputTexture = mVDSession->getFboInputTextureIndex(mVDSession->getWarpAFboIndex(currentNode));
+			int fboIndex = getWarpAFboIndex(currentNode);
+			int inputTexture = getFboInputTextureIndex(getWarpAFboIndex(currentNode));
 
 			ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 			ImGui::SetNextWindowPos(ImVec2((t * (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin)) + mVDSettings->uiMargin + mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow2), ImGuiSetCond_Once);
-			sprintf(buf, "%s##txa", mVDSession->getInputTextureName(inputTexture).c_str());
+			sprintf(buf, "%s##txa", getInputTextureName(inputTexture).c_str());
 			ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 			{
 				ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-				ImGui::Image((void*)mVDSession->getInputTexture(inputTexture)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)getInputTexture(inputTexture)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 				ImGui::PopItemWidth();
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-			ImGui::Text("WoH %dx%d", mVDSession->getInputTextureOriginalWidth(inputTexture), mVDSession->getInputTextureOriginalHeight(inputTexture));
-			ImGui::Text("WxH %dx%d", mVDSession->getInputTexture(inputTexture)->getWidth(), mVDSession->getInputTexture(inputTexture)->getHeight());
-			ImGui::Text("tx A %s", mVDSession->getInputTextureName(inputTexture).c_str());
+			ImGui::Text("WoH %dx%d", getInputTextureOriginalWidth(inputTexture), getInputTextureOriginalHeight(inputTexture));
+			ImGui::Text("WxH %dx%d", getInputTexture(inputTexture)->getWidth(), getInputTexture(inputTexture)->getHeight());
+			ImGui::Text("tx A %s", getInputTextureName(inputTexture).c_str());
 			ImGui::End();
 
 			t++;
 			ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 			ImGui::SetNextWindowPos(ImVec2((t * (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin)) + mVDSettings->uiMargin + mVDSettings->uiLargeW, mVDSettings->uiYPosRow2), ImGuiSetCond_Once);
-			sprintf(buf, "%s##fboa", mVDSession->getFboName(fboIndex).c_str());
+			sprintf(buf, "%s##fboa", getFboName(fboIndex).c_str());
 			ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 			{
 				ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-				ImGui::Image((void*)mVDSession->getFboRenderedTexture(fboIndex)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)getFboRenderedTexture(fboIndex)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 				ImGui::PopItemWidth();
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-			ImGui::Text("WxH %dx%d", mVDSession->getFboRenderedTexture(fboIndex)->getWidth(), mVDSession->getFboRenderedTexture(fboIndex)->getHeight());
+			ImGui::Text("WxH %dx%d", getFboRenderedTexture(fboIndex)->getWidth(), getFboRenderedTexture(fboIndex)->getHeight());
 			ImGui::End();
 
 			// mix
 			t++;
 			ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 			ImGui::SetNextWindowPos(ImVec2((t * (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin)) + mVDSettings->uiMargin + mVDSettings->uiLargeW, mVDSettings->uiYPosRow2), ImGuiSetCond_Once);
-			ImGui::Begin(mVDSession->getWarpName(currentNode).c_str(), NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
+			ImGui::Begin(getWarpName(currentNode).c_str(), NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 			{
 				ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-				ImGui::Image((void*)mVDSession->getMixTexture(currentNode)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)getMixTexture(currentNode)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 				ImGui::PopItemWidth();
 			}
-			ImGui::Text("WxH %dx%d", mVDSession->getMixTexture(currentNode)->getWidth(), mVDSession->getMixTexture(currentNode)->getHeight());
+			ImGui::Text("WxH %dx%d", getMixTexture(currentNode)->getWidth(), getMixTexture(currentNode)->getHeight());
 			ImGui::End();
 
 			// B (right)
 			t++;
-			fboIndex = mVDSession->getWarpBFboIndex(currentNode);
-			inputTexture = mVDSession->getFboInputTextureIndex(mVDSession->getWarpBFboIndex(currentNode));
+			fboIndex = getWarpBFboIndex(currentNode);
+			inputTexture = getFboInputTextureIndex(getWarpBFboIndex(currentNode));
 			ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 			ImGui::SetNextWindowPos(ImVec2((t * (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin)) + mVDSettings->uiMargin + mVDSettings->uiLargeW, mVDSettings->uiYPosRow2), ImGuiSetCond_Once);
-			sprintf(buf, "%s##fbob", mVDSession->getFboName(fboIndex).c_str());
+			sprintf(buf, "%s##fbob", getFboName(fboIndex).c_str());
 			ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 			{
 				ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-				ImGui::Image((void*)mVDSession->getFboRenderedTexture(fboIndex)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)getFboRenderedTexture(fboIndex)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 				ImGui::PopItemWidth();
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-			ImGui::Text("WxH %dx%d", mVDSession->getFboRenderedTexture(fboIndex)->getWidth(), mVDSession->getFboRenderedTexture(fboIndex)->getHeight());
+			ImGui::Text("WxH %dx%d", getFboRenderedTexture(fboIndex)->getWidth(), getFboRenderedTexture(fboIndex)->getHeight());
 			ImGui::End();
 
 			t++;
 
 			ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 			ImGui::SetNextWindowPos(ImVec2((t * (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin)) + mVDSettings->uiMargin + mVDSettings->uiLargeW, mVDSettings->uiYPosRow2), ImGuiSetCond_Once);
-			sprintf(buf, "%s##txb", mVDSession->getInputTextureName(inputTexture).c_str());
+			sprintf(buf, "%s##txb", getInputTextureName(inputTexture).c_str());
 			ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 			{
 				ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-				ImGui::Image((void*)mVDSession->getInputTexture(inputTexture)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::Image((void*)getInputTexture(inputTexture)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 				ImGui::PopItemWidth();
 			}
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-			ImGui::Text("WoH %dx%d", mVDSession->getInputTextureOriginalWidth(inputTexture), mVDSession->getInputTextureOriginalHeight(inputTexture));
-			ImGui::Text("WxH %dx%d", mVDSession->getInputTexture(inputTexture)->getWidth(), mVDSession->getInputTexture(inputTexture)->getHeight());
-			ImGui::Text("tx B %s", mVDSession->getInputTextureName(inputTexture).c_str());
+			ImGui::Text("WoH %dx%d", getInputTextureOriginalWidth(inputTexture), getInputTextureOriginalHeight(inputTexture));
+			ImGui::Text("WxH %dx%d", getInputTexture(inputTexture)->getWidth(), getInputTexture(inputTexture)->getHeight());
+			ImGui::Text("tx B %s", getInputTextureName(inputTexture).c_str());
 			ImGui::End();
 		} */
 #pragma endregion Nodes

@@ -36,7 +36,6 @@
 #define IM_ARRAYSIZE(_ARR)			((int)(sizeof(_ARR)/sizeof(*_ARR)))
 using namespace ci;
 using namespace ci::app;
-using namespace ph::warping;
 using namespace videodromm;
 using namespace std;
 
@@ -64,15 +63,8 @@ private:
 	// UI
 	VDUIRef							mVDUI;
 
-	//! fbos
-	void							renderPostToFbo();
-	void							renderWarpsToFbo();
-	gl::FboRef						mWarpsFbo;
-	gl::FboRef						mPostFbo;
-	//! shaders
-	gl::GlslProgRef					mGlslPost;
+
 	bool							mFadeInDelay = true;
-	void							loadWarps();
 	void							saveWarps();
 	void							toggleCursorVisibility(bool visible);
 	SpoutOut 						mSpoutOut;
@@ -102,15 +94,6 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 	mFadeInDelay = true;
 	// UI
 	mVDUI = VDUI::create(mVDSettings, mVDSession);
-	// fbo
-	gl::Fbo::Format format;
-	//format.setSamples( 4 ); // uncomment this to enable 4x antialiasing
-	mWarpsFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, format.depthTexture());
-	mPostFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, format.depthTexture());
-	mGlslPost = gl::GlslProg::create(gl::GlslProg::Format().vertex(loadAsset("passthrough.vs")).fragment(loadAsset("post.glsl")));
-
-	// adjust the content size of the warps
-	if (mVDSession->getFboRenderedTexture(0)) Warp::setSize(mWarpList, mVDSession->getFboRenderedTexture(0)->getSize());
 }
 /*void RewriteApp::createWarp() {
 	auto warp = WarpBilinear::create();
@@ -148,8 +131,7 @@ void RewriteApp::fileDrop(FileDropEvent event)
 
 void RewriteApp::mouseMove(MouseEvent event)
 {
-	// pass this mouse event to the warp editor first
-	if (!Warp::handleMouseMove(mWarpList, event)) {
+	if (!mVDSession->handleMouseMove(event)) {
 		// let your application perform its mouseMove handling here
 	}
 }
@@ -157,7 +139,7 @@ void RewriteApp::mouseMove(MouseEvent event)
 void RewriteApp::mouseDown(MouseEvent event)
 {
 	// pass this mouse event to the warp editor first
-	if (!Warp::handleMouseDown(mWarpList, event)) {
+	if (!mVDSession->handleMouseDown(event)) {
 		// let your application perform its mouseDown handling here
 	}
 }
@@ -165,7 +147,7 @@ void RewriteApp::mouseDown(MouseEvent event)
 void RewriteApp::mouseDrag(MouseEvent event)
 {
 	// pass this mouse event to the warp editor first
-	if (!Warp::handleMouseDrag(mWarpList, event)) {
+	if (!mVDSession->handleMouseDrag(event)) {
 		// let your application perform its mouseDrag handling here
 	}
 }
@@ -173,15 +155,14 @@ void RewriteApp::mouseDrag(MouseEvent event)
 void RewriteApp::mouseUp(MouseEvent event)
 {
 	// pass this mouse event to the warp editor first
-	if (!Warp::handleMouseUp(mWarpList, event)) {
+	if (!mVDSession->handleMouseUp(event)) {
 		// let your application perform its mouseUp handling here
 	}
 }
 
 void RewriteApp::keyDown(KeyEvent event)
 {
-	// pass this key event to the warp editor first
-	if (!Warp::handleKeyDown(mWarpList, event)) {
+	
 		// warp editor did not handle the key, so handle it here
 		if (!mVDSession->handleKeyDown(event)) {
 			switch (event.getCode()) {
@@ -193,10 +174,7 @@ void RewriteApp::keyDown(KeyEvent event)
 				// toggle full screen
 				setFullScreen(!isFullScreen());
 				break;
-			case KeyEvent::KEY_w:
-				// toggle warp edit mode
-				Warp::enableEditMode(!Warp::isEditModeEnabled());
-				break;
+			
 			case KeyEvent::KEY_l:
 				mVDSession->createWarp();
 				break;
@@ -225,13 +203,12 @@ void RewriteApp::keyDown(KeyEvent event)
 				break;*/
 			}
 		}
-	}
+	
 }
 
 void RewriteApp::keyUp(KeyEvent event)
 {
-	// pass this key event to the warp editor first
-	if (!Warp::handleKeyUp(mWarpList, event)) {
+	
 		// let your application perform its keyUp handling here
 		if (!mVDSession->handleKeyUp(event)) {
 			switch (event.getCode()) {
@@ -240,7 +217,7 @@ void RewriteApp::keyUp(KeyEvent event)
 				break;
 			}
 		}
-	}
+	
 }
 void RewriteApp::cleanup()
 {
@@ -263,63 +240,17 @@ void RewriteApp::update()
 		break;
 	}
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
-	mVDSession->setFloatUniformValueByIndex(mVDSettings->IBARBEAT, getElapsedSeconds());
+	mVDSession->setFloatUniformValueByIndex(mVDSettings->IBARBEAT, getElapsedSeconds()); // TODO 20200225 remove
 	mVDSession->update();
-	renderPostToFbo();
-	renderWarpsToFbo();
-}
-void RewriteApp::renderPostToFbo()
-{
-	gl::ScopedFramebuffer fbScp(mPostFbo);
-	// clear out the FBO with black
-	gl::clear(Color(0.4f, 0.8f, 0.0f));
-
-	// setup the viewport to match the dimensions of the FBO
-	gl::ScopedViewport scpVp(ivec2(0), mPostFbo->getSize());
 	
-	// texture binding must be before ScopedGlslProg
-	mWarpsFbo->getColorTexture()->bind(0);
-	gl::ScopedGlslProg prog(mGlslPost);
-
-	mGlslPost->uniform("iTime", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITIME) - mVDSettings->iStart);;
-	mGlslPost->uniform("iResolution", vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
-	mGlslPost->uniform("iChannel0", 0); // texture 0
-	mGlslPost->uniform("iSobel", mVDSession->getFloatUniformValueByIndex(mVDSettings->ISOBEL));
-	mGlslPost->uniform("iExposure", mVDSession->getFloatUniformValueByIndex(mVDSettings->IEXPOSURE));
-	mGlslPost->uniform("iChromatic", mVDSession->getFloatUniformValueByIndex(mVDSettings->ICHROMATIC));
-	mGlslPost->uniform("iFlipH", (int)mVDSession->getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTH));
-	mGlslPost->uniform("iFlipV", (int)mVDSession->getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTV));
-	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 }
-void RewriteApp::renderWarpsToFbo()
-{
-	gl::ScopedFramebuffer fbScp(mWarpsFbo);
-	// clear out the FBO with black
-	gl::clear(Color(0.4f, 0.0f, 0.8f));
 
-	// setup the viewport to match the dimensions of the FBO
-	gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());
-	// iterate over the fbos and draw their content
-	int i = 0;
-	for (auto &warp : mWarpList) {
-		i = math<int>::min(i, mVDSession->getFboListSize() - 1);
-		if (mVDSession->isFboValid(i)) {
-			warp->draw(mVDSession->getFboRenderedTexture(i));// , mVDSession->getFboSrcArea(i));
-		}
-		i++;
-	}	
-	//gl::color(0.5, 0.0, 1.0, 0.4f);
-	//gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
-
-}
 
 void RewriteApp::resize()
 {
 	mVDUI->resize();
 
-	// tell the fbos our window has been resized, so they properly scale up or down
-	Warp::handleResize(mWarpList);
-	Warp::setSize(mWarpList, ivec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+
 }
 void RewriteApp::draw()
 {
@@ -337,7 +268,7 @@ void RewriteApp::draw()
 		//gl::setMatricesWindow(mVDSettings->mFboWidth, mVDSettings->mFboHeight, false);
 		gl::setMatricesWindow(mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTW), mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTH), false);
 
-		gl::draw(mPostFbo->getColorTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
+		gl::draw(mVDSession->getPostFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
 
 		//gl::draw(mPostFbo->getColorTexture());
 		//gl::draw(mVDSession->getFboRenderedTexture(0));
@@ -345,7 +276,7 @@ void RewriteApp::draw()
 	// Spout Send
 	// KO mSpoutOut.sendViewport();
 	// OK mSpoutOut.sendTexture(mVDSession->getFboRenderedTexture(1));
-	mSpoutOut.sendTexture(mPostFbo->getColorTexture());
+	mSpoutOut.sendTexture(mVDSession->getPostFboTexture());
 	// imgui
 	if (mVDSession->showUI()) {
 		mVDUI->Run("UI", (int)getAverageFps());

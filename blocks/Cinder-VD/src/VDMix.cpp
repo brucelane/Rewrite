@@ -9,8 +9,8 @@ using namespace ci::app;
 namespace videodromm {
 
 	VDMix::VDMix(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation)
-		: mFlipV(false)
-		, mFlipH(false)
+		/*: mFlipV(false)
+		, mFlipH(false)*/
 	{
 		CI_LOG_V("VDMix readSettings");
 		// Settings
@@ -18,19 +18,7 @@ namespace videodromm {
 		// Animation
 		mVDAnimation = aVDAnimation;
 
-		fboFmt.setColorTextureFormat(fmt);
-		// initialize warps
-		mSettings = getAssetPath("") / mVDSettings->mAssetsPath / "warps.xml";
-		if (fs::exists(mSettings)) {
-			// load warp settings from file if one exists
-			mWarpList = Warp::readSettings(loadFile(mSettings));
-		}
-		else {
-			// otherwise create a warp from scratch
-			mWarpList.push_back(WarpPerspectiveBilinear::create());
-		}
 
-		loadWarps();
 		// initialize the textures list with audio texture
 		/*mTexturesFilepath = getAssetPath("") / mVDSettings->mAssetsPath / "textures.xml";
 		initTextureList();

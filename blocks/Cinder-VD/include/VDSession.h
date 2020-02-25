@@ -22,10 +22,13 @@
 #include "VDLog.h"
 // Mix
 #include "VDMix.h"
+// Warping
+#include "Warp.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
+using namespace ph::warping;
 
 namespace videodromm {
 
@@ -47,16 +50,52 @@ namespace videodromm {
 		//!
 		void							reset();
 		void							resetSomeParams();
+		void							resize(){
+			//mRenderFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);
+			// tell the fbos our window has been resized, so they properly scale up or down
+			Warp::handleResize(mWarpList);
+			Warp::setSize(mWarpList, ivec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+		}
+		unsigned int					getWarpCount() { return mWarpList.size(); };
+		void							createWarp() {
+			auto warp = WarpBilinear::create();
+			warp->setAFboIndex(0);
+			warp->setBFboIndex(0);
+			warp->setAShaderIndex(0);
+			warp->setBShaderIndex(0);
+			warp->setAShaderFilename("inputImage.fs");
+			warp->setBShaderFilename("inputImage.fs");
+			warp->setATextureFilename("audio");
+			warp->setBTextureFilename("audio");
+			mWarpList.push_back(WarpBilinear::create());
+		}
+		void							saveWarps() {
+			int i = 0;
+			for (auto &warp : mWarpList) {
+				JsonTree		json;
+				string jsonFileName = "warp" + toString(i) + ".json";
+				fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
+				// write file
+				json.pushBack(warp->toJson());
+				json.write(jsonFile);
+				i++;
+			}
+			// save warp settings
+			Warp::writeSettings(mWarpList, writeFile(mSettings));
+		}
+		ci::gl::TextureRef				getPostFboTexture() {
+			return mPostFbo->getColorTexture();
+		};
+		bool							handleMouseMove(MouseEvent &event);
+		bool							handleMouseDown(MouseEvent &event);
+		bool							handleMouseDrag(MouseEvent &event);
+		bool							handleMouseUp(MouseEvent &event);		
 		/*void							fromXml(const ci::XmlTree &xml);
 
 		//! read a xml file and pass back a vector of VDMixs
 		void							readSettings(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const ci::DataSourceRef &source);
 
-		bool							handleMouseMove(MouseEvent &event);
-		bool							handleMouseDown(MouseEvent &event);
-		bool							handleMouseDrag(MouseEvent &event);
-		bool							handleMouseUp(MouseEvent &event);
-		void							resize(){mRenderFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);}
+
 
 		bool							save();
 		void							restore();
@@ -238,7 +277,7 @@ namespace videodromm {
 		unsigned int					fboFromJson(const JsonTree &json);
 		void							save() {
 			saveFbos();
-			mVDMix->saveWarps();
+			saveWarps();
 			
 		};
 		void							saveFbos() {
@@ -436,7 +475,7 @@ namespace videodromm {
 		//! window management
 		void							createWindow() { cmd = 0; };
 		void							deleteWindow() { cmd = 1; };
-		void							createWarp() { mVDMix->createWarp(); };
+		
 		int								getCmd() { int rtn = cmd; cmd = -1; return rtn; };
 		// utils
 		/*float							formatFloat(float f) { return mVDUtils->formatFloat(f); };
@@ -541,6 +580,8 @@ namespace videodromm {
 		*/
 		// maintain a list of fbos specific to this mix
 		VDFboList						mFboList;
+
+
 		/*fs::path						mMixesFilepath;
 		//unsigned int					mAFboIndex;
 		//unsigned int					mBFboIndex;
@@ -567,10 +608,47 @@ namespace videodromm {
 		ci::gl::Texture2dRef			mRenderedTexture, mMixetteTexture;
 		// mixette
 		gl::FboRef						mMixetteFbo;*/
+		//! fbos
+		gl::Texture::Format				fmt;
+		gl::Fbo::Format					fboFmt;
+		gl::FboRef						mWarpsFbo;
+		gl::FboRef						mPostFbo;
+		//! shaders
+		gl::GlslProgRef					mGlslPost;
+		void							renderPostToFbo();
+		void							renderWarpsToFbo();
 		// warps
-				// Mix
 		VDMixRef						mVDMix;
-		unsigned int					getWarpCount() { return mVDMix->getWarpCount(); };
+		WarpList						mWarpList;
+		fs::path						mSettings;
+		void							loadWarps() {
+			int i = 0;
+			for (auto &warp : mWarpList) {
+				i = math<int>::min(i, mWarpList.size() - 1);
+				string jsonFileName = "warp" + toString(i) + ".json";
+				fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
+				if (fs::exists(jsonFile)) {
+					JsonTree json(loadFile(jsonFile));
+					warp->fromJson(json);
+					if (json[0].hasChild("warp")) {
+						JsonTree warpJsonTree(json[0].getChild("warp"));
+						string shaderFileName = (warpJsonTree.hasChild("ashaderfilename")) ? warpJsonTree.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
+						string textureFileName = (warpJsonTree.hasChild("atexturefilename")) ? warpJsonTree.getValueForKey<string>("atexturefilename") : "audio";
+						createFboShaderTexture(shaderFileName, textureFileName);
+						//mVDSession->fboFromJson(warpJsonTree);
+						warp->setAFboIndex(i);
+						warp->setBFboIndex(i);
+						warp->setAShaderIndex(i);
+						warp->setBShaderIndex(i);
+						warp->setAShaderFilename(shaderFileName);
+						warp->setBShaderFilename(shaderFileName);
+						warp->setATextureFilename(textureFileName);
+						warp->setBTextureFilename(textureFileName);
+					}
+					i++;
+				}
+			}
+		}
 	};
 
 }

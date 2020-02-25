@@ -23,6 +23,30 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	//createFboShaderTexture("audio.fs", "audio");
 	// allow log to file
 	mVDLog = VDLog::create();
+	// fbo
+	gl::Fbo::Format format;
+	//format.setSamples( 4 ); // uncomment this to enable 4x antialiasing
+
+	fboFmt.setColorTextureFormat(fmt);
+	mWarpsFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, format.depthTexture());
+	mPostFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, format.depthTexture());
+	mGlslPost = gl::GlslProg::create(gl::GlslProg::Format().vertex(loadAsset("passthrough.vs")).fragment(loadAsset("post.glsl")));
+
+	// adjust the content size of the warps
+	if (getFboRenderedTexture(0)) Warp::setSize(mWarpList, getFboRenderedTexture(0)->getSize());
+
+	// initialize warps
+	mSettings = getAssetPath("") / mVDSettings->mAssetsPath / "warps.xml";
+	if (fs::exists(mSettings)) {
+		// load warp settings from file if one exists
+		mWarpList = Warp::readSettings(loadFile(mSettings));
+	}
+	else {
+		// otherwise create a warp from scratch
+		mWarpList.push_back(WarpPerspectiveBilinear::create());
+	}
+
+	loadWarps();
 	// init fbo format
 	//fmt.setWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
 	//fmt.setBorderColor(Color::black());
@@ -374,6 +398,52 @@ void VDSession::update(unsigned int aClassIndex) {
 		updateBlendUniforms();
 		renderBlend();
 	}*/
+	renderPostToFbo();
+	renderWarpsToFbo();
+}
+void VDSession::renderPostToFbo()
+{
+	gl::ScopedFramebuffer fbScp(mPostFbo);
+	// clear out the FBO with black
+	gl::clear(Color(0.4f, 0.8f, 0.0f));
+
+	// setup the viewport to match the dimensions of the FBO
+	gl::ScopedViewport scpVp(ivec2(0), mPostFbo->getSize());
+
+	// texture binding must be before ScopedGlslProg
+	mWarpsFbo->getColorTexture()->bind(0);
+	gl::ScopedGlslProg prog(mGlslPost);
+
+	mGlslPost->uniform("iTime", getFloatUniformValueByIndex(mVDSettings->ITIME) - mVDSettings->iStart);;
+	mGlslPost->uniform("iResolution", vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
+	mGlslPost->uniform("iChannel0", 0); // texture 0
+	mGlslPost->uniform("iSobel", getFloatUniformValueByIndex(mVDSettings->ISOBEL));
+	mGlslPost->uniform("iExposure", getFloatUniformValueByIndex(mVDSettings->IEXPOSURE));
+	mGlslPost->uniform("iChromatic", getFloatUniformValueByIndex(mVDSettings->ICHROMATIC));
+	mGlslPost->uniform("iFlipH", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTH));
+	mGlslPost->uniform("iFlipV", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTV));
+	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+}
+void VDSession::renderWarpsToFbo()
+{
+	gl::ScopedFramebuffer fbScp(mWarpsFbo);
+	// clear out the FBO with black
+	gl::clear(Color(0.4f, 0.0f, 0.8f));
+
+	// setup the viewport to match the dimensions of the FBO
+	gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());
+	// iterate over the fbos and draw their content
+	int i = 0;
+	for (auto &warp : mWarpList) {
+		i = math<int>::min(i, getFboListSize() - 1);
+		if (isFboValid(i)) {
+			warp->draw(getFboRenderedTexture(i));// , mVDSession->getFboSrcArea(i));
+		}
+		i++;
+	}
+	//gl::color(0.5, 0.0, 1.0, 0.4f);
+	//gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+
 }
 /*bool VDSession::save()
 {
@@ -465,130 +535,152 @@ void VDSession::update(unsigned int aClassIndex) {
 		}
 	}
 */
-	void VDSession::resetSomeParams() {
-		// parameters not exposed in json file
-		mFpb = 16;
-		mVDAnimation->setBpm(mOriginalBpm);
-		mTargetFps = mOriginalBpm / 60.0f * mFpb;
-	}
+void VDSession::resetSomeParams() {
+	// parameters not exposed in json file
+	mFpb = 16;
+	mVDAnimation->setBpm(mOriginalBpm);
+	mTargetFps = mOriginalBpm / 60.0f * mFpb;
+}
 
-	void VDSession::reset()
-	{
-		// parameters exposed in json file
-		mOriginalBpm = 166;
-		/* TODO 20200221 
-		mWaveFileName = "";
-		mWavePlaybackDelay = 10;
-		mMovieFileName = "";
-		mImageSequencePath = "";
-		mMoviePlaybackDelay = 10;
-		mFadeInDelay = 5;
-		mFadeOutDelay = 1;
-		mText = "";
-		mTextPlaybackDelay = 10;
-		mTextPlaybackEnd = 2020000;*/
-		mVDAnimation->mEndFrame = 20000000;
+void VDSession::reset()
+{
+	// parameters exposed in json file
+	mOriginalBpm = 166;
+	/* TODO 20200221
+	mWaveFileName = "";
+	mWavePlaybackDelay = 10;
+	mMovieFileName = "";
+	mImageSequencePath = "";
+	mMoviePlaybackDelay = 10;
+	mFadeInDelay = 5;
+	mFadeOutDelay = 1;
+	mText = "";
+	mTextPlaybackDelay = 10;
+	mTextPlaybackEnd = 2020000;*/
+	mVDAnimation->mEndFrame = 20000000;
 
-		resetSomeParams();
-	}
+	resetSomeParams();
+}
 
-	void VDSession::blendRenderEnable(bool render) {
-		mVDAnimation->blendRenderEnable(render);
-	}
-	
-	void VDSession::fileDrop(FileDropEvent event) {
-		string ext = "";
-		//string fileName = "";
+void VDSession::blendRenderEnable(bool render) {
+	mVDAnimation->blendRenderEnable(render);
+}
 
-		unsigned int index = (int)(event.getX() / (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin));
-		int y = (int)(event.getY());
-		//if (index < 2 || y < mVDSettings->uiYPosRow3 || y > mVDSettings->uiYPosRow3 + mVDSettings->uiPreviewH) index = 0;
-		ci::fs::path mPath = event.getFile(event.getNumFiles() - 1);
-		string absolutePath = mPath.string();
-		// use the last of the dropped files
-		int dotIndex = absolutePath.find_last_of(".");
-		int slashIndex = absolutePath.find_last_of("\\");
+void VDSession::fileDrop(FileDropEvent event) {
+	string ext = "";
+	//string fileName = "";
 
-		if (dotIndex != std::string::npos && dotIndex > slashIndex) {
-			ext = absolutePath.substr(dotIndex + 1);
-			//fileName = absolutePath.substr(slashIndex + 1, dotIndex - slashIndex - 1);
-			if (ext == "json") {
-				JsonTree json(loadFile(absolutePath));
-				fboFromJson(json);
-				//if (json.hasChild("shader")) {//[0]
-					//JsonTree shaderJsonTree(json.getChild("shader"));
-					//string shaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
-					//string textureFileName = (shaderJsonTree.hasChild("texturename")) ? shaderJsonTree.getValueForKey<string>("texturename") : "0.jpg";
-					//loadJson(absolutePath, index);
-					//fboFromJson(shaderJsonTree);
-				//}
-			}
-			/*else if (ext == "wav" || ext == "mp3") {
-				loadAudioFile(absolutePath);
-			}
-			else if (ext == "png" || ext == "jpg") {
-				if (index < 1) index = 1;
-				if (index > 3) index = 3;
-				loadImageFile(absolutePath, index);
-			}
-			else if (ext == "glsl" || ext == "frag" || ext == "fs") {
-				loadFragmentShader(absolutePath, index);
-			}
-			
-			else if (ext == "xml") {
-			}
-			else if (ext == "json") {
-				// TODO load track with textures, shaders
-			}
-			else if (ext == "mov") {
-				loadMovie(absolutePath, index);
-			}
-			else if (ext == "txt") {
-			}
-			else if (ext == "") {
-				// try loading image sequence from dir
-				if (!loadImageSequence(absolutePath, index)) {
-					// try to load a folder of shaders
-					loadShaderFolder(absolutePath);
-				}
-			}*/
+	unsigned int index = (int)(event.getX() / (mVDSettings->uiLargePreviewW + mVDSettings->uiMargin));
+	int y = (int)(event.getY());
+	//if (index < 2 || y < mVDSettings->uiYPosRow3 || y > mVDSettings->uiYPosRow3 + mVDSettings->uiPreviewH) index = 0;
+	ci::fs::path mPath = event.getFile(event.getNumFiles() - 1);
+	string absolutePath = mPath.string();
+	// use the last of the dropped files
+	int dotIndex = absolutePath.find_last_of(".");
+	int slashIndex = absolutePath.find_last_of("\\");
+
+	if (dotIndex != std::string::npos && dotIndex > slashIndex) {
+		ext = absolutePath.substr(dotIndex + 1);
+		//fileName = absolutePath.substr(slashIndex + 1, dotIndex - slashIndex - 1);
+		if (ext == "json") {
+			JsonTree json(loadFile(absolutePath));
+			fboFromJson(json);
+			//if (json.hasChild("shader")) {//[0]
+				//JsonTree shaderJsonTree(json.getChild("shader"));
+				//string shaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
+				//string textureFileName = (shaderJsonTree.hasChild("texturename")) ? shaderJsonTree.getValueForKey<string>("texturename") : "0.jpg";
+				//loadJson(absolutePath, index);
+				//fboFromJson(shaderJsonTree);
+			//}
 		}
+		/*else if (ext == "wav" || ext == "mp3") {
+			loadAudioFile(absolutePath);
+		}
+		else if (ext == "png" || ext == "jpg") {
+			if (index < 1) index = 1;
+			if (index > 3) index = 3;
+			loadImageFile(absolutePath, index);
+		}
+		else if (ext == "glsl" || ext == "frag" || ext == "fs") {
+			loadFragmentShader(absolutePath, index);
+		}
+
+		else if (ext == "xml") {
+		}
+		else if (ext == "json") {
+			// TODO load track with textures, shaders
+		}
+		else if (ext == "mov") {
+			loadMovie(absolutePath, index);
+		}
+		else if (ext == "txt") {
+		}
+		else if (ext == "") {
+			// try loading image sequence from dir
+			if (!loadImageSequence(absolutePath, index)) {
+				// try to load a folder of shaders
+				loadShaderFolder(absolutePath);
+			}
+		}*/
 	}
-	/*
-	#pragma region events
-	bool VDSession::handleMouseMove(MouseEvent &event)
-	{
-		// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
-		// pass this mouse event to the warp editor first
-		bool handled = false;
-		event.setHandled(handled);
-		return event.isHandled();
+}
+
+#pragma region events
+bool VDSession::handleMouseMove(MouseEvent &event)
+{
+	bool handled = true;
+	// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
+	// pass this mouse event to the warp editor first
+	// pass this mouse event to the warp editor first
+	if (!Warp::handleMouseMove(mWarpList, event)) {
+		// let your application perform its mouseMove handling here
+		handled = false;
+	}
+	event.setHandled(handled);
+	return event.isHandled();
+}
+
+bool VDSession::handleMouseDown(MouseEvent &event)
+{
+	bool handled = true;
+	// pass this mouse event to the warp editor first
+	if (!Warp::handleMouseDown(mWarpList, event)) {
+		// let your application perform its mouseMove handling here
+		handled = false;
+	}
+	// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
+	event.setHandled(handled);
+	return event.isHandled();
+}
+
+bool VDSession::handleMouseDrag(MouseEvent &event)
+{
+
+	bool handled = true;
+	// pass this mouse event to the warp editor first
+	if (!Warp::handleMouseDrag(mWarpList, event)) {
+		// let your application perform its mouseMove handling here
+		handled = false;
+	}
+	// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
+	event.setHandled(handled);
+	return event.isHandled();
+}
+
+bool VDSession::handleMouseUp(MouseEvent &event)
+{
+	bool handled = true;
+	// pass this mouse event to the warp editor first
+	if (!Warp::handleMouseUp(mWarpList, event)) {
+		// let your application perform its mouseMove handling here
+		handled = false;
 	}
 
-	bool VDSession::handleMouseDown(MouseEvent &event)
-	{
-		bool handled = false;
-		// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
-		event.setHandled(handled);
-		return event.isHandled();
-	}
+	// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
+	event.setHandled(handled);
+	return event.isHandled();
+}
 
-	bool VDSession::handleMouseDrag(MouseEvent &event)
-	{
-		bool handled = false;
-		// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
-		event.setHandled(handled);
-		return event.isHandled();
-	}
-
-	bool VDSession::handleMouseUp(MouseEvent &event)
-	{
-		bool handled = false;
-		// 20180318 handled in VDUIMouse mVDAnimation->setVec4UniformValueByIndex(70, vec4(event.getX(), event.getY(), event.isLeftDown(), event.isRightDown()));
-		event.setHandled(handled);
-		return event.isHandled();
-	}
-	*/
 
 bool VDSession::handleKeyDown(KeyEvent &event)
 {
@@ -602,168 +694,172 @@ bool VDSession::handleKeyDown(KeyEvent &event)
 	bool isShiftDown = event.isShiftDown();
 	bool isAltDown = event.isAltDown();
 	CI_LOG_V("session keydown: " + toString(event.getCode()) + " ctrl: " + toString(isModDown) + " shift: " + toString(isShiftDown) + " alt: " + toString(isAltDown));
-
-	// pass this event to Mix handler
-	if (!mVDAnimation->handleKeyDown(event)) {
-		switch (event.getCode()) {
-		case KeyEvent::KEY_w:
-			CI_LOG_V("wsConnect");
-			if (isModDown) {
-				wsConnect();
-			}
-			else {
-				// handled in main app
-				handled = false;
-			}
-			break;
-
-		case KeyEvent::KEY_F1:
-			mMode = 0;
-			break;
-		case KeyEvent::KEY_F2:
-			mMode = 1;
-			break;
-		case KeyEvent::KEY_F3:
-			mMode = 2;
-			break;
-		case KeyEvent::KEY_F4:
-			mMode = 3;
-			break;
-		case KeyEvent::KEY_F5:
-			mMode = 4;
-			break;
-		case KeyEvent::KEY_F6:
-			mMode = 5;
-			break;
-		case KeyEvent::KEY_F7:
-			mMode = 6;
-			break;
-		case KeyEvent::KEY_F8:
-			mMode = 7;
-			break;
-		case KeyEvent::KEY_F9:
-			mMode = 8;
-			break;
-			//case KeyEvent::KEY_SPACE:
-			//mVDTextures->playMovie();
-			//mVDAnimation->currentScene++;
-			//if (mMovie) { if (mMovie->isPlaying()) mMovie->stop(); else mMovie->play(); }
-			//break;
-		//case KeyEvent::KEY_0:
-			//break;
-		//case KeyEvent::KEY_l:
-			// live params TODO mVDAnimation->load();
-			//mLoopVideo = !mLoopVideo;
-			//if (mMovie) mMovie->setLoop(mLoopVideo);
-			//break;
-		case KeyEvent::KEY_x:
-			// trixels
-			mVDWebsocket->changeFloatValue(mVDSettings->ITRIXELS, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->ITRIXELS) + 0.05f);
-			break;
-		case KeyEvent::KEY_r:
-			if (isAltDown) {
-				mVDWebsocket->changeFloatValue(mVDSettings->IBR, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IBR), false, true, isShiftDown, isModDown);
-			}
-			else {
-				mVDWebsocket->changeFloatValue(mVDSettings->IFR, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFR), false, true, isShiftDown, isModDown);
-			}
-			break;
-		case KeyEvent::KEY_g:
-			if (isAltDown) {
-				mVDWebsocket->changeFloatValue(mVDSettings->IBG, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IBG), false, true, isShiftDown, isModDown);
-			}
-			else {
-				mVDWebsocket->changeFloatValue(mVDSettings->IFG, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFG), false, true, isShiftDown, isModDown);
-			}
-			break;
-		case KeyEvent::KEY_b:
-			if (isAltDown) {
-				mVDWebsocket->changeFloatValue(mVDSettings->IBB, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IBB), false, true, isShiftDown, isModDown);
-			}
-			else {
-				mVDWebsocket->changeFloatValue(mVDSettings->IFB, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFB), false, true, isShiftDown, isModDown);
-			}
-			break;
-		case KeyEvent::KEY_a:
-			mVDWebsocket->changeFloatValue(mVDSettings->IFA, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFA), false, true, isShiftDown, isModDown);
-			break;
-		case KeyEvent::KEY_u:
-			// chromatic
-			// TODO find why can't put value >0.9 or 0.85!
-			newValue = mVDAnimation->getFloatUniformValueByIndex(mVDSettings->ICHROMATIC) + 0.05f;
-			if (newValue > 1.0f) newValue = 0.0f;
-			mVDWebsocket->changeFloatValue(mVDSettings->ICHROMATIC, newValue);
-			break;
-		case KeyEvent::KEY_p:
-			// pixelate
-			mVDWebsocket->changeFloatValue(mVDSettings->IPIXELATE, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IPIXELATE) + 0.05f);
-			break;
-		case KeyEvent::KEY_y:
-			// glitch
-			mVDWebsocket->changeBoolValue(mVDSettings->IGLITCH, true);
-			break;
-		case KeyEvent::KEY_i:
-			// invert
-			mVDWebsocket->changeBoolValue(mVDSettings->IINVERT, true);
-			break;
-		case KeyEvent::KEY_o:
-			// toggle
-			mVDWebsocket->changeBoolValue(mVDSettings->ITOGGLE, true);
-			break;
-		case KeyEvent::KEY_z:
-			// zoom
-			mVDWebsocket->changeFloatValue(mVDSettings->IZOOM, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IZOOM) - 0.05f);
-			break;
-			/* removed temp for Sky Project case KeyEvent::KEY_LEFT:
-				//mVDTextures->rewindMovie();
-				if (mVDAnimation->getFloatUniformValueByIndex(21) > 0.1f) mVDWebsocket->changeFloatValue(21, mVDAnimation->getFloatUniformValueByIndex(21) - 0.1f);
+	// pass this key event to the warp editor first
+	if (!Warp::handleKeyDown(mWarpList, event)) {
+		// pass this event to Mix handler
+		if (!mVDAnimation->handleKeyDown(event)) {
+			switch (event.getCode()) {
+			case KeyEvent::KEY_w:
+				CI_LOG_V("wsConnect");
+				if (isModDown) {
+					wsConnect();
+				}
+				else {
+					// handled in main app
+					//handled = false;
+					// toggle warp edit mode
+					Warp::enableEditMode(!Warp::isEditModeEnabled());
+				}
 				break;
+
+			case KeyEvent::KEY_F1:
+				mMode = 0;
+				break;
+			case KeyEvent::KEY_F2:
+				mMode = 1;
+				break;
+			case KeyEvent::KEY_F3:
+				mMode = 2;
+				break;
+			case KeyEvent::KEY_F4:
+				mMode = 3;
+				break;
+			case KeyEvent::KEY_F5:
+				mMode = 4;
+				break;
+			case KeyEvent::KEY_F6:
+				mMode = 5;
+				break;
+			case KeyEvent::KEY_F7:
+				mMode = 6;
+				break;
+			case KeyEvent::KEY_F8:
+				mMode = 7;
+				break;
+			case KeyEvent::KEY_F9:
+				mMode = 8;
+				break;
+				//case KeyEvent::KEY_SPACE:
+				//mVDTextures->playMovie();
+				//mVDAnimation->currentScene++;
+				//if (mMovie) { if (mMovie->isPlaying()) mMovie->stop(); else mMovie->play(); }
+				//break;
+			//case KeyEvent::KEY_0:
+				//break;
+			//case KeyEvent::KEY_l:
+				// live params TODO mVDAnimation->load();
+				//mLoopVideo = !mLoopVideo;
+				//if (mMovie) mMovie->setLoop(mLoopVideo);
+				//break;
+			case KeyEvent::KEY_x:
+				// trixels
+				mVDWebsocket->changeFloatValue(mVDSettings->ITRIXELS, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->ITRIXELS) + 0.05f);
+				break;
+			case KeyEvent::KEY_r:
+				if (isAltDown) {
+					mVDWebsocket->changeFloatValue(mVDSettings->IBR, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IBR), false, true, isShiftDown, isModDown);
+				}
+				else {
+					mVDWebsocket->changeFloatValue(mVDSettings->IFR, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFR), false, true, isShiftDown, isModDown);
+				}
+				break;
+			case KeyEvent::KEY_g:
+				if (isAltDown) {
+					mVDWebsocket->changeFloatValue(mVDSettings->IBG, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IBG), false, true, isShiftDown, isModDown);
+				}
+				else {
+					mVDWebsocket->changeFloatValue(mVDSettings->IFG, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFG), false, true, isShiftDown, isModDown);
+				}
+				break;
+			case KeyEvent::KEY_b:
+				if (isAltDown) {
+					mVDWebsocket->changeFloatValue(mVDSettings->IBB, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IBB), false, true, isShiftDown, isModDown);
+				}
+				else {
+					mVDWebsocket->changeFloatValue(mVDSettings->IFB, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFB), false, true, isShiftDown, isModDown);
+				}
+				break;
+			case KeyEvent::KEY_a:
+				mVDWebsocket->changeFloatValue(mVDSettings->IFA, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFA), false, true, isShiftDown, isModDown);
+				break;
+			case KeyEvent::KEY_u:
+				// chromatic
+				// TODO find why can't put value >0.9 or 0.85!
+				newValue = mVDAnimation->getFloatUniformValueByIndex(mVDSettings->ICHROMATIC) + 0.05f;
+				if (newValue > 1.0f) newValue = 0.0f;
+				mVDWebsocket->changeFloatValue(mVDSettings->ICHROMATIC, newValue);
+				break;
+			case KeyEvent::KEY_p:
+				// pixelate
+				mVDWebsocket->changeFloatValue(mVDSettings->IPIXELATE, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IPIXELATE) + 0.05f);
+				break;
+			case KeyEvent::KEY_y:
+				// glitch
+				mVDWebsocket->changeBoolValue(mVDSettings->IGLITCH, true);
+				break;
+			case KeyEvent::KEY_i:
+				// invert
+				mVDWebsocket->changeBoolValue(mVDSettings->IINVERT, true);
+				break;
+			case KeyEvent::KEY_o:
+				// toggle
+				mVDWebsocket->changeBoolValue(mVDSettings->ITOGGLE, true);
+				break;
+			case KeyEvent::KEY_z:
+				// zoom
+				mVDWebsocket->changeFloatValue(mVDSettings->IZOOM, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IZOOM) - 0.05f);
+				break;
+				/* removed temp for Sky Project case KeyEvent::KEY_LEFT:
+					//mVDTextures->rewindMovie();
+					if (mVDAnimation->getFloatUniformValueByIndex(21) > 0.1f) mVDWebsocket->changeFloatValue(21, mVDAnimation->getFloatUniformValueByIndex(21) - 0.1f);
+					break;
+				case KeyEvent::KEY_RIGHT:
+					//mVDTextures->fastforwardMovie();
+					if (mVDAnimation->getFloatUniformValueByIndex(21) < 1.0f) mVDWebsocket->changeFloatValue(21, mVDAnimation->getFloatUniformValueByIndex(21) + 0.1f);
+					break;*/
+			case KeyEvent::KEY_PAGEDOWN:
 			case KeyEvent::KEY_RIGHT:
-				//mVDTextures->fastforwardMovie();
-				if (mVDAnimation->getFloatUniformValueByIndex(21) < 1.0f) mVDWebsocket->changeFloatValue(21, mVDAnimation->getFloatUniformValueByIndex(21) + 0.1f);
-				break;*/
-		case KeyEvent::KEY_PAGEDOWN:
-		case KeyEvent::KEY_RIGHT:
-			// crossfade right
-			if (mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IXFADE) < 1.0f) mVDWebsocket->changeFloatValue(mVDSettings->IXFADE, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IXFADE) + 0.1f);
-			break;
-		case KeyEvent::KEY_PAGEUP:
-		case KeyEvent::KEY_LEFT:
-			// crossfade left
-			if (mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IXFADE) > 0.0f) mVDWebsocket->changeFloatValue(mVDSettings->IXFADE, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IXFADE) - 0.1f);
-			break;
-		case KeyEvent::KEY_UP:
-			// imgseq next
-			//incrementSequencePosition();
-			break;
-		case KeyEvent::KEY_DOWN:
-			// imgseq next
-			//decrementSequencePosition();
-			break;
-		case KeyEvent::KEY_v:
-			//if (isModDown) fboFlipV(0);// TODO other indexes mVDSettings->mFlipV = !mVDSettings->mFlipV; useless?
-			break;
-		case KeyEvent::KEY_h:
-			if (isModDown) {
-				//fboFlipH(0);// TODO other indexes mVDSettings->mFlipH = !mVDSettings->mFlipH; useless?
+				// crossfade right
+				if (mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IXFADE) < 1.0f) mVDWebsocket->changeFloatValue(mVDSettings->IXFADE, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IXFADE) + 0.1f);
+				break;
+			case KeyEvent::KEY_PAGEUP:
+			case KeyEvent::KEY_LEFT:
+				// crossfade left
+				if (mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IXFADE) > 0.0f) mVDWebsocket->changeFloatValue(mVDSettings->IXFADE, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IXFADE) - 0.1f);
+				break;
+			case KeyEvent::KEY_UP:
+				// imgseq next
+				//incrementSequencePosition();
+				break;
+			case KeyEvent::KEY_DOWN:
+				// imgseq next
+				//decrementSequencePosition();
+				break;
+			case KeyEvent::KEY_v:
+				//if (isModDown) fboFlipV(0);// TODO other indexes mVDSettings->mFlipV = !mVDSettings->mFlipV; useless?
+				break;
+			case KeyEvent::KEY_h:
+				if (isModDown) {
+					//fboFlipH(0);// TODO other indexes mVDSettings->mFlipH = !mVDSettings->mFlipH; useless?
+				}
+				else {
+					// ui visibility
+					toggleUI();
+				}
+				break;
+			case KeyEvent::KEY_d:
+				/*if (isAltDown) {
+					setSpeed(0, getSpeed(0) - 0.01f);
+				}
+				else {
+					setSpeed(0, getSpeed(0) + 0.01f);
+				}*/
+				break;
+			default:
+				CI_LOG_V("session keydown: " + toString(event.getCode()));
+				handled = false;
+				break;
 			}
-			else {
-				// ui visibility
-				toggleUI();
-			}
-			break;
-		case KeyEvent::KEY_d:
-			/*if (isAltDown) {
-				setSpeed(0, getSpeed(0) - 0.01f);
-			}
-			else {
-				setSpeed(0, getSpeed(0) + 0.01f);
-			}*/
-			break;
-		default:
-			CI_LOG_V("session keydown: " + toString(event.getCode()));
-			handled = false;
-			break;
 		}
 	}
 	CI_LOG_V((handled ? "session keydown handled " : "session keydown not handled "));
@@ -774,42 +870,44 @@ bool VDSession::handleKeyDown(KeyEvent &event)
 bool VDSession::handleKeyUp(KeyEvent &event) {
 	bool handled = true;
 
-
-	if (!mVDAnimation->handleKeyUp(event)) {
-		// Animation did not handle the key, so handle it here
-		switch (event.getCode()) {
-		case KeyEvent::KEY_y:
-			// glitch
-			mVDWebsocket->changeBoolValue(mVDSettings->IGLITCH, false);
-			break;
-		case KeyEvent::KEY_t:
-			// trixels
-			mVDWebsocket->changeFloatValue(mVDSettings->ITRIXELS, 0.0f);
-			break;
-		case KeyEvent::KEY_i:
-			// invert
-			mVDWebsocket->changeBoolValue(mVDSettings->IINVERT, false);
-			break;
-		case KeyEvent::KEY_u:
-			// chromatic
-			mVDWebsocket->changeFloatValue(mVDSettings->ICHROMATIC, 0.0f);
-			break;
-		case KeyEvent::KEY_p:
-			// pixelate
-			mVDWebsocket->changeFloatValue(mVDSettings->IPIXELATE, 1.0f);
-			break;
-		case KeyEvent::KEY_o:
-			// toggle
-			mVDWebsocket->changeBoolValue(mVDSettings->ITOGGLE, false);
-			break;
-		case KeyEvent::KEY_z:
-			// zoom
-			mVDWebsocket->changeFloatValue(mVDSettings->IZOOM, 1.0f);
-			break;
-		default:
-			CI_LOG_V("session keyup: " + toString(event.getCode()));
-			handled = false;
-			break;
+	// pass this key event to the warp editor first
+	if (!Warp::handleKeyUp(mWarpList, event)) {
+		if (!mVDAnimation->handleKeyUp(event)) {
+			// Animation did not handle the key, so handle it here
+			switch (event.getCode()) {
+			case KeyEvent::KEY_y:
+				// glitch
+				mVDWebsocket->changeBoolValue(mVDSettings->IGLITCH, false);
+				break;
+			case KeyEvent::KEY_t:
+				// trixels
+				mVDWebsocket->changeFloatValue(mVDSettings->ITRIXELS, 0.0f);
+				break;
+			case KeyEvent::KEY_i:
+				// invert
+				mVDWebsocket->changeBoolValue(mVDSettings->IINVERT, false);
+				break;
+			case KeyEvent::KEY_u:
+				// chromatic
+				mVDWebsocket->changeFloatValue(mVDSettings->ICHROMATIC, 0.0f);
+				break;
+			case KeyEvent::KEY_p:
+				// pixelate
+				mVDWebsocket->changeFloatValue(mVDSettings->IPIXELATE, 1.0f);
+				break;
+			case KeyEvent::KEY_o:
+				// toggle
+				mVDWebsocket->changeBoolValue(mVDSettings->ITOGGLE, false);
+				break;
+			case KeyEvent::KEY_z:
+				// zoom
+				mVDWebsocket->changeFloatValue(mVDSettings->IZOOM, 1.0f);
+				break;
+			default:
+				CI_LOG_V("session keyup: " + toString(event.getCode()));
+				handled = false;
+				break;
+			}
 		}
 	}
 	CI_LOG_V((handled ? "session keyup handled " : "session keyup not handled "));
@@ -1257,7 +1355,7 @@ bool VDSession::initTextureList() {
 		TextureAudioRef t(new TextureAudio(mVDAnimation));
 		t->fromJson(jsonTexture);
 		mTextureList.push_back(t);
-		
+
 	}*/
 	return true;// isFirstLaunch;
 }

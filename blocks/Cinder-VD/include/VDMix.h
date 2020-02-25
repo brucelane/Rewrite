@@ -16,8 +16,7 @@
 #include "VDAnimation.h"
 // Fbos
 #include "VDFbo.h"
-// Warping
-#include "Warp.h"
+
 
 // Syphon
 #if defined( CINDER_MAC )
@@ -30,7 +29,7 @@
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-using namespace ph::warping;
+
 using namespace videodromm;
 
 namespace videodromm
@@ -77,33 +76,7 @@ namespace videodromm
 		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex);
 		unsigned int					getBlendFbosCount() { return mBlendFbos.size(); }*/
 		// warps
-		unsigned int					getWarpCount() { return mWarpList.size(); };
-		void							createWarp() {
-			auto warp = WarpBilinear::create();
-			warp->setAFboIndex(0);
-			warp->setBFboIndex(0);
-			warp->setAShaderIndex(0);
-			warp->setBShaderIndex(0);
-			warp->setAShaderFilename("inputImage.fs");
-			warp->setBShaderFilename("inputImage.fs");
-			warp->setATextureFilename("audio");
-			warp->setBTextureFilename("audio");
-			mWarpList.push_back(WarpBilinear::create());
-		}
-		void							saveWarps() {
-			int i = 0;
-			for (auto &warp : mWarpList) {
-				JsonTree		json;
-				string jsonFileName = "warp" + toString(i) + ".json";
-				fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
-				// write file
-				json.pushBack(warp->toJson());
-				json.write(jsonFile);
-				i++;
-			}
-			// save warp settings
-			Warp::writeSettings(mWarpList, writeFile(mSettings));
-		}
+
 		/*string							getWarpName(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getName(); };
 		unsigned int					getWarpAFboIndex(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getAFboIndex(); };
 		unsigned int					getWarpBFboIndex(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getBFboIndex(); };
@@ -212,14 +185,14 @@ namespace videodromm
 		unsigned int					getSharedMixIndex() { return mSharedFboIndex; };*/
 
 	private:
-		bool							mFlipV;
+		/*bool							mFlipV;
 		bool							mFlipH;
 		std::string						mFbosPath;
 		gl::Texture::Format				fmt;
 		gl::Fbo::Format					fboFmt;
 
 		//! mix shader
-		gl::GlslProgRef					mMixShader;
+		gl::GlslProgRef					mMixShader;*/
 
 		// Animation
 		VDAnimationRef					mVDAnimation;
@@ -251,36 +224,7 @@ namespace videodromm
 		string							fileWarpsName;
 		//fs::path						mWarpSettings;
 		fs::path						mWarpJson;*/
-		WarpList						mWarpList;
-		fs::path						mSettings;
-		void							loadWarps() {
-			int i = 0;
-			for (auto &warp : mWarpList) {
-				i = math<int>::min(i, mWarpList.size() - 1);
-				string jsonFileName = "warp" + toString(i) + ".json";
-				fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
-				if (fs::exists(jsonFile)) {
-					JsonTree json(loadFile(jsonFile));
-					warp->fromJson(json);
-					if (json[0].hasChild("warp")) {
-						JsonTree warpJsonTree(json[0].getChild("warp"));
-						string shaderFileName = (warpJsonTree.hasChild("ashaderfilename")) ? warpJsonTree.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
-						string textureFileName = (warpJsonTree.hasChild("atexturefilename")) ? warpJsonTree.getValueForKey<string>("atexturefilename") : "audio";
-						mVDSession->createFboShaderTexture(shaderFileName, textureFileName);
-						//mVDSession->fboFromJson(warpJsonTree);
-						warp->setAFboIndex(i);
-						warp->setBFboIndex(i);
-						warp->setAShaderIndex(i);
-						warp->setBShaderIndex(i);
-						warp->setAShaderFilename(shaderFileName);
-						warp->setBShaderFilename(shaderFileName);
-						warp->setATextureFilename(textureFileName);
-						warp->setBTextureFilename(textureFileName);
-					}
-					i++;
-				}
-			}
-		}
+
 		/*gl::FboRef						mRenderFbo;
 		int								warpMixToRender;
 		int								mSolo;
