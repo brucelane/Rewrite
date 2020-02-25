@@ -1,0 +1,10 @@
+{
+   "shader" : {
+      "shadername" : "imageSequence.fs",
+      "shadertype" : "fs"
+   },
+   "texture" : {
+      "texturename" : "a",
+      "texturetype" : "image"
+   }
+}

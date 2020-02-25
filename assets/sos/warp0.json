@@ -1,0 +1,67 @@
+[
+   {
+      "adaptive" : true,
+      "linear" : false,
+      "resolution" : 16,
+      "warp" : {
+         "afboindex" : 0,
+         "ashaderfilename" : "crosslightz.fs",
+         "ashaderindex" : 0,
+         "atexturefilename" : "a",
+         "bfboindex" : 0,
+         "brightness" : 1,
+         "bshaderfilename" : "crosslightz.fs",
+         "bshaderindex" : 0,
+         "btexturefilename" : "a",
+         "controlpoints" : [
+            {
+               "controlpoint" : 0,
+               "x" : 0,
+               "y" : 0
+            },
+            {
+               "controlpoint" : 1,
+               "x" : 0,
+               "y" : 1
+            },
+            {
+               "controlpoint" : 2,
+               "x" : 1,
+               "y" : 0
+            },
+            {
+               "controlpoint" : 3,
+               "x" : 1,
+               "y" : 1
+            }
+         ],
+         "corners" : [
+            {
+               "corner" : 0,
+               "x" : 0.022916700000000002,
+               "y" : 0.028888899999999999
+            },
+            {
+               "corner" : 1,
+               "x" : 0.479688,
+               "y" : 0.018756200000000001
+            },
+            {
+               "corner" : 2,
+               "x" : 0.53697899999999998,
+               "y" : 0.54688999999999999
+            },
+            {
+               "corner" : 3,
+               "x" : -0.0026041699999999998,
+               "y" : 0.52023699999999995
+            }
+         ],
+         "crossfade" : -431602080,
+         "height" : 2,
+         "method" : "perspectivebilinear",
+         "mixfboindex" : 3452816845,
+         "width" : 2
+      }
+   }
+]
