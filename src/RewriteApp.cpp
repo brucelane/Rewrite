@@ -26,7 +26,7 @@
 #include "cinder/Rand.h"
  // json
 #include "cinder/Json.h"
-#include "Warp.h"
+//#include "Warp.h"
 #include "VDSession.h"
 // Spout
 #include "CiSpoutOut.h"
@@ -63,10 +63,7 @@ private:
 	VDSessionRef					mVDSession;
 	// UI
 	VDUIRef							mVDUI;
-	fs::path						mSettings;
-	// warps
-	WarpList						mWarpList;
-	void							createWarp();
+
 	//! fbos
 	void							renderPostToFbo();
 	void							renderWarpsToFbo();
@@ -111,22 +108,11 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 	mWarpsFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, format.depthTexture());
 	mPostFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, format.depthTexture());
 	mGlslPost = gl::GlslProg::create(gl::GlslProg::Format().vertex(loadAsset("passthrough.vs")).fragment(loadAsset("post.glsl")));
-	// initialize warps
-	mSettings = getAssetPath("") / mVDSettings->mAssetsPath / "warps.xml";
-	if (fs::exists(mSettings)) {
-		// load warp settings from file if one exists
-		mWarpList = Warp::readSettings(loadFile(mSettings));
-	}
-	else {
-		// otherwise create a warp from scratch
-		mWarpList.push_back(WarpPerspectiveBilinear::create());
-	}
-	
-	loadWarps();
+
 	// adjust the content size of the warps
 	if (mVDSession->getFboRenderedTexture(0)) Warp::setSize(mWarpList, mVDSession->getFboRenderedTexture(0)->getSize());
 }
-void RewriteApp::createWarp() {
+/*void RewriteApp::createWarp() {
 	auto warp = WarpBilinear::create();
 	warp->setAFboIndex(0);
 	warp->setBFboIndex(0);
@@ -137,47 +123,11 @@ void RewriteApp::createWarp() {
 	warp->setATextureFilename("audio");
 	warp->setBTextureFilename("audio");
 	mWarpList.push_back(WarpBilinear::create());
-}
-void RewriteApp::loadWarps() {
-	int i = 0;
-	for (auto &warp : mWarpList) {
-		i = math<int>::min(i, mWarpList.size() - 1);
-		string jsonFileName = "warp" + toString(i) + ".json";
-		fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
-		if (fs::exists(jsonFile)) {
-			JsonTree json(loadFile(jsonFile));
-			warp->fromJson(json);
-			if (json[0].hasChild("warp")) {
-				JsonTree warpJsonTree(json[0].getChild("warp"));
-				string shaderFileName = (warpJsonTree.hasChild("ashaderfilename")) ? warpJsonTree.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
-				string textureFileName = (warpJsonTree.hasChild("atexturefilename")) ? warpJsonTree.getValueForKey<string>("atexturefilename") : "audio";
-				mVDSession->createFboShaderTexture(shaderFileName, textureFileName);
-				//mVDSession->fboFromJson(warpJsonTree);
-				warp->setAFboIndex(i) ;
-				warp->setBFboIndex(i);
-				warp->setAShaderIndex(i);
-				warp->setBShaderIndex(i) ;
-				warp->setAShaderFilename(shaderFileName);
-				warp->setBShaderFilename(shaderFileName);
-				warp->setATextureFilename(textureFileName);
-				warp->setBTextureFilename(textureFileName);
-			}
-			i++;
-		}
-	}
-}
+}*/
+
 void RewriteApp::saveWarps()
 {
-	int i = 0;
-	for (auto &warp : mWarpList) {
-		JsonTree		json;
-		string jsonFileName = "warp" + toString(i) + ".json";
-		fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
-		// write file
-		json.pushBack(warp->toJson());
-		json.write(jsonFile);
-		i++;
-	}
+
 }
 void RewriteApp::toggleCursorVisibility(bool visible)
 {
@@ -248,7 +198,7 @@ void RewriteApp::keyDown(KeyEvent event)
 				Warp::enableEditMode(!Warp::isEditModeEnabled());
 				break;
 			case KeyEvent::KEY_l:
-				createWarp();
+				mVDSession->createWarp();
 				break;
 
 				//case KeyEvent::KEY_v:
@@ -296,10 +246,8 @@ void RewriteApp::cleanup()
 {
 	CI_LOG_V("cleanup and save");
 	ui::Shutdown();
-	mVDSession->saveFbos();
-	saveWarps();
-	// save warp settings
-	Warp::writeSettings(mWarpList, writeFile(mSettings));
+	mVDSession->save();
+	
 	mVDSettings->save();
 	CI_LOG_V("quit");
 }
@@ -312,9 +260,6 @@ void RewriteApp::update()
 		break;
 	case 1:
 		//deleteControlWindows();
-		break;
-	case 2:
-		mWarpList.push_back(WarpPerspectiveBilinear::create());
 		break;
 	}
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());

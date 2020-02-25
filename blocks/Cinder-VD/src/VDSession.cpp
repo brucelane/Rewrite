@@ -16,6 +16,8 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	// Animation
 	mVDAnimation = VDAnimation::create(mVDSettings);
 	// TODO: needed? mVDAnimation->tapTempo();
+	// Mix
+	mVDMix = VDMix::create(mVDSettings, mVDAnimation);
 	mDefaultTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 	//createFboShaderTexture("default.fs", "0.jpg");
 	//createFboShaderTexture("audio.fs", "audio");
@@ -1133,18 +1135,7 @@ unsigned int VDSession::fboFromJson(const JsonTree &json) {
 	mTextureList.push_back(t);*/
 	return rtn;
 }
-void VDSession::saveFbos()
-{
-	int i = 0;
-	for (auto &fbo : mFboList) {
-		JsonTree		json = fbo->toJson(true);
-		//string jsonFileName = "fbo" + toString(i) + ".json";
-		//fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
-		// write file
-		//json.write(jsonFile);
-		i++;
-	}
-}
+
 unsigned int VDSession::createFboShaderTexture(string aShaderFilename, string aTextureFilename) {
 	// initialize rtn to 0 to force creation
 	unsigned int rtn = 0;

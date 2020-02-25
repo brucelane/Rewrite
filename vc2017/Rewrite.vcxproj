@@ -117,6 +117,8 @@
     <None Include="..\assets\post.glsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\blocks\Cinder-VDUI\include\VDUIWarps.h" />
+    <ClInclude Include="..\blocks\Cinder-VD\include\VDMix.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-HTTP\src\cinder\http\connector.hpp" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-HTTP\src\cinder\http\error_codes.hpp" />
@@ -176,6 +178,8 @@
     <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\blocks\Cinder-VDUI\src\VDUIWarps.cpp" />
+    <ClCompile Include="..\blocks\Cinder-VD\src\VDMix.cpp" />
     <ClCompile Include="..\src\RewriteApp.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-ImGui\src\CinderImGui.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-ImGui\lib\imgui\imgui.cpp" />

@@ -20,6 +20,8 @@
 #include "VDFbo.h"
 // Logger
 #include "VDLog.h"
+// Mix
+#include "VDMix.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -234,7 +236,16 @@ namespace videodromm {
 		unsigned int					getFboListSize() { return mFboList.size(); };
 		unsigned int 					createFboShaderTexture(string aShaderFilename, string aTextureFilename);
 		unsigned int					fboFromJson(const JsonTree &json);
-		void							saveFbos();
+		void							save() {
+			saveFbos();
+			mVDMix->saveWarps();
+			
+		};
+		void							saveFbos() {
+			for (auto &fbo : mFboList) {
+				JsonTree		json = fbo->toJson(true);
+			}
+		};
 		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex);
 		bool							isFboValid(unsigned int aFboIndex) {
 			bool valid = false;
@@ -425,7 +436,7 @@ namespace videodromm {
 		//! window management
 		void							createWindow() { cmd = 0; };
 		void							deleteWindow() { cmd = 1; };
-		void							createWarp() { cmd = 2; };
+		void							createWarp() { mVDMix->createWarp(); };
 		int								getCmd() { int rtn = cmd; cmd = -1; return rtn; };
 		// utils
 		/*float							formatFloat(float f) { return mVDUtils->formatFloat(f); };
@@ -556,6 +567,10 @@ namespace videodromm {
 		ci::gl::Texture2dRef			mRenderedTexture, mMixetteTexture;
 		// mixette
 		gl::FboRef						mMixetteFbo;*/
+		// warps
+				// Mix
+		VDMixRef						mVDMix;
+		unsigned int					getWarpCount() { return mVDMix->getWarpCount(); };
 	};
 
 }

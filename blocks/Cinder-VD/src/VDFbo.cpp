@@ -224,7 +224,7 @@ namespace videodromm {
 					mCurrentSeqFilename = mTextureName + " (" + toString(mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT)) + ").jpg";
 				}
 				if (mCachedTextures[mCurrentSeqFilename]) {
-					CI_LOG_V(mCurrentSeqFilename + " in cache");
+					//CI_LOG_V(mCurrentSeqFilename + " in cache");
 					mLastCachedFilename = mCurrentSeqFilename;
 					mTexture = mCachedTextures[mCurrentSeqFilename];
 				}

@@ -10,7 +10,7 @@
 #include "VDSession.h"
 
 // UITextures
-#include "VDUITextures.h"
+//#include "VDUITextures.h"
 // UIFbos
 #include "VDUIFbos.h"
 // Animation
@@ -22,7 +22,7 @@
 // Color
 #include "VDUIColor.h"
 // Tempo
-#include "VDUITempo.h"
+//#include "VDUITempo.h"
 // Blend
 #include "VDUIBlend.h"
 // Websockets
@@ -35,6 +35,8 @@
 #include "VDUIShaders.h"
 // Render
 #include "VDUIRender.h"
+// Warps
+#include "VDUIWarps.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -64,8 +66,8 @@ namespace videodromm
 		VDSessionRef				mVDSession;
 
 		// UITextures
-		VDUITexturesRef				mUITextures;
-		bool						showUITextures;
+		//VDUITexturesRef				mUITextures;
+		//bool						showUITextures;
 		// UIFbos
 		VDUIFbosRef					mUIFbos;
 		bool						showUIFbos;
@@ -82,8 +84,8 @@ namespace videodromm
 		VDUIColorRef				mUIColor;
 		bool						showUIColor;
 		// UITempo
-		VDUITempoRef				mUITempo;
-		bool						showUITempo;
+		//VDUITempoRef				mUITempo;
+		//bool						showUITempo;
 		// UIBlend
 		VDUIBlendRef				mUIBlend;
 		bool						showUIBlend;
@@ -102,6 +104,9 @@ namespace videodromm
 		// UIRender
 		VDUIRenderRef				mUIRender;
 		bool						showUIRender;
+		// UIWarps
+		VDUIWarpsRef				mUIWarps;
+		bool						showUIWarps;
 		
 		float						getMinUniformValueByIndex(unsigned int aIndex);
 		float						getMaxUniformValueByIndex(unsigned int aIndex);

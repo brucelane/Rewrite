@@ -6,7 +6,7 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mVDSettings = aVDSettings;
 	mVDSession = aVDSession;
 	// UITextures
-	mUITextures = VDUITextures::create(mVDSettings, mVDSession);
+	//mUITextures = VDUITextures::create(mVDSettings, mVDSession);
 	// UIFbos
 	mUIFbos = VDUIFbos::create(mVDSettings, mVDSession);
 	// UIAnimation
@@ -18,7 +18,7 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	// UIColor
 	mUIColor = VDUIColor::create(mVDSettings, mVDSession);
 	// UITempo
-	mUITempo = VDUITempo::create(mVDSettings, mVDSession);
+	//mUITempo = VDUITempo::create(mVDSettings, mVDSession);
 	// UIBlend
 	mUIBlend = VDUIBlend::create(mVDSettings, mVDSession);
 	// UIOsc
@@ -31,6 +31,8 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mUIShaders = VDUIShaders::create(mVDSettings, mVDSession);
 	// UIRender
 	mUIRender = VDUIRender::create(mVDSettings, mVDSession);
+	// UIWarps
+	mUIWarps = VDUIWarps::create(mVDSettings, mVDSession);
 	// imgui
 	mouseGlobal = false;
 	mIsResizing = true;
@@ -407,8 +409,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 
 	switch (currentWindowRow1) {
 	case 0:
-		// Tempo
-		mUITempo->Run("Tempo");
+		// Warps
+		mUIWarps->Run("Warps");
 		break;
 	case 1:
 		// Animation
@@ -448,7 +450,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	mVDSession->blendRenderEnable(currentWindowRow1 == 3);
 
 	// textures
-	mUITextures->Run("Textures");
+	//mUITextures->Run("Textures");
 	// Fbos
 	mUIFbos->Run("Fbos");
 

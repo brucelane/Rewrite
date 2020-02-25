@@ -413,10 +413,22 @@
     <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.h">
       <Filter>Blocks\OSC\src\cinder\osc</Filter>
     </ClInclude>
+    <ClCompile Include="..\blocks\Cinder-VDUI\src\VDUIWarps.cpp">
+      <Filter>Blocks\Cinder-VDUI\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\Cinder-VD\src\VDMix.cpp">
+      <Filter>Blocks\Cinder-VD\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\Cinder-VDUI\include\VDUIWarps.h">
+      <Filter>Blocks\Cinder-VDUI\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\Cinder-VD\include\VDMix.h">
+      <Filter>Blocks\Cinder-VD\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
