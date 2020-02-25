@@ -13,100 +13,106 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
     <Filter Include="Blocks">
-      <UniqueIdentifier>{42AE725E-D669-4989-8D87-DF9035279EC1}</UniqueIdentifier>
+      <UniqueIdentifier>{EE566147-1443-4128-97F4-88FA882D3342}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-HTTP(S)">
-      <UniqueIdentifier>{7CE79A47-94D6-449F-A1B7-C10B7D6BEB5C}</UniqueIdentifier>
+      <UniqueIdentifier>{3CAB1703-61BA-42E6-AA5B-E4CE2C4F83D5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-HTTP(S)\src">
-      <UniqueIdentifier>{6D599C36-C82F-4AF2-875E-92CB9A3F9BF8}</UniqueIdentifier>
+      <UniqueIdentifier>{3518D9EA-5588-4B19-ABDE-8776C8D2ECF3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-HTTP(S)\src\cinder">
-      <UniqueIdentifier>{712FABBF-8AD3-4A80-8B03-4BEACC524D13}</UniqueIdentifier>
+      <UniqueIdentifier>{6EAC6E00-B81C-4447-9DDC-AAB2F48CC254}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-HTTP(S)\src\cinder\http">
-      <UniqueIdentifier>{2EDB700B-5CA9-4105-82FC-C9C83AD023A3}</UniqueIdentifier>
+      <UniqueIdentifier>{5A5BE26D-9A9D-4881-A4A5-ED959EFE5ACB}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\ImGui">
-      <UniqueIdentifier>{2787243F-290B-4A76-887D-005115BDFEB1}</UniqueIdentifier>
+      <UniqueIdentifier>{D68A1744-D9BC-49EC-85A6-F0684FA171A7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\ImGui\include">
-      <UniqueIdentifier>{1303DDA4-AD08-4342-97FF-5519ED85DEC3}</UniqueIdentifier>
+      <UniqueIdentifier>{FF439582-B0B1-4873-9052-9E419245F9F2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\ImGui\lib">
-      <UniqueIdentifier>{E910F638-E19B-42EC-9A14-229CBB94C03E}</UniqueIdentifier>
+      <UniqueIdentifier>{2C9471EC-A4D5-460B-9344-0E0CEE510A29}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\ImGui\lib\imgui">
-      <UniqueIdentifier>{77C1A7A1-E959-45E3-AA0A-3733FA2E2C73}</UniqueIdentifier>
+      <UniqueIdentifier>{68150B3F-DB61-42DC-98A4-5FC3EF459D2E}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\ImGui\src">
-      <UniqueIdentifier>{B46EB8B5-DF42-4B7B-9983-4DC8DC15E1E0}</UniqueIdentifier>
+      <UniqueIdentifier>{F5305DAA-46BC-4C5C-B710-9277034E22A0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Midi2">
-      <UniqueIdentifier>{E2DC9506-7F68-4ABF-863F-F0D6FB38244C}</UniqueIdentifier>
+      <UniqueIdentifier>{B0C6CFEB-1C2A-46A9-B0D9-FE8A359D945A}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Midi2\include">
-      <UniqueIdentifier>{8D375F76-BE5C-48A0-BF01-1236B8DD2CC1}</UniqueIdentifier>
+      <UniqueIdentifier>{FE9D0C77-BA8A-402C-9329-E7E54B037A3B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Midi2\lib">
-      <UniqueIdentifier>{1D2E47FB-CFF2-4C76-922E-E778AD1BA401}</UniqueIdentifier>
+      <UniqueIdentifier>{535B3E2E-B704-438A-A1C1-2E87D4E1420E}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Midi2\src">
-      <UniqueIdentifier>{65252B76-7FC6-47EB-A5AD-CF36C275D680}</UniqueIdentifier>
+      <UniqueIdentifier>{29EE7506-D10F-48DF-BE0F-9C867BB505DC}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-VD">
-      <UniqueIdentifier>{D1E72189-D38F-42B6-9F1E-C720069224EF}</UniqueIdentifier>
+      <UniqueIdentifier>{9A23BF28-ACEB-4D83-8EED-D42BC12C180C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-VD\include">
-      <UniqueIdentifier>{CC4EFF60-46DA-40F2-B530-0CA9F28A0127}</UniqueIdentifier>
+      <UniqueIdentifier>{03055547-F989-444E-9278-79AB6B5281FE}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-VD\src">
-      <UniqueIdentifier>{5ABCA19E-3B9B-4513-821C-95F940F2A4E6}</UniqueIdentifier>
+      <UniqueIdentifier>{A502BAE2-E3BA-4958-8C80-A3803FC68021}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-VDUI">
-      <UniqueIdentifier>{8166453D-B01A-41DE-8E34-872D943DA66C}</UniqueIdentifier>
+      <UniqueIdentifier>{5605BF70-0500-4BC4-AF97-36602EB77708}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-VDUI\include">
-      <UniqueIdentifier>{FF3900CB-814B-415C-92F8-D592B9996DDB}</UniqueIdentifier>
+      <UniqueIdentifier>{0CB1322C-3905-44E8-9321-0A3F78AF9140}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-VDUI\src">
-      <UniqueIdentifier>{7AF1F043-FA20-4CCB-855F-D8A0AFD551CB}</UniqueIdentifier>
+      <UniqueIdentifier>{C5115BF6-9E60-45DB-A063-0BC3CD293265}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-Warping">
-      <UniqueIdentifier>{3A3C0D93-552B-4A7A-9674-00B767FCA774}</UniqueIdentifier>
+      <UniqueIdentifier>{70DFDDA2-E4B1-4E9F-A981-9DB0F67E7624}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-Warping\include">
-      <UniqueIdentifier>{DD6CC039-3B67-4DF8-9D33-A367F00DF467}</UniqueIdentifier>
+      <UniqueIdentifier>{4C94F93E-69B8-4F9F-85AA-2EA04B1F0841}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-Warping\src">
-      <UniqueIdentifier>{5BF6A3DA-DA96-4B1A-BDEA-60B9520F581F}</UniqueIdentifier>
+      <UniqueIdentifier>{2AEA3C47-FC68-4344-AE9C-F6A82B5C70F2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-WebSocketPP">
-      <UniqueIdentifier>{ACD89953-EDB6-47FE-A921-E00F71B3A6DF}</UniqueIdentifier>
+      <UniqueIdentifier>{F9A8CF32-0323-4678-AC99-F1B2657F3077}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Cinder-WebSocketPP\src">
-      <UniqueIdentifier>{1813B570-DCFB-44C5-9E51-0C43BF3DF724}</UniqueIdentifier>
+      <UniqueIdentifier>{380E3426-116D-491F-97F3-99583D4B9A2A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\WMFVideo">
+      <UniqueIdentifier>{8E87DFD0-FFD2-47DE-B509-640B463F4B43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\WMFVideo\src">
+      <UniqueIdentifier>{AA09253D-CB87-4AD8-A2B0-1E1FF1841D1E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\WMFVideo\src\presenter">
+      <UniqueIdentifier>{3F8C32BA-0123-4B08-B086-C1D41FEE43EB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\WMFVideo\src\presenter\common">
+      <UniqueIdentifier>{421E1695-3639-4E26-8AD0-D4B149D776B8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\OSC">
-      <UniqueIdentifier>{B3D6C216-0702-471C-BEB2-EA1862EFAC5B}</UniqueIdentifier>
+      <UniqueIdentifier>{9181FA7B-5664-4682-851D-7AA4D0905B5D}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\OSC\src">
-      <UniqueIdentifier>{440571DE-44CC-44E7-AB2C-8FAE7B46EFEF}</UniqueIdentifier>
+      <UniqueIdentifier>{8DD88F8E-1C21-4155-9AE3-F0F1D40C0A4F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\OSC\src\cinder">
-      <UniqueIdentifier>{1A8DAAC4-CE82-48B1-815C-AF6D34037C86}</UniqueIdentifier>
+      <UniqueIdentifier>{4B8CD067-E821-4FEA-8DF5-9E6DBE084E72}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\OSC\src\cinder\osc">
-      <UniqueIdentifier>{9081C997-2BDF-4CCF-9F8A-1CCB921B529A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="assets">
-      <UniqueIdentifier>{dd88c1be-b46e-4541-b9d2-f569707049b0}</UniqueIdentifier>
+      <UniqueIdentifier>{E97B29FF-B54E-49F8-8932-DEBFF7EF3325}</UniqueIdentifier>
     </Filter>
     <Filter Include="debug">
-      <UniqueIdentifier>{63eff959-3433-4a02-9573-3c106ba5fb8c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="release">
-      <UniqueIdentifier>{6203d6df-4238-422c-ac83-5f0a4a1de031}</UniqueIdentifier>
+      <UniqueIdentifier>{80de8d04-c84e-4d76-bf19-2cddc45df5ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -407,28 +413,115 @@
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketServer.h">
       <Filter>Blocks\Cinder-WebSocketPP\src</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\ciWMFVideoPlayer.cpp">
+      <Filter>Blocks\WMFVideo\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\ciWMFVideoPlayerUtils.cpp">
+      <Filter>Blocks\WMFVideo\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\PresentEngine.cpp">
+      <Filter>Blocks\WMFVideo\src\presenter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\Presenter.cpp">
+      <Filter>Blocks\WMFVideo\src\presenter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\PresenterHelpers.cpp">
+      <Filter>Blocks\WMFVideo\src\presenter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\scheduler.cpp">
+      <Filter>Blocks\WMFVideo\src\presenter</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\ciWMFVideoPlayer.h">
+      <Filter>Blocks\WMFVideo\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\ciWMFVideoPlayerUtils.h">
+      <Filter>Blocks\WMFVideo\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\EVRPresenter.h">
+      <Filter>Blocks\WMFVideo\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\EVRPresenterUuid.h">
+      <Filter>Blocks\WMFVideo\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\PresentEngine.h">
+      <Filter>Blocks\WMFVideo\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\Presenter.h">
+      <Filter>Blocks\WMFVideo\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\PresenterHelpers.h">
+      <Filter>Blocks\WMFVideo\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\scheduler.h">
+      <Filter>Blocks\WMFVideo\src\presenter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\AsyncCB.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\BufferLock.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\ClassFactory.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\common.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\critsec.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\GrowArray.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\linklist.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\logging.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\logmediatype.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\mediatype.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\mfutils.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\PropVar.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\registry.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\TinyMap.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\trace.h">
+      <Filter>Blocks\WMFVideo\src\presenter\common</Filter>
+    </ClInclude>
     <ClCompile Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.cpp">
       <Filter>Blocks\OSC\src\cinder\osc</Filter>
     </ClCompile>
     <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.h">
       <Filter>Blocks\OSC\src\cinder\osc</Filter>
     </ClInclude>
-    <ClCompile Include="..\blocks\Cinder-VDUI\src\VDUIWarps.cpp">
-      <Filter>Blocks\Cinder-VDUI\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\blocks\Cinder-VD\src\VDMix.cpp">
       <Filter>Blocks\Cinder-VD\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\blocks\Cinder-VDUI\src\VDUIWarps.cpp">
+      <Filter>Blocks\Cinder-VDUI\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\blocks\Cinder-VDUI\include\VDUIWarps.h">
-      <Filter>Blocks\Cinder-VDUI\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\blocks\Cinder-VD\include\VDMix.h">
       <Filter>Blocks\Cinder-VD\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\blocks\Cinder-VDUI\include\VDUIWarps.h">
+      <Filter>Blocks\Cinder-VDUI\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -440,19 +533,5 @@
     <Xml Include="x64\Debug\VDRewrite.xml">
       <Filter>debug</Filter>
     </Xml>
-    <Xml Include="x64\Release\VDRewrite.xml">
-      <Filter>release</Filter>
-    </Xml>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\assets\Intro\warp0.json">
-      <Filter>assets</Filter>
-    </None>
-    <None Include="..\assets\Intro\default.fs">
-      <Filter>assets</Filter>
-    </None>
-    <None Include="..\assets\post.glsl">
-      <Filter>assets</Filter>
-    </None>
   </ItemGroup>
 </Project>

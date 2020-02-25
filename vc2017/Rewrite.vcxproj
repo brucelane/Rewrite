@@ -10,7 +10,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{39F756C9-6C92-4480-9AA6-8F9CE0DFA3A9}</ProjectGuid>
+    <ProjectGuid>{4A50B203-D796-4657-9048-376425CD8239}</ProjectGuid>
     <RootNamespace>Rewrite</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
@@ -46,7 +46,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\Cinder\include";..\..\..\Cinder\blocks\Cinder-HTTP\src;..\..\..\Cinder\blocks\Cinder-HTTP\lib\include;..\..\..\Cinder\blocks\Cinder-ImGui\lib\imgui;..\..\..\Cinder\blocks\Cinder-ImGui\include;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\blocks\Spout\include;..\blocks\Cinder-VD\include;..\blocks\Cinder-VD\src;..\blocks\Cinder-VDUI\include;..\blocks\Cinder-VDUI\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\OSC\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;"..\..\..\Cinder\include";..\..\..\Cinder\blocks\Cinder-HTTP\src;..\..\..\Cinder\blocks\Cinder-HTTP\lib\include;..\..\..\Cinder\blocks\Cinder-ImGui\lib\imgui;..\..\..\Cinder\blocks\Cinder-ImGui\include;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\blocks\Spout\include;..\blocks\Cinder-VD\include;..\blocks\Cinder-VD\src;..\blocks\Cinder-VDUI\include;..\blocks\Cinder-VDUI\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\Cinder-WMFVideo\src;..\..\..\Cinder\blocks\OSC\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>__WINDOWS_MM__;WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -74,8 +74,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\Cinder\include";..\..\..\Cinder\blocks\Cinder-HTTP\src;..\..\..\Cinder\blocks\Cinder-HTTP\lib\include;..\..\..\Cinder\blocks\Cinder-ImGui\lib\imgui;..\..\..\Cinder\blocks\Cinder-ImGui\include;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\blocks\Spout\include;..\blocks\Cinder-VD\include;..\blocks\Cinder-VD\src;..\blocks\Cinder-VDUI\include;..\blocks\Cinder-VDUI\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\OSC\src</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>__WINDOWS_MM__;WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\include;"..\..\..\Cinder\include";..\..\..\Cinder\blocks\Cinder-HTTP\src;..\..\..\Cinder\blocks\Cinder-HTTP\lib\include;..\..\..\Cinder\blocks\Cinder-ImGui\lib\imgui;..\..\..\Cinder\blocks\Cinder-ImGui\include;..\..\..\Cinder\blocks\Cinder-MIDI2\include;..\..\..\Cinder\blocks\Cinder-MIDI2\lib;..\..\..\Cinder\blocks\Cinder-MIDI2\src;..\blocks\Spout\include;..\blocks\Cinder-VD\include;..\blocks\Cinder-VD\src;..\blocks\Cinder-VDUI\include;..\blocks\Cinder-VDUI\src;..\..\..\Cinder\blocks\Cinder-Warping\include;..\..\..\Cinder\blocks\Cinder-WebSocketPP\src;..\..\..\Cinder\include\asio;..\..\..\Cinder\blocks\Cinder-WMFVideo\src;..\..\..\Cinder\blocks\OSC\src</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
       <WarningLevel>Level3</WarningLevel>
@@ -109,13 +109,8 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="x64\Debug\VDRewrite.xml" />
-    <Xml Include="x64\Release\VDRewrite.xml" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\assets\Intro\default.fs" />
-    <None Include="..\assets\Intro\warp0.json" />
-    <None Include="..\assets\post.glsl" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ClInclude Include="..\blocks\Cinder-VDUI\include\VDUIWarps.h" />
     <ClInclude Include="..\blocks\Cinder-VD\include\VDMix.h" />
@@ -175,6 +170,29 @@
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketClient.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketConnection.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketServer.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\ciWMFVideoPlayer.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\ciWMFVideoPlayerUtils.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\EVRPresenter.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\EVRPresenterUuid.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\PresentEngine.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\Presenter.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\PresenterHelpers.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\scheduler.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\AsyncCB.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\BufferLock.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\ClassFactory.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\common.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\critsec.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\GrowArray.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\linklist.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\logging.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\logmediatype.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\mediatype.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\mfutils.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\PropVar.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\registry.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\TinyMap.h" />
+    <ClInclude Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\common\trace.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.h" />
   </ItemGroup>
   <ItemGroup>
@@ -222,6 +240,12 @@
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketClient.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketConnection.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WebSocketPP\src\WebSocketServer.cpp" />
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\ciWMFVideoPlayer.cpp" />
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\ciWMFVideoPlayerUtils.cpp" />
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\PresentEngine.cpp" />
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\Presenter.cpp" />
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\PresenterHelpers.cpp" />
+    <ClCompile Include="..\..\..\Cinder\blocks\Cinder-WMFVideo\src\presenter\scheduler.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\OSC\src\cinder\osc\Osc.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
