@@ -252,75 +252,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		}
 		ImGui::PopStyleColor(3);
 		hue++;
-		// flip vertically
-
-		/*mVDSession->isFlipV() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
-		if (ImGui::Button("FlipV")) {
-			mVDSession->flipV();
-		}
-		ImGui::PopStyleColor(3);
-		hue++;
-		ImGui::SameLine();
-		// flip horizontally
-		mVDSession->isFlipH() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
-		if (ImGui::Button("FlipH")) {
-			mVDSession->flipH();
-		}
-		ImGui::PopStyleColor(3);
-
-		// shaders A
-		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
-			int f = 0;
-			//if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
-			if (s > 0) ImGui::SameLine();
-			if (mVDSession->getFboFragmentShaderIndex(f) == s) {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 1.0f, 0.5f));
-			}
-			else {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 0.1f, 0.1f));
-			}
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(s / 7.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(s / 7.0f, 0.8f, 0.8f));
-			sprintf(buf, "%d##sf%d", s, f);
-			if (ImGui::Button(buf)) mVDSession->setFboFragmentShaderIndex(f, s);
-			sprintf(buf, "Set fbo A to %s", mVDSession->getShaderName(s).c_str());
-			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-			ImGui::PopStyleColor(3);
-		}
-		// crossfade
-		ImGui::SameLine();
-		float xFade = mVDSession->getCrossfade();
-		sprintf(buf, "xfade##xfd");
-		if (ImGui::SliderFloat(buf, &xFade, 0.0f, 1.0f))
-		{
-			mVDSession->setCrossfade(xFade);
-		}
-		ImGui::SameLine();
-		for (int s = 0; s < mVDSession->getShadersCount(); s++) {
-			int f = 1;
-			//if (s > 0 && (s % 9 != 0)) ImGui::SameLine();
-			if (s > 0) ImGui::SameLine();
-			if (mVDSession->getFboFragmentShaderIndex(f) == s) {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 1.0f, 0.5f));
-			}
-			else {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 0.1f, 0.1f));
-			}
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(s / 7.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(s / 7.0f, 0.8f, 0.8f));
-			sprintf(buf, "%d##sf%d", s, f);
-			if (ImGui::Button(buf)) {
-				mVDSession->setFboFragmentShaderIndex(f, s);
-			};
-			sprintf(buf, "Set fbo B to %s", mVDSession->getShaderName(s).c_str());
-			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-			ImGui::PopStyleColor(3);
-		}
-		*/
+		
 		// line 3
 		ImGui::RadioButton("Warp", &currentWindowRow1, 0); ImGui::SameLine();
 		ImGui::RadioButton("Anim", &currentWindowRow1, 1); ImGui::SameLine();
