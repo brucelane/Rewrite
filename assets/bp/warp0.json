@@ -4,7 +4,7 @@
       "linear" : false,
       "resolution" : 16,
       "warp" : {
-         "afboindex" : 0,
+         "afboindex" : 1,
          "ashaderfilename" : "inputImage.fs",
          "ashaderindex" : 0,
          "atexturefilename" : "objeos",

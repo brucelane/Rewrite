@@ -28,12 +28,16 @@ void VDUIWarps::Run(const char* title) {
 		{
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 			ImGui::PushID(w);
+			int fboa = mVDSession->getWarpAFboIndex(w);
+			
+			if (mVDSession->getFboRenderedTexture(fboa)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(fboa)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+
 			/*ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-			if (ImGui::IsItemHovered()) ImGui::SetTooltip(mVDSession->getWarpName(w).c_str());
-			// loop on the fbos
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip(mVDSession->getWarpName(w).c_str());*/
+			// loop on the fbos A
 			for (unsigned int a = 0; a < mVDSession->getFboListSize(); a++) {
 				if (a > 0 && (a % 6 != 0)) ImGui::SameLine();
-				if (mVDSession->getWarpAFboIndex(w) == a) {
+				if (fboa == a) {
 					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(a / 7.0f, 1.0f, 1.0f));
 				}
 				else {
@@ -43,15 +47,19 @@ void VDUIWarps::Run(const char* title) {
 				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(a / 7.0f, 0.8f, 0.8f));
 
 				sprintf(buf, "%d##wia%d%d", a, w, a);
-				if (ImGui::Button(buf)) mVDSession->setWarpAFboIndex(w, a);
-				sprintf(buf, "Set input fbo A to %s", mVDSession->getShaderName(a).c_str());
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
+				if (ImGui::Button(buf)) {
+					mVDSession->setWarpAFboIndex(w, a);
+				};
+				//sprintf(buf, "Set input fbo A to %s", mVDSession->getShaderName(a).c_str());
+				//if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 				ImGui::PopStyleColor(3);
 			}
-			// loop on the fbos
+			// loop on the fbos B
+			int fbob = mVDSession->getWarpBFboIndex(w);
+			if (mVDSession->getFboRenderedTexture(fbob)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(fbob)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			for (unsigned int b = 0; b < mVDSession->getFboListSize(); b++) {
 				if (b > 0 && (b % 6 != 0)) ImGui::SameLine();
-				if (mVDSession->getWarpBFboIndex(w) == b) {
+				if (fbob == b) {
 					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(b / 7.0f, 1.0f, 1.0f));
 				}
 				else {
@@ -61,14 +69,16 @@ void VDUIWarps::Run(const char* title) {
 				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(b / 7.0f, 0.8f, 0.8f));
 
 				sprintf(buf, "%d##wib%d%d", b, w, b);
-				if (ImGui::Button(buf)) mVDSession->setWarpBFboIndex(w, b);
-				sprintf(buf, "Set input fbo B to %s", mVDSession->getShaderName(b).c_str());
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
+				if (ImGui::Button(buf)) {
+					mVDSession->setWarpBFboIndex(w, b);
+				}
+				//sprintf(buf, "Set input fbo B to %s", mVDSession->getShaderName(b).c_str());
+				//if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 				ImGui::PopStyleColor(3);
 			}
 
 			// crossfade
-			float xFade = mVDSession->getWarpCrossfade(w);
+			/*float xFade = mVDSession->getWarpCrossfade(w);
 			sprintf(buf, "xfade##xf%d", w);
 			if (ImGui::SliderFloat(buf, &xFade, 0.0f, 1.0f))
 			{

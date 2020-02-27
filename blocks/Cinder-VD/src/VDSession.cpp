@@ -436,8 +436,8 @@ void VDSession::renderWarpsToFbo()
 	int i = 0;
 	for (auto &warp : mWarpList) {
 		i = math<int>::min(i, getFboListSize() - 1);
-		if (isFboValid(i)) {
-			warp->draw(getFboRenderedTexture(i));// , mVDSession->getFboSrcArea(i));
+		if (isFboValid(warp->getAFboIndex())) {
+			warp->draw(getFboRenderedTexture(warp->getAFboIndex()));// , mVDSession->getFboSrcArea(i));
 		}
 		i++;
 	}

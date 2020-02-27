@@ -58,6 +58,20 @@ namespace videodromm {
 		}
 		unsigned int					getWarpCount() { return mWarpList.size(); };
 		string							getWarpName(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getName(); };
+		unsigned int					getWarpAFboIndex(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getAFboIndex(); };
+		unsigned int					getWarpBFboIndex(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getBFboIndex(); };
+		void							setWarpAFboIndex(unsigned int aWarpIndex, unsigned int aWarpFboIndex) {
+			if (aWarpIndex < mWarpList.size() && aWarpFboIndex < mFboList.size()) {
+				mWarpList[aWarpIndex]->setAFboIndex(aWarpFboIndex);
+				updateWarpName(aWarpIndex);
+			}
+		}
+		void							setWarpBFboIndex(unsigned int aWarpIndex, unsigned int aWarpFboIndex) {
+			if (aWarpIndex < mWarpList.size() && aWarpFboIndex < mFboList.size()) {
+				mWarpList[aWarpIndex]->setBFboIndex(aWarpFboIndex);
+				updateWarpName(aWarpIndex);
+			}
+		}
 
 		void							createWarp() {
 			auto warp = WarpBilinear::create();
@@ -618,6 +632,12 @@ namespace videodromm {
 		VDMixRef						mVDMix;
 		WarpList						mWarpList;
 		fs::path						mSettings;
+		void							updateWarpName(unsigned int aWarpIndex) {
+			if (aWarpIndex < mWarpList.size()) {
+				// TODO
+				mWarpList[aWarpIndex]->setName(mFboList[mWarpList[aWarpIndex]->getAFboIndex()]->getName());
+			}
+		}
 		void							loadWarps() {
 			int i = 0;
 			for (auto &warp : mWarpList) {
