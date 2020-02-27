@@ -36,6 +36,8 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	// imgui
 	mouseGlobal = false;
 	mIsResizing = true;
+	mShowWarps = true;
+	mShowFbos = true;
 }
 void VDUI::setValue(unsigned int aCtrl, float aValue) {
 	mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
@@ -220,13 +222,33 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		}
 		ImGui::PopStyleColor(3);
 		hue++;
-		// mVDSession->createWarp();
+		ImGui::SameLine();
 		
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
 		if (ImGui::Button("CreateWarp")) {
 			mVDSession->createWarp();
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+		
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+		if (ImGui::Button("Warps")) {
+			mToggleShowWarps();
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+		
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+		if (ImGui::Button("Fbos")) {
+			mToggleShowFbos();
 		}
 		ImGui::PopStyleColor(3);
 		hue++;
@@ -371,10 +393,10 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 		}
-		*/
+		
 		if (ImGui::TreeNode("Vertical Sliders"))
 		{
-			ImGui::Unindent();
+			ImGui::Unindent();*/
 			const float spacing = 4;
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
 
@@ -419,9 +441,9 @@ void VDUI::Run(const char* title, unsigned int fps) {
 
 			ImGui::Indent();
 
-			ImGui::Indent();
-			ImGui::TreePop();
-		}
+			//ImGui::Indent();
+			//ImGui::TreePop();
+		//}
 /*
 		ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
 		ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
@@ -481,12 +503,15 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	}
 	mVDSession->blendRenderEnable(currentWindowRow1 == 3);
 	// Warps
-	mUIWarps->Run("Warps");
+	if (mShowWarps) {
+		mUIWarps->Run("Warps");
+	}
 	// textures
 	//mUITextures->Run("Textures");
 	// Fbos
-	mUIFbos->Run("Fbos");
-
+	if (mShowFbos) {
+		mUIFbos->Run("Fbos");
+	}
 	// Shaders
 	//mUIShaders->Run("Shaders");
 

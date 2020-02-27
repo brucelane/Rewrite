@@ -71,6 +71,7 @@ namespace videodromm
 		// UIFbos
 		VDUIFbosRef					mUIFbos;
 		bool						showUIFbos;
+		bool						mShowFbos;
 		// UIAnimation
 		VDUIAnimationRef			mUIAnimation;
 		bool						showUIAnimation;
@@ -107,6 +108,7 @@ namespace videodromm
 		// UIWarps
 		VDUIWarpsRef				mUIWarps;
 		bool						showUIWarps;
+		bool						mShowWarps;
 		
 		float						getMinUniformValueByIndex(unsigned int aIndex);
 		float						getMaxUniformValueByIndex(unsigned int aIndex);
@@ -125,6 +127,12 @@ namespace videodromm
 		}
 		void toggleValue(unsigned int aCtrl) {
 			mVDSession->toggleValue(aCtrl);
+		}
+		void mToggleShowWarps() {
+			mShowWarps = !mShowWarps;
+		}
+		void mToggleShowFbos() {
+			mShowFbos = !mShowFbos;
 		}
 	};
 }
