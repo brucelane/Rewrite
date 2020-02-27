@@ -1,0 +1,10 @@
+{
+   "shader" : {
+      "shadername" : "debug.fs",
+      "shadertype" : "fs"
+   },
+   "texture" : {
+      "texturename" : "accueil.mp4",
+      "texturetype" : "image"
+   }
+}

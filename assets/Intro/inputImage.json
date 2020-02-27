@@ -1,0 +1,10 @@
+{
+   "shader" : {
+      "shadername" : "inputImage.fs",
+      "shadertype" : "fs"
+   },
+   "texture" : {
+      "texturename" : "help.jpg",
+      "texturetype" : "image"
+   }
+}

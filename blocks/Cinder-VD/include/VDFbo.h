@@ -15,6 +15,8 @@
 #include "VDAnimation.h"
 // textures
 #include "VDTexture.h"
+// video
+//#include "ciWMFVideoPlayer.h"
 
 #include <atomic>
 #include <vector>
@@ -39,7 +41,7 @@ namespace videodromm
 		static VDFboRef create(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aShaderFilename, string aTextureFilename) {
 			return std::make_shared<VDFbo>(aVDSettings, aVDAnimation, aShaderFilename, aTextureFilename);
 		}
-		typedef enum { UNKNOWN, IMAGE, SEQUENCE, CAMERA, SHARED, AUDIO, STREAM } TextureType;
+		typedef enum { UNKNOWN, IMAGE, SEQUENCE, MOVIE, CAMERA, SHARED, AUDIO, STREAM } TextureType;
 		ci::gl::Texture2dRef getRenderedTexture();
 
 		bool									setFragmentString(string aFragmentShaderString, string aName = "");
@@ -134,14 +136,18 @@ namespace videodromm
 		// Animation
 		VDAnimationRef					mVDAnimation;
 		//! Input textures
-		//VDTextureList					mTextureList;
 		gl::TextureRef					mTexture;
 		map<string, ci::gl::TextureRef>	mCachedTextures;
 		string							mLastCachedFilename;
 		string							mCurrentSeqFilename;
 		string							mStatus;
 		TextureType						mType;
-		//int								mInputTextureIndex;
+		// video
+		/*ciWMFVideoPlayer				mVideo;
+		float							mVideoPos;
+		float							mVideoDuration;
+		bool							mIsVideoLoaded;
+	*/
 		//! shader
 		gl::GlslProgRef					mShader;
 		std::vector<ci::gl::GlslProg::Uniform> mUniforms;

@@ -30,6 +30,8 @@
 #include "VDSession.h"
 // Spout
 #include "CiSpoutOut.h"
+// Video
+//#include "ciWMFVideoPlayer.h"
 // UI
 #define IMGUI_DISABLE_OBSOLETE_FUNCTIONS 1
 #include "VDUI.h"
@@ -62,10 +64,15 @@ private:
 	VDSessionRef					mVDSession;
 	// UI
 	VDUIRef							mVDUI;
+	// video
+	/*ciWMFVideoPlayer				mVideo;
+	float							mVideoPos;
+	float							mVideoDuration;
+	bool							mIsVideoLoaded;*/
 
 
 	bool							mFadeInDelay = true;
-	void							saveWarps();
+	//void							saveWarps();
 	void							toggleCursorVisibility(bool visible);
 	SpoutOut 						mSpoutOut;
 };
@@ -94,6 +101,24 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 	mFadeInDelay = true;
 	// UI
 	mVDUI = VDUI::create(mVDSettings, mVDSession);
+	/*fs::path texFileOrPath = getAssetPath("") / mVDSettings->mAssetsPath / "accueil.mp4";
+	if (fs::exists(texFileOrPath)) {
+		string ext = "";
+		int dotIndex = texFileOrPath.filename().string().find_last_of(".");
+		if (dotIndex != std::string::npos) ext = texFileOrPath.filename().string().substr(dotIndex + 1);
+		if (ext == "mp4" || ext == "wmv" || ext == "avi" || ext == "mov") {
+			if (!mVideo.isStopped()) {
+				mVideo.stop();
+			}
+
+			mIsVideoLoaded = mVideo.loadMovie(texFileOrPath);
+			
+			mVideoDuration = mVideo.getDuration();
+			mVideoPos = mVideo.getPosition();
+			mVideo.play();
+
+		}
+	}*/
 }
 
 void RewriteApp::toggleCursorVisibility(bool visible)
@@ -226,7 +251,12 @@ void RewriteApp::update()
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IBARBEAT, getElapsedSeconds()); // TODO 20200225 remove
 	mVDSession->update();
-	
+	/*mVideo.update();
+	mVideoPos = mVideo.getPosition();
+	if (mVideo.isStopped() || mVideo.isPaused()) {
+		mVideo.setPosition(0.0);
+		mVideo.play();
+	}*/
 }
 
 
@@ -253,6 +283,16 @@ void RewriteApp::draw()
 		gl::setMatricesWindow(mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTW), mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTH), false);
 
 		gl::draw(mVDSession->getPostFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
+
+		
+			/*vec2 videoSize = vec2(mVideo.getWidth(), mVideo.getHeight());
+			mGlslVideoTexture->uniform("uVideoSize", videoSize);
+			videoSize *= 0.25f;
+			videoSize *= 0.5f;
+			ciWMFVideoPlayer::ScopedVideoTextureBind scopedVideoTex(mVideo, 0);
+			gl::scale(vec3(videoSize, 1.0f));*/
+		
+
 
 		//gl::draw(mPostFbo->getColorTexture());
 		//gl::draw(mVDSession->getFboRenderedTexture(0));

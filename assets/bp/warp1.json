@@ -1,0 +1,45 @@
+[
+   {
+      "adaptive" : false,
+      "linear" : false,
+      "resolution" : 16,
+      "warp" : {
+         "afboindex" : 1,
+         "ashaderfilename" : "inputImage.fs",
+         "ashaderindex" : 1,
+         "atexturefilename" : "accueil.mp4",
+         "bfboindex" : 1,
+         "brightness" : 1,
+         "bshaderfilename" : "inputImage.fs",
+         "bshaderindex" : 1,
+         "btexturefilename" : "accueil.mp4",
+         "controlpoints" : [
+            {
+               "controlpoint" : 0,
+               "x" : 1.1625000000000001,
+               "y" : 0.22708300000000001
+            },
+            {
+               "controlpoint" : 1,
+               "x" : 1.0093700000000001,
+               "y" : 0.98750000000000004
+            },
+            {
+               "controlpoint" : 2,
+               "x" : 1.8531200000000001,
+               "y" : 0.33333299999999999
+            },
+            {
+               "controlpoint" : 3,
+               "x" : 1.9171899999999999,
+               "y" : 1.14375
+            }
+         ],
+         "crossfade" : -431602080,
+         "height" : 2,
+         "method" : "bilinear",
+         "mixfboindex" : 3452816845,
+         "width" : 2
+      }
+   }
+]

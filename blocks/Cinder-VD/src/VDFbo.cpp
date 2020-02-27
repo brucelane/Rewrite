@@ -32,7 +32,8 @@ namespace videodromm {
 
 		mVDSettings = aVDSettings;
 		mVDAnimation = aVDAnimation;
-
+		// init texture
+		mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		//twice mVDAnimation = VDAnimation::create(mVDSettings);
 		mUseBeginEnd = false;
 		isReady = false;
@@ -55,8 +56,28 @@ namespace videodromm {
 				mLastCachedFilename = mTextureName + " (1).jpg";
 			}
 			else {
-				mTexture = gl::Texture::create(loadImage(texFileOrPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
-				mType = IMAGE;
+				string ext = "";
+				int dotIndex = texFileOrPath.filename().string().find_last_of(".");
+				if (dotIndex != std::string::npos)  ext = texFileOrPath.filename().string().substr(dotIndex + 1);
+				if (ext == "jpg" || ext == "png") {
+					mTexture = gl::Texture::create(loadImage(texFileOrPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
+					mType = IMAGE;
+				}
+				else {
+
+					/*if (ext == "mp4" || ext == "wmv" || ext == "avi" || ext == "mov") {
+						if (!mVideo.isStopped()) {
+							mVideo.stop();
+						}
+
+						mIsVideoLoaded = mVideo.loadMovie(texFileOrPath);
+						mType = MOVIE;
+						mVideoDuration = mVideo.getDuration();
+						mVideoPos = mVideo.getPosition();
+						mVideo.play();
+
+					}*/
+				}
 			}
 			//mRenderedTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 		}
@@ -64,7 +85,7 @@ namespace videodromm {
 			mTextureName = "audio";
 			mType = AUDIO;
 			mTexture = mVDAnimation->getAudioTexture(); // init with audio texture
-			//mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
+			//
 			//mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		}
 		mStatus = mTextureName;
@@ -90,47 +111,70 @@ namespace videodromm {
 
 	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
 		mValid = false;
-		// load fragment shader
-		CI_LOG_V("loadFragmentStringFromFile, loading " + aFileName);
-		mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / aFileName;
-		if (aFileName.length() > 0 && fs::exists(mFragFile)) {
-			mFileNameWithExtension = mFragFile.filename().string();
-			mFragmentShaderString = loadString(loadFile(mFragFile));
-			mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
+		if (mType == MOVIE) {
+			try {
+				mShaderName = mShaderFileName = "video_texture.fs.glsl";
+				mShader = gl::GlslProg::create(gl::GlslProg::Format()
+					.vertex(loadAsset("video_texture.vs.glsl"))
+					.fragment(loadAsset("video_texture.fs.glsl")));
+				mValid = true;
+				CI_LOG_V("fbo video_texture vtx-frag compiled");
+			}
+			catch (gl::GlslProgCompileExc &exc) {
+				mError = string(exc.what());
+				CI_LOG_V("fbo unable to load/compile vtx-frag video_texture shader:" + string(exc.what()));
+			}
+			catch (const std::exception &e) {
+				mError = string(e.what());
+				CI_LOG_V("fbo unable to load vtx-frag video_texture shader:" + string(e.what()));
+			}
+			
 
-			CI_LOG_V(mFragFile.string() + " loaded and compiled");
 		}
 		else {
-			// file does not exist, try with parent folder
-			mFragFile = getAssetPath("") / aFileName;
-			if (fs::exists(mFragFile)) {
-				mShaderName = mShaderFileName = aFileName;
+
+
+			// load fragment shader
+			CI_LOG_V("loadFragmentStringFromFile, loading " + aFileName);
+			mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / aFileName;
+			if (aFileName.length() > 0 && fs::exists(mFragFile)) {
 				mFileNameWithExtension = mFragFile.filename().string();
 				mFragmentShaderString = loadString(loadFile(mFragFile));
 				mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
 
-				CI_LOG_V(mFragFile.string() + " loaded and compiled(parent)");
+				CI_LOG_V(mFragFile.string() + " loaded and compiled");
 			}
 			else {
-				mError = mFragFile.string() + " does not exist";
-				CI_LOG_V(mError);
-				// load default fragment shader
-				try {
-					mShaderName = mShaderFileName = "default.fs";
-					mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getDefaultFragmentShaderString());
-					mValid = true;
-					CI_LOG_V("fbo default vtx-frag compiled");
+				// file does not exist, try with parent folder
+				mFragFile = getAssetPath("") / aFileName;
+				if (fs::exists(mFragFile)) {
+					mShaderName = mShaderFileName = aFileName;
+					mFileNameWithExtension = mFragFile.filename().string();
+					mFragmentShaderString = loadString(loadFile(mFragFile));
+					mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
+
+					CI_LOG_V(mFragFile.string() + " loaded and compiled(parent)");
 				}
-				catch (gl::GlslProgCompileExc &exc) {
-					mError = string(exc.what());
-					CI_LOG_V("fbo unable to load/compile vtx-frag shader:" + string(exc.what()));
-				}
-				catch (const std::exception &e) {
-					mError = string(e.what());
-					CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
+				else {
+					mError = mFragFile.string() + " does not exist";
+					CI_LOG_V(mError);
+					// load default fragment shader
+					try {
+						mShaderName = mShaderFileName = "default.fs";
+						mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getDefaultFragmentShaderString());
+						mValid = true;
+						CI_LOG_V("fbo default vtx-frag compiled");
+					}
+					catch (gl::GlslProgCompileExc &exc) {
+						mError = string(exc.what());
+						CI_LOG_V("fbo unable to load/compile vtx-frag shader:" + string(exc.what()));
+					}
+					catch (const std::exception &e) {
+						mError = string(e.what());
+						CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
+					}
 				}
 			}
-
 		}
 		if (mError.length() > 0) mVDSettings->mErrorMsg = mError;
 		return mValid;
@@ -210,12 +254,21 @@ namespace videodromm {
 
 			gl::ScopedFramebuffer fbScp(mFbo);
 			//gl::clear(Color::black());
-			gl::clear(ColorA(0.0f,0.4f, 0.8f,  0.3f));
+			gl::clear(ColorA(0.0f, 0.4f, 0.8f, 0.3f));
 			switch (mType)
 			{
 			case AUDIO:
 				mTexture = mVDAnimation->getAudioTexture();
 				break;
+			/*case MOVIE:
+				mVideo.update();
+				mVideoPos = mVideo.getPosition();
+				if (mVideo.isStopped() || mVideo.isPaused()) {
+					mVideo.setPosition(0.0);
+					mVideo.play();
+				}
+				//mTexture = mVideo.mPlayer->mSources-> mEVRPresenter->;
+				break;*/
 			case IMAGE:
 				break;
 			case SEQUENCE:
@@ -254,7 +307,19 @@ namespace videodromm {
 			default:
 				break;
 			}
+			/*if (mType == MOVIE)
+			{
+				vec2 videoSize = vec2(mVideo.getWidth(), mVideo.getHeight());
+				mShader->uniform("uVideoSize", videoSize);
+				videoSize *= 0.25f;
+				videoSize *= 0.5f;
+				ciWMFVideoPlayer::ScopedVideoTextureBind scopedVideoTex(mVideo, 0);
+				gl::scale(vec3(videoSize, 1.0f));
+			}
+			else {
+				mTexture->bind(0);
 
+			}*/
 			mTexture->bind(0);
 			string name;
 
