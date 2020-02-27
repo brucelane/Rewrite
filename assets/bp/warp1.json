@@ -5,14 +5,14 @@
       "resolution" : 16,
       "warp" : {
          "afboindex" : 1,
-         "ashaderfilename" : "inputImage.fs",
+         "ashaderfilename" : "debug.fs",
          "ashaderindex" : 1,
-         "atexturefilename" : "accueil.mp4",
+         "atexturefilename" : "oxane",
          "bfboindex" : 1,
          "brightness" : 1,
-         "bshaderfilename" : "inputImage.fs",
+         "bshaderfilename" : "debug.fs",
          "bshaderindex" : 1,
-         "btexturefilename" : "accueil.mp4",
+         "btexturefilename" : "oxane",
          "controlpoints" : [
             {
                "controlpoint" : 0,

@@ -120,5 +120,11 @@ namespace videodromm
 		int							ctrl;
 		float						contour, iVAmount, iVFallOff, iWeight0, iWeight1, iWeight2, iWeight3, iWeight4, iWeight5, iWeight6, iWeight7;
 		void						setValue(unsigned int aCtrl, float aValue);
+		bool getBoolValue(unsigned int aCtrl) {
+			return mVDSession->getBoolUniformValueByIndex(aCtrl);
+		}
+		void toggleValue(unsigned int aCtrl) {
+			mVDSession->toggleValue(aCtrl);
+		}
 	};
 }

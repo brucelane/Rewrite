@@ -32,19 +32,45 @@ namespace videodromm
 		VDSettingsRef					mVDSettings;
 		// Session
 		VDSessionRef					mVDSession;
-		float							getValue(unsigned int aCtrl);
-		float							getValueByName(string aCtrlName);
-		void							setValue(unsigned int aCtrl, float aValue);
-		void							toggleAuto(unsigned int aCtrl);
-		void							toggleTempo(unsigned int aCtrl);
-		void							toggleSpoutSender();
-		bool							getBoolValue(unsigned int aCtrl);
-		void							toggleValue(unsigned int aCtrl);
-		void							resetAutoAnimation(unsigned int aCtrl);
-		float							getMinUniformValueByIndex(unsigned int aIndex);
-		float							getMaxUniformValueByIndex(unsigned int aIndex);
-		void							setIntValue(unsigned int aCtrl, int aValue);
-		int								getIntValue(unsigned int aCtrl);
+		int								getIntValue(unsigned int aCtrl) {
+			return mVDSession->getIntUniformValueByIndex(aCtrl);
+		}
+		float							getValueByName(string aCtrlName) {
+			return mVDSession->getFloatUniformValueByName(aCtrlName);
+		}
+		float							getValue(unsigned int aCtrl) {
+			return mVDSession->getFloatUniformValueByIndex(aCtrl);
+		}
+		void							setValue(unsigned int aCtrl, float aValue) {
+			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+		}
+		void							setIntValue(unsigned int aCtrl, int aValue) {
+			mVDSession->setIntUniformValueByIndex(aCtrl, aValue);
+		}
+		void							toggleAuto(unsigned int aCtrl) {
+			mVDSession->toggleAuto(aCtrl);
+		}
+		void							toggleTempo(unsigned int aCtrl) {
+			mVDSession->toggleTempo(aCtrl);
+		}
+		void							toggleSpoutSender() {
+			//mVDSettings->mSpoutSender = !mVDSettings->mSpoutSender;
+		}
+		bool							getBoolValue(unsigned int aCtrl) {
+			return mVDSession->getBoolUniformValueByIndex(aCtrl);
+		}
+		void							toggleValue(unsigned int aCtrl) {
+			mVDSession->toggleValue(aCtrl);
+		}
+		void							resetAutoAnimation(unsigned int aCtrl) {
+			mVDSession->resetAutoAnimation(aCtrl);
+		}
+		float							getMinUniformValueByIndex(unsigned int aIndex) {
+			return mVDSession->getMinUniformValueByIndex(aIndex);
+		}
+		float							getMaxUniformValueByIndex(unsigned int aIndex) {
+			return mVDSession->getMaxUniformValueByIndex(aIndex);
+		}
 		// imgui
 		int								ctrl;
 		float							contour, iVAmount, iVFallOff;

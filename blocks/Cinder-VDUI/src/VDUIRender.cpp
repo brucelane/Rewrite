@@ -15,45 +15,7 @@ VDUIRender::VDUIRender(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	iOutH = getIntValue(mVDSettings->IOUTH);
 }
 
-int VDUIRender::getIntValue(unsigned int aCtrl) {
-	return mVDSession->getIntUniformValueByIndex(aCtrl);
-}
-float VDUIRender::getValueByName(string aCtrlName) {
-	return mVDSession->getFloatUniformValueByName(aCtrlName);
-}
-float VDUIRender::getValue(unsigned int aCtrl) {
-	return mVDSession->getFloatUniformValueByIndex(aCtrl);
-}
-void VDUIRender::setValue(unsigned int aCtrl, float aValue) {
-	mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
-}
-void VDUIRender::setIntValue(unsigned int aCtrl, int aValue) {
-	mVDSession->setIntUniformValueByIndex(aCtrl, aValue);
-}
-void VDUIRender::toggleAuto(unsigned int aCtrl) {
-	mVDSession->toggleAuto(aCtrl);
-}
-void VDUIRender::toggleTempo(unsigned int aCtrl) {
-	mVDSession->toggleTempo(aCtrl);
-}
-void VDUIRender::toggleSpoutSender() {
-	//mVDSettings->mSpoutSender = !mVDSettings->mSpoutSender;
-}
-bool VDUIRender::getBoolValue(unsigned int aCtrl) {
-	return mVDSession->getBoolUniformValueByIndex(aCtrl);
-}
-void VDUIRender::toggleValue(unsigned int aCtrl) {
-	mVDSession->toggleValue(aCtrl);
-}
-void VDUIRender::resetAutoAnimation(unsigned int aCtrl) {
-	mVDSession->resetAutoAnimation(aCtrl);
-}
-float VDUIRender::getMinUniformValueByIndex(unsigned int aIndex) {
-	return mVDSession->getMinUniformValueByIndex(aIndex);
-}
-float VDUIRender::getMaxUniformValueByIndex(unsigned int aIndex) {
-	return mVDSession->getMaxUniformValueByIndex(aIndex);
-}
+
 void VDUIRender::Run(const char* title) {
 	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 1.76), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
@@ -171,7 +133,7 @@ void VDUIRender::Run(const char* title) {
 		}
 		
 		// debug
-		ctrl = mVDSettings->IDEBUG;
+		/*ctrl = mVDSettings->IDEBUG;
 		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
@@ -179,7 +141,7 @@ void VDUIRender::Run(const char* title) {
 			toggleValue(ctrl);
 		}
 		ImGui::PopStyleColor(3);
-		hue++;
+		hue++;*/
 
 		// iVignette
 		ctrl = mVDSettings->IVIGN;

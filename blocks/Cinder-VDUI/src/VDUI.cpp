@@ -123,7 +123,18 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	}
 
 #pragma endregion menu
-
+	if (ImGui::Button("Clear")) {
+		mVDSettings->mMsg = "";
+		mVDSettings->mMidiMsg = "";
+		mVDSettings->mWebSocketsMsg = "";
+		mVDSettings->mOSCMsg = "";
+		mVDSettings->mErrorMsg = "";
+	}
+	ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
+	ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
+	ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());
+	ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
+	ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
 	ImGui::SetNextWindowSize(ImVec2(1000, mVDSettings->uiLargeH), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
 	//sprintf(buf, "Fps %c %d (%.2f)###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps, mVDSession->getTargetFps());
@@ -180,6 +191,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			mVDSession->setFloatUniformValueByIndex(13, multx);
 		}
 		ImGui::SameLine();
+		int hue = 0;
 		(mVDSession->isAudioBuffered()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(3.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(3.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(3.0f, 0.8f, 0.8f));
@@ -187,7 +199,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			mVDSession->toggleAudioBuffered();
 		}
 		ImGui::PopStyleColor(3);
-
+		hue++;
 		ImGui::SameLine();
 		(mVDSession->getUseLineIn()) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(4.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(4.0f, 0.7f, 0.7f));
@@ -196,9 +208,20 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			mVDSession->toggleUseLineIn();
 		}
 		ImGui::PopStyleColor(3);
+		hue++;
 		ImGui::SameLine();
+		// debug
+		ctrl = mVDSettings->IDEBUG;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+		if (ImGui::Button("Debug")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
 		// flip vertically
-		int hue = 0;
+
 		/*mVDSession->isFlipV() ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
@@ -344,7 +367,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::Unindent();
 			const float spacing = 4;
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
-			
+
 			ImGui::PushID("fbomixes");
 			for (int m = 0; m < mVDSession->getModesCount(); m++)
 			{
@@ -389,13 +412,13 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::Indent();
 			ImGui::TreePop();
 		}
-
+/*
 		ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
 		ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
 		ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
 		ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());
 		ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
-		/*hue++;
+		hue++;
 
 		ImGui::RadioButton("Textures", &currentWindowRow2, 0); ImGui::SameLine();
 		ImGui::RadioButton("Fbos", &currentWindowRow2, 1); ImGui::SameLine();

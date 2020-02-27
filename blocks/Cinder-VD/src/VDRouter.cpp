@@ -84,7 +84,7 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 					//stringstream ss;
 					ss << addr << " " << f;
 					//CI_LOG_I("OSC: " << ctrl << " addr: " << addr);
-					mVDSettings->mMsg = ss.str();
+					mVDSettings->mMsg += ss.str();
 					//mVDAnimation->setFloatUniformValueByIndex(mVDSettings->IELAPSED, msg[0].flt());
 				}
 			}
@@ -358,7 +358,7 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 			else {
 				CI_LOG_E("not handled: " << msg.getNumArgs() << " addr: " << addr);
 				mVDSettings->mOSCMsg = "not handled: " + addr;
-				mVDSettings->mErrorMsg = "osc not handled: " + addr;
+				mVDSettings->mErrorMsg += "osc not handled: " + addr;
 			}
 		});
 
@@ -485,7 +485,7 @@ void VDRouter::openMidiInPort(int i) {
 	}
 	mMidiInputs[i].isConnected = true;
 	ss << "Opening MIDI in port " << i << " " << mMidiInputs[i].portName << std::endl;
-	mVDSettings->mMsg = ss.str();
+	mVDSettings->mMsg += ss.str();
 	CI_LOG_V(ss.str());
 	mVDSettings->mNewMsg = true;
 }
@@ -559,7 +559,7 @@ void VDRouter::openMidiOutPort(int i) {
 		}
 	}
 	ss << std::endl;
-	mVDSettings->mMsg = ss.str();
+	mVDSettings->mMsg += ss.str();
 	mVDSettings->mNewMsg = true;
 	CI_LOG_V(ss.str());
 }

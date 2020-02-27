@@ -9,11 +9,18 @@ VDUIWarps::VDUIWarps(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 
 void VDUIWarps::Run(const char* title) {
 	static int currentNode = 0;
-	xPos = mVDSettings->uiMargin;
-	yPos = mVDSettings->uiYPosRow2;
+	//xPos = mVDSettings->uiMargin;
+	//yPos = mVDSettings->uiYPosRow2;
 	for (int w = 0; w < mVDSession->getWarpCount(); w++) {
+
+
+		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * (w));//+1
+		yPos = mVDSettings->uiYPosRow2;
 		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
+
+		//ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH), ImGuiSetCond_Once);
+		//ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 		//int hue = 0;
 		sprintf(buf, "%s##sh%d", mVDSession->getWarpName(w).c_str(), w);
 		//sprintf(buf, "warp##sh%d", w);
@@ -247,11 +254,11 @@ void VDUIWarps::Run(const char* title) {
 #pragma endregion Nodes
 
 		ImGui::End();
-		xPos += mVDSettings->uiLargePreviewW + mVDSettings->uiMargin;
+		/*xPos += mVDSettings->uiLargePreviewW + mVDSettings->uiMargin;
 		if (xPos > mVDSettings->mRenderWidth)
 		{
 			xPos = mVDSettings->uiMargin;
 			yPos += mVDSettings->uiLargePreviewH + mVDSettings->uiMargin;
-		}
+		}*/
 	}
 }
