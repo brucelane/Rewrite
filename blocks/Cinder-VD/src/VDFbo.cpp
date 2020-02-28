@@ -111,70 +111,75 @@ namespace videodromm {
 
 	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
 		mValid = false;
-		if (mType == MOVIE) {
-			try {
-				mShaderName = mShaderFileName = "video_texture.fs.glsl";
-				mShader = gl::GlslProg::create(gl::GlslProg::Format()
-					.vertex(loadAsset("video_texture.vs.glsl"))
-					.fragment(loadAsset("video_texture.fs.glsl")));
-				mValid = true;
-				CI_LOG_V("fbo video_texture vtx-frag compiled");
-			}
-			catch (gl::GlslProgCompileExc &exc) {
-				mError = string(exc.what());
-				CI_LOG_V("fbo unable to load/compile vtx-frag video_texture shader:" + string(exc.what()));
-			}
-			catch (const std::exception &e) {
-				mError = string(e.what());
-				CI_LOG_V("fbo unable to load vtx-frag video_texture shader:" + string(e.what()));
-			}
-			
-
-		}
-		else {
+		if (aFileName.length() > 0) {
+			if (mType == MOVIE) {
+				try {
+					mShaderName = mShaderFileName = "video_texture.fs.glsl";
+					mShader = gl::GlslProg::create(gl::GlslProg::Format()
+						.vertex(loadAsset("video_texture.vs.glsl"))
+						.fragment(loadAsset("video_texture.fs.glsl")));
+					mValid = true;
+					CI_LOG_V("fbo video_texture vtx-frag compiled");
+				}
+				catch (gl::GlslProgCompileExc &exc) {
+					mError = string(exc.what());
+					CI_LOG_V("fbo unable to load/compile vtx-frag video_texture shader:" + string(exc.what()));
+				}
+				catch (const std::exception &e) {
+					mError = string(e.what());
+					CI_LOG_V("fbo unable to load vtx-frag video_texture shader:" + string(e.what()));
+				}
 
 
-			// load fragment shader
-			CI_LOG_V("loadFragmentStringFromFile, loading " + aFileName);
-			mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / aFileName;
-			if (aFileName.length() > 0 && fs::exists(mFragFile)) {
-				mFileNameWithExtension = mFragFile.filename().string();
-				mFragmentShaderString = loadString(loadFile(mFragFile));
-				mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
-
-				CI_LOG_V(mFragFile.string() + " loaded and compiled");
 			}
 			else {
-				// file does not exist, try with parent folder
-				mFragFile = getAssetPath("") / aFileName;
-				if (fs::exists(mFragFile)) {
-					mShaderName = mShaderFileName = aFileName;
+
+
+				// load fragment shader
+				CI_LOG_V("loadFragmentStringFromFile, loading " + aFileName);
+				mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / aFileName;
+				if (aFileName.length() > 0 && fs::exists(mFragFile)) {
 					mFileNameWithExtension = mFragFile.filename().string();
 					mFragmentShaderString = loadString(loadFile(mFragFile));
 					mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
 
-					CI_LOG_V(mFragFile.string() + " loaded and compiled(parent)");
+					CI_LOG_V(mFragFile.string() + " loaded and compiled");
 				}
 				else {
-					mError = mFragFile.string() + " does not exist";
-					CI_LOG_V(mError);
-					// load default fragment shader
-					try {
-						mShaderName = mShaderFileName = "default.fs";
-						mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getDefaultFragmentShaderString());
-						mValid = true;
-						CI_LOG_V("fbo default vtx-frag compiled");
+					// file does not exist, try with parent folder
+					mFragFile = getAssetPath("") / aFileName;
+					if (fs::exists(mFragFile)) {
+						mShaderName = mShaderFileName = aFileName;
+						mFileNameWithExtension = mFragFile.filename().string();
+						mFragmentShaderString = loadString(loadFile(mFragFile));
+						mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
+
+						CI_LOG_V(mFragFile.string() + " loaded and compiled(parent)");
 					}
-					catch (gl::GlslProgCompileExc &exc) {
-						mError = string(exc.what());
-						CI_LOG_V("fbo unable to load/compile vtx-frag shader:" + string(exc.what()));
-					}
-					catch (const std::exception &e) {
-						mError = string(e.what());
-						CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
+					else {
+						mError = mFragFile.string() + " does not exist";
+						CI_LOG_V(mError);
+						// load default fragment shader
+						try {
+							mShaderName = mShaderFileName = "default.fs";
+							mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getDefaultFragmentShaderString());
+							mValid = true;
+							CI_LOG_V("fbo default vtx-frag compiled");
+						}
+						catch (gl::GlslProgCompileExc &exc) {
+							mError = string(exc.what());
+							CI_LOG_V("fbo unable to load/compile vtx-frag shader:" + string(exc.what()));
+						}
+						catch (const std::exception &e) {
+							mError = string(e.what());
+							CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
+						}
 					}
 				}
 			}
+		}
+		else {
+			mError = "aFileName empty";
 		}
 		if (mError.length() > 0) mVDSettings->mErrorMsg += "\n" + mError;
 		return mValid;

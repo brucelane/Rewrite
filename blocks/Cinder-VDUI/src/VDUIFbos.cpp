@@ -312,6 +312,11 @@ void VDUIFbos::Run(const char* title) {
 			//std::vector<ci::gl::GlslProg::Uniform> u = mVDSession->getUniforms(f);
 
 			int hue = 0;
+
+			sprintf(buf, "Valid %d", mVDSession->isFboValid(f));
+			ImGui::Text(buf);
+
+			
 			for (auto u : mVDSession->getUniforms(f)) {
 				string uName = u.getName();
 				ctrl = mVDSession->getUniformIndexForName(uName);
