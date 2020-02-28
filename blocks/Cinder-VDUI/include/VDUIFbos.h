@@ -55,7 +55,13 @@ namespace videodromm
 			return rtn;
 		};
 		void							setValue(unsigned int aCtrl, unsigned int aFboIndex, float aValue) {
-			mVDSession->setFboFloatUniformValueByIndex(aCtrl, aFboIndex, aValue);
+			if (globalUniforms) {
+				mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+			}
+			else {
+				mVDSession->setFboFloatUniformValueByIndex(aCtrl, aFboIndex, aValue);
+			}
+			
 		};
 		float							getMinUniformValueByIndex(unsigned int aIndex) {
 			return mVDSession->getMinUniformValueByIndex(aIndex);

@@ -369,7 +369,7 @@ void VDWebsocket::wsConnect() {
 			
 		});
 		mServer.connectFailEventHandler([&](string err) {
-			mVDSettings->mWebSocketsMsg += "\nWS Error";
+			mVDSettings->mWebSocketsMsg = "\nWS Error";
 			
 			if (!err.empty()) {
 				mVDSettings->mWebSocketsMsg += ": " + err;
@@ -426,7 +426,7 @@ void VDWebsocket::wsConnect() {
 			mVDSettings->mWebSocketsMsg += "\nDisconnected";
 		});
 		mClient.connectFailEventHandler([&](string err) {
-			mVDSettings->mWebSocketsMsg += "\nWS Error";			
+			mVDSettings->mWebSocketsMsg = "\nWS Error";			
 			if (!err.empty()) {
 				mVDSettings->mWebSocketsMsg += ": " + err;
 			}
@@ -459,8 +459,7 @@ void VDWebsocket::wsConnect() {
 		mVDSettings->mOSCNewMsg = true;
 	});
 	mL4EClient.connectFailEventHandler([&](string err) {
-		mVDSettings->mOSCMsg = "WS Error";
-		mVDSettings->mOSCNewMsg = true;
+		
 		if (!err.empty()) {
 			mVDSettings->mOSCMsg += ": " + err;
 		}

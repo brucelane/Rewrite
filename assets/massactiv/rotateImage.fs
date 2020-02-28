@@ -65,7 +65,7 @@ void main(void)
 		uv.y = 1.0 - uv.y;
 	}
 	// rotate
-	float rad = radians(360.0 * fract(TIME)); // TODO fract(TIME*iRotationSpeed));
+	float rad = radians(360.0 * fract(TIME*iRotationSpeed));
 	mat2 rotate = mat2(cos(rad),sin(rad),-sin(rad),cos(rad));
 	uv = rotate * (uv - 0.5) + 0.5;
     vec3 rgb = IMG_NORM_PIXEL(inputImage, uv).xyz;

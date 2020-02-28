@@ -105,31 +105,35 @@ namespace videodromm
 		};
 		bool									setFloatUniformValueByIndex(unsigned int aIndex, float aValue) {
 			bool rtn = false;
-		// we can't change iTime at index 0
-		if (aIndex > 0) {
-			/*if (aIndex == 31) {
-				CI_LOG_V("old value " + toString(shaderUniforms[getUniformNameForIndex(aIndex)].floatValue) + " newvalue " + toString(aValue));
-			}*/
-			string uniformName = getUniformNameForIndex(aIndex);
-			if (shaderUniforms[uniformName].floatValue != aValue) {
-				if ((aValue >= shaderUniforms[uniformName].minValue && aValue <= shaderUniforms[uniformName].maxValue) || shaderUniforms[uniformName].autobass || shaderUniforms[uniformName].automid || shaderUniforms[uniformName].autotreble) {
-					shaderUniforms[uniformName].floatValue = aValue;
-					rtn = true;
+			// we can't change iTime at index 0
+			if (aIndex > 0) {
+				/*if (aIndex == 31) {
+					CI_LOG_V("old value " + toString(shaderUniforms[getUniformNameForIndex(aIndex)].floatValue) + " newvalue " + toString(aValue));
+				}*/
+				float f = shaderUniforms[getUniformNameForIndex(aIndex)].floatValue;
+				if (aIndex == 41 && aValue > 0.0F) {
+					CI_LOG_V(f);
 				}
+				string uniformName = getUniformNameForIndex(aIndex);
+				if (shaderUniforms[uniformName].floatValue != aValue) {
+					if ((aValue >= shaderUniforms[uniformName].minValue && aValue <= shaderUniforms[uniformName].maxValue) || shaderUniforms[uniformName].autobass || shaderUniforms[uniformName].automid || shaderUniforms[uniformName].autotreble) {
+						shaderUniforms[uniformName].floatValue = aValue;
+						rtn = true;
+					}
+				}
+				// not all controls are from 0.0 to 1.0
+				/* not working float lerpValue = lerp<float, float>(shaderUniforms[getUniformNameForIndex(aIndex)].minValue, shaderUniforms[getUniformNameForIndex(aIndex)].maxValue, aValue);
+				if (shaderUniforms[getUniformNameForIndex(aIndex)].floatValue != lerpValue) {
+					shaderUniforms[getUniformNameForIndex(aIndex)].floatValue = lerpValue;
+					rtn = true;
+				}*/
 			}
-			// not all controls are from 0.0 to 1.0
-			/* not working float lerpValue = lerp<float, float>(shaderUniforms[getUniformNameForIndex(aIndex)].minValue, shaderUniforms[getUniformNameForIndex(aIndex)].maxValue, aValue);
-			if (shaderUniforms[getUniformNameForIndex(aIndex)].floatValue != lerpValue) {
-				shaderUniforms[getUniformNameForIndex(aIndex)].floatValue = lerpValue;
-				rtn = true;
-			}*/
+			else {
+				// no max 
+				if (aIndex == 0) shaderUniforms[getUniformNameForIndex(aIndex)].floatValue = aValue;
+			}
+			return rtn;
 		}
-		else {
-			// no max 
-			if (aIndex == 0) shaderUniforms[getUniformNameForIndex(aIndex)].floatValue = aValue;
-		}
-		return rtn;
-	}
 	private:
 		// Settings
 		VDSettingsRef					mVDSettings;
@@ -148,7 +152,7 @@ namespace videodromm
 		float							mVideoDuration;
 		bool							mIsVideoLoaded;
 	*/
-		//! shader
+	//! shader
 		gl::GlslProgRef					mShader;
 		std::vector<ci::gl::GlslProg::Uniform> mUniforms;
 		string							mShaderName = "";

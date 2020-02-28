@@ -312,11 +312,9 @@ void VDUIFbos::Run(const char* title) {
 			//std::vector<ci::gl::GlslProg::Uniform> u = mVDSession->getUniforms(f);
 
 			int hue = 0;
-
-			sprintf(buf, "Valid %d", mVDSession->isFboValid(f));
-			ImGui::Text(buf);
-
-			
+			if (!mVDSession->isFboValid(f)) {
+				ImGui::Text("Invalid");
+			}		
 			for (auto u : mVDSession->getUniforms(f)) {
 				string uName = u.getName();
 				ctrl = mVDSession->getUniformIndexForName(uName);
@@ -354,14 +352,20 @@ void VDUIFbos::Run(const char* title) {
 					break;
 				case 5126:
 					// float
-					localValues[ctrl] = mVDSession->getFboFloatUniformValueByIndex(ctrl, f);
+					if (globalUniforms) {
+						localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+					}
+					else {
+						localValues[ctrl] = mVDSession->getFboFloatUniformValueByIndex(ctrl, f);
+					}
+					
 					if (ctrl == 0) {
 						sprintf(buf, "time %.0f", localValues[ctrl]);
 						ImGui::Text(buf);
 					}
 					else {
 						sprintf(buf, "%s##floatuniform%d", uName.c_str(), f);
-						if (ImGui::DragFloat(buf, &localValues[ctrl], 0.1f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+						if (ImGui::DragFloat(buf, &localValues[ctrl], 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 						{
 							setValue(ctrl, f, localValues[ctrl]);
 						}

@@ -25,6 +25,7 @@ namespace videodromm {
 			"uniform float     	iBpm; \n"
 			"uniform float     	iBar; \n"
 			"uniform float     	iTimeFactor; \n"
+			"uniform float     	iRotationSpeed; \n"
 			"uniform bool		iDebug; \n"
 			"uniform sampler2D 	inputImage;\n"
 			"out vec4 fragColor;\n"
