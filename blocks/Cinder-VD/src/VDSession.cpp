@@ -434,12 +434,17 @@ void VDSession::renderWarpsToFbo()
 	gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());
 	// iterate over the fbos and draw their content
 	int i = 0;
+	int a = 0;
+	int s = 0;
 	for (auto &warp : mWarpList) {
-		i = math<int>::min(i, getFboListSize() - 1);
-		if (isFboValid(warp->getAFboIndex())) {
-			warp->draw(getFboRenderedTexture(warp->getAFboIndex()));// , mVDSession->getFboSrcArea(i));
+		a = warp->getAFboIndex();
+		if (a < 0) a = 0; // TODO 20200228 a could be negative if warps3.xml > warps01.json
+		i = math<int>::min(a, getFboListSize() - 1);
+		s = getFboListSize(); // TMP
+		if (isFboValid(i)) {
+			warp->draw(getFboRenderedTexture(i));// BAD, mVDSession->getFboSrcArea(i));
 		}
-		i++;
+		
 	}
 	//gl::color(0.5, 0.0, 1.0, 0.4f);
 	//gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));

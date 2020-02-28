@@ -82,8 +82,8 @@ string * VDWebsocket::getBase64Image() {
 }
 //dreads(1, 0, 0.8).out(o0)
 void VDWebsocket::parseMessage(string msg) {
-	mVDSettings->mWebSocketsMsg = "WS onRead";
-	mVDSettings->mWebSocketsNewMsg = true;
+	mVDSettings->mWebSocketsMsg = "\nWS onRead";
+	// mVDSettings->mWebSocketsNewMsg = true;
 	if (!msg.empty()) {
 		mVDSettings->mWebSocketsMsg += ": " + msg.substr(0, 50);
 		CI_LOG_V("ws msg: " + msg);
@@ -223,7 +223,7 @@ void VDWebsocket::parseMessage(string msg) {
 				}
 			}
 			catch (cinder::JsonTree::Exception exception) {
-				mVDSettings->mWebSocketsMsg += " error jsonparser exception: ";
+				mVDSettings->mWebSocketsMsg += "\n error jsonparser exception: ";
 				mVDSettings->mWebSocketsMsg += exception.what();
 				mVDSettings->mWebSocketsMsg += "  ";
 			}
@@ -286,7 +286,7 @@ void VDWebsocket::parseMessage(string msg) {
 					// USELESS? mVDSettings->mShaderToLoad = processedFile.string();
 				}
 				catch (cinder::JsonTree::Exception exception) {
-					mVDSettings->mWebSocketsMsg += " error jsonparser exception: ";
+					mVDSettings->mWebSocketsMsg += "\nerror jsonparser exception: ";
 					mVDSettings->mWebSocketsMsg += exception.what();
 					mVDSettings->mWebSocketsMsg += "  ";
 				}
@@ -360,28 +360,28 @@ void VDWebsocket::wsConnect() {
 	if (mVDSettings->mIsWebSocketsServer) {
 		mServer.connectOpenEventHandler([&]() {
 			clientConnected = true;
-			mVDSettings->mWebSocketsMsg += " connected to server";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nconnected to server";
+			
 		});
 		mServer.connectCloseEventHandler([&]() {
 			clientConnected = false;
-			mVDSettings->mWebSocketsMsg = "Disconnected";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nDisconnected";
+			
 		});
 		mServer.connectFailEventHandler([&](string err) {
-			mVDSettings->mWebSocketsMsg = "WS Error";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nWS Error";
+			
 			if (!err.empty()) {
 				mVDSettings->mWebSocketsMsg += ": " + err;
 			}
 		});
 		mServer.connectInterruptEventHandler([&]() {
-			mVDSettings->mWebSocketsMsg = "WS Interrupted";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nWS Interrupted";
+			
 		});
 		mServer.connectPingEventHandler([&](string msg) {
-			mVDSettings->mWebSocketsMsg = "WS Pinged";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nWS Pinged";
+			
 			if (!msg.empty())
 			{
 				mVDSettings->mWebSocketsMsg += ": " + msg;
@@ -393,8 +393,8 @@ void VDWebsocket::wsConnect() {
 		mServer.connectSocketInitEventHandler([&]()
 		{
 			// This routine reads the address of the incoming connection
-			mVDSettings->mWebSocketsMsg = "WS Server new connection";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nWS Server new connection";
+			
 			asio::ip::tcp::socket* socket = mServer.getSocket();
 			if (socket != nullptr) {
 				asio::ip::address address = socket->remote_endpoint().address();
@@ -410,7 +410,7 @@ void VDWebsocket::wsConnect() {
 				}
 				host += ":" + toString(socket->remote_endpoint().port());
 				CI_LOG_V(host);
-				mVDSettings->mWebSocketsMsg += ": " + host;
+				mVDSettings->mWebSocketsMsg += "\n: " + host;
 			}
 		});
 		mServer.listen(mVDSettings->mWebSocketsPort);
@@ -419,28 +419,23 @@ void VDWebsocket::wsConnect() {
 	{
 		mClient.connectOpenEventHandler([&]() {
 			clientConnected = true;
-			mVDSettings->mWebSocketsMsg = "Connected";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nConnected";
 		});
 		mClient.connectCloseEventHandler([&]() {
 			clientConnected = false;
-			mVDSettings->mWebSocketsMsg = "Disconnected";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nDisconnected";
 		});
 		mClient.connectFailEventHandler([&](string err) {
-			mVDSettings->mWebSocketsMsg = "WS Error";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nWS Error";			
 			if (!err.empty()) {
 				mVDSettings->mWebSocketsMsg += ": " + err;
 			}
 		});
 		mClient.connectInterruptEventHandler([&]() {
-			mVDSettings->mWebSocketsMsg = "WS Interrupted";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nWS Interrupted";
 		});
 		mClient.connectPingEventHandler([&](string msg) {
-			mVDSettings->mWebSocketsMsg = "WS Ponged";
-			mVDSettings->mWebSocketsNewMsg = true;
+			mVDSettings->mWebSocketsMsg += "\nWS Ponged";
 			if (!msg.empty())
 			{
 				mVDSettings->mWebSocketsMsg += ": " + msg;

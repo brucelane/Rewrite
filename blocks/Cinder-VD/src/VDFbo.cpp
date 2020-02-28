@@ -176,7 +176,7 @@ namespace videodromm {
 				}
 			}
 		}
-		if (mError.length() > 0) mVDSettings->mErrorMsg += mError;
+		if (mError.length() > 0) mVDSettings->mErrorMsg += "\n" + mError;
 		return mValid;
 	}
 	// aName = fullpath
@@ -227,7 +227,7 @@ namespace videodromm {
 			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
 			// update only if success
 			mFragmentShaderString = aFragmentShaderString;
-			mVDSettings->mMsg += aName + " loaded and compiled";
+			mVDSettings->mMsg += "\n" + aName + " loaded and compiled";
 			// name of the shader
 			mShaderName = aName;
 			mValid = true;
@@ -244,7 +244,7 @@ namespace videodromm {
 			CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + aName);
 		}
 		//mVDSettings->mNewMsg = true;
-		mVDSettings->mErrorMsg += mError;
+		mVDSettings->mErrorMsg += "\n" + mError;
 		return mValid;
 	}
 
@@ -295,7 +295,7 @@ namespace videodromm {
 						mTexture = mCachedTextures[mCurrentSeqFilename];
 						mStatus = mCurrentSeqFilename + " " + toString(milli) + "ms";
 						CI_LOG_V(mStatus);
-						mVDSettings->mMsg += mStatus;
+						mVDSettings->mMsg += "\n" + mStatus;
 					}
 					else {
 						// we want the last texture repeating
@@ -320,7 +320,7 @@ namespace videodromm {
 				mTexture->bind(0);
 
 			}*/
-			mTexture->bind(0);
+			if (mTexture) mTexture->bind(0);
 			string name;
 
 			mUniforms = mShader->getActiveUniforms();
@@ -380,9 +380,9 @@ namespace videodromm {
 				}
 				else {
 					if (name != "ciModelViewProjection") {//type 35676
-						mVDSettings->mNewMsg = true;
+						//mVDSettings->mNewMsg = true;
 						mError = "uniform not found " + name;
-						mVDSettings->mErrorMsg += mError;
+						mVDSettings->mErrorMsg += "\n" + mError;
 						CI_LOG_E(mError);
 					}
 				}

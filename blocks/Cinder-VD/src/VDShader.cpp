@@ -298,7 +298,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 		mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
 		// update only if success
 		mFragmentShaderString = aFragmentShaderString;
-		mVDSettings->mMsg += aName + " loaded and compiled";
+		mVDSettings->mMsg += "\n" + aName + " loaded and compiled";
 		// name of the shader
 		mName = aName;
 		mValid = true;
@@ -476,7 +476,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 		CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + aFragmentShaderString);
 	}
 	//mVDSettings->mNewMsg = true;
-	mVDSettings->mErrorMsg += mError;
+	mVDSettings->mErrorMsg += "\n" + mError;
 	return mValid;
 }
 

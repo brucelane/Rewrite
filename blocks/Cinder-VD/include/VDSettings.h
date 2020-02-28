@@ -155,11 +155,11 @@ namespace videodromm {
 		uint16_t					mOSCDestinationPort2;
 		uint16_t					mOSCReceiverPort;
 		std::string					mOSCMsg;
-		bool						mOSCNewMsg;		// log to console
+		//bool						mOSCNewMsg;		// log to console
 		std::string					mMsg;
-		bool						mNewMsg;
+		//bool						mNewMsg;
 		std::string					mErrorMsg;
-		std::string					InfoMsg;
+		//std::string					InfoMsg;
 		bool						mIsOSCSender;
 		// render windows
 		int							mRenderWidth;
@@ -307,7 +307,7 @@ namespace videodromm {
 		string						mWebSocketsHost;
 		uint16_t					mWebSocketsPort;
 		std::string					mWebSocketsMsg;
-		bool						mWebSocketsNewMsg;
+		//bool						mWebSocketsNewMsg;
 		// midi
 		std::string					mMidiMsg;
 		//float						xFade;

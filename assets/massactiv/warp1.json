@@ -5,14 +5,14 @@
       "resolution" : 16,
       "warp" : {
          "afboindex" : 1,
-         "ashaderfilename" : "inputImage.fs",
+         "ashaderfilename" : "rotateImage.fs",
          "ashaderindex" : 1,
-         "atexturefilename" : "red",
+         "atexturefilename" : "0.jpg",
          "bfboindex" : 1,
          "brightness" : 1,
-         "bshaderfilename" : "inputImage.fs",
+         "bshaderfilename" : "rotateImage.fs",
          "bshaderindex" : 1,
-         "btexturefilename" : "red",
+         "btexturefilename" : "0.jpg",
          "controlpoints" : [
             {
                "controlpoint" : 0,
