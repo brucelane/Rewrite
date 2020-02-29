@@ -307,7 +307,8 @@ void VDUIFbos::Run(const char* title) {
 		{
 			ImGui::PushID(f);
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-			if (mVDSession->getFboRenderedTexture(f)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			//if (mVDSession->getFboRenderedTexture(f)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			if (mVDSession->getFboRenderedTexture(f)) ImGui::Image(mVDSession->getFboRenderedTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			// uniforms
 			//std::vector<ci::gl::GlslProg::Uniform> u = mVDSession->getUniforms(f);
 
@@ -441,7 +442,8 @@ void VDUIFbos::Run(const char* title) {
 			} //for uniforms
 			sprintf(buf, "global %d##gu%d", globalUniforms, f);
 			globalUniforms ^= ImGui::Button(buf);
-			if (mVDSession->getFboInputTexture(f)) ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			//if (mVDSession->getFboInputTexture(f)) ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			if (mVDSession->getFboInputTexture(f)) ImGui::Image(mVDSession->getFboInputTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			sprintf(buf, "%s", mVDSession->getFboInputTextureName(f).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 

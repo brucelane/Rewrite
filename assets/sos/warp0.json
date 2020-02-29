@@ -57,10 +57,10 @@
                "y" : 0.52023699999999995
             }
          ],
-         "crossfade" : -431602080,
+         "crossfade" : 0,
          "height" : 2,
          "method" : "perspectivebilinear",
-         "mixfboindex" : 3452816845,
+         "mixfboindex" : 0,
          "width" : 2
       }
    }

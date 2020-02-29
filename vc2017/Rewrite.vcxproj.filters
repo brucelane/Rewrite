@@ -114,6 +114,9 @@
     <Filter Include="debug">
       <UniqueIdentifier>{80de8d04-c84e-4d76-bf19-2cddc45df5ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="release">
+      <UniqueIdentifier>{b9549f35-f791-4b12-a4dc-d92ee93c28d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RewriteApp.cpp">
@@ -532,6 +535,9 @@
   <ItemGroup>
     <Xml Include="x64\Debug\VDRewrite.xml">
       <Filter>debug</Filter>
+    </Xml>
+    <Xml Include="x64\Release\VDRewrite.xml">
+      <Filter>release</Filter>
     </Xml>
   </ItemGroup>
 </Project>

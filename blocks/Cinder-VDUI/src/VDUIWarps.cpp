@@ -30,7 +30,8 @@ void VDUIWarps::Run(const char* title) {
 			ImGui::PushID(w);
 			int fboa = mVDSession->getWarpAFboIndex(w);
 			
-			if (mVDSession->getFboRenderedTexture(fboa)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(fboa)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			//if (mVDSession->getFboRenderedTexture(fboa)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(fboa)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			if (mVDSession->getFboRenderedTexture(fboa)) ImGui::Image(mVDSession->getFboRenderedTexture(fboa), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 
 			/*ImGui::Image((void*)mVDSession->getMixTexture(w)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(mVDSession->getWarpName(w).c_str());*/
@@ -56,7 +57,8 @@ void VDUIWarps::Run(const char* title) {
 			}
 			// loop on the fbos B
 			int fbob = mVDSession->getWarpBFboIndex(w);
-			if (mVDSession->getFboRenderedTexture(fbob)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(fbob)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			//if (mVDSession->getFboRenderedTexture(fbob)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(fbob)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			if (mVDSession->getFboRenderedTexture(fbob)) ImGui::Image(mVDSession->getFboRenderedTexture(fbob), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			for (unsigned int b = 0; b < mVDSession->getFboListSize(); b++) {
 				if (b > 0 && (b % 6 != 0)) ImGui::SameLine();
 				if (fbob == b) {
