@@ -89,6 +89,9 @@ namespace videodromm {
 		void							saveWarps() {
 			int i = 0;
 			for (auto &warp : mWarpList) {
+				// TODO 20200229 
+				warp->setAShaderFilename(mFboList[math<int>::min(warp->getAFboIndex(), mFboList.size() - 1)]->getShaderName());
+				warp->setATextureFilename(mFboList[math<int>::min(warp->getAFboIndex(), mFboList.size() - 1)]->getTextureName());
 				JsonTree		json;
 				string jsonFileName = "warp" + toString(i) + ".json";
 				fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
@@ -357,6 +360,9 @@ namespace videodromm {
 		string							getFboStatus(unsigned int aFboIndex = 0) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getStatus();
 		}
+		void							updateShaderThumbFile(unsigned int aFboIndex) {
+			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->updateThumbFile();
+		}
 		//string							getFboFragmentShaderText(unsigned int aFboIndex);
 		// feedback get/set
 		/*int								getFeedbackFrames() {
@@ -386,8 +392,8 @@ namespace videodromm {
 		*/
 		bool							isAutoLayout() { return mVDSettings->mAutoLayout; };
 		void							toggleAutoLayout() { mVDSettings->mAutoLayout = !mVDSettings->mAutoLayout; }
-		void							loadImageFile(string aFile, unsigned int aTextureIndex);
 		// textures
+		void							loadImageFile(string aFile, unsigned int aTextureIndex);
 		/*unsigned int					getInputTexturesCount() {
 			return mTextureList.size();
 		}

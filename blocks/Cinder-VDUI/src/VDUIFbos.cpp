@@ -314,7 +314,11 @@ void VDUIFbos::Run(const char* title) {
 			int hue = 0;
 			if (!mVDSession->isFboValid(f)) {
 				ImGui::Text("Invalid");
-			}		
+			}
+			else {
+				sprintf(buf, "T##fboupd%d", f);
+				if(ImGui::Button(buf)) mVDSession->updateShaderThumbFile(f);
+			}
 			for (auto u : mVDSession->getUniforms(f)) {
 				string uName = u.getName();
 				ctrl = mVDSession->getUniformIndexForName(uName);

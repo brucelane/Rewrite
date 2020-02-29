@@ -404,13 +404,13 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			fileName = aName + ".fs";
 			//fs::path isfFile = getAssetPath("") / "glsl" / "isf" / fileName;
 			fs::path isfFile = getAssetPath("") / mVDSettings->mAssetsPath / fileName;
-			if (!fs::exists(isfFile)) {
+			//if (!fs::exists(isfFile)) {
 				ofstream mISF(isfFile.string(), std::ofstream::binary);
 				mISF << mISFString;
 				mISF.close();
 				CI_LOG_V("ISF file saved:" + isfFile.string());
 
-			}
+			//}
 
 		}
 		catch (gl::GlslProgCompileExc &exc)
@@ -499,18 +499,17 @@ ci::gl::Texture2dRef VDShader::getFboTexture() {
 		string filename = mName + ".jpg";
 		fs::path fr = getAssetPath("") / "thumbs" / filename;
 
-		if (!fs::exists(fr)) {
+		//if (!fs::exists(fr)) {
 			CI_LOG_V(fr.string() + " does not exist, creating");
 			Surface s8(mRenderedTexture->createSource());
 			writeImage(writeFile(fr), s8);
-		}
+		//}
 
 	}
 	return mRenderedTexture;
 }
 ci::gl::Texture2dRef VDShader::getThumbTexture() {
 	if (mValid) {
-
 		getFboTexture();
 	}
 	return mRenderedTexture;

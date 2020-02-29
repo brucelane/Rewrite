@@ -1465,7 +1465,7 @@ void VDSession::loadImageFile(string aFile, unsigned int aTextureIndex) {
 		if (dotIndex != std::string::npos)  ext = texFileOrPath.filename().string().substr(dotIndex + 1);
 		if (ext == "jpg" || ext == "png") {
 			ci::gl::Texture2dRef mTexture = gl::Texture::create(loadImage(texFileOrPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
-			mFboList[rtn]->setImageInputTexture(mTexture);
+			mFboList[rtn]->setImageInputTexture(mTexture, texFileOrPath.filename().string());
 		}
 	}
 	// create texture

@@ -11,7 +11,7 @@ namespace videodromm {
 		mCurrentSeqFilename = aTextureFilename;
 		mLastCachedFilename = aTextureFilename;
 		shaderInclude = loadString(loadAsset("shadertoy.vd"));
-		shaderInclude = "#version 150\n"
+		/*shaderInclude = "#version 150\n"
 			"// shadertoy specific\n"
 			"uniform vec2      	RENDERSIZE;\n"
 			"uniform vec3 		iResolution;\n"
@@ -30,7 +30,7 @@ namespace videodromm {
 			"uniform bool		iDebug; \n"
 			"uniform sampler2D 	inputImage;\n"
 			"out vec4 fragColor;\n"
-			"#define IMG_NORM_PIXEL texture2D\n";
+			"#define IMG_NORM_PIXEL texture2D\n";*/
 
 		mVDSettings = aVDSettings;
 		mVDAnimation = aVDAnimation;
@@ -116,8 +116,9 @@ namespace videodromm {
 		mValid = false;
 		if (aFileName.length() > 0) {
 			if (mType == MOVIE) {
-				try {
+				/*try {
 					mShaderName = mShaderFileName = "video_texture.fs.glsl";
+					// TODO VDShaderRef shaderToLoad instance
 					mShader = gl::GlslProg::create(gl::GlslProg::Format()
 						.vertex(loadAsset("video_texture.vs.glsl"))
 						.fragment(loadAsset("video_texture.fs.glsl")));
@@ -131,16 +132,17 @@ namespace videodromm {
 				catch (const std::exception &e) {
 					mError = string(e.what());
 					CI_LOG_V("fbo unable to load vtx-frag video_texture shader:" + string(e.what()));
-				}
+				}*/
 			}
 			else {
 				// load fragment shader
-				VDShaderRef shaderToLoad = VDShader::create(mVDSettings, mVDAnimation, aFileName, mTexture);
+				shaderToLoad = VDShader::create(mVDSettings, mVDAnimation, aFileName, mTexture);
 				if (shaderToLoad->isValid()) {
-					mFileNameWithExtension = shaderToLoad->getFileNameWithExtension();//was mFragFile.filename().string();
+					mShaderFileName = mFileNameWithExtension = shaderToLoad->getFileNameWithExtension();//was mFragFile.filename().string();
 					mFragmentShaderString = shaderToLoad->getFragmentString();//was loadString(loadFile(mFragFile));
 					mValid = setFragmentString(mFragmentShaderString, shaderToLoad->getFileNameWithExtension());// was mFragFile.filename().string());
 				}
+
 				else {
 					mError = "Invalid shader file " + aFileName;
 					// load default fragment shader
@@ -161,7 +163,7 @@ namespace videodromm {
 				}
 				/*
 				CI_LOG_V("loadFragmentStringFromFile, loading " + aFileName);
-				
+
 				mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / aFileName;
 				if (aFileName.length() > 0 && fs::exists(mFragFile)) {
 					mFileNameWithExtension = mFragFile.filename().string();
@@ -209,48 +211,50 @@ namespace videodromm {
 		if (mError.length() > 0) mVDSettings->mErrorMsg = mError + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
 		return mValid;
 	}
-	// aName = fullpath
+
 	bool VDFbo::setFragmentString(string aFragmentShaderString, string aName) {
 
 		string mOriginalFragmentString = aFragmentShaderString;
-		string fileName = "";
+		//string fileName = "";
 		mError = "";
 
 		// we would like a name without extension
 		if (aName.length() == 0) {
 			aName = toString((int)getElapsedSeconds());
+			mName = aName;
 		}
 		else {
 			int dotIndex = aName.find_last_of(".");
 			int slashIndex = aName.find_last_of("\\");
-
+			
 			if (dotIndex != std::string::npos && dotIndex > slashIndex) {
-				aName = aName.substr(slashIndex + 1, dotIndex - slashIndex - 1);
+				mName = aName.substr(slashIndex + 1, dotIndex - slashIndex - 1);
 			}
 		}
+		mShaderName = mName + ".fs";
 
-		string mNotFoundmUniformsString = "/* " + aName + "\n";
+		string mNotFoundmUniformsString = "/* " + mName + "\n";
 		// filename to save
 		mValid = false;
 		// load fragment shader
-		CI_LOG_V("setFragmentString, loading" + aName);
+		CI_LOG_V("setFragmentString, loading" + mName);
 		try
 		{
 			// before compilation save .fs file to inspect errors
-			fileName = aName + ".fs";
+			/*fileName = mName + ".fs";
 			fs::path receivedFile = getAssetPath("") / "glsl" / "received" / fileName;
 			ofstream mFragReceived(receivedFile.string(), std::ofstream::binary);
 			mFragReceived << aFragmentShaderString;
 			mFragReceived.close();
-			CI_LOG_V("file saved:" + receivedFile.string());			
-			
+			CI_LOG_V("file saved:" + receivedFile.string());	*/
+
 			std::size_t foundUniform = mOriginalFragmentString.find("uniform ");
 			if (foundUniform == std::string::npos) {
 				CI_LOG_V("loadFragmentStringFromFile, no mUniforms found, we add from shadertoy.inc");
-				aFragmentShaderString = "/* " + aName + " */\n" + shaderInclude + mOriginalFragmentString;
+				aFragmentShaderString = "/* " + mName + " */\n" + shaderInclude + mOriginalFragmentString;
 			}
 			else {
-				aFragmentShaderString = "/* " + aName + " */\n" + mOriginalFragmentString;
+				aFragmentShaderString = "/* " + mName + " */\n" + mOriginalFragmentString;
 			}
 
 
@@ -259,23 +263,22 @@ namespace videodromm {
 			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
 			// update only if success
 			mFragmentShaderString = aFragmentShaderString;
-			
-			mVDSettings->mMsg = aName + " compiled(fbo)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 
-			// name of the shader
-			mShaderName = aName;
+			mVDSettings->mMsg = mName + " compiled(fbo)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
+
+
 			mValid = true;
 
 		}
 		catch (gl::GlslProgCompileExc &exc)
 		{
-			mError = aName + string(exc.what());
-			CI_LOG_V("setFragmentString, unable to compile live fragment shader:" + mError + " frag:" + aName);
+			mError = mName + string(exc.what());
+			CI_LOG_V("setFragmentString, unable to compile live fragment shader:" + mError + " frag:" + mName);
 		}
 		catch (const std::exception &e)
 		{
-			mError = aName + string(e.what());
-			CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + aName);
+			mError = mName + string(e.what());
+			CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + mName);
 		}
 		//mVDSettings->mNewMsg = true;
 		mVDSettings->mErrorMsg += "\n" + mError;
@@ -294,15 +297,15 @@ namespace videodromm {
 			case AUDIO:
 				mTexture = mVDAnimation->getAudioTexture();
 				break;
-			/*case MOVIE:
-				mVideo.update();
-				mVideoPos = mVideo.getPosition();
-				if (mVideo.isStopped() || mVideo.isPaused()) {
-					mVideo.setPosition(0.0);
-					mVideo.play();
-				}
-				//mTexture = mVideo.mPlayer->mSources-> mEVRPresenter->;
-				break;*/
+				/*case MOVIE:
+					mVideo.update();
+					mVideoPos = mVideo.getPosition();
+					if (mVideo.isStopped() || mVideo.isPaused()) {
+						mVideo.setPosition(0.0);
+						mVideo.play();
+					}
+					//mTexture = mVideo.mPlayer->mSources-> mEVRPresenter->;
+					break;*/
 			case IMAGE:
 				break;
 			case SEQUENCE:
@@ -330,7 +333,7 @@ namespace videodromm {
 						mStatus = mCurrentSeqFilename + " " + toString(milli) + "ms";
 						CI_LOG_V(mStatus);
 						mVDSettings->mMsg = mStatus + "\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
-						
+
 					}
 					else {
 						// we want the last texture repeating
@@ -427,11 +430,11 @@ namespace videodromm {
 
 			gl::ScopedGlslProg glslScope(mShader);
 			// TODO: test gl::ScopedViewport sVp(0, 0, mFbo->getWidth(), mFbo->getHeight());	
-			
+
 			gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			mRenderedTexture = mFbo->getColorTexture();
 			if (!isReady) {
-				string filename = mShaderName + "-" + mTextureName + ".jpg";
+				string filename = mName + "-" + mTextureName + ".jpg";
 				fs::path fr = getAssetPath("") / "thumbs" / filename;
 
 				if (!fs::exists(fr)) {
@@ -466,7 +469,7 @@ namespace videodromm {
 		texture.addChild(ci::JsonTree("texturename", mTextureName));
 		texture.pushBack(ci::JsonTree("texturetype", "image"));
 		json.addChild(texture);
-		
+
 		if (save) {
 			string jsonFileName = mShaderName + ".json";
 			fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;

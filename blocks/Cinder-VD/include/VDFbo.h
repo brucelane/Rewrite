@@ -59,11 +59,23 @@ namespace videodromm
 		};
 		bool									isFlipH() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV); };
 		bool									isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };*/
-		std::string								getName() { return mShaderName; };
+		std::string								getName() { return mName; };
+		std::string								getShaderName() { return mShaderName; };
 		std::string								getTextureName() { return mTextureName; };
 		ci::gl::Texture2dRef					getInputTexture() { return mTexture; };
 		string									getStatus() { return mStatus; };
-		void									setImageInputTexture(ci::gl::Texture2dRef aTextureRef) { mType = IMAGE; mTexture = aTextureRef; };
+		void									setImageInputTexture(ci::gl::Texture2dRef aTextureRef, string aTextureFilename) { 
+			mType = IMAGE; 
+			mTexture = aTextureRef; 
+			mTextureName = aTextureFilename;
+			if (shaderToLoad) {
+				shaderToLoad->setInputTexture(aTextureRef);
+				shaderToLoad->getThumbTexture();
+			}
+		};
+		void									updateThumbFile() {
+			if (shaderToLoad) shaderToLoad->getThumbTexture();
+		}
 		std::vector<ci::gl::GlslProg::Uniform>	getUniforms() { return mUniforms; };
 		ci::JsonTree							toJson(bool save = false) const;
 		// uniforms
@@ -156,8 +168,10 @@ namespace videodromm
 	*/
 	//! shader
 		gl::GlslProgRef					mShader;
+		VDShaderRef						shaderToLoad;
 		std::vector<ci::gl::GlslProg::Uniform> mUniforms;
 		string							mShaderName = "";
+		string							mName = "";
 		string							mShaderFileName = "";
 		string							mTextureName = "";
 		std::string						mFragmentShaderString;

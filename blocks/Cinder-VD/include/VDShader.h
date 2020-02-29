@@ -65,6 +65,7 @@ namespace videodromm
 		void							setActive(bool active) { mActive = active; };
 		void							removeShader();*/
 		ci::gl::Texture2dRef			getThumbTexture();
+		void							setInputTexture(ci::gl::Texture2dRef aTextureRef) { mTexture = aTextureRef; };
 	private:
 		// Settings
 		VDSettingsRef					mVDSettings;
