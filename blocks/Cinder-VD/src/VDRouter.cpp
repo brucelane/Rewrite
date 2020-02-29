@@ -360,7 +360,7 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 			}
 			if (addr != "/play") {
 				ss << " f:" << f << " i:" << i;
-				mVDSettings->mOSCMsg = ss.str() + "\n" + mVDSettings->mOSCMsg.substr(0, mVDSettings->mMsgLength);
+				mVDSettings->mOSCMsg = ss.str();
 			}
 
 		});

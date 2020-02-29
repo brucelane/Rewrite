@@ -44,6 +44,10 @@ VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, strin
 		shaderInclude = loadString(loadAsset("shadertoy.vd"));
 
 		if (loadFragmentStringFromFile()) {
+			fboFmt.setColorTextureFormat(fmt);
+			mRenderedTexture = ci::gl::Texture::create(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight, ci::gl::Texture::Format().loadTopDown());
+			mThumbFbo = gl::Fbo::create(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight, fboFmt);
+			getThumbTexture();
 		}
 		else {
 			mError = "could not compile:" + aFileOrPath;
@@ -102,7 +106,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 		}
 
 	}
-
+	mName = aName;
 	string mNotFoundUniformsString = "/* " + aName + "\n";
 	// filename to save
 	mValid = false;
@@ -127,8 +131,6 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 
 	}
 	else {
-
-
 		try
 		{
 			// from Hydra
@@ -236,46 +238,18 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 
 			mOFISFString = mISFString;
 
-			//ISFPattern = { "void main" };
-			//ISFReplacement = { "dirtyhack mainImage" }; //dirty hack!
-			//mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
 			ISFPattern = { "out vec4 fragColor," };
 			ISFReplacement = { "void" };
 			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
 			ISFPattern = { "in vec2 fragCoord" };
 			ISFReplacement = { "" };
 			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
-			//ISFPattern = { "dirtyhack mainImage" };
-			//ISFReplacement = { "void mainImage" }; //dirty hack!
-			//mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
-			//ISFPattern = { "gl_FragColor" };
-			//ISFReplacement = { "fragColor" };
-			//mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
-			//ISFPattern = { "gl_FragCoord" };
-			//ISFReplacement = { "fragCoord" };
-			//mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
-			//mISFString = mISFString + "void main(void) { mainImage(gl_FragColor, gl_FragCoord.xy); }";
 
-
-			// shadertoy: 
-			// change void mainImage( out vec4 fragColor, in vec2 fragCoord ) to void main(void)
-			/*pattern = { "mainImage" };
-			replacement = { "main" };
-			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
-			pattern = { "out vec4 fragColor," };
-			replacement = { "void" };
-			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
-			pattern = { "in vec2 fragCoord" };
-			replacement = { "" };
-			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
-			pattern = { " vec2 fragCoord" };
-			replacement = { "" };
-			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);*/
-
-			// change texture2D to texture for version > 150?	
-
-			// change fragCoord to gl_FragCoord
-			// change gl_FragColor to fragColor
+			// 20200228
+			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
+			ISFPattern = { "gl_FragColor" };
+			ISFReplacement = { "fragColor" };
+			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
 
 			// check if uniforms were declared in the file
 			std::size_t foundUniform = mOriginalFragmentString.find("uniform ");
@@ -288,15 +262,6 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 				//aFragmentShaderString = "/* " + aName + " */\n" + mOriginalFragmentString;
 				aFragmentShaderString = "/* " + aName + " */\n" + mISFString;
 			}
-
-
-			// before compilation save .frag file to inspect errors
-			/*fileName = aName + ".frag";
-			fs::path receivedFile = getAssetPath("") / "glsl" / "received" / fileName;
-			ofstream mFragReceived(receivedFile.string(), std::ofstream::binary);
-			mFragReceived << aFragmentShaderString;
-			mFragReceived.close();
-			CI_LOG_V("file saved:" + receivedFile.string());*/
 
 			// try to compile a first time to get active uniforms
 			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
@@ -435,32 +400,18 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			mOFISF.close();
 			CI_LOG_V("OF ISF file saved:" + OFIsfFile.string());
 
-			// ifs for HeavyM
+			// ifs for HeavyM, save in assetspath if not exists already
 			fileName = aName + ".fs";
-			fs::path isfFile = getAssetPath("") / "glsl" / "isf" / fileName;
-			ofstream mISF(isfFile.string(), std::ofstream::binary);
-			mISF << mISFString;
-			mISF.close();
-			CI_LOG_V("ISF file saved:" + isfFile.string());
+			//fs::path isfFile = getAssetPath("") / "glsl" / "isf" / fileName;
+			fs::path isfFile = getAssetPath("") / mVDSettings->mAssetsPath / fileName;
+			if (!fs::exists(isfFile)) {
+				ofstream mISF(isfFile.string(), std::ofstream::binary);
+				mISF << mISFString;
+				mISF.close();
+				CI_LOG_V("ISF file saved:" + isfFile.string());
 
+			}
 
-			// add "out vec4 fragColor" if necessary
-			std::size_t foundFragColorDeclaration = mOriginalFragmentString.find("out vec4 fragColor;");
-			if (foundFragColorDeclaration == std::string::npos) {
-				mNotFoundUniformsString += "*/\nout vec4 fragColor;\nvec2  fragCoord = gl_FragCoord.xy; // keep the 2 spaces between vec2 and fragCoord\n";
-			}
-			else {
-				mNotFoundUniformsString += "*/\nvec2  fragCoord = gl_FragCoord.xy; // keep the 2 spaces between vec2 and fragCoord\n";
-			}
-			mCurrentUniformsString += "// active uniforms end\n";
-			// save .frag file to migrate old shaders
-			mProcessedShaderString = mNotFoundUniformsString + mCurrentUniformsString + mOriginalFragmentString;
-			fileName = aName + ".frag";
-			fs::path processedFile = getAssetPath("") / "glsl" / "processed" / fileName;
-			ofstream mFragProcessed(processedFile.string(), std::ofstream::binary);
-			mFragProcessed << mProcessedShaderString;
-			mFragProcessed.close();
-			CI_LOG_V("processed file saved:" + processedFile.string());
 		}
 		catch (gl::GlslProgCompileExc &exc)
 		{
@@ -476,6 +427,94 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 	mVDSettings->mErrorMsg = mError + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
 	return mValid;
 }
+ci::gl::Texture2dRef VDShader::getFboTexture() {
 
+	if (mValid) {
+
+		gl::ScopedFramebuffer fbScp(mThumbFbo);
+		gl::clear(Color::black());
+		
+		mTexture = mVDAnimation->getAudioTexture();
+		if (mTexture) mTexture->bind(0);
+		string name;
+
+		mUniforms = mShader->getActiveUniforms();
+		for (const auto &uniform : mUniforms) {
+			name = uniform.getName();
+			if (mVDAnimation->isExistingUniform(name)) {
+				int uniformType = mVDAnimation->getUniformType(name);
+				switch (uniformType)
+				{
+				case 0: // float
+					mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
+					if (name == "TIME") {
+						// globally
+						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName("iTime"));
+					}
+					break;
+				case 1: // sampler2D
+					mShader->uniform(name, 0);
+					break;
+				case 2: // vec2
+					if (name == "RENDERSIZE") {
+						mShader->uniform(name, vec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+					}
+					else {
+						mShader->uniform(name, mVDAnimation->getVec2UniformValueByName(name));
+					}
+					break;
+				case 3: // vec3
+					mShader->uniform(name, mVDAnimation->getVec3UniformValueByName(name));
+					break;
+				case 4: // vec4
+					mShader->uniform(name, mVDAnimation->getVec4UniformValueByName(name));
+					break;
+				case 5: // int
+					mShader->uniform(name, mVDAnimation->getIntUniformValueByName(name));
+					break;
+				case 6: // bool
+					mShader->uniform(name, mVDAnimation->getBoolUniformValueByName(name));
+					break;
+				default:
+					break;
+				}
+			}
+			else {
+				if (name != "ciModelViewProjection") {//type 35676
+					//mVDSettings->mNewMsg = true;
+					mError = "uniform not found " + name;
+					mVDSettings->mErrorMsg = mError + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
+					CI_LOG_E(mError);
+				}
+			}
+		}
+		mShader->uniform("RENDERSIZE", vec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		mShader->uniform("TIME", (float)getElapsedSeconds());// mVDAnimation->getFloatUniformValueByIndex(0));
+
+		gl::ScopedGlslProg glslScope(mShader);
+		// TODO: test gl::ScopedViewport sVp(0, 0, mFbo->getWidth(), mFbo->getHeight());	
+
+		gl::drawSolidRect(Rectf(0, 0, mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		mRenderedTexture = mThumbFbo->getColorTexture();
+		
+			string filename = mName + ".jpg";
+			fs::path fr = getAssetPath("") / "thumbs" / filename;
+
+			if (!fs::exists(fr)) {
+				CI_LOG_V(fr.string() + " does not exist, creating");
+				Surface s8(mRenderedTexture->createSource());
+				writeImage(writeFile(fr), s8);
+			}
+		
+	}
+	return mRenderedTexture;
+}
+ci::gl::Texture2dRef VDShader::getThumbTexture() {
+	if (mValid) {
+		
+		getFboTexture();
+	}
+	return mRenderedTexture;
+}
 
 #pragma warning(pop) // _CRT_SECURE_NO_WARNINGS

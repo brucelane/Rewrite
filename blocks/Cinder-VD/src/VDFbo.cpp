@@ -95,7 +95,6 @@ namespace videodromm {
 		// init the fbo whatever happens next
 		fboFmt.setColorTextureFormat(fmt);
 		mFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, fboFmt);
-		//mThumbFbo = gl::Fbo::create(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight, fboFmt);
 		mError = "";
 		mActive = true;
 		mValid = loadFragmentStringFromFile(mShaderName);

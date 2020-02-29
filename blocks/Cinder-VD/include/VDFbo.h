@@ -171,7 +171,7 @@ namespace videodromm
 		bool							mValid = false;
 		//! Fbo
 		gl::FboRef						mFbo;
-		//gl::FboRef						mThumbFbo;
+
 		gl::Texture::Format				fmt;
 		gl::Fbo::Format					fboFmt;
 		//Area							mSrcArea;

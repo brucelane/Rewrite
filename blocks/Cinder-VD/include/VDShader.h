@@ -64,6 +64,7 @@ namespace videodromm
 		bool							isActive() { return mActive; };
 		void							setActive(bool active) { mActive = active; };
 		void							removeShader();*/
+		ci::gl::Texture2dRef			getThumbTexture();
 	private:
 		// Settings
 		VDSettingsRef					mVDSettings;
@@ -83,14 +84,23 @@ namespace videodromm
 		std::string						mFileNameWithExtension;
 		std::string						mFragmentShaderString;
 		string							ext;
+		std::vector<ci::gl::GlslProg::Uniform> mUniforms;
+		// fbo
+		gl::Texture::Format				fmt;
+		gl::Fbo::Format					fboFmt;
+		gl::FboRef						mThumbFbo;
+		ci::gl::Texture2dRef			getFboTexture();
+		ci::gl::Texture2dRef			mRenderedTexture;
+		string							mName;
+		//! Input textures
+		gl::TextureRef					mTexture;
+
+		//ci::gl::Texture2dRef			mThumbTexture;
 		/*string							mId;
 		bool							mActive;
 		int								mMicroSeconds;
 		//! fragment shader
 		fs::path						mFragFile;
 		*/
-		// fbo
-		//gl::FboRef						mThumbFbo;
-		//ci::gl::Texture2dRef			mThumbTexture;
 	};
 }
