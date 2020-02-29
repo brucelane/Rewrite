@@ -63,7 +63,7 @@ namespace videodromm
 		std::string								getTextureName() { return mTextureName; };
 		ci::gl::Texture2dRef					getInputTexture() { return mTexture; };
 		string									getStatus() { return mStatus; };
-		void									setInputTexture(ci::gl::Texture2dRef aTextureRef) { mTexture = aTextureRef; };
+		void									setImageInputTexture(ci::gl::Texture2dRef aTextureRef) { mType = IMAGE; mTexture = aTextureRef; };
 		std::vector<ci::gl::GlslProg::Uniform>	getUniforms() { return mUniforms; };
 		ci::JsonTree							toJson(bool save = false) const;
 		// uniforms

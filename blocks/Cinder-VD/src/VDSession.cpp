@@ -596,13 +596,13 @@ void VDSession::fileDrop(FileDropEvent event) {
 		else if (ext == "glsl" || ext == "frag" || ext == "fs") {
 			loadFragmentShader(absolutePath, index);
 		}
-		/*else if (ext == "wav" || ext == "mp3") {
-			loadAudioFile(absolutePath);
-		}
 		else if (ext == "png" || ext == "jpg") {
 			if (index < 1) index = 1;
 			if (index > 3) index = 3;
 			loadImageFile(absolutePath, index);
+		}
+		/*else if (ext == "wav" || ext == "mp3") {
+			loadAudioFile(absolutePath);
 		}
 		else if (ext == "xml") {
 		}
@@ -1455,9 +1455,21 @@ bool VDSession::loadImageSequence(string aFolder, unsigned int aTextureIndex) {
 void VDSession::loadMovie(string aFile, unsigned int aTextureIndex) {
 
 }*/
-/*void VDSession::loadImageFile(string aFile, unsigned int aTextureIndex) {
+void VDSession::loadImageFile(string aFile, unsigned int aTextureIndex) {
+	int rtn = math<int>::min(aTextureIndex, mFboList.size() - 1);
+	fs::path texFileOrPath = aFile;
+	if (fs::exists(texFileOrPath)) {
+
+		string ext = "";
+		int dotIndex = texFileOrPath.filename().string().find_last_of(".");
+		if (dotIndex != std::string::npos)  ext = texFileOrPath.filename().string().substr(dotIndex + 1);
+		if (ext == "jpg" || ext == "png") {
+			ci::gl::Texture2dRef mTexture = gl::Texture::create(loadImage(texFileOrPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
+			mFboList[rtn]->setImageInputTexture(mTexture);
+		}
+	}
 	// create texture
-	if (mTextureList.size() < 8) {
+	/*if (mTextureList.size() < 8) {
 		XmlTree			imageXml;
 		imageXml.setTag("texture");
 		imageXml.setAttribute("id", to_string(mTextureList.size()));
@@ -1474,8 +1486,9 @@ void VDSession::loadMovie(string aFile, unsigned int aTextureIndex) {
 	else {
 		CI_LOG_V("loadImageFile " + aFile + " at textureIndex " + toString(aTextureIndex));
 		mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->loadFromFullPath(aFile);
-	}
+	}*/
 }
+/*
 void VDSession::loadAudioFile(string aFile) {
 	mTextureList[0]->loadFromFullPath(aFile);
 }

@@ -386,6 +386,7 @@ namespace videodromm {
 		*/
 		bool							isAutoLayout() { return mVDSettings->mAutoLayout; };
 		void							toggleAutoLayout() { mVDSettings->mAutoLayout = !mVDSettings->mAutoLayout; }
+		void							loadImageFile(string aFile, unsigned int aTextureIndex);
 		// textures
 		/*unsigned int					getInputTexturesCount() {
 			return mTextureList.size();
@@ -398,7 +399,6 @@ namespace videodromm {
 		/*ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, string aFilename);
 		//ci::gl::TextureRef				getNextInputTexture(unsigned int aTextureIndex);
 		
-		void							loadImageFile(string aFile, unsigned int aTextureIndex);
 		void							loadAudioFile(string aFile);
 		void							loadMovie(string aFile, unsigned int aTextureIndex);
 		bool							loadImageSequence(string aFolder, unsigned int aTextureIndex);
