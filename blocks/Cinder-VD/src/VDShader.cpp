@@ -11,9 +11,10 @@ using namespace videodromm;
 	save isf in assets session subfolder
 was VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, string aFragmentShaderString) {
 */
-VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, gl::TextureRef aVDTexture) {
+VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, gl::TextureRef aTexture) {
 	mVDSettings = aVDSettings;
 	mVDAnimation = aVDAnimation;
+	mTexture = aTexture;
 	mValid = false;
 	mError = "";
 	bool fileExists = true;
@@ -127,7 +128,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 		// update only if success
 		mFragmentShaderString = aFragmentShaderString;
 		mValid = true;
-		mVDSettings->mMsg = aName + " loaded and compiled\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
+		mVDSettings->mMsg = aName + " compiled(fs)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 
 	}
 	else {
@@ -195,15 +196,15 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			replacement = { "iChannel0" };
 			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
 			// 20190727 TODO CHECK
-					/*pattern = { "iFreq0" };
-					replacement = { "iChannel0.x" };
-					mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
-					pattern = { "iFreq1" };
-					replacement = { "iChannel0.y" };
-					mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
-					pattern = { "iFreq2" };
-					replacement = { "iChannel0.x" };
-					mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement); */
+			/*pattern = { "iFreq0" };
+			replacement = { "iChannel0.x" };
+			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
+			pattern = { "iFreq1" };
+			replacement = { "iChannel0.y" };
+			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
+			pattern = { "iFreq2" };
+			replacement = { "iChannel0.x" };
+			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement); */
 			pattern = { "iRenderXY.x" };
 			replacement = { "0.0" };
 			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
@@ -211,7 +212,6 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			replacement = { "0.0" };
 			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
 			// ISF file format
-			// change void main(void) to void main(void) { mainImage(gl_FragColor, gl_FragCoord.xy); }
 			mISFString = mOriginalFragmentString;
 			std::regex ISFPattern{ "iResolution" };
 			std::string ISFReplacement{ "RENDERSIZE" };
@@ -232,9 +232,9 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			ISFPattern = { "iChannel0" };
 			ISFReplacement = { "inputImage" };
 			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
-			ISFPattern = { "iChannel1" };
+			/*ISFPattern = { "iChannel1" };
 			ISFReplacement = { "inputImage" };
-			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
+			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);*/
 
 			mOFISFString = mISFString;
 
@@ -267,7 +267,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
 			// update only if success
 			mFragmentShaderString = aFragmentShaderString;
-			mVDSettings->mMsg = aName + " loaded and compiled\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
+			mVDSettings->mMsg = aName + " compiled(shader)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 
 			// name of the shader
 			//mName = aName;
@@ -433,8 +433,7 @@ ci::gl::Texture2dRef VDShader::getFboTexture() {
 
 		gl::ScopedFramebuffer fbScp(mThumbFbo);
 		gl::clear(Color::black());
-		
-		mTexture = mVDAnimation->getAudioTexture();
+
 		if (mTexture) mTexture->bind(0);
 		string name;
 
@@ -496,22 +495,22 @@ ci::gl::Texture2dRef VDShader::getFboTexture() {
 
 		gl::drawSolidRect(Rectf(0, 0, mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		mRenderedTexture = mThumbFbo->getColorTexture();
-		
-			string filename = mName + ".jpg";
-			fs::path fr = getAssetPath("") / "thumbs" / filename;
 
-			if (!fs::exists(fr)) {
-				CI_LOG_V(fr.string() + " does not exist, creating");
-				Surface s8(mRenderedTexture->createSource());
-				writeImage(writeFile(fr), s8);
-			}
-		
+		string filename = mName + ".jpg";
+		fs::path fr = getAssetPath("") / "thumbs" / filename;
+
+		if (!fs::exists(fr)) {
+			CI_LOG_V(fr.string() + " does not exist, creating");
+			Surface s8(mRenderedTexture->createSource());
+			writeImage(writeFile(fr), s8);
+		}
+
 	}
 	return mRenderedTexture;
 }
 ci::gl::Texture2dRef VDShader::getThumbTexture() {
 	if (mValid) {
-		
+
 		getFboTexture();
 	}
 	return mRenderedTexture;

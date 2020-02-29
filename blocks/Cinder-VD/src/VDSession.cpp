@@ -915,11 +915,12 @@ bool VDSession::handleKeyUp(KeyEvent &event) {
 #pragma region fbos
 int VDSession::loadFragmentShader(string aFilePath, unsigned int aFboShaderIndex) {
 	int rtn = -1;
-	CI_LOG_V("loadFragmentShader " + aFilePath);
+	mVDSettings->mMsg = "load " + aFilePath + " at index " + toString(aFboShaderIndex) + "\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 	//createShaderFbo(aFilePath, aFboShaderIndex);
 	//
 	bool loaded = false;
 	for (auto &fbo : mFboList) {
+		rtn++;
 		if (!loaded) {
 			if (!fbo->isValid()) {
 				fbo->loadFragmentStringFromFile(aFilePath);
@@ -930,8 +931,10 @@ int VDSession::loadFragmentShader(string aFilePath, unsigned int aFboShaderIndex
 
 	}
 	if (!loaded) {
-		mFboList[math<int>::min(aFboShaderIndex, mFboList.size() - 1)]->loadFragmentStringFromFile(aFilePath);
+		rtn = math<int>::min(aFboShaderIndex, mFboList.size() - 1);
+		loaded = mFboList[rtn]->loadFragmentStringFromFile(aFilePath);
 	}
+	mVDSettings->mMsg = "loaded " + toString(loaded) + " at index " + toString(rtn) + "\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 
 	return rtn;
 }

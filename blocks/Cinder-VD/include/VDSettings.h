@@ -161,7 +161,7 @@ namespace videodromm {
 		std::string					mErrorMsg;
 		//std::string					InfoMsg;
 		bool						mIsOSCSender;		
-		static const int			mMsgLength = 64;
+		static const int			mMsgLength = 150;
 
 		// render windows
 		int							mRenderWidth;

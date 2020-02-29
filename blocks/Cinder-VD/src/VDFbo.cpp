@@ -260,7 +260,7 @@ namespace videodromm {
 			// update only if success
 			mFragmentShaderString = aFragmentShaderString;
 			
-			mVDSettings->mMsg = aName + " loaded and compiled\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
+			mVDSettings->mMsg = aName + " compiled(fbo)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 
 			// name of the shader
 			mShaderName = aName;
@@ -415,7 +415,6 @@ namespace videodromm {
 				}
 				else {
 					if (name != "ciModelViewProjection") {//type 35676
-						//mVDSettings->mNewMsg = true;
 						mError = "uniform not found " + name;
 						mVDSettings->mErrorMsg = mError + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
 						CI_LOG_E(mError);
@@ -423,24 +422,12 @@ namespace videodromm {
 				}
 			}
 
-			/*if (!isReady) {
-				mShader->uniform("RENDERSIZE", vec2(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
-			}
-			else {
-				mShader->uniform("RENDERSIZE", vec2(mTexture->getWidth(), mTexture->getHeight()));
-			}*/
 			mShader->uniform("RENDERSIZE", vec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			mShader->uniform("TIME", (float)getElapsedSeconds());// mVDAnimation->getFloatUniformValueByIndex(0));
 
 			gl::ScopedGlslProg glslScope(mShader);
 			// TODO: test gl::ScopedViewport sVp(0, 0, mFbo->getWidth(), mFbo->getHeight());	
-			// for thumb TODO 202020222 create thumb with correct size
-			/*if (!isReady) {
-				gl::drawSolidRect(Rectf(0, 0, mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight));
-			}
-			else {
-				gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
-			}*/
+			
 			gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			mRenderedTexture = mFbo->getColorTexture();
 			if (!isReady) {
@@ -479,9 +466,7 @@ namespace videodromm {
 		texture.addChild(ci::JsonTree("texturename", mTextureName));
 		texture.pushBack(ci::JsonTree("texturetype", "image"));
 		json.addChild(texture);
-		/*json.addChild(ci::JsonTree("shadername", mShaderName));
-		json.addChild(ci::JsonTree("shadertype", "fs"));
-		json.addChild(ci::JsonTree("texturename", mTextureName));*/
+		
 		if (save) {
 			string jsonFileName = mShaderName + ".json";
 			fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
