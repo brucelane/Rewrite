@@ -591,13 +591,10 @@ void VDSession::fileDrop(FileDropEvent event) {
 		if (ext == "json") {
 			JsonTree json(loadFile(absolutePath));
 			fboFromJson(json);
-			//if (json.hasChild("shader")) {//[0]
-				//JsonTree shaderJsonTree(json.getChild("shader"));
-				//string shaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
-				//string textureFileName = (shaderJsonTree.hasChild("texturename")) ? shaderJsonTree.getValueForKey<string>("texturename") : "0.jpg";
-				//loadJson(absolutePath, index);
-				//fboFromJson(shaderJsonTree);
-			//}
+			
+		}
+		else if (ext == "glsl" || ext == "frag" || ext == "fs") {
+			loadFragmentShader(absolutePath, index);
 		}
 		/*else if (ext == "wav" || ext == "mp3") {
 			loadAudioFile(absolutePath);
@@ -607,14 +604,7 @@ void VDSession::fileDrop(FileDropEvent event) {
 			if (index > 3) index = 3;
 			loadImageFile(absolutePath, index);
 		}
-		else if (ext == "glsl" || ext == "frag" || ext == "fs") {
-			loadFragmentShader(absolutePath, index);
-		}
-
 		else if (ext == "xml") {
-		}
-		else if (ext == "json") {
-			// TODO load track with textures, shaders
 		}
 		else if (ext == "mov") {
 			loadMovie(absolutePath, index);
@@ -923,16 +913,49 @@ bool VDSession::handleKeyUp(KeyEvent &event) {
 #pragma endregion events
 // fbos
 #pragma region fbos
-
-/*
-
 int VDSession::loadFragmentShader(string aFilePath, unsigned int aFboShaderIndex) {
 	int rtn = -1;
 	CI_LOG_V("loadFragmentShader " + aFilePath);
-	createShaderFbo(aFilePath, aFboShaderIndex);
+	//createShaderFbo(aFilePath, aFboShaderIndex);
+	//mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]
+
+		for (auto &fbo : mFboList) {
+			if (!fbo->isValid()) {
+				fbo->loadFragmentStringFromFile(aFilePath);
+				break;
+			}
+		}
 
 	return rtn;
 }
+/*unsigned int VDSession::createShaderFboFromString(string aFragmentShaderString, string aShaderFilename) {
+	unsigned int rtn = 0;
+	// create new shader
+	VDShaderRef s(new VDShader(mVDSettings, mVDAnimation, aShaderFilename, aFragmentShaderString));
+	if (s->isValid()) {
+		mShaderList.push_back(s);
+		rtn = mShaderList.size() - 1;
+		// each shader element has a fbo
+		VDFboRef f(new VDFbo(mVDSettings, mVDAnimation));
+		// create fbo xml
+		XmlTree			fboXml;
+		fboXml.setTag(aShaderFilename);
+		fboXml.setAttribute("id", rtn);
+		fboXml.setAttribute("width", "1280");
+		fboXml.setAttribute("height", "720");
+		fboXml.setAttribute("shadername", mShaderList[rtn]->getName());
+		fboXml.setAttribute("inputtextureindex", math<int>::min(rtn, mTextureList.size() - 1));
+		f->fromXml(fboXml);
+		//f->setShaderIndex(rtn);
+		f->setFragmentShader(rtn, mShaderList[rtn]->getFragmentString(), mShaderList[rtn]->getName());
+		mFboList.push_back(f);
+		setFboInputTexture(mFboList.size() - 1, math<int>::min(rtn, mTextureList.size() - 1));// TODO load tex idx from file 20200216
+	}
+	return rtn;
+}
+
+
+
 
 void VDSession::sendFragmentShader(unsigned int aShaderIndex) {
 	mVDWebsocket->changeFragmentShader(getFragmentString(aShaderIndex));
@@ -1186,31 +1209,7 @@ void VDSession::updateHydraUniforms() {
 		return mShaderList[0]->getFragmentString();
 	}
 
-	unsigned int VDSession::createShaderFboFromString(string aFragmentShaderString, string aShaderFilename) {
-		unsigned int rtn = 0;
-		// create new shader
-		VDShaderRef s(new VDShader(mVDSettings, mVDAnimation, aShaderFilename, aFragmentShaderString));
-		if (s->isValid()) {
-			mShaderList.push_back(s);
-			rtn = mShaderList.size() - 1;
-			// each shader element has a fbo
-			VDFboRef f(new VDFbo(mVDSettings, mVDAnimation));
-			// create fbo xml
-			XmlTree			fboXml;
-			fboXml.setTag(aShaderFilename);
-			fboXml.setAttribute("id", rtn);
-			fboXml.setAttribute("width", "1280");
-			fboXml.setAttribute("height", "720");
-			fboXml.setAttribute("shadername", mShaderList[rtn]->getName());
-			fboXml.setAttribute("inputtextureindex", math<int>::min(rtn, mTextureList.size() - 1));
-			f->fromXml(fboXml);
-			//f->setShaderIndex(rtn);
-			f->setFragmentShader(rtn, mShaderList[rtn]->getFragmentString(), mShaderList[rtn]->getName());
-			mFboList.push_back(f);
-			setFboInputTexture(mFboList.size() - 1, math<int>::min(rtn, mTextureList.size() - 1));// TODO load tex idx from file 20200216
-		}
-		return rtn;
-	}
+
 	*/
 	/*string VDSession::getVertexShaderString(unsigned int aShaderIndex) {
 		if (aShaderIndex > mShaderList.size() - 1) aShaderIndex = mShaderList.size() - 1;
@@ -1232,11 +1231,6 @@ unsigned int VDSession::fboFromJson(const JsonTree &json) {
 		textureFileName = (textureJsonTree.hasChild("texturename")) ? textureJsonTree.getValueForKey<string>("texturename") : "0.jpg";
 	}
 	rtn = createFboShaderTexture(shaderFileName, textureFileName);
-	/*JsonTree		jsonTexture;
-	jsonTexture.addChild(ci::JsonTree("path", textureFileName));
-	TextureImageRef t(new TextureImage());
-	t->fromJson(jsonTexture);
-	mTextureList.push_back(t);*/
 	return rtn;
 }
 

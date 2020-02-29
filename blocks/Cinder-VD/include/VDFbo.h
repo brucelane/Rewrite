@@ -13,8 +13,10 @@
 #include "VDSettings.h"
 // Animation
 #include "VDAnimation.h"
+// shader
+#include "VDShader.h"
 // textures
-#include "VDTexture.h"
+//#include "VDTexture.h"
 // video
 //#include "ciWMFVideoPlayer.h"
 
@@ -160,7 +162,7 @@ namespace videodromm
 		string							mTextureName = "";
 		std::string						mFragmentShaderString;
 		std::string						mFileNameWithExtension;
-		fs::path						mFragFile;
+		//fs::path						mFragFile;
 		bool							mActive;
 		int								mMicroSeconds;
 		// include shader lines

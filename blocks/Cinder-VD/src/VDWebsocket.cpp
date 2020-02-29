@@ -85,7 +85,7 @@ void VDWebsocket::parseMessage(string msg) {
 	mVDSettings->mWebSocketsMsg = "\nWS onRead";
 	// mVDSettings->mWebSocketsNewMsg = true;
 	if (!msg.empty()) {
-		mVDSettings->mWebSocketsMsg += ": " + msg.substr(0, 50);
+		mVDSettings->mWebSocketsMsg += ": " + msg.substr(0, mVDSettings->mMsgLength);
 		CI_LOG_V("ws msg: " + msg);
 		string first = msg.substr(0, 1);
 		if (first == "{") {

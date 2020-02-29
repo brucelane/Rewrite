@@ -225,6 +225,7 @@ namespace videodromm {
 		bool							getUseLineIn() { return mVDAnimation->getUseLineIn(); };
 		void							setUseLineIn(bool useLineIn) { mVDAnimation->setUseLineIn(useLineIn); };
 		void							toggleUseLineIn() { mVDAnimation->toggleUseLineIn(); };
+		int								loadFragmentShader(string aFilePath, unsigned int aFboShaderIndex = 4);		
 		/*bool							getFreqWSSend() { return mFreqWSSend; };
 		void							toggleFreqWSSend() { mFreqWSSend = !mFreqWSSend; };
 		// uniforms
@@ -244,7 +245,7 @@ namespace videodromm {
 		void							setFboFragmentShaderIndex(unsigned int aFboIndex, unsigned int aFboShaderIndex);
 		unsigned int					getFboFragmentShaderIndex(unsigned int aFboIndex);
 		bool							loadShaderFolder(string aFolder);
-		int								loadFragmentShader(string aFilePath, unsigned int aFboShaderIndex = 4);
+
 		unsigned int					getShadersCount() { return mShaderList.size(); };
 		string							getShaderName(unsigned int aShaderIndex);
 		ci::gl::TextureRef				getShaderThumb(unsigned int aShaderIndex);

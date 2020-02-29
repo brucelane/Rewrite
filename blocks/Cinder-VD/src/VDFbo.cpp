@@ -10,6 +10,7 @@ namespace videodromm {
 		mTextureName = aTextureFilename;
 		mCurrentSeqFilename = aTextureFilename;
 		mLastCachedFilename = aTextureFilename;
+		shaderInclude = loadString(loadAsset("shadertoy.vd"));
 		shaderInclude = "#version 150\n"
 			"// shadertoy specific\n"
 			"uniform vec2      	RENDERSIZE;\n"
@@ -65,7 +66,6 @@ namespace videodromm {
 					mType = IMAGE;
 				}
 				else {
-
 					/*if (ext == "mp4" || ext == "wmv" || ext == "avi" || ext == "mov") {
 						if (!mVideo.isStopped()) {
 							mVideo.stop();
@@ -111,6 +111,9 @@ namespace videodromm {
 	}
 
 	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
+		/*
+		load from VDShader
+		*/
 		mValid = false;
 		if (aFileName.length() > 0) {
 			if (mType == MOVIE) {
@@ -130,14 +133,36 @@ namespace videodromm {
 					mError = string(e.what());
 					CI_LOG_V("fbo unable to load vtx-frag video_texture shader:" + string(e.what()));
 				}
-
-
 			}
 			else {
-
-
 				// load fragment shader
+				VDShaderRef shaderToLoad = VDShader::create(mVDSettings, mVDAnimation, aFileName, mTexture);
+				if (shaderToLoad->isValid()) {
+					mFileNameWithExtension = shaderToLoad->getFileNameWithExtension();//was mFragFile.filename().string();
+					mFragmentShaderString = shaderToLoad->getFragmentString();//was loadString(loadFile(mFragFile));
+					mValid = setFragmentString(mFragmentShaderString, shaderToLoad->getFileNameWithExtension());// was mFragFile.filename().string());
+				}
+				else {
+					mError = "Invalid shader file " + aFileName;
+					// load default fragment shader
+					try {
+						mShaderName = mShaderFileName = "default.fs";
+						mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getDefaultFragmentShaderString());
+						mValid = true;
+						CI_LOG_V("fbo default vtx-frag compiled");
+					}
+					catch (gl::GlslProgCompileExc &exc) {
+						mError = string(exc.what());
+						CI_LOG_V("fbo unable to load/compile vtx-frag shader:" + string(exc.what()));
+					}
+					catch (const std::exception &e) {
+						mError = string(e.what());
+						CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
+					}
+				}
+				/*
 				CI_LOG_V("loadFragmentStringFromFile, loading " + aFileName);
+				
 				mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / aFileName;
 				if (aFileName.length() > 0 && fs::exists(mFragFile)) {
 					mFileNameWithExtension = mFragFile.filename().string();
@@ -176,13 +201,13 @@ namespace videodromm {
 							CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
 						}
 					}
-				}
+				}*/
 			}
 		}
 		else {
 			mError = "aFileName empty";
 		}
-		if (mError.length() > 0) mVDSettings->mErrorMsg += "\n" + mError;
+		if (mError.length() > 0) mVDSettings->mErrorMsg = mError + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
 		return mValid;
 	}
 	// aName = fullpath
@@ -212,6 +237,14 @@ namespace videodromm {
 		CI_LOG_V("setFragmentString, loading" + aName);
 		try
 		{
+			// before compilation save .fs file to inspect errors
+			fileName = aName + ".fs";
+			fs::path receivedFile = getAssetPath("") / "glsl" / "received" / fileName;
+			ofstream mFragReceived(receivedFile.string(), std::ofstream::binary);
+			mFragReceived << aFragmentShaderString;
+			mFragReceived.close();
+			CI_LOG_V("file saved:" + receivedFile.string());			
+			
 			std::size_t foundUniform = mOriginalFragmentString.find("uniform ");
 			if (foundUniform == std::string::npos) {
 				CI_LOG_V("loadFragmentStringFromFile, no mUniforms found, we add from shadertoy.inc");
@@ -221,19 +254,15 @@ namespace videodromm {
 				aFragmentShaderString = "/* " + aName + " */\n" + mOriginalFragmentString;
 			}
 
-			// before compilation save .frag file to inspect errors
-			fileName = aName + ".fs";
-			fs::path receivedFile = getAssetPath("") / "glsl" / "received" / fileName;
-			ofstream mFragReceived(receivedFile.string(), std::ofstream::binary);
-			mFragReceived << aFragmentShaderString;
-			mFragReceived.close();
-			CI_LOG_V("file saved:" + receivedFile.string());
+
 
 			// try to compile a first time to get active mUniforms
 			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
 			// update only if success
 			mFragmentShaderString = aFragmentShaderString;
-			mVDSettings->mMsg += "\n" + aName + " loaded and compiled";
+			
+			mVDSettings->mMsg = aName + " loaded and compiled\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
+
 			// name of the shader
 			mShaderName = aName;
 			mValid = true;
@@ -301,7 +330,8 @@ namespace videodromm {
 						mTexture = mCachedTextures[mCurrentSeqFilename];
 						mStatus = mCurrentSeqFilename + " " + toString(milli) + "ms";
 						CI_LOG_V(mStatus);
-						mVDSettings->mMsg += "\n" + mStatus;
+						mVDSettings->mMsg = mStatus + "\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
+						
 					}
 					else {
 						// we want the last texture repeating
@@ -388,7 +418,7 @@ namespace videodromm {
 					if (name != "ciModelViewProjection") {//type 35676
 						//mVDSettings->mNewMsg = true;
 						mError = "uniform not found " + name;
-						mVDSettings->mErrorMsg += "\n" + mError;
+						mVDSettings->mErrorMsg = mError + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
 						CI_LOG_E(mError);
 					}
 				}

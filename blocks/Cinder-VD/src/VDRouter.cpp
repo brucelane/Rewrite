@@ -356,11 +356,11 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 			if (!found) {
 				CI_LOG_E("not handled: " << msg.getNumArgs() << " addr: " << addr);
 				//mVDSettings->mOSCMsg += "\nnot handled: " + addr;
-				mVDSettings->mErrorMsg += "\nosc not handled: " + addr;
+				mVDSettings->mErrorMsg = "osc not handled: " + addr + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
 			}
 			if (addr != "/play") {
 				ss << " f:" << f << " i:" << i;
-				mVDSettings->mOSCMsg = ss.str() + "\n" + mVDSettings->mOSCMsg.substr(0, 100);
+				mVDSettings->mOSCMsg = ss.str() + "\n" + mVDSettings->mOSCMsg.substr(0, mVDSettings->mMsgLength);
 			}
 
 		});
@@ -464,8 +464,7 @@ void VDRouter::midiSetup() {
 	midiControlType = "none";
 	midiControl = midiPitch = midiVelocity = midiNormalizedValue = midiValue = midiChannel = 0;
 	ss << std::endl;
-	//mVDSettings->mNewMsg = true;
-	mVDSettings->mMidiMsg = "\n" + ss.str();
+	mVDSettings->mMidiMsg = ss.str() + "\n" + mVDSettings->mMidiMsg.substr(0, mVDSettings->mMsgLength);
 	CI_LOG_V(ss.str());
 }
 
@@ -488,7 +487,9 @@ void VDRouter::openMidiInPort(int i) {
 	}
 	mMidiInputs[i].isConnected = true;
 	ss << "Opening MIDI in port " << i << " " << mMidiInputs[i].portName << std::endl;
-	mVDSettings->mMsg += "\n" + ss.str();
+
+	mVDSettings->mMidiMsg = ss.str() + "\n" + mVDSettings->mMidiMsg.substr(0, mVDSettings->mMsgLength);
+
 	CI_LOG_V(ss.str());
 }
 void VDRouter::closeMidiInPort(int i) {
@@ -561,7 +562,7 @@ void VDRouter::openMidiOutPort(int i) {
 		}
 	}
 	ss << std::endl;
-	mVDSettings->mMsg += "\n" + ss.str();
+	mVDSettings->mMidiMsg = ss.str() + "\n" + mVDSettings->mMidiMsg.substr(0, mVDSettings->mMsgLength);
 	CI_LOG_V(ss.str());
 }
 void VDRouter::closeMidiOutPort(int i) {
@@ -702,7 +703,7 @@ void VDRouter::midiListener(midi::Message msg) {
 	//ss << "MIDI Chn: " << midiChannel << " type: " << midiControlType << " CC: " << midiControl << " Pitch: " << midiPitch << " Vel: " << midiVelocity << " Val: " << midiValue << " NVal: " << midiNormalizedValue << std::endl;
 	//CI_LOG_V("Midi: " + ss.str());
 	ss << std::endl;
-	mVDSettings->mMidiMsg = "\n" + ss.str();
+	mVDSettings->mMidiMsg = ss.str() + "\n" + mVDSettings->mMidiMsg.substr(0, mVDSettings->mMsgLength);
 }
 
 void VDRouter::updateParams(int iarg0, float farg1) {
