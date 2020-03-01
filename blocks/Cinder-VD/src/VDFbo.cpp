@@ -11,36 +11,13 @@ namespace videodromm {
 		mCurrentSeqFilename = aTextureFilename;
 		mLastCachedFilename = aTextureFilename;
 		shaderInclude = loadString(loadAsset("shadertoy.vd"));
-		/*shaderInclude = "#version 150\n"
-			"// shadertoy specific\n"
-			"uniform vec2      	RENDERSIZE;\n"
-			"uniform vec3 		iResolution;\n"
-			"uniform float     	TIME;\n"
-			"uniform float     	iZoom;\n"
-			"uniform vec4      	iMouse;\n"
-			"uniform bool       iFlipV;\n"
-			"uniform bool       iFlipH;\n"
-			"uniform float     	iBarBeat; \n"
-			"uniform float     	iExposure; \n"
-			"uniform float     	iBeat; \n"
-			"uniform float     	iBpm; \n"
-			"uniform float     	iBar; \n"
-			"uniform float     	iTimeFactor; \n"
-			"uniform float     	iRotationSpeed; \n"
-			"uniform bool		iDebug; \n"
-			"uniform sampler2D 	inputImage;\n"
-			"out vec4 fragColor;\n"
-			"#define IMG_NORM_PIXEL texture2D\n";*/
 
 		mVDSettings = aVDSettings;
 		mVDAnimation = aVDAnimation;
 		// init texture
 		mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
-		//twice mVDAnimation = VDAnimation::create(mVDSettings);
 		mUseBeginEnd = false;
 		isReady = false;
-		//mInputTextureIndex = 0;
-		//mSrcArea = Area(0, 0, 10, 10);
 		mType = UNKNOWN;
 		mStatus = "";
 		mLastCachedFilename = mTextureName;
@@ -76,18 +53,14 @@ namespace videodromm {
 						mVideoDuration = mVideo.getDuration();
 						mVideoPos = mVideo.getPosition();
 						mVideo.play();
-
 					}*/
 				}
 			}
-			//mRenderedTexture = gl::Texture::create(loadImage(texPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 		}
 		else {
 			mTextureName = "audio";
 			mType = AUDIO;
 			mTexture = mVDAnimation->getAudioTexture(); // init with audio texture
-			//
-			//mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		}
 		mStatus = mTextureName;
 		//mSrcArea = mTexture->getBounds();
@@ -110,9 +83,6 @@ namespace videodromm {
 	}
 
 	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
-		/*
-		load from VDShader
-		*/
 		mValid = false;
 		if (aFileName.length() > 0) {
 			if (mType == MOVIE) {
@@ -161,48 +131,6 @@ namespace videodromm {
 						CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
 					}
 				}
-				/*
-				CI_LOG_V("loadFragmentStringFromFile, loading " + aFileName);
-
-				mFragFile = getAssetPath("") / mVDSettings->mAssetsPath / aFileName;
-				if (aFileName.length() > 0 && fs::exists(mFragFile)) {
-					mFileNameWithExtension = mFragFile.filename().string();
-					mFragmentShaderString = loadString(loadFile(mFragFile));
-					mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
-
-					CI_LOG_V(mFragFile.string() + " loaded and compiled");
-				}
-				else {
-					// file does not exist, try with parent folder
-					mFragFile = getAssetPath("") / aFileName;
-					if (fs::exists(mFragFile)) {
-						mShaderName = mShaderFileName = aFileName;
-						mFileNameWithExtension = mFragFile.filename().string();
-						mFragmentShaderString = loadString(loadFile(mFragFile));
-						mValid = setFragmentString(mFragmentShaderString, mFragFile.filename().string());
-
-						CI_LOG_V(mFragFile.string() + " loaded and compiled(parent)");
-					}
-					else {
-						mError = mFragFile.string() + " does not exist";
-						CI_LOG_V(mError);
-						// load default fragment shader
-						try {
-							mShaderName = mShaderFileName = "default.fs";
-							mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getDefaultFragmentShaderString());
-							mValid = true;
-							CI_LOG_V("fbo default vtx-frag compiled");
-						}
-						catch (gl::GlslProgCompileExc &exc) {
-							mError = string(exc.what());
-							CI_LOG_V("fbo unable to load/compile vtx-frag shader:" + string(exc.what()));
-						}
-						catch (const std::exception &e) {
-							mError = string(e.what());
-							CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
-						}
-					}
-				}*/
 			}
 		}
 		else {
@@ -226,7 +154,7 @@ namespace videodromm {
 		else {
 			int dotIndex = aName.find_last_of(".");
 			int slashIndex = aName.find_last_of("\\");
-			
+
 			if (dotIndex != std::string::npos && dotIndex > slashIndex) {
 				mName = aName.substr(slashIndex + 1, dotIndex - slashIndex - 1);
 			}
@@ -256,19 +184,12 @@ namespace videodromm {
 			else {
 				aFragmentShaderString = "/* " + mName + " */\n" + mOriginalFragmentString;
 			}
-
-
-
 			// try to compile a first time to get active mUniforms
 			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
 			// update only if success
 			mFragmentShaderString = aFragmentShaderString;
-
 			mVDSettings->mMsg = mName + " compiled(fbo)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
-
-
 			mValid = true;
-
 		}
 		catch (gl::GlslProgCompileExc &exc)
 		{
@@ -332,7 +253,6 @@ namespace videodromm {
 						mStatus = mCurrentSeqFilename + " " + toString(milli) + "ms";
 						CI_LOG_V(mStatus);
 						mVDSettings->mMsg = mStatus + "\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
-
 					}
 					else {
 						// we want the last texture repeating
@@ -359,7 +279,6 @@ namespace videodromm {
 			}*/
 			if (mTexture) mTexture->bind(0);
 			string name;
-
 			mUniforms = mShader->getActiveUniforms();
 			for (const auto &uniform : mUniforms) {
 				name = uniform.getName();
@@ -369,11 +288,17 @@ namespace videodromm {
 					switch (uniformType)
 					{
 					case 0: // float
-						createFloatUniform(name, mVDAnimation->getUniformIndexForName(name), getIntUniformValueByName(name), mVDAnimation->getMinUniformValueByName(name), mVDAnimation->getMaxUniformValueByName(name));
-						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
-						if (name == "TIME") {
-							// globally
-							mShader->uniform(name, mVDAnimation->getFloatUniformValueByName("iTime"));
+						if (mGlobal) {
+							if (name == "TIME") {
+								mShader->uniform(name, mVDAnimation->getFloatUniformValueByName("iTime"));
+							}
+							else {
+								mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
+							}
+						}
+						else {
+							createFloatUniform(name, mVDAnimation->getUniformIndexForName(name), getIntUniformValueByName(name), mVDAnimation->getMinUniformValueByName(name), mVDAnimation->getMaxUniformValueByName(name));
+							mShader->uniform(name, getFloatUniformValueByName(name));
 						}
 						break;
 					case 1: // sampler2D
@@ -398,18 +323,26 @@ namespace videodromm {
 						// IBEAT 51
 						// IBAR 52
 						// IBARBEAT 53
-						createIntUniform(name, mVDAnimation->getUniformIndexForName(name), getIntUniformValueByName(name));
-						mShader->uniform(name, mVDAnimation->getIntUniformValueByName(name));
+						if (mGlobal) {
+							mShader->uniform(name, mVDAnimation->getIntUniformValueByName(name));
+						}
+						else {
+							createIntUniform(name, mVDAnimation->getUniformIndexForName(name), getIntUniformValueByName(name)); // get same index as vdanimation
+							mShader->uniform(name, getIntUniformValueByName(name));
+						}
+
 						break;
 					case 6: // bool
 						//IFLIPH 101
 						//IFLIPV 102
-						createBoolUniform(name, mVDAnimation->getUniformIndexForName(name), getBoolUniformValueByName(name)); // get same index as vdanimation
-						mShader->uniform(name, getBoolUniformValueByName(name));
-						if (name == "iDebug") {
-							// globally
+						if (mGlobal) {
 							mShader->uniform(name, mVDAnimation->getBoolUniformValueByName(name));
 						}
+						else {
+							createBoolUniform(name, mVDAnimation->getUniformIndexForName(name), getBoolUniformValueByName(name)); // get same index as vdanimation
+							mShader->uniform(name, getBoolUniformValueByName(name));
+						}
+
 						break;
 					default:
 						break;
@@ -423,7 +356,6 @@ namespace videodromm {
 					}
 				}
 			}
-
 			mShader->uniform("RENDERSIZE", vec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			mShader->uniform("TIME", (float)getElapsedSeconds());// mVDAnimation->getFloatUniformValueByIndex(0));
 

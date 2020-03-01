@@ -11,7 +11,7 @@
 			"TYPE" : "image"
 		},
 		{
-			"NAME": "iDebug",
+			"NAME": "iToggle",
 			"TYPE" : "bool",
 			"DEFAULT" : 0.0
 		},
@@ -94,13 +94,13 @@ vec4 crepuscular_rays(vec2 texCoords, vec2 pos) {
     deltaTexCoord *= (1.0 / float(nsamples) * density);
     float illuminationDecay = 1.0;
 
-    vec4 color = texture(inputImage, tc.xy) * vec4(0.9);
+    vec4 color = IMG_NORM_PIXEL(inputImage, tc.xy) * vec4(0.9);
 	
     tc += deltaTexCoord * fract( sin(dot(texCoords.xy+fract(TIME), vec2(12.9898, 78.233)))* 43758.5453 );
     for (int i = 0; i < nsamples; i++)
 	{
         tc -= deltaTexCoord;
-        vec4 sampl = texture(inputImage, tc.xy) * vec4(0.2); 
+        vec4 sampl = IMG_NORM_PIXEL(inputImage, tc.xy) * vec4(0.2); 
 
         sampl *= illuminationDecay * weight;
 
@@ -124,8 +124,8 @@ void main( void ){
 		pos.y=sin(TIME*.09)*.95;
 	}
 	pos.x *= RENDERSIZE.x/RENDERSIZE.y; //fix aspect ratio
-	if (iDebug) {		
-		fragColor = IMG_NORM_PIXEL( inputImage, uv*2.5) ;
+	if (iToggle) {		
+		fragColor = IMG_NORM_PIXEL( inputImage, uv) * vec4(1.0,0.0,0.0,1.0) ;
 	} else {
 		fragColor = crepuscular_rays(uv, pos.xy);
 	}

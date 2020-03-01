@@ -329,6 +329,9 @@ namespace videodromm {
 		bool							setFboFloatUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex, float aValue) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->setFloatUniformValueByIndex(aCtrl, aValue);
 		};
+		void									toggleGlobal(unsigned int aFboIndex) {
+			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->toggleGlobal();
+		};
 		/*
 		void							fboFlipV(unsigned int aFboIndex) {
 			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->flipV();

@@ -444,7 +444,10 @@ void VDUIFbos::Run(const char* title) {
 
 			} //for uniforms
 			sprintf(buf, "global %d##gu%d", globalUniforms, f);
-			globalUniforms ^= ImGui::Button(buf);
+			if (ImGui::Button(buf)) {
+				mVDSession->toggleGlobal(f);
+				globalUniforms = !globalUniforms;
+			}
 			//if (mVDSession->getFboInputTexture(f)) ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			if (mVDSession->getFboInputTexture(f)  && mShowInputTexture) ImGui::Image(mVDSession->getFboInputTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			sprintf(buf, "%s", mVDSession->getFboInputTextureName(f).c_str());

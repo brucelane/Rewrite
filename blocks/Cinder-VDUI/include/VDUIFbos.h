@@ -70,7 +70,7 @@ namespace videodromm
 			return mVDSession->getMaxUniformValueByIndex(aIndex);
 		};
 		bool							getBoolValue(unsigned int aCtrl, unsigned int aFboIndex) {
-			return mVDSession->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
+			return (globalUniforms) ? mVDSession->getBoolUniformValueByIndex(aCtrl) : mVDSession->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
 		};
 		int								getIntValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			return mVDSession->getFboIntUniformValueByIndex(aCtrl, aFboIndex);

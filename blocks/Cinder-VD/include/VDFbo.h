@@ -79,6 +79,12 @@ namespace videodromm
 		std::vector<ci::gl::GlslProg::Uniform>	getUniforms() { return mUniforms; };
 		ci::JsonTree							toJson(bool save = false) const;
 		// uniforms
+		bool									getGlobal() {
+			return mGlobal;
+		};
+		void									toggleGlobal() {
+			mGlobal = !mGlobal;
+		};
 		string									getUniformNameForIndex(int aIndex) {
 			return controlIndexes[aIndex];
 		};
@@ -179,6 +185,8 @@ namespace videodromm
 		//fs::path						mFragFile;
 		bool							mActive;
 		int								mMicroSeconds;
+		bool							mGlobal = true;
+
 		// include shader lines
 		std::string						shaderInclude;
 		string							mError;
