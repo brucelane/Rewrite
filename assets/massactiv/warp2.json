@@ -4,15 +4,15 @@
       "linear" : false,
       "resolution" : 16,
       "warp" : {
-         "afboindex" : 1,
+         "afboindex" : 2,
          "ashaderfilename" : "inputImage.fs",
-         "ashaderindex" : 1,
-         "atexturefilename" : "red",
-         "bfboindex" : 1,
+         "ashaderindex" : 2,
+         "atexturefilename" : "green",
+         "bfboindex" : 2,
          "brightness" : 1,
          "bshaderfilename" : "inputImage.fs",
-         "bshaderindex" : 1,
-         "btexturefilename" : "red",
+         "bshaderindex" : 2,
+         "btexturefilename" : "green",
          "controlpoints" : [
             {
                "controlpoint" : 0,
@@ -38,23 +38,23 @@
          "corners" : [
             {
                "corner" : 0,
-               "x" : 0.010156200000000001,
-               "y" : 0.050000000000000003
+               "x" : 0.52361100000000005,
+               "y" : 0.39000000000000001
             },
             {
                "corner" : 1,
-               "x" : 0.42708299999999999,
-               "y" : 0.043333299999999998
+               "x" : 0.85694400000000004,
+               "y" : 0.44666699999999998
             },
             {
                "corner" : 2,
-               "x" : 0.44583299999999998,
-               "y" : 0.56888899999999998
+               "x" : 0.85208300000000003,
+               "y" : 0.70333299999999999
             },
             {
                "corner" : 3,
-               "x" : 0.018055600000000002,
-               "y" : 0.588889
+               "x" : 0.51805599999999996,
+               "y" : 0.70444399999999996
             }
          ],
          "crossfade" : -431602080,

@@ -1,0 +1,45 @@
+[
+   {
+      "adaptive" : false,
+      "linear" : false,
+      "resolution" : 16,
+      "warp" : {
+         "afboindex" : 5,
+         "ashaderfilename" : "rotateImage.fs",
+         "ashaderindex" : 5,
+         "atexturefilename" : "0.jpg",
+         "bfboindex" : 5,
+         "brightness" : 1,
+         "bshaderfilename" : "rotateImage.fs",
+         "bshaderindex" : 5,
+         "btexturefilename" : "0.jpg",
+         "controlpoints" : [
+            {
+               "controlpoint" : 0,
+               "x" : 0,
+               "y" : 0
+            },
+            {
+               "controlpoint" : 1,
+               "x" : 0,
+               "y" : 1
+            },
+            {
+               "controlpoint" : 2,
+               "x" : 1,
+               "y" : 0
+            },
+            {
+               "controlpoint" : 3,
+               "x" : 1,
+               "y" : 1
+            }
+         ],
+         "crossfade" : -431602080,
+         "height" : 2,
+         "method" : "bilinear",
+         "mixfboindex" : 3452816845,
+         "width" : 2
+      }
+   }
+]
