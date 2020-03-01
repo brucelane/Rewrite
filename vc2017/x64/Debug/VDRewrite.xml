@@ -31,7 +31,7 @@
 	<WebSocketsHost value="127.0.0.1"/>
 	<WebSocketsPort value="8088"/>
 	<Info value=""/>
-	<AssetsPath value="sos"/>
+	<AssetsPath value="Intro"/>
 	<UseAudio value="1"/>
 	<UseLineIn value="1"/>
 	<SplitWarpH value="0"/>
