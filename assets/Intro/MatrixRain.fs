@@ -81,7 +81,7 @@ void main( void ) {
 	{
 		uv.x = 1.0 - uv.x;
 	}
-	if (iFlipV)
+	if (!iFlipV)
 	{
 		uv.y = 1.0 - uv.y;
 	}

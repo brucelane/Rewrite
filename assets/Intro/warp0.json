@@ -7,12 +7,12 @@
          "afboindex" : 0,
          "ashaderfilename" : "inputImage.fs",
          "ashaderindex" : 0,
-         "atexturefilename" : "help.jpg",
+         "atexturefilename" : "audio",
          "bfboindex" : 0,
          "brightness" : 1,
          "bshaderfilename" : "inputImage.fs",
          "bshaderindex" : 0,
-         "btexturefilename" : "help.jpg",
+         "btexturefilename" : "audio",
          "controlpoints" : [
             {
                "controlpoint" : 0,

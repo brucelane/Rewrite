@@ -101,11 +101,15 @@ vec3 polarCoordinate(vec3 p){
     float theta2=atan(p.y,p.z);
     return vec3(r,theta1,theta2);
 } 
+vec3 greyScale(vec3 colored)
+{
+	return vec3((colored.r + colored.g + colored.b) / 3.0);
+}
 void main(void)
 {
-   vec2 p = iZoom*(gl_FragCoord.xy*2.0 - RENDERSIZE.xy);// / min(RENDERSIZE.x,RENDERSIZE.y);   
+   vec2 p = iZoom*0.1*(gl_FragCoord.xy*2.0 - RENDERSIZE.xy);// / min(RENDERSIZE.x,RENDERSIZE.y);   
     p*=0.5; 
     vec3 c=polarCoordinate(vec3(p,TIME));
-    vec3 color=vec3(octavePerlinNoise(c))*vec3(p,1.0);
+    vec3 color=greyScale( vec3(octavePerlinNoise(c)) * vec3(p,1.0) );
     fragColor=vec4(color,1.0);
 }

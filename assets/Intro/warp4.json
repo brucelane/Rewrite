@@ -7,12 +7,12 @@
          "afboindex" : 4,
          "ashaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
          "ashaderindex" : 4,
-         "atexturefilename" : "help.jpg",
+         "atexturefilename" : "audio",
          "bfboindex" : 4,
          "brightness" : 1,
          "bshaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
          "bshaderindex" : 4,
-         "btexturefilename" : "help.jpg",
+         "btexturefilename" : "audio",
          "controlpoints" : [
             {
                "controlpoint" : 0,
