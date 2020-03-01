@@ -474,21 +474,20 @@ void VDAnimation::saveUniforms()
 
 void VDAnimation::createFloatUniform(string aName, int aCtrlIndex, float aValue, float aMin, float aMax) {
 	if (aName != "") {
-	
-	controlIndexes[aCtrlIndex] = aName;
-	shaderUniforms[aName].minValue = aMin;
-	shaderUniforms[aName].maxValue = aMax;
-	shaderUniforms[aName].defaultValue = aValue;
-	shaderUniforms[aName].boolValue = false;
-	shaderUniforms[aName].autotime = false;
-	shaderUniforms[aName].automatic = false;
-	shaderUniforms[aName].autobass = false;
-	shaderUniforms[aName].automid = false;
-	shaderUniforms[aName].autotreble = false;
-	shaderUniforms[aName].index = aCtrlIndex;
-	shaderUniforms[aName].floatValue = aValue;
-	shaderUniforms[aName].uniformType = 0;
-	shaderUniforms[aName].isValid = true;
+		controlIndexes[aCtrlIndex] = aName;
+		shaderUniforms[aName].minValue = aMin;
+		shaderUniforms[aName].maxValue = aMax;
+		shaderUniforms[aName].defaultValue = aValue;
+		shaderUniforms[aName].boolValue = false;
+		shaderUniforms[aName].autotime = false;
+		shaderUniforms[aName].automatic = false;
+		shaderUniforms[aName].autobass = false;
+		shaderUniforms[aName].automid = false;
+		shaderUniforms[aName].autotreble = false;
+		shaderUniforms[aName].index = aCtrlIndex;
+		shaderUniforms[aName].floatValue = aValue;
+		shaderUniforms[aName].uniformType = 0;
+		shaderUniforms[aName].isValid = true;
 	}
 }
 void VDAnimation::createSampler2DUniform(string aName, int aCtrlIndex, int aTextureIndex) {
@@ -909,29 +908,29 @@ void VDAnimation::update() {
 	if (mUseTimeWithTempo)
 	{
 		// Ableton Link from openframeworks websockets
-		/* 20190803 obsolete MAYBE REMOVE iTimeFactor
-		float f = getFloatUniformValueByName("TIME");
-		float g = shaderUniforms["TIME"].floatValue;
-		shaderUniforms["TIME"].floatValue = shaderUniforms["iTempoTime"].floatValue*iTimeFactor;
-		 */
-		 //shaderUniforms["TIME"].floatValue = shaderUniforms["iTempoTime"].floatValue * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
-		shaderUniforms["TIME"].floatValue = shaderUniforms["TIME"].floatValue * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;// mVDSettings->iTimeFactor;
-		//shaderUniforms["iTime"].floatValue = shaderUniforms["TIME"].floatValue;
-		//CI_LOG_W(" shaderUniforms[iTime].floatValue:" + toString(shaderUniforms["iTime"].floatValue));
-		//CI_LOG_W(" getFloatUniformValueByName(iTime):" + toString(getFloatUniformValueByIndex(mVDSettings->ITIME)));
-		shaderUniforms["iElapsed"].floatValue = shaderUniforms["iPhase"].floatValue * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;//mVDSettings->iTimeFactor;
+		shaderUniforms["TIME"].floatValue = shaderUniforms["TIME"].floatValue * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;
+		shaderUniforms["iElapsed"].floatValue = shaderUniforms["iPhase"].floatValue * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;
+		// sos
+		// IBARBEAT = IBAR * 4 + IBEAT
+		int current = getIntUniformValueByIndex(mVDSettings->IBARBEAT);
+		if (current == 426 || current == 428 || current == 442) mLastBar = 0; //38 to set iStart
+		if (mLastBar != getIntUniformValueByIndex(mVDSettings->IBAR)) {
+			mLastBar =getIntUniformValueByIndex(mVDSettings->IBAR);
+			//if (mLastBar != 5 && mLastBar != 9 && mLastBar < 113) mVDSettings->iStart = mVDSession->getFloatUniformValueByIndex(mVDSettings->ITIME);
+			// TODO CHECK
+			//if (mLastBar != 107 && mLastBar != 111 && mLastBar < 205) mVDSettings->iStart = mVDSession->getFloatUniformValueByIndex(mVDSettings->ITIME);
+			if (mLastBar < 419 && mLastBar > 424) mVDSettings->iStart = getFloatUniformValueByIndex(mVDSettings->ITIME);
+		}
 	}
 	else
 	{
 		shaderUniforms["TIME"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;//mVDSettings->iTimeFactor;
-		//shaderUniforms["iTime"].floatValue = shaderUniforms["TIME"].floatValue;
 		shaderUniforms["iElapsed"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;//mVDSettings->iTimeFactor;
 	}
 	// iResolution
 	shaderUniforms["iResolution"].vec3Value = vec3(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"), 1.0);
 	shaderUniforms["resolution"].vec2Value = vec2(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"));
 	shaderUniforms["RENDERSIZE"].vec2Value = vec2(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"));
-	
 
 	// iDate
 	time_t now = time(0);
@@ -1065,45 +1064,6 @@ void VDAnimation::calculateTempo()
 	setBpm(60 / averageTime);
 }
 
-/*void VDAnimation::setTimeFactor(const int &aTimeFactor)
-{
-	switch (aTimeFactor)
-	{
-	case 0:
-		mVDSettings->iTimeFactor = 0.03125;
-		break;
-	case 1:
-		mVDSettings->iTimeFactor = 0.0625;
-		break;
-	case 2:
-		mVDSettings->iTimeFactor = 0.125;
-		break;
-	case 3:
-		mVDSettings->iTimeFactor = 0.25;
-		break;
-	case 4:
-		mVDSettings->iTimeFactor = 0.5;
-		break;
-	case 5:
-		mVDSettings->iTimeFactor = 0.75;
-		break;
-	case 6:
-		mVDSettings->iTimeFactor = 1.0;
-		break;
-	case 7:
-		mVDSettings->iTimeFactor = 2.0;
-		break;
-	case 8:
-		mVDSettings->iTimeFactor = 4.0;
-		break;
-	case 9:
-		mVDSettings->iTimeFactor = 16.0;
-		break;
-	default:
-		mVDSettings->iTimeFactor = 1.0;
-		break;
-	}
-}*/
 void VDAnimation::preventLineInCrash() {
 	setUseLineIn(false);
 	mVDSettings->save();
