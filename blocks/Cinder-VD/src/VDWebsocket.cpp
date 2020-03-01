@@ -597,9 +597,9 @@ void VDWebsocket::changeFloatValue(unsigned int aControl, float aValue, bool for
 		}
 	}
 	/*
-		createVec3Uniform("iResolution", 60, vec3(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"), 1.0));
-		createVec3Uniform("iColor", 61, vec3(1.0, 0.5, 0.0));
-		createVec3Uniform("iBackgroundColor", 62);
+		createVec3Uniform("iResolution", mVDSettings->IRESOLUTION, vec3(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"), 1.0));
+		createVec3Uniform("iColor", mVDSettings->ICOLOR, vec3(1.0, 0.5, 0.0));
+		createVec3Uniform("iBackgroundColor", mVDSettings->IBACKGROUNDCOLOR);
 		//createVec3Uniform("iChannelResolution[0]", 63, vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
 		static const int			IMOUSEX = 42;
 		static const int			IMOUSEY = 43;
@@ -613,7 +613,7 @@ void VDWebsocket::changeFloatValue(unsigned int aControl, float aValue, bool for
 		stringstream sParams;
 		// update color vec3
 		if (aControl > 0 && aControl < 4) {
-			mVDAnimation->setVec3UniformValueByIndex(61, vec3(
+			mVDAnimation->setVec3UniformValueByIndex(mVDSettings->ICOLOR, vec3(
 				mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFR),
 				mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFG),
 				mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFB)
@@ -632,7 +632,7 @@ void VDWebsocket::changeFloatValue(unsigned int aControl, float aValue, bool for
 
 		// update iResolution vec3
 		if (aControl == 29 || aControl ==30) {
-			mVDAnimation->setVec3UniformValueByIndex(60, vec3(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY), 1.0));
+			mVDAnimation->setVec3UniformValueByIndex(mVDSettings->IRESOLUTION, vec3(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY), 1.0));
 		}
 		sParams << "{\"params\" :[{\"name\" : " << aControl << ",\"value\" : " << mVDAnimation->getFloatUniformValueByIndex(aControl) << "}]}";
 		string strParams = sParams.str();

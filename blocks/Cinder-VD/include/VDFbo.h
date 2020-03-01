@@ -125,7 +125,7 @@ namespace videodromm
 		};
 		bool									setFloatUniformValueByIndex(unsigned int aIndex, float aValue) {
 			bool rtn = false;
-			// we can't change iTime at index 0
+			// we can't change TIME at index 0
 			if (aIndex > 0) {
 				/*if (aIndex == 31) {
 					CI_LOG_V("old value " + toString(shaderUniforms[getUniformNameForIndex(aIndex)].floatValue) + " newvalue " + toString(aValue));

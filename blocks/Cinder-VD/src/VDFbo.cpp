@@ -289,7 +289,7 @@ namespace videodromm {
 					{
 					case 0: // float
 						if (name == "TIME") {
-							mShader->uniform(name, mVDAnimation->getFloatUniformValueByName("iTime"));
+							mShader->uniform(name, mVDAnimation->getFloatUniformValueByName("TIME"));
 						}
 						else {
 							if (mGlobal) {

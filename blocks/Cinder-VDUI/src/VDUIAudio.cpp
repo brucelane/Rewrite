@@ -20,8 +20,7 @@ void VDUIAudio::Run(const char* title) {
 		if (ImGui::CollapsingHeader("Audio", NULL, true, true))
 		{
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth * 2);
-			ImGui::Image((void*)mVDSession->getAudioTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-
+			//ImGui::Image((void*)mVDSession->getAudioTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			// TODO 20200221 ImGui::Text("Position %d", mVDSession->getPosition(0));
 
 			static int iFreq0 = mVDSession->getFreqIndex(0);

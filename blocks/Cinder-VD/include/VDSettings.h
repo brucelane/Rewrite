@@ -89,6 +89,9 @@ namespace videodromm {
 		static const int			IOUTH = 57;	
 		static const int			IGREYSCALE = 58;
 		static const int			IBEATSPERBAR = 59;
+		static const int			IRESOLUTION = 60;
+		static const int			ICOLOR = 61;
+		static const int			IBACKGROUNDCOLOR = 62;
 		static const int			IMOUSE = 70;
 		// booleans 80 to 110
 		static const int			IGLITCH = 81;	// A4

@@ -136,7 +136,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 		else {
 			// from Hydra
 			std::regex pattern{ "time" };
-			std::string replacement{ "iTime" };
+			std::string replacement{ "TIME" };
 			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
 			pattern = { "uniform vec2 resolution;" };
 			replacement = { "uniform vec3 iResolution ;" }; //keep the space
@@ -184,7 +184,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			replacement = { "iM" };
 			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
 			pattern = { "u_time" };
-			replacement = { "iTime" };
+			replacement = { "TIME" };
 			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
 			pattern = { "u_" };
 			replacement = { "i" };
@@ -215,9 +215,6 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			mISFString = mOriginalFragmentString;
 			std::regex ISFPattern{ "iResolution" };
 			std::string ISFReplacement{ "RENDERSIZE" };
-			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
-			ISFPattern = { "iTime" };
-			ISFReplacement = { "TIME" };
 			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
 
 			ISFPattern = { "texture2D" };
@@ -297,7 +294,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 						// float
 						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
 						mCurrentUniformsString += "uniform float " + name + "; // " + toString(mVDAnimation->getFloatUniformValueByName(name)) + "\n";
-						if (name != "iTime") {
+						if (name != "TIME") {
 							mISFUniforms += ",\n"
 								"		{\n"
 								"			\"NAME\": \"" + name + "\", \n"
@@ -452,7 +449,7 @@ ci::gl::Texture2dRef VDShader::getFboTexture() {
 					mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
 					if (name == "TIME") {
 						// globally
-						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName("iTime"));
+						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName("TIME"));
 					}
 					break;
 				case 1: // sampler2D

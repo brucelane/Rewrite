@@ -149,6 +149,7 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 							mVDAnimation->setBoolUniformValueByIndex(i, !mVDAnimation->getBoolUniformValueByIndex(i));
 
 						}
+						// sos specific
 						if (i == 120) {
 							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 0.1f);
 						}
