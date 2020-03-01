@@ -345,9 +345,6 @@ namespace videodromm
 		void							intFromJson(const ci::JsonTree &json);
 		void							boolFromJson(const ci::JsonTree &json);
 		fs::path						mUniformsJson;
-
-
-
 		void							createVec2Uniform(string aName, int aCtrlIndex, vec2 aValue = vec2(0.0));
 		void							createVec3Uniform(string aName, int aCtrlIndex, vec3 aValue = vec3(0.0));
 		void							createVec4Uniform(string aName, int aCtrlIndex, vec4 aValue = vec4(0.0));

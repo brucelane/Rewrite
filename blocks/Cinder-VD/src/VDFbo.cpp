@@ -210,8 +210,8 @@ namespace videodromm {
 		if (mValid) {
 
 			gl::ScopedFramebuffer fbScp(mFbo);
-			//gl::clear(Color::black());
-			gl::clear(ColorA(0.0f, 0.4f, 0.8f, 0.3f));
+			gl::clear(Color::black());
+			//gl::clear(ColorA(0.0f, 0.4f, 0.8f, 0.3f));
 			switch (mType)
 			{
 			case AUDIO:

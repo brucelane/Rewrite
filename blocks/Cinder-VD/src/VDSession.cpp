@@ -405,7 +405,8 @@ void VDSession::renderPostToFbo()
 {
 	gl::ScopedFramebuffer fbScp(mPostFbo);
 	// clear out the FBO with black
-	gl::clear(ColorA(0.4f, 0.8f, 0.0f, 0.3f));
+	gl::clear(Color::black());
+	//gl::clear(ColorA(0.4f, 0.8f, 0.0f, 0.3f));
 
 	// setup the viewport to match the dimensions of the FBO
 	gl::ScopedViewport scpVp(ivec2(0), mPostFbo->getSize());
@@ -420,15 +421,16 @@ void VDSession::renderPostToFbo()
 	mGlslPost->uniform("iSobel", getFloatUniformValueByIndex(mVDSettings->ISOBEL));
 	mGlslPost->uniform("iExposure", getFloatUniformValueByIndex(mVDSettings->IEXPOSURE));
 	mGlslPost->uniform("iChromatic", getFloatUniformValueByIndex(mVDSettings->ICHROMATIC));
-	mGlslPost->uniform("iFlipH", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTH));
 	mGlslPost->uniform("iFlipV", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTV));
+	mGlslPost->uniform("iFlipH", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTH));
 	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 }
 void VDSession::renderWarpsToFbo()
 {
 	gl::ScopedFramebuffer fbScp(mWarpsFbo);
 	// clear out the FBO with black
-	gl::clear(ColorA(0.4f, 0.0f, 0.8f, 0.3f));
+	gl::clear(Color::black());
+	//gl::clear(ColorA(0.4f, 0.0f, 0.8f, 0.3f));
 
 	// setup the viewport to match the dimensions of the FBO
 	gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());

@@ -84,7 +84,7 @@ void RewriteApp::prepare(Settings *settings)
 
 RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 {
-	
+
 	// Settings
 	mVDSettings = VDSettings::create("Rewrite");
 	// Session
@@ -112,7 +112,7 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 			}
 
 			mIsVideoLoaded = mVideo.loadMovie(texFileOrPath);
-			
+
 			mVideoDuration = mVideo.getDuration();
 			mVideoPos = mVideo.getPosition();
 			mVideo.play();
@@ -141,99 +141,99 @@ void RewriteApp::fileDrop(FileDropEvent event)
 void RewriteApp::mouseMove(MouseEvent event)
 {
 	if (!mVDSession->handleMouseMove(event)) {
-		
+
 	}
 }
 
 void RewriteApp::mouseDown(MouseEvent event)
 {
-	
+
 	if (!mVDSession->handleMouseDown(event)) {
-		
+
 	}
 }
 
 void RewriteApp::mouseDrag(MouseEvent event)
 {
-	
+
 	if (!mVDSession->handleMouseDrag(event)) {
-		
+
 	}
 }
 
 void RewriteApp::mouseUp(MouseEvent event)
 {
-	
+
 	if (!mVDSession->handleMouseUp(event)) {
-		
+
 	}
 }
 
 void RewriteApp::keyDown(KeyEvent event)
 {
-	
-		// warp editor did not handle the key, so handle it here
-		if (!mVDSession->handleKeyDown(event)) {
-			switch (event.getCode()) {
-			case KeyEvent::KEY_F12:
-				// quit the application
-				quit();
-				break;
-			case KeyEvent::KEY_f:
-				// toggle full screen
-				setFullScreen(!isFullScreen());
-				break;
-			
-			case KeyEvent::KEY_l:
-				mVDSession->createWarp();
-				break;
 
-				//case KeyEvent::KEY_v:
-			//	// toggle vertical sync
-			//	gl::enableVerticalSync( !gl::isVerticalSyncEnabled() );
-			//	break;
+	// warp editor did not handle the key, so handle it here
+	if (!mVDSession->handleKeyDown(event)) {
+		switch (event.getCode()) {
+		case KeyEvent::KEY_F12:
+			// quit the application
+			quit();
+			break;
+		case KeyEvent::KEY_f:
+			// toggle full screen
+			setFullScreen(!isFullScreen());
+			break;
 
-			/*case KeyEvent::KEY_a:
-				// toggle drawing a random region of the image
-				if( mSrcArea.getWidth() != mImage->getWidth() || mSrcArea.getHeight() != mImage->getHeight() )
-					mSrcArea = mImage->getBounds();
-				else {
-					int x1 = Rand::randInt( 0, mImage->getWidth() - 150 );
-					int y1 = Rand::randInt( 0, mImage->getHeight() - 150 );
-					int x2 = Rand::randInt( x1 + 150, mImage->getWidth() );
-					int y2 = Rand::randInt( y1 + 150, mImage->getHeight() );
-					mSrcArea = Area( x1, y1, x2, y2 );
-				}
-				break;
-			case KeyEvent::KEY_SPACE:
-				// toggle drawing mode
-				mUseBeginEnd = !mUseBeginEnd;
+		case KeyEvent::KEY_l:
+			mVDSession->createWarp();
+			break;
 
-				break;*/
+			//case KeyEvent::KEY_v:
+		//	// toggle vertical sync
+		//	gl::enableVerticalSync( !gl::isVerticalSyncEnabled() );
+		//	break;
+
+		/*case KeyEvent::KEY_a:
+			// toggle drawing a random region of the image
+			if( mSrcArea.getWidth() != mImage->getWidth() || mSrcArea.getHeight() != mImage->getHeight() )
+				mSrcArea = mImage->getBounds();
+			else {
+				int x1 = Rand::randInt( 0, mImage->getWidth() - 150 );
+				int y1 = Rand::randInt( 0, mImage->getHeight() - 150 );
+				int x2 = Rand::randInt( x1 + 150, mImage->getWidth() );
+				int y2 = Rand::randInt( y1 + 150, mImage->getHeight() );
+				mSrcArea = Area( x1, y1, x2, y2 );
 			}
+			break;
+		case KeyEvent::KEY_SPACE:
+			// toggle drawing mode
+			mUseBeginEnd = !mUseBeginEnd;
+
+			break;*/
 		}
-	
+	}
+
 }
 
 void RewriteApp::keyUp(KeyEvent event)
 {
-	
-		// let your application perform its keyUp handling here
-		if (!mVDSession->handleKeyUp(event)) {
-			switch (event.getCode()) {
-			default:
-				CI_LOG_V("main keyup: " + toString(event.getCode()));
-				break;
-			}
+
+	// let your application perform its keyUp handling here
+	if (!mVDSession->handleKeyUp(event)) {
+		switch (event.getCode()) {
+		default:
+			CI_LOG_V("main keyup: " + toString(event.getCode()));
+			break;
 		}
-	
+	}
+
 }
 void RewriteApp::cleanup()
 {
 	CI_LOG_V("cleanup and save");
 	ui::Shutdown();
 	mVDSession->save();
-	
+
 	mVDSettings->save();
 	CI_LOG_V("quit");
 }
@@ -280,19 +280,15 @@ void RewriteApp::draw()
 	}
 	else {
 		//gl::setMatricesWindow(mVDSettings->mFboWidth, mVDSettings->mFboHeight, false);
-		gl::setMatricesWindow(mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTW), mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTH), false);
+		gl::setMatricesWindow(mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTW), mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTH), true);
 
 		gl::draw(mVDSession->getPostFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
-
-		
-			/*vec2 videoSize = vec2(mVideo.getWidth(), mVideo.getHeight());
-			mGlslVideoTexture->uniform("uVideoSize", videoSize);
-			videoSize *= 0.25f;
-			videoSize *= 0.5f;
-			ciWMFVideoPlayer::ScopedVideoTextureBind scopedVideoTex(mVideo, 0);
-			gl::scale(vec3(videoSize, 1.0f));*/
-		
-
+		/*vec2 videoSize = vec2(mVideo.getWidth(), mVideo.getHeight());
+		mGlslVideoTexture->uniform("uVideoSize", videoSize);
+		videoSize *= 0.25f;
+		videoSize *= 0.5f;
+		ciWMFVideoPlayer::ScopedVideoTextureBind scopedVideoTex(mVideo, 0);
+		gl::scale(vec3(videoSize, 1.0f));*/
 
 		//gl::draw(mPostFbo->getColorTexture());
 		//gl::draw(mVDSession->getFboRenderedTexture(0));

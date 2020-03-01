@@ -150,19 +150,22 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 
 						}
 						// sos specific
-						if (i == 120) {
+						if (i == 119) { // B7 end
+							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 0.02f);
+						}
+						if (i == 120) { // C8 slow
 							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 0.1f);
 						}
-						if (i == 121) {
+						if (i == 121) { // C#8
 							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 0.18f);
 						}
-						if (i == 122) {
+						if (i == 122) { // D8
 							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 0.25f);
 						}
-						if (i == 123) {
+						if (i == 123) { // D#8
 							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 0.35f);
 						}
-						if (i == 124) {
+						if (i == 124) { // E8 fast
 							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 1.0f);
 						}
 					}
