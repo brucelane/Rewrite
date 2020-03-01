@@ -20,7 +20,7 @@
 			"TYPE" : "float",
 			"MIN" : 0.1,
 			"MAX" : 2.0,
-			"DEFAULT" : 1.0
+			"DEFAULT" : 1.93
 		},
 		{
 			"NAME": "iTimeFactor",
@@ -105,7 +105,7 @@ vec4 crepuscular_rays(vec2 texCoords, vec2 pos) {
         sampl *= illuminationDecay * weight;
 
 		// ok with iExposure= 1.93 TIME/45.0
-		color += sampl * (sin( TIME / 45.0 * iBpm * iTimeFactor * 2 * PI ) + iExposure - 1.0);
+		color += sampl * (sin( TIME / 45.0 * iBpm * iTimeFactor * 2 * PI ) + (iExposure * 1.93) - 1.0);
         illuminationDecay *= decay;
     }
     
@@ -125,8 +125,8 @@ void main( void ){
 	}
 	pos.x *= RENDERSIZE.x/RENDERSIZE.y; //fix aspect ratio
 	if (iToggle) {		
-		fragColor = IMG_NORM_PIXEL( inputImage, uv) * vec4(1.0,0.0,0.0,1.0) ;
-	} else {
 		fragColor = crepuscular_rays(uv, pos.xy);
+	} else {
+		fragColor = IMG_NORM_PIXEL( inputImage, uv);
 	}
 }

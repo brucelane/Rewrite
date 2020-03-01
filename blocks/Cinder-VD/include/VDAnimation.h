@@ -94,7 +94,7 @@ namespace videodromm
 			}
 		};
 		void							tapTempo();
-		void							setTimeFactor(const int &aTimeFactor);
+		//void							setTimeFactor(const int &aTimeFactor);
 		int								getEndFrame() { return mEndFrame; };
 		void							setEndFrame(int frame) { mEndFrame = frame; };
 		int								mLastBeat = 0;

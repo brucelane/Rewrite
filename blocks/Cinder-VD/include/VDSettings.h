@@ -110,8 +110,6 @@ namespace videodromm {
 		static const int			ILHANDX = 113;
 		static const int			ILHANDY = 114;
 		static const int			ILHANDZ = 115;*/
-		// vec2
-		static const int			RESOLUTION = 120; // vec2 for ISF and hydra
 		// srcarea
 		static const int			SRCXLEFT = 130;
 		static const int			SRCXRIGHT = 131;
@@ -121,6 +119,9 @@ namespace videodromm {
 		static const int			IFREQ1 = 141;
 		static const int			IFREQ2 = 142;
 		static const int			IFREQ3 = 143;
+		// vec2
+		static const int			RESOLUTION = 150; // vec2 for hydra
+		static const int			RENDERSIZE = 151; // vec2 for ISF
 		// texture modes
 		static const int			TEXTUREMODEMIX = 0;				// mix two shaders
 		static const int			TEXTUREMODEAUDIO = 1;			// audio spectrum
@@ -191,7 +192,7 @@ namespace videodromm {
 		float						iSpeedMultiplier;   // speed multiplier
 		float						iStart = 1.0f;		// start adjustment
 		float						iBarDuration = 1.0f;// between 2 bars (seeconds)
-		float						iTimeFactor;
+		//float						iTimeFactor;
 		float						iChannelTime[4];
 		bool						iFade;
 		bool						iRepeat;

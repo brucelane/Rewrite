@@ -75,15 +75,13 @@ void VDUIAudio::Run(const char* title) {
 			ImGui::SameLine();
 			ImGui::SliderFloat("speed x", &mVDSettings->iSpeedMultiplier, 0.01f, 1.0f, "%.4f");//, 2.01f
 
-			static int tf = 5;
+			/*static int tf = 5;
 			if (ImGui::Button("x##tfx")) { tf = 5; mVDSession->setTimeFactor(5); }
 			ImGui::SameLine();
 			if (ImGui::SliderInt("time x", &tf, 0, 9)) mVDSession->setTimeFactor(tf);
 
 			ImGui::SliderFloat("iTimeFactor", &mVDSettings->iTimeFactor, 0.01f, 1.0f, "%.4f");
-
-
-
+			*/
 			ImGui::Text("beat %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBEAT));
 			ImGui::SameLine();
 			ImGui::Text("bar %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBAR));

@@ -409,7 +409,7 @@ void VDSettings::resetSomeParams() {
 	//iBadTv = 0.0f;
 	iAlpha = 1.0f;
 	iSpeedMultiplier = 1.0f;// = 0.0985f;// nearly ok for 160 = 0.0985f;
-	iTimeFactor = 1.0f;
+	//iTimeFactor = 1.0f;
 
 	iGreyScale = false;
 	iFade = mSendToOutput = iRepeat = iXorY = mFlipV = mFlipH = false;

@@ -288,17 +288,19 @@ namespace videodromm {
 					switch (uniformType)
 					{
 					case 0: // float
-						if (mGlobal) {
-							if (name == "TIME") {
-								mShader->uniform(name, mVDAnimation->getFloatUniformValueByName("iTime"));
-							}
-							else {
-								mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
-							}
+						if (name == "TIME") {
+							mShader->uniform(name, mVDAnimation->getFloatUniformValueByName("iTime"));
 						}
 						else {
-							createFloatUniform(name, mVDAnimation->getUniformIndexForName(name), getIntUniformValueByName(name), mVDAnimation->getMinUniformValueByName(name), mVDAnimation->getMaxUniformValueByName(name));
-							mShader->uniform(name, getFloatUniformValueByName(name));
+							if (mGlobal) {
+								{
+									mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
+								}
+							}
+							else {
+								createFloatUniform(name, mVDAnimation->getUniformIndexForName(name), getIntUniformValueByName(name), mVDAnimation->getMinUniformValueByName(name), mVDAnimation->getMaxUniformValueByName(name));
+								mShader->uniform(name, getFloatUniformValueByName(name));
+							}
 						}
 						break;
 					case 1: // sampler2D

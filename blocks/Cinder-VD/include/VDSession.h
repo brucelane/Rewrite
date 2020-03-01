@@ -213,7 +213,7 @@ namespace videodromm {
 		void							toggleUseTimeWithTempo() { mVDAnimation->toggleUseTimeWithTempo(); };
 		void							useTimeWithTempo() { mVDAnimation->useTimeWithTempo(); };
 		bool							getUseTimeWithTempo() { return mVDAnimation->getUseTimeWithTempo(); };
-		void							setTimeFactor(const int &aTimeFactor) { mVDAnimation->setTimeFactor(aTimeFactor); };
+		//void							setTimeFactor(const int &aTimeFactor) { mVDAnimation->setTimeFactor(aTimeFactor); };
 		// audio
 		ci::gl::TextureRef				getAudioTexture() { return mVDAnimation->getAudioTexture(); };
 		string							getAudioTextureName() { return mVDAnimation->getAudioTextureName(); };

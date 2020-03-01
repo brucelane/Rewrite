@@ -145,8 +145,25 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 					// get the argument type 
 					if (msg.getArgType(0) == ArgType::INTEGER_32) {
 						int i = msg[0].int32();
-						if (i > 80 && i < 109)
+						if (i > 80 && i < 109) {
 							mVDAnimation->setBoolUniformValueByIndex(i, !mVDAnimation->getBoolUniformValueByIndex(i));
+
+						}
+						if (i == 120) {
+							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 0.1f);
+						}
+						if (i == 121) {
+							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 0.18f);
+						}
+						if (i == 122) {
+							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 0.25f);
+						}
+						if (i == 123) {
+							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 0.35f);
+						}
+						if (i == 124) {
+							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIMEFACTOR, 1.0f);
+						}
 					}
 				}
 			}

@@ -160,7 +160,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		// current beat
 		createFloatUniform("iPhase", mVDSettings->IPHASE, 0.0f); // 48
 		// iTimeFactor
-		createFloatUniform("iTimeFactor", mVDSettings->ITIMEFACTOR, 0.0f); // 49
+		createFloatUniform("iTimeFactor", mVDSettings->ITIMEFACTOR, 1.0f); // 49
 		// int
 		// blend mode 
 		createIntUniform("iBlendmode", mVDSettings->IBLENDMODE, 0); // 50
@@ -182,7 +182,6 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createIntUniform("iGreyScale", mVDSettings->IGREYSCALE, 0); //58
 		// beats per bar 
 		createIntUniform("iBeatsPerBar", mVDSettings->IBEATSPERBAR, 4); // 59
-
 
 		// vec3
 		createVec3Uniform("iResolution", 60, vec3(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"), 1.0));
@@ -211,10 +210,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createBoolUniform("iFlipPostV", mVDSettings->IFLIPPOSTV); // 104
 		createBoolUniform("iDebug", mVDSettings->IDEBUG); // 119
 
-		// vec2
-		createVec2Uniform("resolution", mVDSettings->RESOLUTION, vec2(1280.0f, 720.0f)); // hydra 120
-		createVec2Uniform("RENDERSIZE", 121, vec2(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"))); // isf 121
-
+		// 120 to 124 timefactor from midithor sos
 		// floats for warps
 		// srcArea 
 		createFloatUniform("srcXLeft", mVDSettings->SRCXLEFT, 0.0f, 0.0f, 4280.0f); // 130
@@ -229,6 +225,10 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createFloatUniform("iFreq2", mVDSettings->IFREQ2, 0.0f, 0.01f, 256.0f); // 142
 		// iFreq3  
 		createFloatUniform("iFreq3", mVDSettings->IFREQ3, 0.0f, 0.01f, 256.0f); // 143
+
+		// vec2
+		createVec2Uniform("resolution", mVDSettings->RESOLUTION, vec2(1280.0f, 720.0f)); // hydra 150
+		createVec2Uniform("RENDERSIZE", mVDSettings->RENDERSIZE, vec2(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"))); // isf 151
 
 		// vec4 kinect2
 		createVec4Uniform("iSpineBase", 200, vec4(320.0f, 240.0f, 0.0f, 0.0f));
@@ -897,17 +897,17 @@ void VDAnimation::update() {
 		shaderUniforms["iTime"].floatValue = shaderUniforms["iTempoTime"].floatValue*iTimeFactor;
 		 */
 		 //shaderUniforms["iTime"].floatValue = shaderUniforms["iTempoTime"].floatValue * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
-		shaderUniforms["iTime"].floatValue = shaderUniforms["iTime"].floatValue * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
+		shaderUniforms["iTime"].floatValue = shaderUniforms["iTime"].floatValue * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;// mVDSettings->iTimeFactor;
 		shaderUniforms["TIME"].floatValue = shaderUniforms["iTime"].floatValue;
 		//CI_LOG_W(" shaderUniforms[iTime].floatValue:" + toString(shaderUniforms["iTime"].floatValue));
 		//CI_LOG_W(" getFloatUniformValueByName(iTime):" + toString(getFloatUniformValueByIndex(mVDSettings->ITIME)));
-		shaderUniforms["iElapsed"].floatValue = shaderUniforms["iPhase"].floatValue * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
+		shaderUniforms["iElapsed"].floatValue = shaderUniforms["iPhase"].floatValue * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;//mVDSettings->iTimeFactor;
 	}
 	else
 	{
-		shaderUniforms["iTime"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
+		shaderUniforms["iTime"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;//mVDSettings->iTimeFactor;
 		shaderUniforms["TIME"].floatValue = shaderUniforms["iTime"].floatValue;
-		shaderUniforms["iElapsed"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * mVDSettings->iTimeFactor;
+		shaderUniforms["iElapsed"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;//mVDSettings->iTimeFactor;
 	}
 	// iResolution
 	shaderUniforms["iResolution"].vec3Value = vec3(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"), 1.0);
@@ -1046,7 +1046,8 @@ void VDAnimation::calculateTempo()
 	setFloatUniformValueByIndex(mVDSettings->IDELTATIME, averageTime);
 	setBpm(60 / averageTime);
 }
-void VDAnimation::setTimeFactor(const int &aTimeFactor)
+
+/*void VDAnimation::setTimeFactor(const int &aTimeFactor)
 {
 	switch (aTimeFactor)
 	{
@@ -1084,7 +1085,7 @@ void VDAnimation::setTimeFactor(const int &aTimeFactor)
 		mVDSettings->iTimeFactor = 1.0;
 		break;
 	}
-}
+}*/
 void VDAnimation::preventLineInCrash() {
 	setUseLineIn(false);
 	mVDSettings->save();
