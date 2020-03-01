@@ -165,11 +165,11 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		// blend mode 
 		createIntUniform("iBlendmode", mVDSettings->IBLENDMODE, 0); // 50
 		// beat 
-		createFloatUniform("iBeat", mVDSettings->IBEAT, 0.0f); // 51
+		createFloatUniform("iBeat", mVDSettings->IBEAT, 0.0f, 0.0f, 300.0f); // 51
 		// bar 
-		createFloatUniform("iBar", mVDSettings->IBAR, 0.0f); // 52
+		createFloatUniform("iBar", mVDSettings->IBAR, 0.0f, 0.0f, 8.0f); // 52
 		// bar 
-		createFloatUniform("iBarBeat", mVDSettings->IBARBEAT, 0.0f); // 53		
+		createFloatUniform("iBarBeat", mVDSettings->IBARBEAT, 0.0f, 0.0f, 1200.0f); // 53		
 		// fbo A
 		createIntUniform("iFboA", mVDSettings->IFBOA, 0); // 54
 		// fbo B

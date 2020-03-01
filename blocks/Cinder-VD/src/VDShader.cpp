@@ -113,27 +113,27 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 	mValid = false;
 	// load fragment shader
 	CI_LOG_V("setFragmentString, loading" + aName);
-	if (ext == "fs")
+	try
 	{
-		std::size_t foundUniform = mOriginalFragmentString.find("uniform ");
-		if (foundUniform == std::string::npos) {
-			CI_LOG_V("loadFragmentStringFromFile, no mUniforms found, we add from shadertoy.inc");
-			aFragmentShaderString = "/* " + aName + " */\n" + shaderInclude + mOriginalFragmentString;
+		if (ext == "fs")
+		{
+			std::size_t foundUniform = mOriginalFragmentString.find("uniform ");
+			if (foundUniform == std::string::npos) {
+				CI_LOG_V("loadFragmentStringFromFile, no mUniforms found, we add from shadertoy.inc");
+				aFragmentShaderString = "/* " + aName + " */\n" + shaderInclude + mOriginalFragmentString;
+			}
+			else {
+				aFragmentShaderString = "/* " + aName + " */\n" + mOriginalFragmentString;
+			}
+			// try to compile a first time to get active uniforms
+			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
+			// update only if success
+			mFragmentShaderString = aFragmentShaderString;
+			mValid = true;
+			mVDSettings->mMsg = aName + " compiled(fs)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
+
 		}
 		else {
-			aFragmentShaderString = "/* " + aName + " */\n" + mOriginalFragmentString;
-		}
-		// try to compile a first time to get active uniforms
-		mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
-		// update only if success
-		mFragmentShaderString = aFragmentShaderString;
-		mValid = true;
-		mVDSettings->mMsg = aName + " compiled(fs)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
-
-	}
-	else {
-		try
-		{
 			// from Hydra
 			std::regex pattern{ "time" };
 			std::string replacement{ "iTime" };
@@ -404,27 +404,31 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			fileName = aName + ".fs";
 			//fs::path isfFile = getAssetPath("") / "glsl" / "isf" / fileName;
 			fs::path isfFile = getAssetPath("") / mVDSettings->mAssetsPath / fileName;
-			//if (!fs::exists(isfFile)) {
+			if (fs::exists(isfFile)) {
+				isfFile = getAssetPath("") / "glsl" / "isf" / fileName;
 				ofstream mISF(isfFile.string(), std::ofstream::binary);
 				mISF << mISFString;
 				mISF.close();
 				CI_LOG_V("ISF file saved:" + isfFile.string());
-
-			//}
-
-		}
-		catch (gl::GlslProgCompileExc &exc)
-		{
-			mError = aName + string(exc.what());
-			CI_LOG_V("setFragmentString, unable to compile live fragment shader:" + mError + " frag:" + aFragmentShaderString);
-		}
-		catch (const std::exception &e)
-		{
-			mError = aName + string(e.what());
-			CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + aFragmentShaderString);
+			} else {
+				ofstream mISF(isfFile.string(), std::ofstream::binary);
+				mISF << mISFString;
+				mISF.close();
+				CI_LOG_V("ISF file saved:" + isfFile.string());
+			}
 		}
 	}
-	mVDSettings->mErrorMsg = mError + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
+	catch (gl::GlslProgCompileExc &exc)
+	{
+		mError = aName + string(exc.what());
+		CI_LOG_V("setFragmentString, unable to compile live fragment shader:" + mError + " frag:" + aFragmentShaderString);
+	}
+	catch (const std::exception &e)
+	{
+		mError = aName + string(e.what());
+		CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + aFragmentShaderString);
+	}
+	if (mError.length() > 0) mVDSettings->mShaderMsg = mError + "\n" + mVDSettings->mShaderMsg.substr(0, mVDSettings->mMsgLength);
 	return mValid;
 }
 ci::gl::Texture2dRef VDShader::getFboTexture() {
@@ -500,9 +504,9 @@ ci::gl::Texture2dRef VDShader::getFboTexture() {
 		fs::path fr = getAssetPath("") / "thumbs" / filename;
 
 		//if (!fs::exists(fr)) {
-			CI_LOG_V(fr.string() + " does not exist, creating");
-			Surface s8(mRenderedTexture->createSource());
-			writeImage(writeFile(fr), s8);
+		CI_LOG_V(fr.string() + " does not exist, creating");
+		Surface s8(mRenderedTexture->createSource());
+		writeImage(writeFile(fr), s8);
 		//}
 
 	}

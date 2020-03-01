@@ -585,6 +585,8 @@ void VDSettings::reset()
 	mErrorMsg = "";
 	mWebSocketsMsg = "";
 	mMidiMsg = "";
+	mShaderMsg = "";
+	mFboMsg = "";
 	mIsOSCSender = false;
 	/*xFade = 1.0f;
 	xFadeChanged = false;*/

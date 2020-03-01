@@ -8,7 +8,7 @@
          "ashaderfilename" : "rotateImage.fs",
          "ashaderindex" : 1,
          "atexturefilename" : "0.jpg",
-         "bfboindex" : 1,
+         "bfboindex" : 2,
          "brightness" : 1,
          "bshaderfilename" : "rotateImage.fs",
          "bshaderindex" : 1,

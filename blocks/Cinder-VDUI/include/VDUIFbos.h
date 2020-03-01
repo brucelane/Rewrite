@@ -81,5 +81,7 @@ namespace videodromm
 		// mouse
 		float						mouseX, mouseY;
 		bool						mouseZ;
+		bool						mShowRenderedTexture = true;
+		bool						mShowInputTexture = true;
 	};
 }

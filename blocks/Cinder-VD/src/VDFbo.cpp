@@ -208,7 +208,7 @@ namespace videodromm {
 		else {
 			mError = "aFileName empty";
 		}
-		if (mError.length() > 0) mVDSettings->mErrorMsg = mError + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
+		if (mError.length() > 0) mVDSettings->mFboMsg = mError + "\n" + mVDSettings->mFboMsg.substr(0, mVDSettings->mMsgLength);
 		return mValid;
 	}
 
@@ -280,8 +280,7 @@ namespace videodromm {
 			mError = mName + string(e.what());
 			CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + mName);
 		}
-		//mVDSettings->mNewMsg = true;
-		mVDSettings->mErrorMsg += "\n" + mError;
+		if (mError.length() > 0) mVDSettings->mFboMsg = mError + "\n" + mVDSettings->mFboMsg.substr(0, mVDSettings->mMsgLength);
 		return mValid;
 	}
 

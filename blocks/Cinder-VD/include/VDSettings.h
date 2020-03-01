@@ -155,12 +155,11 @@ namespace videodromm {
 		uint16_t					mOSCDestinationPort2;
 		uint16_t					mOSCReceiverPort;
 		std::string					mOSCMsg;
-		//bool						mOSCNewMsg;		// log to console
 		std::string					mMsg;
-		//bool						mNewMsg;
 		std::string					mErrorMsg;
-		//std::string					InfoMsg;
-		bool						mIsOSCSender;		
+		std::string					mShaderMsg;
+		std::string					mFboMsg;
+		bool						mIsOSCSender;
 		static const int			mMsgLength = 150;
 
 		// render windows

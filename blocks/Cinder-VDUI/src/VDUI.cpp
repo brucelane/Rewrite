@@ -131,8 +131,12 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		mVDSettings->mWebSocketsMsg = "";
 		mVDSettings->mOSCMsg = "";
 		mVDSettings->mErrorMsg = "";
+		mVDSettings->mShaderMsg = "";
+		mVDSettings->mFboMsg = "";
 	}
 	ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
+	ImGui::TextWrapped("Fbo: %s", mVDSettings->mFboMsg.c_str());
+	ImGui::TextWrapped("Shader: %s", mVDSettings->mShaderMsg.c_str());
 	ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
 	ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());
 	ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());

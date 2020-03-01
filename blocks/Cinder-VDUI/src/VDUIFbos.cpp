@@ -307,12 +307,10 @@ void VDUIFbos::Run(const char* title) {
 		{
 			ImGui::PushID(f);
 			ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-			//if (mVDSession->getFboRenderedTexture(f)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-			if (mVDSession->getFboRenderedTexture(f)) ImGui::Image(mVDSession->getFboRenderedTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-			// uniforms
-			//std::vector<ci::gl::GlslProg::Uniform> u = mVDSession->getUniforms(f);
 
-			int hue = 0;
+			sprintf(buf, "show##rdrtexuniform%d", f);
+			mShowRenderedTexture ^= ImGui::Button(buf);
+			ImGui::SameLine();
 			if (!mVDSession->isFboValid(f)) {
 				ImGui::Text("Invalid");
 			}
@@ -320,6 +318,13 @@ void VDUIFbos::Run(const char* title) {
 				sprintf(buf, "T##fboupd%d", f);
 				if(ImGui::Button(buf)) mVDSession->updateShaderThumbFile(f);
 			}
+			//if (mVDSession->getFboRenderedTexture(f)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			if (mVDSession->getFboRenderedTexture(f) && mShowRenderedTexture) ImGui::Image(mVDSession->getFboRenderedTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			// uniforms
+			//std::vector<ci::gl::GlslProg::Uniform> u = mVDSession->getUniforms(f);
+
+			int hue = 0;
+			
 			for (auto u : mVDSession->getUniforms(f)) {
 				string uName = u.getName();
 				ctrl = mVDSession->getUniformIndexForName(uName);
@@ -351,9 +356,7 @@ void VDUIFbos::Run(const char* title) {
 				case 35678:
 					// sampler2d
 					sprintf(buf, "%s##texuniform%d", uName.c_str(), f);
-					if (ImGui::Button(buf)) {
-
-					}
+					mShowInputTexture ^= ImGui::Button(buf);
 					break;
 				case 5126:
 					// float
@@ -443,7 +446,7 @@ void VDUIFbos::Run(const char* title) {
 			sprintf(buf, "global %d##gu%d", globalUniforms, f);
 			globalUniforms ^= ImGui::Button(buf);
 			//if (mVDSession->getFboInputTexture(f)) ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-			if (mVDSession->getFboInputTexture(f)) ImGui::Image(mVDSession->getFboInputTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			if (mVDSession->getFboInputTexture(f)  && mShowInputTexture) ImGui::Image(mVDSession->getFboInputTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			sprintf(buf, "%s", mVDSession->getFboInputTextureName(f).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 
