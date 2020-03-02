@@ -86,12 +86,18 @@ namespace videodromm {
 			warp->setBTextureFilename("audio");
 			mWarpList.push_back(WarpBilinear::create());
 		}
+		string							getFboShaderName(unsigned int aFboIndex) {
+			return mVDMix->getFboShaderName(aFboIndex);
+		}
+		string							getFboTextureName(unsigned int aFboIndex) {
+			return mVDMix->getFboTextureName(aFboIndex);
+		}
 		void							saveWarps() {
-			/* TODO 20200302 int i = 0;
+			int i = 0;
 			for (auto &warp : mWarpList) {
 				// 
-				warp->setAShaderFilename(mFboList[math<int>::min(warp->getAFboIndex(), mFboList.size() - 1)]->getShaderName());
-				warp->setATextureFilename(mFboList[math<int>::min(warp->getAFboIndex(), mFboList.size() - 1)]->getTextureName());
+				warp->setAShaderFilename(getFboShaderName(warp->getAFboIndex()));
+				warp->setATextureFilename(getFboTextureName(warp->getAFboIndex()));
 				JsonTree		json;
 				string jsonFileName = "warp" + toString(i) + ".json";
 				fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
@@ -101,7 +107,7 @@ namespace videodromm {
 				i++;
 			}
 			// save warp settings
-			Warp::writeSettings(mWarpList, writeFile(mSettings));*/
+			Warp::writeSettings(mWarpList, writeFile(mSettings));
 		}
 		ci::gl::TextureRef				getPostFboTexture() {
 			return mPostFbo->getColorTexture();
@@ -276,10 +282,10 @@ namespace videodromm {
 		ci::gl::TextureRef				getFboThumb(unsigned int aBlendIndex) { return mBlendFbos[aBlendIndex]->getColorTexture(); };
 		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);*/
 		int								getFboTextureWidth(unsigned int aFboIndex) { 
-			return /* TODO 20200302 mFboList[aFboIndex]->getInputTexture() ? mFboList[aFboIndex]->getInputTexture()->getWidth() :*/ mVDSettings->mFboWidth;
+			return mVDMix->getFboInputTextureWidth(aFboIndex);
 		};
 		int								getFboTextureHeight(unsigned int aFboIndex) { 
-			return /* TODO 20200302 mFboList[aFboIndex]->getInputTexture() ? mFboList[aFboIndex]->getInputTexture()->getHeight() :*/ mVDSettings->mFboHeight; 
+			return mVDMix->getFboInputTextureHeight(aFboIndex);
 		};
 		// utils
 
@@ -295,28 +301,24 @@ namespace videodromm {
 		};
 		// fbos
 		string							getFboName(unsigned int aFboIndex) { 
-			/* TODO 20200302 return mFboList[aFboIndex]->getName(); */
-			return "todo";
+			return mVDMix->getFboName(aFboIndex);
+			
 		};
 
-		unsigned int					getFboListSize() { return mVDMix->getFboListSize(); /* TODO 20200302 mFboList.size();*/ };
+		unsigned int					getFboListSize() { return mVDMix->getFboListSize(); };
 		unsigned int 					createFboShaderTexture(string aShaderFilename, string aTextureFilename) {
 			return mVDMix->createFboShaderTexture(aShaderFilename, aTextureFilename);
 		};
 		unsigned int					fboFromJson(const JsonTree &json);
 	
 		void							saveFbos() {
-			/* TODO 20200302 for (auto &fbo : mFboList) {
-				JsonTree		json = fbo->toJson(true);
-			}*/
+			mVDMix->saveFbos();
 		};
 		
 		bool							isFboValid(unsigned int aFboIndex) {
 			return mVDMix->isFboValid(aFboIndex);
 		};
-		/*Area							getFboSrcArea(unsigned int aFboIndex) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getSrcArea();
-		};*/
+		
 		// fbo 
 		bool							getFboBoolUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex) {
 			return mVDMix->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
@@ -662,8 +664,7 @@ namespace videodromm {
 		fs::path						mSettings;
 		void							updateWarpName(unsigned int aWarpIndex) {
 			if (aWarpIndex < mWarpList.size()) {
-				/* TODO 20200302
-				mWarpList[aWarpIndex]->setName(mFboList[mWarpList[aWarpIndex]->getAFboIndex()]->getName());*/
+				mWarpList[aWarpIndex]->setName(mVDMix->getFboName(mWarpList[aWarpIndex]->getAFboIndex()));
 			}
 		}
 		void							loadWarps() {

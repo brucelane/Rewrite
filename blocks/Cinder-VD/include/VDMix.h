@@ -96,6 +96,26 @@ namespace videodromm
 		ci::gl::Texture2dRef							getFboInputTexture(unsigned int aFboIndex = 0) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getInputTexture();
 		}
+		int								getFboInputTextureWidth(unsigned int aFboIndex) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getInputTexture() ? mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getInputTexture()->getWidth() : mVDSettings->mFboWidth;
+		};
+		int								getFboInputTextureHeight(unsigned int aFboIndex) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getInputTexture() ? mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getInputTexture()->getHeight() : mVDSettings->mFboHeight;
+		};
+		string							getFboName(unsigned int aFboIndex) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getName();
+		};
+		string							getFboShaderName(unsigned int aFboIndex) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getShaderName();
+		};
+		string							getFboTextureName(unsigned int aFboIndex) {
+			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getTextureName();
+		};
+		void							saveFbos() {
+			for (auto &fbo : mFboList) {
+				JsonTree		json = fbo->toJson(true);
+			}
+		};
 		std::vector<ci::gl::GlslProg::Uniform>			getUniforms(unsigned int aFboIndex = 0) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getUniforms();
 		}
