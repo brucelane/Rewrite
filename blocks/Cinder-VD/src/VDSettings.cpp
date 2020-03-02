@@ -163,14 +163,6 @@ bool VDSettings::save()
 	WebSocketsPort.setAttribute("value", toString(mWebSocketsPort));
 	settings.push_back(WebSocketsPort);
 
-	/*XmlTree FftSize("FftSize", "");
-	FftSize.setAttribute("value", toString(mFftSize));
-	settings.push_back(FftSize);
-
-	XmlTree WindowSize("WindowSize", "");
-	WindowSize.setAttribute("value", toString(mWindowSize));
-	settings.push_back(WindowSize);*/
-
 	XmlTree Info("Info", "");
 	Info.setAttribute("value", toString(mInfo));
 	settings.push_back(Info);
@@ -303,14 +295,6 @@ bool VDSettings::restore()
 				XmlTree WebSocketsPort = settings.getChild("WebSocketsPort");
 				mWebSocketsPort = WebSocketsPort.getAttributeValue<int>("value");
 			}
-			/*if (settings.hasChild("FftSize")) {
-				XmlTree FftSize = settings.getChild("FftSize");
-				mFftSize = FftSize.getAttributeValue<int>("value");
-			}
-			if (settings.hasChild("WindowSize")) {
-				XmlTree WindowSize = settings.getChild("WindowSize");
-				mWindowSize = WindowSize.getAttributeValue<int>("value");
-			}*/
 			if (settings.hasChild("Info")) {
 				XmlTree Info = settings.getChild("Info");
 				mInfo = Info.getAttributeValue<string>("value");
@@ -406,13 +390,11 @@ void VDSettings::resetSomeParams() {
 	maxEyePointZ = 0.0;
 	tEyePointZ = autoEyePointZ = false;
 	// unicorns
-	//iBadTv = 0.0f;
 	iAlpha = 1.0f;
 	iSpeedMultiplier = 1.0f;// = 0.0985f;// nearly ok for 160 = 0.0985f;
-	//iTimeFactor = 1.0f;
 
 	iGreyScale = false;
-	iFade = mSendToOutput = iRepeat = iXorY = mFlipV = mFlipH = false;
+	iFade = mSendToOutput = iRepeat = false;
 
 	// transition
 	iTransition = 0;
@@ -420,7 +402,6 @@ void VDSettings::resetSomeParams() {
 	mTransitionDuration = 2.0f;
 	mTransitionTime = 1.0f;
 
-	//iZoomLeft = iZoomRight = 1.0f;
 	autoInvert = false;
 	// imgui
 	uiMargin = 3;
@@ -472,8 +453,6 @@ void VDSettings::reset()
 	mRenderXY = mTexMult = vec2(1.0f);
 	mLeftRenderXY = mRightRenderXY = mPreviewRenderXY = mWarp1RenderXY = mWarp2RenderXY = vec2(0.0f);
 	mRenderPosXY = vec2(0.0, 320.0);
-	//mRenderResoXY = vec2(mRenderWidth, mRenderHeight);
-	//mRenderResolution = ivec2(mRenderWidth, mRenderHeight);
 	mPreviewFragXY = vec2(0.0, 0.0);
 	mAspectRatio = 0.5625; // ratio 4:3 (0.75) 16:9 (0.5625)
 	mFboWidth = 1280;
@@ -487,10 +466,6 @@ void VDSettings::reset()
 	mRenderCodeEditorXY.y = 0;
 	mCodeEditorWidth = 800;
 	mCodeEditorHeight = 600;
-
-	//mWindowToCreate = NONE;
-
-	//mMode = mPreviousMode = mNewMode = 0; // Mix mode by default
 	mCurrentFilePath = "currentMix.frag";
 	mAssetsPath = "";
 	mMarginSmall = 2;
@@ -498,9 +473,7 @@ void VDSettings::reset()
 	//audio
 	mIsPlaying = false;
 	iSeed = 0.1;
-	//mFftSize = 512;
-	//mWindowSize = 1024;
-	liveMeter = 0.0f;
+	//liveMeter = 0.0f;
 
 	// shader uniforms
 	for (int i = 0; i < 4; i++)
@@ -511,7 +484,6 @@ void VDSettings::reset()
 	sFps = "60";
 	iShowFps = true;
 
-	//multFactor = 126.0;
 	currentSelectedIndex = 0;
 	selectedWarp = 0;
 
@@ -523,26 +495,7 @@ void VDSettings::reset()
 	selectedChannel = 0;
 	// fbo indexes for warp (should be constants)
 	mFboResolution = 2048;
-	/*mMixFboIndex = 0;
-	mLeftFboIndex = 1;
-	mRightFboIndex = 2;
-	mWarp1FboIndex = 3;
-	mWarp2FboIndex = 4;
-	mCurrentPreviewFboIndex = 5;
-	mABPFboIndex = 6;
-	mLiveFboIndex = 7;
-	mSphereFboIndex = 8;
-	mMeshFboIndex = 9;
-	mAudioFboIndex = 10;
-	mVertexSphereFboIndex = 11;
-
-	mPreviewFragIndex = 0;
-	mPreviousFragIndex = 1;
-	mLeftFragIndex = 0;
-	mRightFragIndex = 1;
-	mWarp1FragIndex = 2;
-	mWarp2FragIndex = 3;
-	mLiveFragIndex = 7;*/
+	
 	mWarpCount = 3;
 	FPSColor = ColorA(0.0f, 1.0f, 0.0f, 1.0f);
 	ColorGreen = ColorA(0.0f, 1.0f, 0.0f, 1.0f);
@@ -551,16 +504,8 @@ void VDSettings::reset()
 	ColorPurple = ColorA(0.5f, 0.0f, 1.0f, 1.0f);
 	isUIDirty = true;
 	mLiveCode = false;
-
 	mStateTransition = 1.0;
-
 	mOptimizeUI = false;
-	// spout
-	//mOutputResolution = vec2(640, 480);
-	// meshes
-	mMeshIndex = 0;
-	// vertex sphere
-	mVertexSphereTextureIndex = 1;
 
 	// initialize our camera
 	mCamEyePointXY = vec2(0.f, 0.f);
@@ -599,8 +544,7 @@ void VDSettings::reset()
 	mWebSocketsPort = 8088;
 	// Blendmode 
 	iBlendmode = 0;
-	// abp
-	mBend = 1.0f;
+	
 	mDefaultVextexShaderString = "#version 150\n"
 		"uniform mat4 ciModelViewProjection;\n"
 		"in vec4 ciPosition;\n"
@@ -642,12 +586,10 @@ void VDSettings::reset()
 		"fragColor = vec4(t0 + t1 + t2 + t3 + t4 + t5 + t6 + t7 + t8 + t9, 1.0);\n"
 		"}\n";
 	mHydraFragmentShaderString = "precision mediump float;\n"
-		"uniform float time;\n"
-		"uniform vec2 resolution;\n"
 		"varying vec2 uv;\n"
-		"void main () {\n"
-		"vec2 st = gl_FragCoord.xy/resolution.xy;\n"
-		"gl_FragColor = vec4(st.x,st.y,sin(time), 1.0);\n"
+		"void main() {\n"
+		"vec2 st = gl_FragCoord.xy/RENDERSIZE.xy;\n"
+		"gl_FragColor = vec4(st.x,st.y,sin(TIME), 1.0);\n"
 		"}\n";
 	mMixetteFragmentShaderString = "uniform vec3      	iResolution;\n"
 		"uniform sampler2D 	iChannel0;\n"
@@ -1195,7 +1137,7 @@ void VDSettings::reset()
 		"{\n"
 		"	uv.y = 1.0 - uv.y;\n"
 		"}\n"
-		"// zoom centered\n"
+		"// zoom centered might invert flipH and V!\n"
 		"float xZ = (uv.x - 0.5)*iZoom*2.0;\n"
 		"float yZ = (uv.y - 0.5)*iZoom*2.0;\n"
 		"vec2 cZ = vec2(xZ, yZ);\n"

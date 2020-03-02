@@ -69,7 +69,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		// gstnsmk
 		createFloatUniform("iSobel", mVDSettings->ISOBEL, 0.02f, 0.02f, 1.0f); // 8
 		// bad tv
-		createFloatUniform("iBadTv", mVDSettings->IBADTV, 0.0f, 0.0f, 5.0f); // 9
+		//createFloatUniform("iBadTv", mVDSettings->IBADTV, 0.0f, 0.0f, 5.0f); // 9
 		// Steps
 		createFloatUniform("iSteps", mVDSettings->ISTEPS, 16.0f, 1.0f, 128.0f); // 10
 
@@ -100,9 +100,9 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		// Speed 
 		createFloatUniform("speed", mVDSettings->ISPEED, 0.01f, 0.01f, 12.0f); // 22
 		// slitscan (or other) Param1 
-		createFloatUniform("pixelX", mVDSettings->IPIXELX, 1.0f, 0.01f, 100.0f); // 23
+		//createFloatUniform("pixelX", mVDSettings->IPIXELX, 1.0f, 0.01f, 100.0f); // 23
 		// slitscan (or other) Param2 
-		createFloatUniform("pixelY", mVDSettings->IPIXELY, 1.0f, 0.01f, 100.0f); // 24
+		//createFloatUniform("pixelY", mVDSettings->IPIXELY, 1.0f, 0.01f, 100.0f); // 24
 		// delta time in seconds
 		createFloatUniform("iDeltaTime", mVDSettings->IDELTATIME, 60.0f / 160.0f); // 25
 
@@ -745,7 +745,7 @@ bool VDAnimation::handleKeyUp(KeyEvent &event)
 	case KeyEvent::KEY_u:
 		// save badtv keyframe
 		// not used for now mBadTV[getElapsedFrames()] = 0.001f;
-		shaderUniforms["iBadTv"].floatValue = 0.0f;
+		//shaderUniforms["iBadTv"].floatValue = 0.0f;
 		break;
 
 	default:
@@ -941,7 +941,7 @@ void VDAnimation::update() {
 
 	currentTime = mTimer.getSeconds();
 	// TODO check bounds
-	if (mAutoBeatAnimation) mVDSettings->liveMeter = maxVolume * 2;
+	//if (mAutoBeatAnimation) mVDSettings->liveMeter = maxVolume * 2;
 
 	int time = (currentTime - startTime)*1000000.0;
 

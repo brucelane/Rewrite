@@ -111,7 +111,14 @@
     <Xml Include="x64\Debug\VDRewrite.xml" />
     <Xml Include="x64\Release\VDRewrite.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="..\assets\debug.fs" />
+    <None Include="..\assets\default.fs" />
+    <None Include="..\assets\inputImage.fs" />
+    <None Include="..\assets\passthrough.vs" />
+    <None Include="..\assets\post.glsl" />
+    <None Include="..\assets\shadertoy.vd" />
+  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\blocks\Cinder-VDUI\include\VDUIWarps.h" />
     <ClInclude Include="..\blocks\Cinder-VD\include\VDMix.h" />

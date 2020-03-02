@@ -187,32 +187,8 @@ void RewriteApp::keyDown(KeyEvent event)
 		case KeyEvent::KEY_l:
 			mVDSession->createWarp();
 			break;
-
-			//case KeyEvent::KEY_v:
-		//	// toggle vertical sync
-		//	gl::enableVerticalSync( !gl::isVerticalSyncEnabled() );
-		//	break;
-
-		/*case KeyEvent::KEY_a:
-			// toggle drawing a random region of the image
-			if( mSrcArea.getWidth() != mImage->getWidth() || mSrcArea.getHeight() != mImage->getHeight() )
-				mSrcArea = mImage->getBounds();
-			else {
-				int x1 = Rand::randInt( 0, mImage->getWidth() - 150 );
-				int y1 = Rand::randInt( 0, mImage->getHeight() - 150 );
-				int x2 = Rand::randInt( x1 + 150, mImage->getWidth() );
-				int y2 = Rand::randInt( y1 + 150, mImage->getHeight() );
-				mSrcArea = Area( x1, y1, x2, y2 );
-			}
-			break;
-		case KeyEvent::KEY_SPACE:
-			// toggle drawing mode
-			mUseBeginEnd = !mUseBeginEnd;
-
-			break;*/
 		}
 	}
-
 }
 
 void RewriteApp::keyUp(KeyEvent event)
@@ -226,7 +202,6 @@ void RewriteApp::keyUp(KeyEvent event)
 			break;
 		}
 	}
-
 }
 void RewriteApp::cleanup()
 {

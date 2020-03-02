@@ -34,7 +34,6 @@ namespace videodromm {
 		static const int			IFGX = 6;
 		static const int			IFBX = 7;
 		static const int			ISOBEL = 8;
-		static const int			IBADTV = 9;
 		static const int			ISTEPS = 10;
 		static const int			IRATIO = 11;
 		static const int			IZOOM = 12;
@@ -49,8 +48,6 @@ namespace videodromm {
 
 		static const int			IBPM = 21;
 		static const int			ISPEED = 22;
-		static const int			IPIXELX = 23;
-		static const int			IPIXELY = 24;
 		static const int			IDELTATIME = 25;
 		static const int			IBR = 26;
 		static const int			IBG = 27;
@@ -96,7 +93,7 @@ namespace videodromm {
 		// booleans 80 to 110
 		static const int			IGLITCH = 81;	// A4
 		static const int			IVIGN = 82;		// A#4
-		static const int			ITOGGLE = 83;	// B4
+		static const int			ITOGGLE = 83;	// B4 for sos
 		static const int			IINVERT = 86;	// D5
 
 		
@@ -106,10 +103,9 @@ namespace videodromm {
 		static const int			IFLIPV = 132;
 		static const int			IFLIPPOSTH = 133;
 		static const int			IFLIPPOSTV = 134;		
-		// global flip
-		bool						mFlipV;
-		bool						mFlipH;
-		/*static const int			IRHANDX = 110;
+		
+		/*
+		static const int			IRHANDX = 110;
 		static const int			IRHANDY = 111;
 		static const int			IRHANDZ = 112;
 		static const int			ILHANDX = 113;
@@ -147,7 +143,6 @@ namespace videodromm {
 		void						resetSomeParams();
 
 		// params
-		//int							mMode, mPreviousMode, mNewMode;
 		int							mPreviewWidth, mPreviewHeight, mPreviewFboWidth, mPreviewFboHeight;
 		float						mAspectRatio;
 		int							mMainWindowX, mMainWindowY, mMarginSmall, mMainWindowWidth, mMainWindowHeight, mFboWidth, mFboHeight;
@@ -180,7 +175,6 @@ namespace videodromm {
 		int							mxRight;
 		int							myLeft;
 		int							myRight;
-		//vec2						mRenderResoXY;
 		bool						mAutoLayout;
 		bool						mStandalone;
 
@@ -197,19 +191,15 @@ namespace videodromm {
 		// shader uniforms	
 		float						iSpeedMultiplier;   // speed multiplier
 		float						iStart = 1.0f;		// start adjustment
-		float						iBarDuration = 1.0f;// between 2 bars (seeconds)
-		//float						iTimeFactor;
+		float						iBarDuration = 1.0f;// between 2 bars (seconds)
 		float						iChannelTime[4];
 		bool						iFade;
 		bool						iRepeat;
 		int							iBlendmode;
-		bool						iXorY;
-		//ci::Anim<float> 			iBadTv;
 		ci::Anim<float> 			iAlpha;
 
 		string						mAssetsPath;
 		bool						iShowFps;
-		// now a uniformbool						iDebug;
 		string						sFps;
 		bool						iGreyScale;
 		unsigned int				shaderEditIndex;
@@ -220,7 +210,6 @@ namespace videodromm {
 		//! Time in seconds at which the transition to the next shader starts.
 		double						mTransitionTime;
 
-		//int							multFactor;
 		// windows and params
 		int							mRenderX;
 		int							mRenderY;
@@ -263,8 +252,6 @@ namespace videodromm {
 		bool						mIsPlaying;
 		bool						mUseAudio;
 		bool						mUseLineIn;
-		//int							mFftSize;
-		//int							mWindowSize;
 		float						iSeed;
 
 		// z EyePointZ
@@ -282,8 +269,6 @@ namespace videodromm {
 
 		// spout
 		int							mFboResolution;
-		//int							mOutputVideoResolution;
-		//vec2						mOutputResolution;
 		// indexes for textures
 		map<int, int>				iChannels;
 		int							selectedChannel;
@@ -294,15 +279,8 @@ namespace videodromm {
 		bool						mSplitWarpV;
 		int							mUIZoom;
 		int							mCurrentPreviewFboIndex;
-		/*int							mSphereFboIndex, mMeshFboIndex, mLiveFboIndex, mMixFboIndex, mAudioFboIndex;
-		int							mLeftFboIndex, mRightFboIndex, mVertexSphereFboIndex, mWarp1FboIndex, mWarp2FboIndex, mABPFboIndex;
-		int							mLeftFragIndex, mRightFragIndex, mPreviewFragIndex, mPreviousFragIndex, mWarp1FragIndex, mWarp2FragIndex, mLiveFragIndex;
-		float						iZoomLeft, iZoomRight;*/
 		int							iTrack;
-		// meshes
-		int							mMeshIndex;
-		// VertexSphere
-		int							mVertexSphereTextureIndex;
+				
 		// camera
 		CameraPersp					mCamera;
 		vec2						mCamEyePointXY;
@@ -315,15 +293,9 @@ namespace videodromm {
 		string						mWebSocketsHost;
 		uint16_t					mWebSocketsPort;
 		std::string					mWebSocketsMsg;
-		//bool						mWebSocketsNewMsg;
 		// midi
 		std::string					mMidiMsg;
-		//float						xFade;
-		//bool						xFadeChanged;
 
-		// abp
-		float						mBend;
-		float						liveMeter;
 		// info to backup in XML
 		string						mInfo;
 		// ableton liveOSC

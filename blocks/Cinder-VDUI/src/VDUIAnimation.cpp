@@ -212,7 +212,7 @@ void VDUIAnimation::Run(const char* title) {
 			if (ImGui::DragFloat("rotationSpeed", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setValue(ctrl, localValues[ctrl]);
-			}*/
+			}
 			// badTv
 			ctrl = mVDSettings->IBADTV;
 			if (ImGui::Button("a##badtv")) { toggleAuto(ctrl); }
@@ -245,7 +245,7 @@ void VDUIAnimation::Run(const char* title) {
 				setValue(ctrl, localValues[ctrl]);
 			}
 			sprintf(buf, "XorY");
-			mVDSettings->iXorY ^= ImGui::Button(buf);
+			mVDSettings->iXorY ^= ImGui::Button(buf);*/
 
 			// steps
 			ctrl = mVDSettings->ISTEPS;
@@ -274,8 +274,7 @@ void VDUIAnimation::Run(const char* title) {
 			{
 				setValue(ctrl, localValues[ctrl]);
 			}
-			ImGui::SliderFloat("ABP Bend", &mVDSettings->mBend, -20.0f, 20.0f);
-		}
+					}
 		ImGui::PopItemWidth();
 	}
 	ImGui::End();

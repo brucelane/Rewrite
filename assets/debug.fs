@@ -156,7 +156,7 @@ float PrintValue(in vec2 inFragCoord, const in vec2 vPixelCoords, const in vec2 
     return PrintValue((inFragCoord.xy - vPixelCoords) / vFontSize, fValue, fMaxDigits, fDecimalPlaces);
 }
 vec4 tex(vec2 uv) {
-	vec4 color = IMG_NORM_PIXEL( inputImage, uv*2.5) ;
+	vec4 color = IMG_NORM_PIXEL( inputImage, uv) ;
     return color;
 }
 void main(void)
@@ -171,21 +171,25 @@ void main(void)
 	{
 		uv.y = 1.0 - uv.y;
 	}
+    // zoom centered
+    float xZ = -(uv.x - 0.5)*iZoom*0.5;
+    float yZ = -(uv.y - 0.5)*iZoom*0.5;
+    vec2 cZ = vec2(xZ, yZ);
     if (iDebug) {
-    // Multiples of 4x5 work best
-    vec2 vFontSize = vec2(20.0, 40.0);
-  	vec4 vColour = vec4(0.7);
-    vColour = mix( vColour, vec4(1.0, 1.0, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(30.0, 150.0), vFontSize, RENDERSIZE.x, 2.0, 0.0));
-    vColour = mix( vColour, vec4(0.7, 0.5, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(100.0, 150.0), vFontSize, RENDERSIZE.y, 2.0, 0.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(930.0, 150.0), vFontSize, TIME, 2.0, 1.0));
-    /*vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(350.0, 10.0), vFontSize, iBar, 2.0, 0.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(450.0, 10.0), vFontSize, iBarBeat, 2.0, 0.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(550.0, 10.0), vFontSize, iExposure, 2.0, 2.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(750.0, 10.0), vFontSize, iTimeFactor, 2.0, 3.0));
-    vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(970.0, 10.0), vFontSize, iBpm, 2.0, 2.0));*/
-    fragColor = mix( vec4(1.0, 0.0, 0.2, 0.5), tex(uv), vColour);
+        // Multiples of 4x5 work best
+        vec2 vFontSize = vec2(20.0, 40.0);
+        vec4 vColour = vec4(0.7);
+        vColour = mix( vColour, vec4(1.0, 1.0, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(30.0, 150.0), vFontSize, RENDERSIZE.x, 2.0, 0.0));
+        vColour = mix( vColour, vec4(0.7, 0.5, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(100.0, 150.0), vFontSize, RENDERSIZE.y, 2.0, 0.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(930.0, 150.0), vFontSize, TIME, 2.0, 1.0));
+        /*vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(350.0, 10.0), vFontSize, iBar, 2.0, 0.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(450.0, 10.0), vFontSize, iBarBeat, 2.0, 0.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(550.0, 10.0), vFontSize, iExposure, 2.0, 2.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(750.0, 10.0), vFontSize, iTimeFactor, 2.0, 3.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(970.0, 10.0), vFontSize, iBpm, 2.0, 2.0));*/
+        fragColor = mix( vec4(1.0, 0.0, 0.2, 0.5), tex(uv), vColour);
     }  else {
-		fragColor = tex(uv);
+		fragColor = tex(uv - cZ);
 	}
 }
 

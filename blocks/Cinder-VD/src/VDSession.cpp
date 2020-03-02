@@ -420,9 +420,12 @@ void VDSession::renderPostToFbo()
 	mGlslPost->uniform("iChannel0", 0); // texture 0
 	mGlslPost->uniform("iSobel", getFloatUniformValueByIndex(mVDSettings->ISOBEL));
 	mGlslPost->uniform("iExposure", getFloatUniformValueByIndex(mVDSettings->IEXPOSURE));
+	mGlslPost->uniform("iTrixels", getFloatUniformValueByIndex(mVDSettings->ITRIXELS)); // trixels if > 0.
+	mGlslPost->uniform("iZoom", getFloatUniformValueByIndex(mVDSettings->IZOOM));
 	mGlslPost->uniform("iChromatic", getFloatUniformValueByIndex(mVDSettings->ICHROMATIC));
 	mGlslPost->uniform("iFlipV", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTV));
 	mGlslPost->uniform("iFlipH", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTH));
+	mGlslPost->uniform("iInvert", (int)getBoolUniformValueByIndex(mVDSettings->IINVERT));
 	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 }
 void VDSession::renderWarpsToFbo()

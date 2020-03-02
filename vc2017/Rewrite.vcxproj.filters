@@ -117,6 +117,9 @@
     <Filter Include="release">
       <UniqueIdentifier>{b9549f35-f791-4b12-a4dc-d92ee93c28d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="assets">
+      <UniqueIdentifier>{16794b1d-99a6-4438-9a12-0e13a674cc7a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RewriteApp.cpp">
@@ -539,5 +542,25 @@
     <Xml Include="x64\Release\VDRewrite.xml">
       <Filter>release</Filter>
     </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\assets\debug.fs">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="..\assets\default.fs">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="..\assets\inputImage.fs">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="..\assets\passthrough.vs">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="..\assets\post.glsl">
+      <Filter>assets</Filter>
+    </None>
+    <None Include="..\assets\shadertoy.vd">
+      <Filter>assets</Filter>
+    </None>
   </ItemGroup>
 </Project>
