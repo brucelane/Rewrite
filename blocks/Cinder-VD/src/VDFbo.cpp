@@ -350,7 +350,7 @@ namespace videodromm {
 				}
 				else {
 					if (name != "ciModelViewProjection") {//type 35676
-						mError = "uniform not found " + name;
+						mError = "fbo uniform not found " + name;
 						mVDSettings->mErrorMsg = mError + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
 						CI_LOG_E(mError);
 					}

@@ -45,7 +45,7 @@ namespace videodromm
 		map<int, float>					localValues;
 		float							getValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			float rtn;
-			if (mVDSession->getGlobal(aFboIndex)) {
+			if (mVDSession->getGlobal(aFboIndex) || aCtrl == 0) {
 				rtn = mVDSession->getFloatUniformValueByIndex(aCtrl);
 			}
 			else {

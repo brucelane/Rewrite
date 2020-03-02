@@ -311,6 +311,11 @@ void VDUIFbos::Run(const char* title) {
 			sprintf(buf, "show##rdrtexuniform%d", f);
 			mShowRenderedTexture ^= ImGui::Button(buf);
 			ImGui::SameLine();
+			sprintf(buf, "global %d##gu%d", mVDSession->getGlobal(f), f);
+			if (ImGui::Button(buf)) {
+				mVDSession->toggleGlobal(f);
+			}
+			ImGui::SameLine();
 			if (!mVDSession->isFboValid(f)) {
 				ImGui::Text("Invalid");
 			}
@@ -360,7 +365,7 @@ void VDUIFbos::Run(const char* title) {
 					break;
 				case 5126:
 					// float
-					if (mVDSession->getGlobal(f)) {
+					if (mVDSession->getGlobal(f) || ctrl == 0) {
 						localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
 					}
 					else {
@@ -443,11 +448,7 @@ void VDUIFbos::Run(const char* title) {
 				}
 
 			} //for uniforms
-			sprintf(buf, "global %d##gu%d", mVDSession->getGlobal(f), f);
-			if (ImGui::Button(buf)) {
-				mVDSession->toggleGlobal(f);
-				//globalUniforms = !globalUniforms;
-			}
+
 			//if (mVDSession->getFboInputTexture(f)) ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			if (mVDSession->getFboInputTexture(f)  && mShowInputTexture) ImGui::Image(mVDSession->getFboInputTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			sprintf(buf, "%s", mVDSession->getFboInputTextureName(f).c_str());
