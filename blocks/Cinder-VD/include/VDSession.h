@@ -61,13 +61,13 @@ namespace videodromm {
 		unsigned int					getWarpAFboIndex(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getAFboIndex(); };
 		unsigned int					getWarpBFboIndex(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getBFboIndex(); };
 		void							setWarpAFboIndex(unsigned int aWarpIndex, unsigned int aWarpFboIndex) {
-			if (aWarpIndex < mWarpList.size() && aWarpFboIndex < mFboList.size()) {
+			if (aWarpIndex < mWarpList.size() && aWarpFboIndex < mVDMix->getFboListSize()) {
 				mWarpList[aWarpIndex]->setAFboIndex(aWarpFboIndex);
 				updateWarpName(aWarpIndex);
 			}
 		}
 		void							setWarpBFboIndex(unsigned int aWarpIndex, unsigned int aWarpFboIndex) {
-			if (aWarpIndex < mWarpList.size() && aWarpFboIndex < mFboList.size()) {
+			if (aWarpIndex < mWarpList.size() && aWarpFboIndex < mVDMix->getFboListSize()) {
 				mWarpList[aWarpIndex]->setBFboIndex(aWarpFboIndex);
 				updateWarpName(aWarpIndex);
 			}
@@ -87,9 +87,9 @@ namespace videodromm {
 			mWarpList.push_back(WarpBilinear::create());
 		}
 		void							saveWarps() {
-			int i = 0;
+			/* TODO 20200302 int i = 0;
 			for (auto &warp : mWarpList) {
-				// TODO 20200229 
+				// 
 				warp->setAShaderFilename(mFboList[math<int>::min(warp->getAFboIndex(), mFboList.size() - 1)]->getShaderName());
 				warp->setATextureFilename(mFboList[math<int>::min(warp->getAFboIndex(), mFboList.size() - 1)]->getTextureName());
 				JsonTree		json;
@@ -101,10 +101,13 @@ namespace videodromm {
 				i++;
 			}
 			// save warp settings
-			Warp::writeSettings(mWarpList, writeFile(mSettings));
+			Warp::writeSettings(mWarpList, writeFile(mSettings));*/
 		}
 		ci::gl::TextureRef				getPostFboTexture() {
 			return mPostFbo->getColorTexture();
+		};
+		ci::gl::TextureRef				getWarpFboTexture() {
+			return mWarpsFbo->getColorTexture();
 		};
 		bool							handleMouseMove(MouseEvent &event);
 		bool							handleMouseDown(MouseEvent &event);
@@ -228,7 +231,9 @@ namespace videodromm {
 		bool							getUseLineIn() { return mVDAnimation->getUseLineIn(); };
 		void							setUseLineIn(bool useLineIn) { mVDAnimation->setUseLineIn(useLineIn); };
 		void							toggleUseLineIn() { mVDAnimation->toggleUseLineIn(); };
-		int								loadFragmentShader(string aFilePath, unsigned int aFboShaderIndex = 4);		
+		int								loadFragmentShader(string aFilePath, unsigned int aFboShaderIndex = 4) {
+			return mVDMix->loadFragmentShader(aFilePath, aFboShaderIndex);
+		};
 		/*bool							getFreqWSSend() { return mFreqWSSend; };
 		void							toggleFreqWSSend() { mFreqWSSend = !mFreqWSSend; };
 		// uniforms
@@ -271,10 +276,10 @@ namespace videodromm {
 		ci::gl::TextureRef				getFboThumb(unsigned int aBlendIndex) { return mBlendFbos[aBlendIndex]->getColorTexture(); };
 		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);*/
 		int								getFboTextureWidth(unsigned int aFboIndex) { 
-			return mFboList[aFboIndex]->getInputTexture() ? mFboList[aFboIndex]->getInputTexture()->getWidth() : mVDSettings->mFboWidth;
+			return /* TODO 20200302 mFboList[aFboIndex]->getInputTexture() ? mFboList[aFboIndex]->getInputTexture()->getWidth() :*/ mVDSettings->mFboWidth;
 		};
 		int								getFboTextureHeight(unsigned int aFboIndex) { 
-			return mFboList[aFboIndex]->getInputTexture() ? mFboList[aFboIndex]->getInputTexture()->getHeight() : mVDSettings->mFboHeight; 
+			return /* TODO 20200302 mFboList[aFboIndex]->getInputTexture() ? mFboList[aFboIndex]->getInputTexture()->getHeight() :*/ mVDSettings->mFboHeight; 
 		};
 		// utils
 
@@ -289,51 +294,52 @@ namespace videodromm {
 			return mVDUtils->getWindowsResolution();
 		};
 		// fbos
-		string							getFboName(unsigned int aFboIndex) { return mFboList[aFboIndex]->getName(); };
+		string							getFboName(unsigned int aFboIndex) { 
+			/* TODO 20200302 return mFboList[aFboIndex]->getName(); */
+			return "todo";
+		};
 
-		unsigned int					getFboListSize() { return mFboList.size(); };
-		unsigned int 					createFboShaderTexture(string aShaderFilename, string aTextureFilename);
+		unsigned int					getFboListSize() { return mVDMix->getFboListSize(); /* TODO 20200302 mFboList.size();*/ };
+		unsigned int 					createFboShaderTexture(string aShaderFilename, string aTextureFilename) {
+			return mVDMix->createFboShaderTexture(aShaderFilename, aTextureFilename);
+		};
 		unsigned int					fboFromJson(const JsonTree &json);
 	
 		void							saveFbos() {
-			for (auto &fbo : mFboList) {
+			/* TODO 20200302 for (auto &fbo : mFboList) {
 				JsonTree		json = fbo->toJson(true);
-			}
+			}*/
 		};
-		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex);
+		
 		bool							isFboValid(unsigned int aFboIndex) {
-			bool valid = false;
-			if (mFboList.size() > 0) {
-				valid = mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->isValid();
-			}
-			return valid;
+			return mVDMix->isFboValid(aFboIndex);
 		};
 		/*Area							getFboSrcArea(unsigned int aFboIndex) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getSrcArea();
 		};*/
 		// fbo 
 		bool							getFboBoolUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getBoolUniformValueByIndex(aCtrl);
+			return mVDMix->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
 		};
 		
 		void							toggleFboValue(unsigned int aCtrl, unsigned int aFboIndex) {
-			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->toggleValue(aCtrl);
+			mVDMix->toggleFboValue(aCtrl, aFboIndex);
 		};
 		int								getFboIntUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getIntUniformValueByIndex(aCtrl);
+			return mVDMix->getFboIntUniformValueByIndex(aCtrl, aFboIndex);
 		};
 
 		float							getFboFloatUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getFloatUniformValueByIndex(aCtrl);
+			return mVDMix->getFboFloatUniformValueByIndex(aCtrl, aFboIndex);
 		};
 		bool							setFboFloatUniformValueByIndex(unsigned int aCtrl, unsigned int aFboIndex, float aValue) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->setFloatUniformValueByIndex(aCtrl, aValue);
+			return mVDMix->setFboFloatUniformValueByIndex(aCtrl,  aFboIndex, aValue);
 		};
 		bool									getGlobal(unsigned int aFboIndex) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getGlobal();
+			return mVDMix->getGlobal(aFboIndex);
 		};
 		void									toggleGlobal(unsigned int aFboIndex) {
-			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->toggleGlobal();
+			mVDMix->toggleGlobal(aFboIndex);
 		};
 		/*
 		void							fboFlipV(unsigned int aFboIndex) {
@@ -351,24 +357,31 @@ namespace videodromm {
 		unsigned int					getFboInputTexturesCount(unsigned int aFboIndex = 0) {
 			return 1; //TODO support several textures
 		}
+		string							getFboStatus(unsigned int aFboIndex = 0) {
+			return mVDMix->getFboStatus(aFboIndex);
+		}
+		void							updateShaderThumbFile(unsigned int aFboIndex) {
+			mVDMix->updateShaderThumbFile(aFboIndex);
+		}
 		string							getFboInputTextureName(unsigned int aFboIndex = 0) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getTextureName();
+			return mVDMix->getFboInputTextureName(aFboIndex);
 		}
 		ci::gl::Texture2dRef							getFboInputTexture(unsigned int aFboIndex = 0) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getInputTexture();
+			return mVDMix->getFboInputTexture(aFboIndex);
 		}
 		std::vector<ci::gl::GlslProg::Uniform>			getUniforms(unsigned int aFboIndex = 0) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getUniforms();
+			return mVDMix->getUniforms(aFboIndex);
 		}
 		int								getUniformIndexForName(string aName) {
 			return mVDAnimation->getUniformIndexForName(aName);
 		};
-		string							getFboStatus(unsigned int aFboIndex = 0) {
-			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getStatus();
+		
+		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {
+			return mVDMix->getFboRenderedTexture(aFboIndex);
 		}
-		void							updateShaderThumbFile(unsigned int aFboIndex) {
-			mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->updateThumbFile();
-		}
+		// Mix
+		// RTE in release mode? 
+		//ci::gl::Texture2dRef			getRenderedTexture(bool reDraw = true) { return mVDMix->getRenderedTexture(reDraw); };
 		//string							getFboFragmentShaderText(unsigned int aFboIndex);
 		// feedback get/set
 		/*int								getFeedbackFrames() {
@@ -381,7 +394,6 @@ namespace videodromm {
 		ci::gl::TextureRef				getMixTexture(unsigned int aMixFboIndex = 0);
 		ci::gl::TextureRef				getMixetteTexture();
 		unsigned int					getMixFbosCount() { return mMixFbos.size(); };
-		// RTE in release mode ci::gl::Texture2dRef			getRenderedTexture(bool reDraw = true) { return mVDMix->getRenderedTexture(reDraw); };
 		ci::gl::TextureRef				getRenderTexture();
 		bool							isEnabledAlphaBlending() { return mEnabledAlphaBlending; };
 		void							toggleEnabledAlphaBlending() { mEnabledAlphaBlending = !mEnabledAlphaBlending; }
@@ -399,7 +411,9 @@ namespace videodromm {
 		bool							isAutoLayout() { return mVDSettings->mAutoLayout; };
 		void							toggleAutoLayout() { mVDSettings->mAutoLayout = !mVDSettings->mAutoLayout; }
 		// textures
-		void							loadImageFile(string aFile, unsigned int aTextureIndex);
+		void							loadImageFile(string aFile, unsigned int aTextureIndex) {
+			mVDMix->loadImageFile(aFile, aTextureIndex);
+		};
 		/*unsigned int					getInputTexturesCount() {
 			return mTextureList.size();
 		}
@@ -524,7 +538,7 @@ namespace videodromm {
 		}
 	private:
 		int								mMode;
-		gl::TextureRef					mDefaultTexture;
+
 		// Settings
 		VDSettingsRef					mVDSettings;
 		// Utils
@@ -537,7 +551,8 @@ namespace videodromm {
 		VDAnimationRef					mVDAnimation;
 		// Log
 		VDLogRef						mVDLog;
-
+		// Mix
+		VDMixRef						mVDMix;
 		const string					sessionFileName = "session.json";
 		fs::path						sessionPath;
 		// tempo
@@ -603,7 +618,7 @@ namespace videodromm {
 		map<int, VDMixFbo>				mMixFbos;
 		*/
 		// maintain a list of fbos specific to this mix
-		VDFboList						mFboList;
+		//VDFboList						mFboList;
 
 
 		/*fs::path						mMixesFilepath;
@@ -642,13 +657,13 @@ namespace videodromm {
 		void							renderPostToFbo();
 		void							renderWarpsToFbo();
 		// warps
-		VDMixRef						mVDMix;
+
 		WarpList						mWarpList;
 		fs::path						mSettings;
 		void							updateWarpName(unsigned int aWarpIndex) {
 			if (aWarpIndex < mWarpList.size()) {
-				// TODO
-				mWarpList[aWarpIndex]->setName(mFboList[mWarpList[aWarpIndex]->getAFboIndex()]->getName());
+				/* TODO 20200302
+				mWarpList[aWarpIndex]->setName(mFboList[mWarpList[aWarpIndex]->getAFboIndex()]->getName());*/
 			}
 		}
 		void							loadWarps() {

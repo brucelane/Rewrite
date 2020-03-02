@@ -18,7 +18,6 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	// TODO: needed? mVDAnimation->tapTempo();
 	// Mix
 	mVDMix = VDMix::create(mVDSettings, mVDAnimation);
-	mDefaultTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 	//createFboShaderTexture("default.fs", "0.jpg");
 	//createFboShaderTexture("audio.fs", "audio");
 	// allow log to file
@@ -33,7 +32,7 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mGlslPost = gl::GlslProg::create(gl::GlslProg::Format().vertex(loadAsset("passthrough.vs")).fragment(loadAsset("post.glsl")));
 
 	// adjust the content size of the warps
-	if (getFboRenderedTexture(0)) Warp::setSize(mWarpList, getFboRenderedTexture(0)->getSize());
+	// TODO 20200302 if (getFboRenderedTexture(0)) Warp::setSize(mWarpList, getFboRenderedTexture(0)->getSize());
 
 	// initialize warps
 	mSettings = getAssetPath("") / mVDSettings->mAssetsPath / "warps.xml";
@@ -447,6 +446,7 @@ void VDSession::renderWarpsToFbo()
 		i = math<int>::min(a, getFboListSize() - 1);
 		s = getFboListSize(); // TMP
 		if (isFboValid(i)) {
+			//warp->draw(getFboRenderedTexture(i));// BAD, mVDSession->getFboSrcArea(i));
 			warp->draw(getFboRenderedTexture(i));// BAD, mVDSession->getFboSrcArea(i));
 		}
 
@@ -918,31 +918,7 @@ bool VDSession::handleKeyUp(KeyEvent &event) {
 #pragma endregion events
 // fbos
 #pragma region fbos
-int VDSession::loadFragmentShader(string aFilePath, unsigned int aFboShaderIndex) {
-	int rtn = -1;
-	mVDSettings->mMsg = "load " + aFilePath + " at index " + toString(aFboShaderIndex) + "\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
-	//createShaderFbo(aFilePath, aFboShaderIndex);
-	//
-	bool loaded = false;
-	for (auto &fbo : mFboList) {
-		rtn++;
-		if (!loaded) {
-			if (!fbo->isValid()) {
-				fbo->loadFragmentStringFromFile(aFilePath);
-				loaded = true;
-				break;
-			}
-		}
 
-	}
-	if (!loaded) {
-		rtn = math<int>::min(aFboShaderIndex, mFboList.size() - 1);
-		loaded = mFboList[rtn]->loadFragmentStringFromFile(aFilePath);
-	}
-	mVDSettings->mMsg = "loaded " + toString(loaded) + " at index " + toString(rtn) + "\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
-
-	return rtn;
-}
 /*unsigned int VDSession::createShaderFboFromString(string aFragmentShaderString, string aShaderFilename) {
 	unsigned int rtn = 0;
 	// create new shader
@@ -1249,14 +1225,7 @@ unsigned int VDSession::fboFromJson(const JsonTree &json) {
 	return rtn;
 }
 
-unsigned int VDSession::createFboShaderTexture(string aShaderFilename, string aTextureFilename) {
-	// initialize rtn to 0 to force creation
-	unsigned int rtn = 0;
-	VDFboRef fboRef = VDFbo::create(mVDSettings, mVDAnimation, aShaderFilename, aTextureFilename);
-	mFboList.push_back(fboRef);
-	rtn = mFboList.size() - 1;
-	return rtn;
-}
+
 
 bool VDSession::initTextureList() {
 	bool isFirstLaunch = false;
@@ -1359,39 +1328,7 @@ bool VDSession::loadImageSequence(string aFolder, unsigned int aTextureIndex) {
 void VDSession::loadMovie(string aFile, unsigned int aTextureIndex) {
 
 }*/
-void VDSession::loadImageFile(string aFile, unsigned int aTextureIndex) {
-	int rtn = math<int>::min(aTextureIndex, mFboList.size() - 1);
-	fs::path texFileOrPath = aFile;
-	if (fs::exists(texFileOrPath)) {
 
-		string ext = "";
-		int dotIndex = texFileOrPath.filename().string().find_last_of(".");
-		if (dotIndex != std::string::npos)  ext = texFileOrPath.filename().string().substr(dotIndex + 1);
-		if (ext == "jpg" || ext == "png") {
-			ci::gl::Texture2dRef mTexture = gl::Texture::create(loadImage(texFileOrPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
-			mFboList[rtn]->setImageInputTexture(mTexture, texFileOrPath.filename().string());
-		}
-	}
-	// create texture
-	/*if (mTextureList.size() < 8) {
-		XmlTree			imageXml;
-		imageXml.setTag("texture");
-		imageXml.setAttribute("id", to_string(mTextureList.size()));
-		imageXml.setAttribute("texturetype", "image");
-		imageXml.setAttribute("path", aFile);
-		imageXml.setAttribute("width", "1280");
-		imageXml.setAttribute("height", "720");
-		imageXml.setAttribute("flipv", "0");
-		TextureImageRef t(TextureImage::create());
-		t->fromXml(imageXml);
-		mTextureList.push_back(t);
-		mTextureList[mTextureList.size() - 1]->loadFromFullPath(aFile);
-	}
-	else {
-		CI_LOG_V("loadImageFile " + aFile + " at textureIndex " + toString(aTextureIndex));
-		mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->loadFromFullPath(aFile);
-	}*/
-}
 /*
 void VDSession::loadAudioFile(string aFile) {
 	mTextureList[0]->loadFromFullPath(aFile);
@@ -1508,11 +1445,7 @@ ci::gl::TextureRef VDSession::getFboTexture(unsigned int aFboIndex) {
 	if (aFboIndex > mFboList.size() - 1) aFboIndex = 0;
 	return mFboList[aFboIndex]->getFboTexture();
 }*/
-ci::gl::TextureRef VDSession::getFboRenderedTexture(unsigned int aFboIndex) {
-	if (mFboList.size() == 0) return mDefaultTexture;
-	if (aFboIndex > mFboList.size() - 1) aFboIndex = 0;
-	return mFboList[aFboIndex]->getRenderedTexture();
-}
+
 
 /*void VDSession::renderBlend()
 {
