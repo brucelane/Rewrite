@@ -41,12 +41,11 @@ namespace videodromm
 		int								playheadPositions[12];
 		float							speeds[12];
 		// uniforms
-		bool							globalUniforms = true;
 		unsigned int					ctrl;
 		map<int, float>					localValues;
 		float							getValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			float rtn;
-			if (globalUniforms) {
+			if (mVDSession->getGlobal(aFboIndex)) {
 				rtn = mVDSession->getFloatUniformValueByIndex(aCtrl);
 			}
 			else {
@@ -55,7 +54,7 @@ namespace videodromm
 			return rtn;
 		};
 		void							setValue(unsigned int aCtrl, unsigned int aFboIndex, float aValue) {
-			if (globalUniforms) {
+			if (mVDSession->getGlobal(aFboIndex)) {
 				mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
 			}
 			else {
@@ -70,7 +69,7 @@ namespace videodromm
 			return mVDSession->getMaxUniformValueByIndex(aIndex);
 		};
 		bool							getBoolValue(unsigned int aCtrl, unsigned int aFboIndex) {
-			return (globalUniforms) ? mVDSession->getBoolUniformValueByIndex(aCtrl) : mVDSession->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
+			return (mVDSession->getGlobal(aFboIndex)) ? mVDSession->getBoolUniformValueByIndex(aCtrl) : mVDSession->getFboBoolUniformValueByIndex(aCtrl, aFboIndex);
 		};
 		int								getIntValue(unsigned int aCtrl, unsigned int aFboIndex) {
 			return mVDSession->getFboIntUniformValueByIndex(aCtrl, aFboIndex);

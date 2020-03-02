@@ -200,20 +200,20 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createBoolUniform("iToggle", mVDSettings->ITOGGLE); // 83
 		// invert
 		createBoolUniform("iInvert", mVDSettings->IINVERT); // 86
-		createBoolUniform("iXorY", mVDSettings->IXORY); // 100
-		createBoolUniform("iFlipH", mVDSettings->IFLIPH); // 101
-		createBoolUniform("iFlipV", mVDSettings->IFLIPV); // 102
-		createBoolUniform("iFlipPostH", mVDSettings->IFLIPPOSTH); // 103
-		createBoolUniform("iFlipPostV", mVDSettings->IFLIPPOSTV); // 104
-		createBoolUniform("iDebug", mVDSettings->IDEBUG); // 119
+		createBoolUniform("iDebug", mVDSettings->IDEBUG); // 129
+		createBoolUniform("iXorY", mVDSettings->IXORY); // 130
+		createBoolUniform("iFlipH", mVDSettings->IFLIPH); // 131
+		createBoolUniform("iFlipV", mVDSettings->IFLIPV); // 132
+		createBoolUniform("iFlipPostH", mVDSettings->IFLIPPOSTH); // 133
+		createBoolUniform("iFlipPostV", mVDSettings->IFLIPPOSTV); // 134
 
-		// 120 to 124 timefactor from midithor sos
+		// 119 to 124 timefactor from midithor sos
 		// floats for warps
 		// srcArea 
-		createFloatUniform("srcXLeft", mVDSettings->SRCXLEFT, 0.0f, 0.0f, 4280.0f); // 130
-		createFloatUniform("srcXRight", mVDSettings->SRCXRIGHT, mVDSettings->mRenderWidth, 320.01f, 4280.0f); // 131
-		createFloatUniform("srcYLeft", mVDSettings->SRCYLEFT, 0.0f, 0.0f, 1024.0f); // 132
-		createFloatUniform("srcYRight", mVDSettings->SRCYRIGHT, mVDSettings->mRenderHeight, 0.0f, 1024.0f); // 133
+		createFloatUniform("srcXLeft", mVDSettings->SRCXLEFT, 0.0f, 0.0f, 4280.0f); // 160
+		createFloatUniform("srcXRight", mVDSettings->SRCXRIGHT, mVDSettings->mRenderWidth, 320.01f, 4280.0f); // 161
+		createFloatUniform("srcYLeft", mVDSettings->SRCYLEFT, 0.0f, 0.0f, 1024.0f); // 162
+		createFloatUniform("srcYRight", mVDSettings->SRCYRIGHT, mVDSettings->mRenderHeight, 0.0f, 1024.0f); // 163
 		// iFreq0  
 		createFloatUniform("iFreq0", mVDSettings->IFREQ0, 0.0f, 0.01f, 256.0f); // 140	
 		// iFreq1  

@@ -98,12 +98,14 @@ namespace videodromm {
 		static const int			IVIGN = 82;		// A#4
 		static const int			ITOGGLE = 83;	// B4
 		static const int			IINVERT = 86;	// D5
-		static const int			IXORY = 100;
-		static const int			IFLIPH = 101;
-		static const int			IFLIPV = 102;
-		static const int			IFLIPPOSTH = 103;
-		static const int			IFLIPPOSTV = 104;
-		static const int			IDEBUG = 119;
+
+		
+		static const int			IDEBUG = 129;
+		static const int			IXORY = 130;
+		static const int			IFLIPH = 131;
+		static const int			IFLIPV = 132;
+		static const int			IFLIPPOSTH = 133;
+		static const int			IFLIPPOSTV = 134;		
 		// global flip
 		bool						mFlipV;
 		bool						mFlipH;
@@ -113,11 +115,7 @@ namespace videodromm {
 		static const int			ILHANDX = 113;
 		static const int			ILHANDY = 114;
 		static const int			ILHANDZ = 115;*/
-		// srcarea
-		static const int			SRCXLEFT = 130;
-		static const int			SRCXRIGHT = 131;
-		static const int			SRCYLEFT = 132;
-		static const int			SRCYRIGHT = 133;
+
 		static const int			IFREQ0 = 140;
 		static const int			IFREQ1 = 141;
 		static const int			IFREQ2 = 142;
@@ -125,6 +123,11 @@ namespace videodromm {
 		// vec2
 		static const int			RESOLUTION = 150; // vec2 for hydra
 		static const int			RENDERSIZE = 151; // vec2 for ISF
+		// srcarea
+		static const int			SRCXLEFT = 160;
+		static const int			SRCXRIGHT = 161;
+		static const int			SRCYLEFT = 162;
+		static const int			SRCYRIGHT = 163;		
 		// texture modes
 		static const int			TEXTUREMODEMIX = 0;				// mix two shaders
 		static const int			TEXTUREMODEAUDIO = 1;			// audio spectrum

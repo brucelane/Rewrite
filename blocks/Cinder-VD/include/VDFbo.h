@@ -93,8 +93,8 @@ namespace videodromm
 		};
 		// bool
 		bool									getBoolUniformValueByIndex(unsigned int aIndex) {
-			//101 mVDSettings->IFLIPH
-			//102 mVDSettings->IFLIPV
+			//131 mVDSettings->IFLIPH
+			//132 mVDSettings->IFLIPV
 			return shaderUniforms[getUniformNameForIndex(aIndex)].boolValue;
 		};
 		bool									getBoolUniformValueByName(string aName) {

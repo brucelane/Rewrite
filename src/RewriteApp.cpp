@@ -249,7 +249,7 @@ void RewriteApp::update()
 		break;
 	}
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IFPS, getAverageFps());
-	mVDSession->setFloatUniformValueByIndex(mVDSettings->IBARBEAT, getElapsedSeconds()); // TODO 20200225 remove
+	 // TODO 20200225 20200302 remove mVDSession->setFloatUniformValueByIndex(mVDSettings->IBARBEAT, getElapsedSeconds());
 	mVDSession->update();
 	/*mVideo.update();
 	mVideoPos = mVideo.getPosition();

@@ -5,7 +5,7 @@ using namespace videodromm;
 VDUIFbos::VDUIFbos(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mVDSettings = aVDSettings;
 	mVDSession = aVDSession;
-	globalUniforms = true;
+	//globalUniforms = true;
 	for (int c = 0; c < 128; c++)
 	{
 		localValues[c] = mVDSession->getFloatUniformValueByIndex(c);
@@ -360,7 +360,7 @@ void VDUIFbos::Run(const char* title) {
 					break;
 				case 5126:
 					// float
-					if (globalUniforms) {
+					if (mVDSession->getGlobal(f)) {
 						localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
 					}
 					else {
@@ -443,10 +443,10 @@ void VDUIFbos::Run(const char* title) {
 				}
 
 			} //for uniforms
-			sprintf(buf, "global %d##gu%d", globalUniforms, f);
+			sprintf(buf, "global %d##gu%d", mVDSession->getGlobal(f), f);
 			if (ImGui::Button(buf)) {
 				mVDSession->toggleGlobal(f);
-				globalUniforms = !globalUniforms;
+				//globalUniforms = !globalUniforms;
 			}
 			//if (mVDSession->getFboInputTexture(f)) ImGui::Image((void*)mVDSession->getFboInputTexture(f)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			if (mVDSession->getFboInputTexture(f)  && mShowInputTexture) ImGui::Image(mVDSession->getFboInputTexture(f), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));

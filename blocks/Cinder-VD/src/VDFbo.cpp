@@ -335,8 +335,8 @@ namespace videodromm {
 
 						break;
 					case 6: // bool
-						//IFLIPH 101
-						//IFLIPV 102
+						//IFLIPH 131
+						//IFLIPV 132
 						if (mGlobal) {
 							mShader->uniform(name, mVDAnimation->getBoolUniformValueByName(name));
 						}
