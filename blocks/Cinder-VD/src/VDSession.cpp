@@ -447,7 +447,7 @@ void VDSession::renderWarpsToFbo()
 		s = getFboListSize(); // TMP
 		if (isFboValid(i)) {
 			//warp->draw(getFboRenderedTexture(i));// BAD, mVDSession->getFboSrcArea(i));
-			warp->draw(getFboRenderedTexture(i));// BAD, mVDSession->getFboSrcArea(i));
+			warp->draw(getMixetteTexture(i));// BAD, mVDSession->getFboSrcArea(i));
 		}
 
 	}

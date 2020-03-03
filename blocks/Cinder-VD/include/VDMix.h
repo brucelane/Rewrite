@@ -170,6 +170,7 @@ namespace videodromm
 			return mFboList[aFboIndex]->getRenderedTexture();
 			
 		}
+		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex);
 		/*void							update();
 		void							updateAudio();
 		void							resize();
@@ -323,7 +324,14 @@ namespace videodromm
 		//map<int, VDMixFbo>				mMixFbos;
 		// maintain a list of fbos specific to this mix
 		VDFboList						mFboList;
+		gl::Texture::Format				fmt;
+		gl::Fbo::Format					fboFmt;
 		gl::TextureRef					mDefaultTexture;
+		//! mixette
+		gl::FboRef						mMixetteFbo;
+		gl::GlslProgRef					mGlslMixette;
+		ci::gl::Texture2dRef			mMixetteTexture;
+		string							mError;
 		//fs::path						mMixesFilepath;
 		/*
 		//! Shaders
@@ -337,7 +345,6 @@ namespace videodromm
 		map<int, ci::gl::FboRef>		mBlendFbos;
 		int								mCurrentBlend;
 		gl::GlslProgRef					mGlslMix, mGlslBlend, mGlslFeedback;
-		string							mError;
 		// render
 		void							renderMix();
 		void							renderBlend();

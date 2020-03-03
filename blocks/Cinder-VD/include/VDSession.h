@@ -378,10 +378,13 @@ namespace videodromm {
 			return mVDAnimation->getUniformIndexForName(aName);
 		};
 		
+		// Mix
 		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {
 			return mVDMix->getFboRenderedTexture(aFboIndex);
 		}
-		// Mix
+		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex) {
+			return mVDMix->getMixetteTexture(aFboIndex);
+		};
 		// RTE in release mode? 
 		//ci::gl::Texture2dRef			getRenderedTexture(bool reDraw = true) { return mVDMix->getRenderedTexture(reDraw); };
 		//string							getFboFragmentShaderText(unsigned int aFboIndex);
@@ -394,7 +397,7 @@ namespace videodromm {
 		};*/
 		/*string							getMixFboName(unsigned int aMixFboIndex);
 		ci::gl::TextureRef				getMixTexture(unsigned int aMixFboIndex = 0);
-		ci::gl::TextureRef				getMixetteTexture();
+
 		unsigned int					getMixFbosCount() { return mMixFbos.size(); };
 		ci::gl::TextureRef				getRenderTexture();
 		bool							isEnabledAlphaBlending() { return mEnabledAlphaBlending; };
@@ -647,8 +650,7 @@ namespace videodromm {
 		gl::FboRef						mRenderFbo;
 		// warp rendered texture
 		ci::gl::Texture2dRef			mRenderedTexture, mMixetteTexture;
-		// mixette
-		gl::FboRef						mMixetteFbo;*/
+		*/
 		//! fbos
 		gl::Texture::Format				fmt;
 		gl::Fbo::Format					fboFmt;
