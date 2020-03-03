@@ -36,5 +36,10 @@ namespace videodromm
 		// imgui
 		char						buf[64];
 		int							xPos, yPos;
+		bool						mUseMixette = false;
+		void setValue(unsigned int aCtrl, float aValue) {
+			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+		}
+		int							ctrl;
 	};
 }

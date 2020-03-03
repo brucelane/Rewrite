@@ -78,6 +78,8 @@ namespace videodromm
 			}
 		};
 		void									updateThumbFile() {
+			isReady = false;
+			getTexture();
 			if (shaderToLoad) shaderToLoad->getThumbTexture();
 		}
 		std::vector<ci::gl::GlslProg::Uniform>	getUniforms() { return mUniforms; };

@@ -57,7 +57,11 @@ namespace videodromm
 		}
 
 		void    Run(const char* title, unsigned int fps);
-		void	resize();
+		void resize() {
+			mIsResizing = true;
+			// disconnect ui window and io events callbacks
+			ImGui::disconnectWindow(getWindow());
+		}
 		bool	isReady() { return !mIsResizing; };
 	private:
 		// Settings
@@ -109,9 +113,7 @@ namespace videodromm
 		VDUIWarpsRef				mUIWarps;
 		bool						showUIWarps;
 		bool						mShowWarps;
-		
-		float						getMinUniformValueByIndex(unsigned int aIndex);
-		float						getMaxUniformValueByIndex(unsigned int aIndex);
+	
 		// imgui
 		char						buf[64];
 		bool						mIsResizing;
@@ -121,7 +123,7 @@ namespace videodromm
 		bool						mouseGlobal;
 		int							ctrl;
 		float						contour, iVAmount, iVFallOff, iWeight0, iWeight1, iWeight2, iWeight3, iWeight4, iWeight5, iWeight6, iWeight7;
-		void						setValue(unsigned int aCtrl, float aValue);
+		
 		bool getBoolValue(unsigned int aCtrl) {
 			return mVDSession->getBoolUniformValueByIndex(aCtrl);
 		}
@@ -134,5 +136,15 @@ namespace videodromm
 		void mToggleShowFbos() {
 			mShowFbos = !mShowFbos;
 		}
+		void setValue(unsigned int aCtrl, float aValue) {
+			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
+		}
+		float getMinUniformValueByIndex(unsigned int aIndex) {
+			return mVDSession->getMinUniformValueByIndex(aIndex);
+		}
+		float getMaxUniformValueByIndex(unsigned int aIndex) {
+			return mVDSession->getMaxUniformValueByIndex(aIndex);
+		}
+		
 	};
 }

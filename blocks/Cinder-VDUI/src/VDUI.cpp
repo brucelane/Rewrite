@@ -39,20 +39,7 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mShowWarps = true;
 	mShowFbos = true;
 }
-void VDUI::setValue(unsigned int aCtrl, float aValue) {
-	mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
-}
-float VDUI::getMinUniformValueByIndex(unsigned int aIndex) {
-	return mVDSession->getMinUniformValueByIndex(aIndex);
-}
-float VDUI::getMaxUniformValueByIndex(unsigned int aIndex) {
-	return mVDSession->getMaxUniformValueByIndex(aIndex);
-}
-void VDUI::resize() {
-	mIsResizing = true;
-	// disconnect ui window and io events callbacks
-	ImGui::disconnectWindow(getWindow());
-}
+
 void VDUI::Run(const char* title, unsigned int fps) {
 	static int currentWindowRow1 = 1;
 	static int currentWindowRow2 = 0;
@@ -330,7 +317,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 		}
 		
-		if (ImGui::TreeNode("Vertical Sliders"))
+		/*if (ImGui::TreeNode("Vertical Sliders"))
 		{
 			ImGui::Unindent();*/
 			const float spacing = 4;
