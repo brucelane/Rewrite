@@ -382,6 +382,9 @@ namespace videodromm {
 		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {
 			return mVDMix->getFboRenderedTexture(aFboIndex);
 		}
+		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex) {
+			return mVDMix->getFboTexture(aFboIndex);
+		}
 		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex) {
 			return mVDMix->getMixetteTexture(aFboIndex);
 		};

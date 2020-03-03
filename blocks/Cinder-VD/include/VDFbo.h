@@ -44,8 +44,12 @@ namespace videodromm
 			return std::make_shared<VDFbo>(aVDSettings, aVDAnimation, aShaderFilename, aTextureFilename);
 		}
 		typedef enum { UNKNOWN, IMAGE, SEQUENCE, MOVIE, CAMERA, SHARED, AUDIO, STREAM } TextureType;
-		ci::gl::Texture2dRef getRenderedTexture();
-
+		// get live rendered texture
+		ci::gl::Texture2dRef					getTexture();
+		ci::gl::Texture2dRef					getRenderedTexture() {
+			//last frame rendered
+			return mRenderedTexture;
+		}
 		bool									setFragmentString(string aFragmentShaderString, string aName = "");
 		bool									loadFragmentStringFromFile(string aFileName);
 		bool									isValid() {

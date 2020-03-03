@@ -101,7 +101,7 @@ namespace videodromm {
 		int f = 0;
 		for (auto &fbo : mFboList) {
 			if (fbo->isValid() && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.1f) {
-				fbo->getRenderedTexture()->bind(f);
+				fbo->getTexture()->bind(f);
 			}
 			f++;
 		}

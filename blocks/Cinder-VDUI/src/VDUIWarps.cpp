@@ -56,7 +56,7 @@ void VDUIWarps::Run(const char* title) {
 				ImGui::PopStyleColor(3);
 			}
 			// loop on the fbos B
-			int fbob = mVDSession->getWarpBFboIndex(w);
+			/*int fbob = mVDSession->getWarpBFboIndex(w);
 			//if (mVDSession->getFboRenderedTexture(fbob)) ImGui::Image((void*)mVDSession->getFboRenderedTexture(fbob)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			if (mVDSession->getFboRenderedTexture(fbob)) ImGui::Image(mVDSession->getFboRenderedTexture(fbob), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 			for (unsigned int b = 0; b < mVDSession->getFboListSize(); b++) {
@@ -77,7 +77,7 @@ void VDUIWarps::Run(const char* title) {
 				//sprintf(buf, "Set input fbo B to %s", mVDSession->getShaderName(b).c_str());
 				//if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 				ImGui::PopStyleColor(3);
-			}
+			}*/
 
 			// crossfade
 			/*float xFade = mVDSession->getWarpCrossfade(w);

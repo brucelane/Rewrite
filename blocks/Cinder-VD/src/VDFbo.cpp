@@ -16,6 +16,7 @@ namespace videodromm {
 		mVDAnimation = aVDAnimation;
 		// init texture
 		mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
+		mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		mUseBeginEnd = false;
 		isReady = false;
 		mType = UNKNOWN;
@@ -377,7 +378,8 @@ namespace videodromm {
 		}
 		return mRenderedTexture;
 	}
-	ci::gl::Texture2dRef VDFbo::getRenderedTexture() {
+	
+	ci::gl::Texture2dRef VDFbo::getTexture() {
 		if (mValid) {
 			if (!isReady) {
 				// render once for thumb

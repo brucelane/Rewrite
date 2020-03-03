@@ -168,7 +168,13 @@ namespace videodromm
 			if (mFboList.size() == 0) return mDefaultTexture;
 			if (aFboIndex > mFboList.size() - 1) aFboIndex = 0;
 			return mFboList[aFboIndex]->getRenderedTexture();
-			
+
+		}
+		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex) {
+			if (mFboList.size() == 0) return mDefaultTexture;
+			if (aFboIndex > mFboList.size() - 1) aFboIndex = 0;
+			return mFboList[aFboIndex]->getTexture();
+
 		}
 		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex);
 		/*void							update();
