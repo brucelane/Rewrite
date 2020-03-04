@@ -672,6 +672,8 @@ namespace videodromm {
 				mWarpList[aWarpIndex]->setName(mVDMix->getFboName(mWarpList[aWarpIndex]->getAFboIndex()));
 			}
 		}
+		void							loadFbos();
+
 		void							loadWarps() {
 			int i = 0;
 			for (auto &warp : mWarpList) {

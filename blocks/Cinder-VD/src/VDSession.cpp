@@ -44,8 +44,8 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 		// otherwise create a warp from scratch
 		mWarpList.push_back(WarpPerspectiveBilinear::create());
 	}
-
-	loadWarps();
+	loadFbos();
+	//loadWarps();
 	// init fbo format
 	//fmt.setWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
 	//fmt.setBorderColor(Color::black());
@@ -98,31 +98,88 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 		oStream.close();
 		save();
 	}
-	/*
-	// initialize the shaders list
-	initShaderList();
-	mMixesFilepath = getAssetPath("") / "mixes.xml";
+}
+void VDSession::loadFbos() {
+	// for migration begin
+	/*int i = 0;
+	for (auto &warp : mWarpList) {
+		i = math<int>::min(i, mWarpList.size() - 1);
+		string jsonFileName = "warp" + toString(i) + ".json";
+		fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
+		if (fs::exists(jsonFile)) {
+			JsonTree json(loadFile(jsonFile));
+			warp->fromJson(json);
+			if (json[0].hasChild("warp")) {
+				JsonTree warpJsonTree(json[0].getChild("warp"));
+				string shaderFileName = (warpJsonTree.hasChild("ashaderfilename")) ? warpJsonTree.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
+				string textureFileName = (warpJsonTree.hasChild("atexturefilename")) ? warpJsonTree.getValueForKey<string>("atexturefilename") : "audio";
+				createFboShaderTexture(shaderFileName, textureFileName);
 
-	//if (fs::exists(mMixesFilepath)) {
-		// load textures from file if one exists
-		// TODO readSettings(mVDSettings, mVDAnimation, loadFile(mMixesFilepath));
-		//}
-		// render fbo
-	mRenderFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);
-	mMixetteFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);
+				warp->setName(shaderFileName + "-" + textureFileName);
+				warp->setAFboIndex(i);
+				warp->setBFboIndex(i);
+				warp->setAShaderIndex(i);
+				warp->setBShaderIndex(i);
+				warp->setAShaderFilename(shaderFileName);
+				warp->setBShaderFilename(shaderFileName);
+				warp->setATextureFilename(textureFileName);
+				warp->setBTextureFilename(textureFileName);
+			}
+			i++;
+		}
+	} // for migration end
+	mVDMix->saveFbos();*/
+	int f = 0;
+	bool found = true; 
+	string shaderFileName; 
+	string textureFileName;
+	while (found) {
+		string jsonFileName = "fbo" + toString(f) + ".json";
+		fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
+		if (fs::exists(jsonFile)) {
+			JsonTree json(loadFile(jsonFile));
+			if (json.hasChild("shader")) {
+				JsonTree shaderJsonTree(json.getChild("shader"));
+				shaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
+			}
+			if (json.hasChild("texture")) {
+				JsonTree textureJsonTree(json.getChild("texture"));
+				textureFileName = (textureJsonTree.hasChild("texturename")) ? textureJsonTree.getValueForKey<string>("texturename") : "audio";
+			}
+			createFboShaderTexture(shaderFileName, textureFileName);
+			f++;
+		}
+		else {
+			found = false;
+		}
+	} //while
 
-	for (size_t i = 0; i < mVDAnimation->getBlendModesCount(); i++)
-	{
-		mBlendFbos[i] = gl::Fbo::create(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight, fboFmt);
-	}
+}
+/*
+// initialize the shaders list
+initShaderList();
+mMixesFilepath = getAssetPath("") / "mixes.xml";
 
-	try
-	{
-		mGlslMix = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getMixFragmentShaderString());
-		mGlslBlend = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getMixFragmentShaderString());
-		mGlslHydra = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getHydraFragmentShaderString());
-		mGlslMixette = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getMixetteFragmentShaderString());
-		mGlslRender = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getPostFragmentShaderString());
+//if (fs::exists(mMixesFilepath)) {
+	// load textures from file if one exists
+	// TODO readSettings(mVDSettings, mVDAnimation, loadFile(mMixesFilepath));
+	//}
+	// render fbo
+mRenderFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);
+mMixetteFbo = gl::Fbo::create(mVDSettings->mRenderWidth, mVDSettings->mRenderHeight, fboFmt);
+
+for (size_t i = 0; i < mVDAnimation->getBlendModesCount(); i++)
+{
+	mBlendFbos[i] = gl::Fbo::create(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight, fboFmt);
+}
+
+try
+{
+	mGlslMix = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getMixFragmentShaderString());
+	mGlslBlend = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getMixFragmentShaderString());
+	mGlslHydra = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getHydraFragmentShaderString());
+	mGlslMixette = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getMixetteFragmentShaderString());
+	mGlslRender = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getPostFragmentShaderString());
 */
 
 /*fs::path mPostFilePath = getAssetPath("") / "post.glsl";
@@ -165,7 +222,7 @@ mHydraUniformsValuesString = "";
 mHydraFbo = gl::Fbo::create(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY), fboFmt);
 mRenderFbo = gl::Fbo::create(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY), fboFmt);
 */
-}
+
 
 VDSessionRef VDSession::create(VDSettingsRef aVDSettings)
 {

@@ -1,0 +1,10 @@
+{
+   "shader" : {
+      "shadername" : "transparent.fs",
+      "shadertype" : "fs"
+   },
+   "texture" : {
+      "texturename" : "4.png",
+      "texturetype" : "image"
+   }
+}

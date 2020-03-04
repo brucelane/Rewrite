@@ -1,65 +1,43 @@
 [
    {
-      "adaptive" : true,
+      "adaptive" : false,
       "linear" : false,
       "resolution" : 16,
       "warp" : {
-         "afboindex" : 2,
+         "afboindex" : 0,
          "ashaderfilename" : "transparent.fs",
-         "ashaderindex" : 2,
-         "atexturefilename" : "4.png",
-         "bfboindex" : 2,
+         "ashaderindex" : 0,
+         "atexturefilename" : "1.png",
+         "bfboindex" : 0,
          "brightness" : 1,
-         "bshaderfilename" : "default.fs",
-         "bshaderindex" : 2,
-         "btexturefilename" : "1.png",
+         "bshaderfilename" : "",
+         "bshaderindex" : 0,
+         "btexturefilename" : "",
          "controlpoints" : [
             {
                "controlpoint" : 0,
-               "x" : 0,
-               "y" : 0
+               "x" : 0.016406199999999999,
+               "y" : 0.041666700000000001
             },
             {
                "controlpoint" : 1,
-               "x" : 0,
-               "y" : 1
+               "x" : 0.020312500000000001,
+               "y" : 0.62222200000000005
             },
             {
                "controlpoint" : 2,
-               "x" : 1,
-               "y" : 0
-            },
-            {
-               "controlpoint" : 3,
-               "x" : 1,
-               "y" : 1
-            }
-         ],
-         "corners" : [
-            {
-               "corner" : 0,
-               "x" : 0.51796900000000001,
+               "x" : 0.48828100000000002,
                "y" : 0.031944399999999998
             },
             {
-               "corner" : 1,
-               "x" : 0.983012,
-               "y" : 0.0488677
-            },
-            {
-               "corner" : 2,
-               "x" : 0.976217,
-               "y" : 0.23718700000000001
-            },
-            {
-               "corner" : 3,
-               "x" : 0.53359400000000001,
-               "y" : 0.158333
+               "controlpoint" : 3,
+               "x" : 0.48046899999999998,
+               "y" : 0.66388899999999995
             }
          ],
          "crossfade" : -431602080,
          "height" : 2,
-         "method" : "perspectivebilinear",
+         "method" : "bilinear",
          "mixfboindex" : 0,
          "width" : 2
       }

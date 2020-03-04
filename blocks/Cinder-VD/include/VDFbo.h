@@ -83,7 +83,7 @@ namespace videodromm
 			if (shaderToLoad) shaderToLoad->getThumbTexture();
 		}
 		std::vector<ci::gl::GlslProg::Uniform>	getUniforms() { return mUniforms; };
-		ci::JsonTree							toJson(bool save = false) const;
+		ci::JsonTree							toJson(bool save, unsigned int aIndex) const;
 		// uniforms
 		bool									getGlobal() {
 			return mGlobal;
@@ -202,10 +202,7 @@ namespace videodromm
 
 		gl::Texture::Format				fmt;
 		gl::Fbo::Format					fboFmt;
-		//Area							mSrcArea;
-		//bool							mFlipV;
-		//bool							mFlipH;
-		bool							mUseBeginEnd;
+		//bool							mUseBeginEnd;
 		bool							isReady;
 		ci::gl::Texture2dRef			mRenderedTexture;
 		ci::gl::Texture2dRef			getFboTexture();

@@ -82,7 +82,8 @@
 					<luminance red="0.5" green="0.5" blue="0.5"/>
 				</blend>
 			</warp>
-		</map>		<map id="7" display="1">
+		</map>
+		<map id="7" display="1">
 			<warp method="bilinear" width="2" height="2" brightness="1" resolution="16" linear="0" adaptive="0">
 				<controlpoint x="0.513281" y="0.168056"/>
 				<controlpoint x="0.532276" y="0.519666"/>
@@ -94,7 +95,8 @@
 					<luminance red="0.5" green="0.5" blue="0.5"/>
 				</blend>
 			</warp>
-		</map>		<map id="8" display="1">
+		</map>
+		<map id="8" display="1">
 			<warp method="bilinear" width="2" height="2" brightness="1" resolution="16" linear="0" adaptive="0">
 				<controlpoint x="0.513281" y="0.168056"/>
 				<controlpoint x="0.532276" y="0.519666"/>
@@ -106,12 +108,13 @@
 					<luminance red="0.5" green="0.5" blue="0.5"/>
 				</blend>
 			</warp>
-		</map>		<map id="9" display="1">
-			<warp method="bilinear" width="2" height="2" brightness="1" resolution="16" linear="0" adaptive="0">
-				<controlpoint x="0.513281" y="0.168056"/>
-				<controlpoint x="0.532276" y="0.519666"/>
-				<controlpoint x="0.942187" y="0.297222"/>
-				<controlpoint x="0.911719" y="0.488889"/>
+		</map>
+		<map id="9" display="1">
+			<warp method="bilinear" width="2" height="2" brightness="1" resolution="16" linear="0" adaptive="1">
+				<controlpoint x="0" y="0"/>
+				<controlpoint x="0" y="1"/>
+				<controlpoint x="1" y="0"/>
+				<controlpoint x="1" y="1"/>
 				<blend exponent="2">
 					<edges left="0" top="0" right="1" bottom="1"/>
 					<gamma red="1" green="1" blue="1"/>

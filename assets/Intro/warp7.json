@@ -4,35 +4,35 @@
       "linear" : false,
       "resolution" : 16,
       "warp" : {
-         "afboindex" : 3,
-         "ashaderfilename" : "MatrixRain.fs",
-         "ashaderindex" : 3,
-         "atexturefilename" : "0.jpg",
-         "bfboindex" : 3,
+         "afboindex" : 0,
+         "ashaderfilename" : "transparent.fs",
+         "ashaderindex" : 0,
+         "atexturefilename" : "1.png",
+         "bfboindex" : 0,
          "brightness" : 1,
-         "bshaderfilename" : "MatrixRain.fs",
-         "bshaderindex" : 3,
-         "btexturefilename" : "0.jpg",
+         "bshaderfilename" : "",
+         "bshaderindex" : 0,
+         "btexturefilename" : "",
          "controlpoints" : [
             {
                "controlpoint" : 0,
-               "x" : 0.016406199999999999,
-               "y" : 0.041666700000000001
+               "x" : 0.51328099999999999,
+               "y" : 0.16805600000000001
             },
             {
                "controlpoint" : 1,
-               "x" : 0.020312500000000001,
-               "y" : 0.62222200000000005
+               "x" : 0.53227599999999997,
+               "y" : 0.51966599999999996
             },
             {
                "controlpoint" : 2,
-               "x" : 0.48828100000000002,
-               "y" : 0.031944399999999998
+               "x" : 0.942187,
+               "y" : 0.29722199999999999
             },
             {
                "controlpoint" : 3,
-               "x" : 0.48046899999999998,
-               "y" : 0.66388899999999995
+               "x" : 0.91171899999999995,
+               "y" : 0.48888900000000002
             }
          ],
          "crossfade" : -431602080,

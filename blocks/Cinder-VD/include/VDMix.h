@@ -112,8 +112,10 @@ namespace videodromm
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getTextureName();
 		};
 		void							saveFbos() {
+			unsigned int i = 0;
 			for (auto &fbo : mFboList) {
-				JsonTree		json = fbo->toJson(true);
+				JsonTree		json = fbo->toJson(true, i);
+				i++;
 			}
 		};
 		std::vector<ci::gl::GlslProg::Uniform>			getUniforms(unsigned int aFboIndex = 0) {

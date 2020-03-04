@@ -349,6 +349,10 @@ void VDUI::Run(const char* title, unsigned int fps) {
 				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 7.0f, 0.7f, 0.5f));
 				ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 7.0f, 0.9f, 0.9f));
 				ImGui::Image((void*)mVDSession->getFboRenderedTexture(m)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				string tooltip = mVDSession->getFboName(m) + " - " + mVDSession->getFboInputTextureName(m);
+				sprintf(buf, "%s", tooltip.c_str());
+				
+				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 				ImGui::SameLine();
 				if (ImGui::VSliderFloat("##v", ImVec2(18, 60), &iWeight, 0.0f, 1.0f, ""))
 				{
@@ -360,8 +364,6 @@ void VDUI::Run(const char* title, unsigned int fps) {
 				ImGui::PopID();
 			}
 			ImGui::PopID();
-
-
 			ImGui::PopStyleVar();
 
 			ImGui::Indent();

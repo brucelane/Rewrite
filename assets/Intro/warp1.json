@@ -1,15 +1,15 @@
 [
    {
       "warp" : {
-         "afboindex" : 1,
+         "afboindex" : 0,
          "ashaderfilename" : "transparent.fs",
-         "ashaderindex" : 1,
-         "atexturefilename" : "2.png",
-         "bfboindex" : 1,
+         "ashaderindex" : 0,
+         "atexturefilename" : "1.png",
+         "bfboindex" : 0,
          "brightness" : 1,
-         "bshaderfilename" : "audio.fs",
-         "bshaderindex" : 1,
-         "btexturefilename" : "audio",
+         "bshaderfilename" : "",
+         "bshaderindex" : 0,
+         "btexturefilename" : "",
          "controlpoints" : [
             {
                "controlpoint" : 0,

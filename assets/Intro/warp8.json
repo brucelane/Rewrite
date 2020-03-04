@@ -1,38 +1,38 @@
 [
    {
-      "adaptive" : false,
+      "adaptive" : true,
       "linear" : false,
       "resolution" : 16,
       "warp" : {
-         "afboindex" : 4,
+         "afboindex" : 7,
          "ashaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
-         "ashaderindex" : 4,
+         "ashaderindex" : 0,
          "atexturefilename" : "audio",
-         "bfboindex" : 4,
+         "bfboindex" : 0,
          "brightness" : 1,
-         "bshaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
-         "bshaderindex" : 4,
-         "btexturefilename" : "audio",
+         "bshaderfilename" : "",
+         "bshaderindex" : 0,
+         "btexturefilename" : "",
          "controlpoints" : [
             {
                "controlpoint" : 0,
-               "x" : 0.51328099999999999,
-               "y" : 0.16805600000000001
+               "x" : 0,
+               "y" : 0
             },
             {
                "controlpoint" : 1,
-               "x" : 0.53227599999999997,
-               "y" : 0.51966599999999996
+               "x" : 0,
+               "y" : 1
             },
             {
                "controlpoint" : 2,
-               "x" : 0.942187,
-               "y" : 0.29722199999999999
+               "x" : 1,
+               "y" : 0
             },
             {
                "controlpoint" : 3,
-               "x" : 0.91171899999999995,
-               "y" : 0.48888900000000002
+               "x" : 1,
+               "y" : 1
             }
          ],
          "crossfade" : -431602080,

@@ -17,7 +17,7 @@ namespace videodromm {
 		// init texture
 		mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
-		mUseBeginEnd = false;
+		//mUseBeginEnd = false;
 		isReady = false;
 		mType = UNKNOWN;
 		mStatus = "";
@@ -391,7 +391,7 @@ namespace videodromm {
 		return mRenderedTexture;
 	}
 	//! to json
-	JsonTree	VDFbo::toJson(bool save) const
+	JsonTree	VDFbo::toJson(bool save, unsigned int aIndex) const
 	{
 		JsonTree		json;
 		JsonTree shader = ci::JsonTree::makeArray("shader");
@@ -407,6 +407,9 @@ namespace videodromm {
 			string jsonFileName = mShaderName + ".json";
 			fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
 			json.write(jsonFile);
+			string jsonFboFileName = "fbo" + toString(aIndex) + ".json";
+			fs::path jsonFboFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFboFileName;
+			json.write(jsonFboFile);
 		}
 		return json;
 	}

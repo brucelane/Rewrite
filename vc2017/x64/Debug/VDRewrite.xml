@@ -2,13 +2,13 @@
 <settings>
 	<AutoLayout value="1"/>
 	<Standalone value="0"/>
-	<MainWindowWidth value="1280"/>
-	<MainWindowHeight value="720"/>
+	<MainWindowWidth value="1920"/>
+	<MainWindowHeight value="1080"/>
 	<MainWindowX value="0"/>
 	<MainWindowY value="0"/>
-	<RenderWidth value="1280"/>
-	<RenderHeight value="720"/>
-	<RenderX value="1024"/>
+	<RenderWidth value="3200"/>
+	<RenderHeight value="1080"/>
+	<RenderX value="1920"/>
 	<RenderY value="0"/>
 	<AspectRatio value="0.5625"/>
 	<FboWidth value="1280"/>
@@ -28,7 +28,7 @@
 	<IsRouter value="0"/>
 	<IsWebSocketsServer value="0"/>
 	<WebSocketsProtocol value="ws://"/>
-	<WebSocketsHost value="127.0.0.1"/>
+	<WebSocketsHost value="10.0.7.49"/>
 	<WebSocketsPort value="8088"/>
 	<Info value=""/>
 	<AssetsPath value="Intro"/>

@@ -10,9 +10,9 @@
          "atexturefilename" : "1.png",
          "bfboindex" : 0,
          "brightness" : 1,
-         "bshaderfilename" : "inputImage.fs",
+         "bshaderfilename" : "",
          "bshaderindex" : 0,
-         "btexturefilename" : "1.png",
+         "btexturefilename" : "",
          "controlpoints" : [
             {
                "controlpoint" : 0,
