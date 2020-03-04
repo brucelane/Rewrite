@@ -307,7 +307,7 @@ namespace videodromm {
 					case 1: // sampler2D
 						mShader->uniform(name, 0);
 						break;
-					case GL_FLOAT_VEC2: // vec2
+					case 2://GL_FLOAT_VEC2: // vec2
 						if (name == "RENDERSIZE") {
 							//mShader->uniform(name, vec2(mTexture->getWidth(), mTexture->getHeight()));
 							mShader->uniform(name, vec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
@@ -316,10 +316,10 @@ namespace videodromm {
 							mShader->uniform(name, mVDAnimation->getVec2UniformValueByName(name));
 						}
 						break;
-					case GL_FLOAT_VEC3: // vec3
+					case 3://GL_FLOAT_VEC3: // vec3
 						mShader->uniform(name, mVDAnimation->getVec3UniformValueByName(name));
 						break;
-					case GL_FLOAT_VEC4: // vec4
+					case 4://GL_FLOAT_VEC4: // vec4
 						mShader->uniform(name, mVDAnimation->getVec4UniformValueByName(name));
 						break;
 					case 5: // int
