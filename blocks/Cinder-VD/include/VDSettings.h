@@ -62,7 +62,7 @@ namespace videodromm {
 		static const int			IWEIGHT5 = 36;
 		static const int			IWEIGHT6 = 37;
 		static const int			IWEIGHT7 = 38;
-		static const int			IELAPSED = 39;
+		static const int			IWEIGHT8 = 39; // 20200304 was IELAPSED
 
 		static const int			ICONTOUR = 40;
 		static const int			IROTATIONSPEED = 41;
@@ -72,7 +72,7 @@ namespace videodromm {
 		static const int			IVAMOUNT = 45;
 		static const int			IVFALLOFF = 46;
 		static const int			TIME = 47;
-		static const int			IPHASE = 48;
+		//static const int			IPHASE = 48;
 		static const int			ITIMEFACTOR = 49;//iTimeFactor
 		
 		// int

@@ -119,7 +119,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createFloatUniform("iResolutionY", mVDSettings->IRESY, mVDSettings->mRenderHeight, 240.01f, 2160.0f); // 30
 
 		// weight mix fbo texture 0
-		createFloatUniform("iWeight0", mVDSettings->IWEIGHT0, 1.0f); // 31
+		createFloatUniform("iWeight0", mVDSettings->IWEIGHT0, 0.0f); // 31
 		// weight texture 1
 		createFloatUniform("iWeight1", mVDSettings->IWEIGHT1, 0.0f); // 32
 		// weight texture 2
@@ -134,8 +134,10 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createFloatUniform("iWeight6", mVDSettings->IWEIGHT6, 0.0f); // 37
 		// weight texture 7
 		createFloatUniform("iWeight7", mVDSettings->IWEIGHT7, 0.0f); // 38
+		// weight texture 8 
+		createFloatUniform("iWeight8", mVDSettings->IWEIGHT8, 0.0f); // 39
 		// elapsed in bar 
-		createFloatUniform("iElapsed", mVDSettings->IELAPSED, 0.0f); // 39
+		//createFloatUniform("iElapsed", mVDSettings->IELAPSED, 0.0f); // 39
 
 		// contour
 		createFloatUniform("iContour", mVDSettings->ICONTOUR, 0.0f, 0.0f, 0.5f); // 40
@@ -155,7 +157,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		// hydra time
 		//createFloatUniform("time", mVDSettings->TIME, 0.0f); // 47
 		// current beat
-		createFloatUniform("iPhase", mVDSettings->IPHASE, 0.0f); // 48
+		//createFloatUniform("iPhase", mVDSettings->IPHASE, 0.0f); // 48
 		// iTimeFactor
 		createFloatUniform("iTimeFactor", mVDSettings->ITIMEFACTOR, 1.0f); // 49
 		// int
@@ -909,7 +911,7 @@ void VDAnimation::update() {
 	{
 		// Ableton Link from openframeworks websockets
 		shaderUniforms["TIME"].floatValue = shaderUniforms["TIME"].floatValue * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;
-		shaderUniforms["iElapsed"].floatValue = shaderUniforms["iPhase"].floatValue * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;
+		//shaderUniforms["iElapsed"].floatValue = shaderUniforms["iPhase"].floatValue * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;
 		// sos
 		// IBARBEAT = IBAR * 4 + IBEAT
 		int current = getIntUniformValueByIndex(mVDSettings->IBARBEAT);
@@ -925,7 +927,7 @@ void VDAnimation::update() {
 	else
 	{
 		shaderUniforms["TIME"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;//mVDSettings->iTimeFactor;
-		shaderUniforms["iElapsed"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;//mVDSettings->iTimeFactor;
+		//shaderUniforms["iElapsed"].floatValue = getElapsedSeconds() * mVDSettings->iSpeedMultiplier * shaderUniforms["iTimeFactor"].floatValue;//mVDSettings->iTimeFactor;
 	}
 	// iResolution
 	shaderUniforms["iResolution"].vec3Value = vec3(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"), 1.0);

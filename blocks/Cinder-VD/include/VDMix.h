@@ -159,7 +159,6 @@ namespace videodromm
 			
 		}
 		unsigned int									createFboShaderTexture(string aShaderFilename, string aTextureFilename) {
-			// initialize rtn to 0 to force creation
 			unsigned int rtn = 0;
 			VDFboRef fboRef = VDFbo::create(mVDSettings, mVDAnimation, aShaderFilename, aTextureFilename);
 			mFboList.push_back(fboRef);

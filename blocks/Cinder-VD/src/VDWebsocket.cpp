@@ -206,14 +206,14 @@ void VDWebsocket::parseMessage(string msg) {
 							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->ITIME, jsonElement->getChild("beat").getValue<float>());
 							CI_LOG_I("time:" + toString(mVDSettings->ITIME) + " " + toString(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->ITIME)));
 							break;
-						case 4:
+						/*case 4:
 							// change phase
 							mVDAnimation->setFloatUniformValueByIndex(mVDSettings->IPHASE, jsonElement->getChild("phase").getValue<float>());
 							mVDAnimation->setIntUniformValueByIndex(mVDSettings->IBEAT, (int)jsonElement->getChild("phase").getValue<float>());
 							CI_LOG_I("phase:" + toString(mVDSettings->IPHASE) + " " + toString(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IPHASE))
 								+ "beat:" + toString(mVDSettings->IBEAT) + " " + toString(mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBEAT))
 							);
-							break;
+							break;*/
 						default:
 							break;
 						}

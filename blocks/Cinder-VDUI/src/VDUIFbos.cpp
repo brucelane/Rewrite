@@ -296,12 +296,13 @@ void VDUIFbos::Run(const char* title) {
 	/*
 	** fbos
 	*/
+	
 	for (unsigned int f = 0; f < mVDSession->getFboListSize(); f++) {
 		xPos = mVDSettings->uiMargin + mVDSettings->uiXPosCol1 + ((mVDSettings->uiLargePreviewW + mVDSettings->uiMargin) * (f));//+1
 		yPos = mVDSettings->uiYPosRow3;
 		ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargePreviewW, mVDSettings->uiLargePreviewH * 2), ImGuiSetCond_Once);
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
-
+		ImGui::PushStyleColor(ImGuiCol_TitleBg, (ImVec4)ImColor::HSV(f / 7.0f, 0.7f, 0.7f));
 		sprintf(buf, "%s##fbolbl%d", mVDSession->getFboName(f).c_str(), f);
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
@@ -471,6 +472,7 @@ void VDUIFbos::Run(const char* title) {
 			ImGui::PopID();
 		}
 		ImGui::End();
+		ImGui::PopStyleColor(1);
 	} // for getFboList
 
 #pragma endregion fbos

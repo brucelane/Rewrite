@@ -97,12 +97,12 @@ void VDUIAudio::Run(const char* title) {
 			//			ImGui::Checkbox("Playing", &mVDSettings->mIsPlaying);
 			ImGui::Text("Tempo %.2f ", mVDSession->getBpm());
 
-			ImGui::Text("Elapsed %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->IELAPSED));
+			//ImGui::Text("Elapsed %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->IELAPSED));
 			// duration			
 			ImGui::SameLine();
 			ImGui::Text("duration", &mVDSettings->iBarDuration);
-			ImGui::SameLine();
-			ImGui::Text("phase %.2f ", mVDSession->getFloatUniformValueByIndex(mVDSettings->IPHASE));
+			//ImGui::SameLine();
+			//ImGui::Text("phase %.2f ", mVDSession->getFloatUniformValueByIndex(mVDSettings->IPHASE));
 			// BUG taptempo
 			if (ImGui::Button("Tap toggle")) { toggleSpinalTap(); }
 			if (spinalTap) {

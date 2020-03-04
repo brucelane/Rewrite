@@ -423,7 +423,24 @@ void VDRouter::shutdown() {
 	mMidiOut2.closePort();
 
 }
-
+void VDRouter::saveMidiPorts() {
+	JsonTree		json;
+	JsonTree midiin = ci::JsonTree::makeArray("midiin");
+	for (int j = 0; j < mMidiInputs.size(); j++)
+	{
+		midiin.addChild(ci::JsonTree("midiinname", mMidiInputs[j].portName));
+	}
+	json.addChild(midiin);
+	JsonTree midiout = ci::JsonTree::makeArray("midiout");
+	for (int j = 0; j < mMidiOutputs.size(); j++)
+	{
+		midiout.addChild(ci::JsonTree("midioutname", mMidiOutputs[j].portName));
+	}
+	json.addChild(midiout);
+	string jsonFileName = "midi.json";
+	fs::path jsonFile = getAssetPath("") / jsonFileName;
+	json.write(jsonFile);
+}
 void VDRouter::midiSetup() {
 	stringstream ss;
 	ss << "setupMidi ";
@@ -482,6 +499,7 @@ void VDRouter::midiSetup() {
 	else {
 		ss << "no midi out Ports found";
 	}
+	saveMidiPorts();
 	midiControlType = "none";
 	midiControl = midiPitch = midiVelocity = midiNormalizedValue = midiValue = midiChannel = 0;
 	ss << std::endl;

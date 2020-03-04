@@ -4,10 +4,10 @@
       "linear" : false,
       "resolution" : 16,
       "warp" : {
-         "afboindex" : 7,
-         "ashaderfilename" : "PerlinNoiseInPolarCoordinate.fs",
+         "afboindex" : 0,
+         "ashaderfilename" : "transparent.fs",
          "ashaderindex" : 0,
-         "atexturefilename" : "audio",
+         "atexturefilename" : "1.png",
          "bfboindex" : 0,
          "brightness" : 1,
          "bshaderfilename" : "",

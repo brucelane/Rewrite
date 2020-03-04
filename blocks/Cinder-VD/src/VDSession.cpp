@@ -56,14 +56,16 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mZoom = 1.0f;
 	mSelectedWarp = 0;*/
 	// Modes
-	mModesList[0] = "F1 Mixette";
-	mModesList[1] = "F2 Mix";
-	mModesList[2] = "F3 Hydra";
-	mModesList[3] = "F4 Fbo0";
-	mModesList[4] = "F5 Fbo1";
-	mModesList[5] = "F6 Fbo2";
-	mModesList[6] = "F7 Fbo3";
-	mModesList[7] = "F8 Mixette";
+	mModesList[0] = "Fbo0";
+	mModesList[1] = "Fbo1";
+	mModesList[2] = "Fbo2";
+	mModesList[3] = "Fbo3";
+	mModesList[4] = "Fbo4";
+	mModesList[5] = "Fbo5";
+	mModesList[6] = "Fbo6";
+	mModesList[7] = "Fbo7";
+	mModesList[8] = "Fbo8";
+	mModesList[9] = "Fbo9";
 	// Websocket
 	mVDWebsocket = VDWebsocket::create(mVDSettings, mVDAnimation);
 	// Message router
