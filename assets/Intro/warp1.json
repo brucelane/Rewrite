@@ -2,9 +2,9 @@
    {
       "warp" : {
          "afboindex" : 1,
-         "ashaderfilename" : "audio.fs",
+         "ashaderfilename" : "transparent.fs",
          "ashaderindex" : 1,
-         "atexturefilename" : "audio",
+         "atexturefilename" : "2.png",
          "bfboindex" : 1,
          "brightness" : 1,
          "bshaderfilename" : "audio.fs",

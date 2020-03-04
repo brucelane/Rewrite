@@ -5,14 +5,14 @@
       "resolution" : 16,
       "warp" : {
          "afboindex" : 2,
-         "ashaderfilename" : "audio.fs",
+         "ashaderfilename" : "transparent.fs",
          "ashaderindex" : 2,
-         "atexturefilename" : "audio",
+         "atexturefilename" : "3.png",
          "bfboindex" : 2,
          "brightness" : 1,
-         "bshaderfilename" : "audio.fs",
+         "bshaderfilename" : "default.fs",
          "bshaderindex" : 2,
-         "btexturefilename" : "audio",
+         "btexturefilename" : "1.png",
          "controlpoints" : [
             {
                "controlpoint" : 0,
@@ -38,8 +38,8 @@
          "corners" : [
             {
                "corner" : 0,
-               "x" : 0.53515599999999997,
-               "y" : 0.044444400000000002
+               "x" : 0.51796900000000001,
+               "y" : 0.031944399999999998
             },
             {
                "corner" : 1,
@@ -53,8 +53,8 @@
             },
             {
                "corner" : 3,
-               "x" : 0.56285399999999997,
-               "y" : 0.18474399999999999
+               "x" : 0.53359400000000001,
+               "y" : 0.158333
             }
          ],
          "crossfade" : -431602080,

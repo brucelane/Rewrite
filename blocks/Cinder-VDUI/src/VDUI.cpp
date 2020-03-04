@@ -327,7 +327,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			for (int m = 0; m < mVDSession->getModesCount(); m++)
 			{
 				if (m > 0) ImGui::SameLine();
-				if (mVDSession->getMode() == m) {
+				/*if (mVDSession->getMode() == m) {
 					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 7.0f, 1.0f, 0.5f));
 				}
 				else {
@@ -340,7 +340,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 				sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 				ImGui::PopStyleColor(3);
-				ImGui::SameLine();
+				ImGui::SameLine();*/
 				ctrl = mVDSettings->IWEIGHT0 + m;
 				float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
 				ImGui::PushID(m);
@@ -348,6 +348,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 7.0f, 0.6f, 0.5f));
 				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 7.0f, 0.7f, 0.5f));
 				ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 7.0f, 0.9f, 0.9f));
+				ImGui::Image((void*)mVDSession->getFboRenderedTexture(m)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+				ImGui::SameLine();
 				if (ImGui::VSliderFloat("##v", ImVec2(18, 60), &iWeight, 0.0f, 1.0f, ""))
 				{
 					setValue(ctrl, iWeight);

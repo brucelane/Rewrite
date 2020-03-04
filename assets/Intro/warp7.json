@@ -1,0 +1,45 @@
+[
+   {
+      "adaptive" : false,
+      "linear" : false,
+      "resolution" : 16,
+      "warp" : {
+         "afboindex" : 3,
+         "ashaderfilename" : "MatrixRain.fs",
+         "ashaderindex" : 3,
+         "atexturefilename" : "0.jpg",
+         "bfboindex" : 3,
+         "brightness" : 1,
+         "bshaderfilename" : "MatrixRain.fs",
+         "bshaderindex" : 3,
+         "btexturefilename" : "0.jpg",
+         "controlpoints" : [
+            {
+               "controlpoint" : 0,
+               "x" : 0.016406199999999999,
+               "y" : 0.041666700000000001
+            },
+            {
+               "controlpoint" : 1,
+               "x" : 0.020312500000000001,
+               "y" : 0.62222200000000005
+            },
+            {
+               "controlpoint" : 2,
+               "x" : 0.48828100000000002,
+               "y" : 0.031944399999999998
+            },
+            {
+               "controlpoint" : 3,
+               "x" : 0.48046899999999998,
+               "y" : 0.66388899999999995
+            }
+         ],
+         "crossfade" : -431602080,
+         "height" : 2,
+         "method" : "bilinear",
+         "mixfboindex" : 0,
+         "width" : 2
+      }
+   }
+]
