@@ -369,7 +369,12 @@ void VDWebsocket::wsConnect() {
 			
 		});
 		mServer.connectFailEventHandler([&](string err) {
-			mVDSettings->mWebSocketsMsg = "\nWS Error";
+			/*mVDSettings->mWebSocketsMsg = "\nWS Error";
+			
+			if (!err.empty()) {
+				mVDSettings->mWebSocketsMsg += ": " + err;
+			}*/
+			mVDSettings->mErrorMsg = "\nWS Error";
 			
 			if (!err.empty()) {
 				mVDSettings->mWebSocketsMsg += ": " + err;
@@ -426,11 +431,14 @@ void VDWebsocket::wsConnect() {
 			mVDSettings->mWebSocketsMsg += "\nDisconnected";
 		});
 		mClient.connectFailEventHandler([&](string err) {
-			mVDSettings->mWebSocketsMsg = "\nWS Error";			
+			/*mVDSettings->mWebSocketsMsg = "\nWS Error";			
 			if (!err.empty()) {
 				mVDSettings->mWebSocketsMsg += ": " + err;
-			}
-		});
+			}*/
+			mVDSettings->mErrorMsg = "\nWS Error";
+			if (!err.empty()) {
+				mVDSettings->mErrorMsg += ": " + err;
+			}		});
 		mClient.connectInterruptEventHandler([&]() {
 			mVDSettings->mWebSocketsMsg += "\nWS Interrupted";
 		});

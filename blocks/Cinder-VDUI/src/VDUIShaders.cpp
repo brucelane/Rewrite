@@ -95,10 +95,10 @@ void VDUIShaders::Run(const char* title) {
 			for (unsigned int t = 0; t < mVDSession->getInputTexturesCount(); t++) {
 				if (t > 0 && (t % 6 != 0)) ImGui::SameLine();
 				if (mVDSession->getFboInputTextureIndex(s) == t) {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 1.0f, 1.0f));
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 16.0f, 1.0f, 1.0f));
 				}
 				else {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 7.0f, 0.1f, 0.1f));
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(t / 16.0f, 0.1f, 0.1f));
 				}
 				sprintf(buf, "%d##fboit%d%d", t, s, t);
 				if (ImGui::Button(buf)) mVDSession->setFboInputTexture(s, t);
@@ -108,13 +108,13 @@ void VDUIShaders::Run(const char* title) {
 				ImGui::PopStyleColor(1);
 			}
 			if (mVDSession->isFboFlipV(s)) {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 1.0f, 1.0f));
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 16.0f, 1.0f, 1.0f));
 			}
 			else {
-				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 7.0f, 0.1f, 0.1f));
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(s / 16.0f, 0.1f, 0.1f));
 			}
-			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(s / 7.0f, 0.7f, 0.7f));
-			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(s / 7.0f, 0.8f, 0.8f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(s / 16.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(s / 16.0f, 0.8f, 0.8f));
 			sprintf(buf, "FlipV##fboflipv%d", s);
 			if (ImGui::Button(buf)) mVDSession->fboFlipV(s);
 			ImGui::PopStyleColor(3);

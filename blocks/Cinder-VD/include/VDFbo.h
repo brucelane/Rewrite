@@ -213,7 +213,7 @@ namespace videodromm
 			controlIndexes[aCtrlIndex] = aName;
 			shaderUniforms[aName].boolValue = aValue;
 			shaderUniforms[aName].index = aCtrlIndex;
-			shaderUniforms[aName].uniformType = 6;
+			shaderUniforms[aName].uniformType = GL_BOOL;
 		}
 		void							createIntUniform(string aName, int aCtrlIndex, int aValue = 1) {
 			controlIndexes[aCtrlIndex] = aName;
@@ -235,7 +235,7 @@ namespace videodromm
 			shaderUniforms[aName].autotreble = false;
 			shaderUniforms[aName].index = aCtrlIndex;
 			shaderUniforms[aName].floatValue = aValue;
-			shaderUniforms[aName].uniformType = 0;
+			shaderUniforms[aName].uniformType = GL_FLOAT;
 			shaderUniforms[aName].isValid = true;
 		}
 	};

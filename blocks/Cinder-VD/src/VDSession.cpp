@@ -32,7 +32,8 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mGlslPost = gl::GlslProg::create(gl::GlslProg::Format().vertex(loadAsset("passthrough.vs")).fragment(loadAsset("post.glsl")));
 
 	// adjust the content size of the warps
-	// TODO 20200302 if (getFboRenderedTexture(0)) Warp::setSize(mWarpList, getFboRenderedTexture(0)->getSize());
+	// TODO 20200302 
+	if (getFboRenderedTexture(0)) Warp::setSize(mWarpList, getFboRenderedTexture(0)->getSize());
 
 	// initialize warps
 	mSettings = getAssetPath("") / mVDSettings->mAssetsPath / "warps.xml";

@@ -21,9 +21,9 @@ void VDUIWarps::Run(const char* title) {
 		ImGui::SetNextWindowPos(ImVec2(xPos, yPos), ImGuiSetCond_Once);
 
 		int hue = 1;
-		(mUseMixette) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 7.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 7.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 7.0f, 0.8f, 0.8f));
+		(mUseMixette) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
 		mUseMixette ^= ImGui::Button("mixette");
 		ImGui::PopStyleColor(3);
 		hue++;
@@ -40,13 +40,13 @@ void VDUIWarps::Run(const char* title) {
 			{
 				if (m > 0) ImGui::SameLine();
 				if (mVDSession->getMode() == m) {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 7.0f, 1.0f, 0.5f));
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 16.0f, 1.0f, 0.5f));
 				}
 				else {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 7.0f, 0.1f, 0.1f));
+					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 16.0f, 0.1f, 0.1f));
 				}
-				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(m / 7.0f, 0.7f, 0.7f));
-				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(m / 7.0f, 0.8f, 0.8f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(m / 16.0f, 0.7f, 0.7f));
+				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(m / 16.0f, 0.8f, 0.8f));
 				sprintf(buf, "%s##mode", mVDSession->getModeName(m).c_str());
 				if (ImGui::Button(buf)) mVDSession->setMode(m);
 				sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
@@ -56,10 +56,10 @@ void VDUIWarps::Run(const char* title) {
 				ctrl = mVDSettings->IWEIGHT0 + m;
 				float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
 				ImGui::PushID(m);
-				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 7.0f, 0.5f, 0.5f));
-				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 7.0f, 0.6f, 0.5f));
-				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 7.0f, 0.7f, 0.5f));
-				ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 7.0f, 0.9f, 0.9f));
+				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 16.0f, 0.6f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 16.0f, 0.7f, 0.5f));
+				ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 16.0f, 0.9f, 0.9f));
 				if (ImGui::VSliderFloat("##v", ImVec2(18, 60), &iWeight, 0.0f, 1.0f, ""))
 				{
 					setValue(ctrl, iWeight);
@@ -98,13 +98,13 @@ void VDUIWarps::Run(const char* title) {
 				for (unsigned int a = 0; a < mVDSession->getFboListSize(); a++) {
 					if (a > 0 && (a % 6 != 0)) ImGui::SameLine();
 					if (fboa == a) {
-						ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(a / 7.0f, 1.0f, 1.0f));
+						ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(a / 16.0f, 1.0f, 1.0f));
 					}
 					else {
-						ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(a / 7.0f, 0.1f, 0.1f));
+						ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(a / 16.0f, 0.1f, 0.1f));
 					}
-					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(a / 7.0f, 0.7f, 0.7f));
-					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(a / 7.0f, 0.8f, 0.8f));
+					ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(a / 16.0f, 0.7f, 0.7f));
+					ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(a / 16.0f, 0.8f, 0.8f));
 
 					sprintf(buf, "%d##wia%d%d", a, w, a);
 					if (ImGui::Button(buf)) {
