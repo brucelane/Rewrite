@@ -99,8 +99,8 @@ void VDUIAudio::Run(const char* title) {
 
 			//ImGui::Text("Elapsed %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->IELAPSED));
 			// duration			
-			ImGui::SameLine();
-			ImGui::Text("duration", &mVDSettings->iBarDuration);
+			//ImGui::SameLine();
+			//ImGui::Text("duration", &mVDSettings->iBarDuration);
 			//ImGui::SameLine();
 			//ImGui::Text("phase %.2f ", mVDSession->getFloatUniformValueByIndex(mVDSettings->IPHASE));
 			// BUG taptempo
