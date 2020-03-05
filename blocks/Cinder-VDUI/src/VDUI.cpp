@@ -372,7 +372,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
 
 			ImGui::PushID("fbomixes");
-			for (int m = 0; m < mVDSession->getModesCount(); m++)
+			for (int m = 0; m < mVDSession->getFboListSize(); m++)//mVDSession->getModesCount()
 			{
 				if (m > 0) ImGui::SameLine();
 				/*if (mVDSession->getMode() == m) {
@@ -389,7 +389,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 				ImGui::PopStyleColor(3);
 				ImGui::SameLine();*/
-				ctrl = mVDSettings->IWEIGHT0 + m;
+				//ctrl = mVDSettings->IWEIGHT0 + m;
+				ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
 				float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
 				ImGui::PushID(m);
 				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));

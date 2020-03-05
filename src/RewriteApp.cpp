@@ -196,11 +196,11 @@ void RewriteApp::keyUp(KeyEvent event)
 
 	// let your application perform its keyUp handling here
 	if (!mVDSession->handleKeyUp(event)) {
-		switch (event.getCode()) {
+		/*switch (event.getCode()) {
 		default:
 			CI_LOG_V("main keyup: " + toString(event.getCode()));
 			break;
-		}
+		}*/
 	}
 }
 void RewriteApp::cleanup()

@@ -100,7 +100,7 @@ namespace videodromm {
 		gl::clear(Color::black());
 		int f = 0;
 		for (auto &fbo : mFboList) {
-			if (fbo->isValid() && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.1f) {
+			if (fbo->isValid() && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.05f) {
 				fbo->getTexture()->bind(f);
 			}
 			f++;
@@ -113,11 +113,12 @@ namespace videodromm {
 		for (auto &fbo : mFboList) {
 			if (fbo->isValid() && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + i) > 0.1f) {
 				mGlslMixette->uniform("iChannel" + toString(i), i);
+				mGlslMixette->uniform("iWeight" + toString(i), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + i));
 			}
 			i++;
 		}
 		
-		mGlslMixette->uniform("iWeight0", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0));	// weight of channel 0
+		/*mGlslMixette->uniform("iWeight0", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0));	// weight of channel 0
 		mGlslMixette->uniform("iWeight1", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT1));	// weight of channel 1
 		mGlslMixette->uniform("iWeight2", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT2));	// weight of channel 2
 		mGlslMixette->uniform("iWeight3", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT3));
@@ -125,6 +126,8 @@ namespace videodromm {
 		mGlslMixette->uniform("iWeight5", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT5));
 		mGlslMixette->uniform("iWeight6", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT6));
 		mGlslMixette->uniform("iWeight7", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT7));
+		mGlslMixette->uniform("iWeight8", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT8));*/
+
 		//gl::drawSolidRect(getWindowBounds());
 		gl::drawSolidRect(Rectf(0, 0, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY)));
 		// setup the viewport to match the dimensions of the FBO

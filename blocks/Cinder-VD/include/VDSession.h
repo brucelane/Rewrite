@@ -93,7 +93,7 @@ namespace videodromm {
 			return mVDMix->getFboTextureName(aFboIndex);
 		}
 		void							saveWarps() {
-			int i = 0;
+			/*int i = 0;
 			for (auto &warp : mWarpList) {
 				// 
 				warp->setAShaderFilename(getFboShaderName(warp->getAFboIndex()));
@@ -107,7 +107,7 @@ namespace videodromm {
 				i++;
 			}
 			// save warp settings
-			Warp::writeSettings(mWarpList, writeFile(mSettings));
+			Warp::writeSettings(mWarpList, writeFile(mSettings));*/
 		}
 		ci::gl::TextureRef				getPostFboTexture() {
 			return mPostFbo->getColorTexture();
@@ -675,7 +675,7 @@ namespace videodromm {
 		void							loadFbos();
 
 		void							loadWarps() {
-			int i = 0;
+			/*int i = 0;
 			for (auto &warp : mWarpList) {
 				i = math<int>::min(i, mWarpList.size() - 1);
 				string jsonFileName = "warp" + toString(i) + ".json";
@@ -701,7 +701,7 @@ namespace videodromm {
 					}
 					i++;
 				}
-			}
+			}*/
 		}
 	};
 
