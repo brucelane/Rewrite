@@ -211,7 +211,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			timeValues_offset = (timeValues_offset + 1) % timeValues.size();
 		}
 
-		ImGui::PlotHistogram("H", mVDSession->getFreqs(), mVDSession->getWindowSize(), 0, NULL, 0.0f, 255.0f, ImVec2(0, 30));
+		ImGui::PlotHistogram("H", mVDSession->getFreqs(), mVDSession->getFFTWindowSize(), 0, NULL, 0.0f, 255.0f, ImVec2(0, 30));
 		ImGui::SameLine();
 		if (mVDSession->getMaxVolume() > 240.0) ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
 		ImGui::PlotLines("V", &timeValues.front(), (int)timeValues.size(), timeValues_offset, toString(int(mVDSession->getMaxVolume())).c_str(), 0.0f, 255.0f, ImVec2(0, 30));

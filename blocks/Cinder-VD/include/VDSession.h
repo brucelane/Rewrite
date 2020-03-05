@@ -57,9 +57,21 @@ namespace videodromm {
 			Warp::setSize(mWarpList, ivec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 		}
 		unsigned int					getWarpCount() { return mWarpList.size(); };
-		string							getWarpName(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getName(); };
-		unsigned int					getWarpAFboIndex(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getAFboIndex(); };
-		unsigned int					getWarpBFboIndex(unsigned int aWarpIndex) { return mWarpList[aWarpIndex]->getBFboIndex(); };
+		string							getWarpName(unsigned int aWarpIndex) { return mWarpList[math<int>::min(aWarpIndex, mWarpList.size() - 1)]->getName(); };
+		int								getWarpWidth(unsigned int aWarpIndex) { return mWarpList[math<int>::min(aWarpIndex, mWarpList.size() - 1)]->getWidth(); };
+		int								getWarpHeight(unsigned int aWarpIndex) { return mWarpList[math<int>::min(aWarpIndex, mWarpList.size() - 1)]->getHeight(); };
+		void							setWarpWidth(unsigned int aWarpIndex, int aWidth) {
+			mWarpList[math<int>::min(aWarpIndex, mWarpList.size() - 1)]->setWidth(aWidth); 
+			mWarpList[math<int>::min(aWarpIndex, mWarpList.size() - 1)]->resize();
+		};
+		void							setWarpHeight(unsigned int aWarpIndex, int aHeight) { 
+			Warp::handleResize(mWarpList);
+			Warp::setSize(mWarpList, ivec2(mVDSettings->mFboWidth, aHeight));
+			mWarpList[math<int>::min(aWarpIndex, mWarpList.size() - 1)]->setHeight(aHeight); 
+
+		};
+		unsigned int					getWarpAFboIndex(unsigned int aWarpIndex) { return mWarpList[math<int>::min(aWarpIndex, mWarpList.size() - 1)]->getAFboIndex(); };
+		unsigned int					getWarpBFboIndex(unsigned int aWarpIndex) { return mWarpList[math<int>::min(aWarpIndex, mWarpList.size() - 1)]->getBFboIndex(); };
 		void							setWarpAFboIndex(unsigned int aWarpIndex, unsigned int aWarpFboIndex) {
 			if (aWarpIndex < mWarpList.size() && aWarpFboIndex < mVDMix->getFboListSize()) {
 				mWarpList[aWarpIndex]->setAFboIndex(aWarpFboIndex);
@@ -231,7 +243,7 @@ namespace videodromm {
 		float							getFreq(unsigned int aFreqIndex) { return mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFREQ0 + aFreqIndex); };
 		int								getFreqIndex(unsigned int aFreqIndex) { return mVDAnimation->getFreqIndex(aFreqIndex); };
 		void							setFreqIndex(unsigned int aFreqIndex, unsigned int aFreq) { mVDAnimation->setFreqIndex(aFreqIndex, aFreq); };
-		int								getWindowSize() { return mVDAnimation->mWindowSize; };
+		int								getFFTWindowSize() { return mVDAnimation->mFFTWindowSize; };
 		bool							isAudioBuffered() { return mVDAnimation->isAudioBuffered(); };
 		void							toggleAudioBuffered() { mVDAnimation->toggleAudioBuffered(); };
 		bool							getUseLineIn() { return mVDAnimation->getUseLineIn(); };

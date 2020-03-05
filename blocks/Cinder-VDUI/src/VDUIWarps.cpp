@@ -26,7 +26,28 @@ void VDUIWarps::Run(const char* title) {
 		ImGui::Begin(buf, NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
 		{
 
-			int hue = 1;
+			int hue = 0;
+
+			sprintf(buf, "w %d", mVDSession->getWarpWidth(w));
+			ImGui::TextColored(ImColor(150, 220, 0), buf);
+			ImGui::SameLine();
+			sprintf(buf, "h %d", mVDSession->getWarpHeight(w));
+			ImGui::TextColored(ImColor(150, 220, 0), buf);
+			int ww = mVDSession->getWarpWidth(w);
+			sprintf(buf, "WarpWidth##ww%d", w);
+			if (ImGui::SliderInt(buf, &ww, 0.0f, mVDSettings->mFboWidth*2))
+			{
+				mVDSession->setWarpWidth(w, ww);
+			}
+			
+			int wh = mVDSession->getWarpHeight(w);
+			sprintf(buf, "WarpHeight##wh%d", w);
+			if (ImGui::SliderInt(buf, &wh, 0.0f, mVDSettings->mFboHeight*2))
+			{
+				mVDSession->setWarpHeight(w, wh);
+			}
+
+
 			(mUseMixette) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
 			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
@@ -36,31 +57,17 @@ void VDUIWarps::Run(const char* title) {
 			hue++;
 
 			if (mUseMixette) {
-				if (ImGui::TreeNode("Vertical Sliders"))
-				{
-					ImGui::Unindent();
+				
 					const float spacing = 4;
 					ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
 
 					ImGui::PushID("fbomixes");
-					for (int m = 0; m < mVDSession->getModesCount(); m++)
+					for (int m = 0; m < mVDSession->getFboListSize(); m++)
 					{
 						if (m > 0) ImGui::SameLine();
-						if (mVDSession->getMode() == m) {
-							ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 16.0f, 1.0f, 0.5f));
-						}
-						else {
-							ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 16.0f, 0.1f, 0.1f));
-						}
-						ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(m / 16.0f, 0.7f, 0.7f));
-						ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(m / 16.0f, 0.8f, 0.8f));
-						sprintf(buf, "%s##mode", mVDSession->getModeName(m).c_str());
-						if (ImGui::Button(buf)) mVDSession->setMode(m);
-						sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
-						if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-						ImGui::PopStyleColor(3);
-						ImGui::SameLine();
-						ctrl = mVDSettings->IWEIGHT0 + m;
+						
+						//ctrl = mVDSettings->IWEIGHT0 + m;
+						ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
 						float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
 						ImGui::PushID(m);
 						ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
@@ -83,9 +90,7 @@ void VDUIWarps::Run(const char* title) {
 
 					ImGui::Indent();
 
-					ImGui::Indent();
-					ImGui::TreePop();
-				}
+			
 			}
 			else {
 
@@ -131,6 +136,6 @@ void VDUIWarps::Run(const char* title) {
 
 		ImGui::End();
 	}
-	
+
 
 }

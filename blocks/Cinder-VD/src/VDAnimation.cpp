@@ -17,7 +17,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 	{
 		freqIndexes[i] = i * 7;
 	}
-	for (int i = 0; i < mWindowSize; i++)
+	for (int i = 0; i < mFFTWindowSize; i++)
 	{
 		iFreqs[i] = 0.0f;
 	}
@@ -771,7 +771,7 @@ ci::gl::TextureRef VDAnimation::getAudioTexture() {
 			CI_LOG_V("mic/line in opened");
 			saveLineIn();
 			mAudioName = mLineIn->getDevice()->getName();
-			auto scopeLineInFmt = audio::MonitorSpectralNode::Format().fftSize(mWindowSize * 2).windowSize(mWindowSize);// CHECK is * 2 needed
+			auto scopeLineInFmt = audio::MonitorSpectralNode::Format().fftSize(mFFTWindowSize * 2).windowSize(mFFTWindowSize);// CHECK is * 2 needed
 			mMonitorLineInSpectralNode = ctx->makeNode(new audio::MonitorSpectralNode(scopeLineInFmt));
 			mLineIn >> mMonitorLineInSpectralNode;
 			mLineIn->enable();
@@ -782,7 +782,7 @@ ci::gl::TextureRef VDAnimation::getAudioTexture() {
 	if (!mWaveInitialized) {
 		if (getUseAudio()) {
 			// also initialize wave monitor
-			auto scopeWaveFmt = audio::MonitorSpectralNode::Format().fftSize(mWindowSize * 2).windowSize(mWindowSize);// CHECK is * 2 needed
+			auto scopeWaveFmt = audio::MonitorSpectralNode::Format().fftSize(mFFTWindowSize * 2).windowSize(mFFTWindowSize);// CHECK is * 2 needed
 			mMonitorWaveSpectralNode = ctx->makeNode(new audio::MonitorSpectralNode(scopeWaveFmt));
 			ctx->enable();
 			mAudioName = "wave";
@@ -815,9 +815,9 @@ ci::gl::TextureRef VDAnimation::getAudioTexture() {
 
 		maxVolume = 0.0f;//mIntensity
 		size_t mDataSize = mMagSpectrum.size();
-		if (mDataSize > 0 && mDataSize < mWindowSize) {// TODO 20200221 CHECK was + 1
+		if (mDataSize > 0 && mDataSize < mFFTWindowSize) {// TODO 20200221 CHECK was + 1
 			float db;
-			unsigned char signal[mWindowSize];
+			unsigned char signal[mFFTWindowSize];
 			for (size_t i = 0; i < mDataSize; i++) {
 				float f = mMagSpectrum[i];
 				db = audio::linearToDecibel(f);
@@ -833,7 +833,7 @@ ci::gl::TextureRef VDAnimation::getAudioTexture() {
 				if (i == getFreqIndex(2)) setFloatUniformValueByName("iFreq2", f);
 				if (i == getFreqIndex(3)) setFloatUniformValueByName("iFreq3", f);
 
-				if (i < mWindowSize) {
+				if (i < mFFTWindowSize) {
 					int ger = f;
 					signal[i] = static_cast<unsigned char>(ger);
 				}
@@ -865,8 +865,8 @@ ci::gl::TextureRef VDAnimation::getAudioTexture() {
 		// 20200222 mAudioTexture = gl::Texture::create(dTexture, GL_RED, 64, 2, mAudioFormat);
 		// get freqs from Speckthor in VDRouter.cpp
 		float db;
-		unsigned char signal[mWindowSize];
-		for (size_t i = 0; i < mWindowSize; i++) {
+		unsigned char signal[mFFTWindowSize];
+		for (size_t i = 0; i < mFFTWindowSize; i++) {
 			float f = iFreqs[i];
 			if (f > maxVolume)
 			{
@@ -878,7 +878,7 @@ ci::gl::TextureRef VDAnimation::getAudioTexture() {
 			if (i == getFreqIndex(2)) setFloatUniformValueByName("iFreq2", f);
 			if (i == getFreqIndex(3)) setFloatUniformValueByName("iFreq3", f);
 
-			if (i < mWindowSize) {
+			if (i < mFFTWindowSize) {
 				int ger = f;
 				signal[i] = static_cast<unsigned char>(ger);
 			}

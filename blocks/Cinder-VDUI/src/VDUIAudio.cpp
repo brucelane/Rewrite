@@ -25,27 +25,27 @@ void VDUIAudio::Run(const char* title) {
 
 			static int iFreq0 = mVDSession->getFreqIndex(0);
 			sprintf(buf, "f0 %4.2f##f0", mVDSession->getFreq(0));
-			if (ImGui::SliderInt(buf, &iFreq0, 0, mVDSession->getWindowSize()))
+			if (ImGui::SliderInt(buf, &iFreq0, 0, mVDSession->getFFTWindowSize()))
 			{
 				mVDSession->setFreqIndex(0, iFreq0);
 			}
 			static int iFreq1 = mVDSession->getFreqIndex(1);
 			sprintf(buf, "f1 %4.2f##f1", mVDSession->getFreq(1));
-			if (ImGui::SliderInt(buf, &iFreq1, 0, mVDSession->getWindowSize()))
+			if (ImGui::SliderInt(buf, &iFreq1, 0, mVDSession->getFFTWindowSize()))
 			{
 				mVDSession->setFreqIndex(1, iFreq1);
 			}
 
 			static int iFreq2 = mVDSession->getFreqIndex(2);
 			sprintf(buf, "f2 %4.2f##f2", mVDSession->getFreq(2));
-			if (ImGui::SliderInt(buf, &iFreq2, 0, mVDSession->getWindowSize()))
+			if (ImGui::SliderInt(buf, &iFreq2, 0, mVDSession->getFFTWindowSize()))
 			{
 				mVDSession->setFreqIndex(2, iFreq2);
 			}
 
 			static int iFreq3 = mVDSession->getFreqIndex(3);
 			sprintf(buf, "f3 %4.2f##f3", mVDSession->getFreq(3));
-			if (ImGui::SliderInt(buf, &iFreq3, 0, mVDSession->getWindowSize()))
+			if (ImGui::SliderInt(buf, &iFreq3, 0, mVDSession->getFFTWindowSize()))
 			{
 				mVDSession->setFreqIndex(3, iFreq3);
 			}
