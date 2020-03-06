@@ -113,7 +113,7 @@ namespace videodromm
 		VDUIWarpsRef				mUIWarps;
 		bool						showUIWarps;
 		bool						mShowWarps;
-	
+
 		// imgui
 		char						buf[64];
 		bool						mIsResizing;
@@ -123,7 +123,7 @@ namespace videodromm
 		bool						mouseGlobal;
 		int							ctrl;
 		float						contour, iVAmount, iVFallOff, iWeight0, iWeight1, iWeight2, iWeight3, iWeight4, iWeight5, iWeight6, iWeight7;
-		
+
 		bool getBoolValue(unsigned int aCtrl) {
 			return mVDSession->getBoolUniformValueByIndex(aCtrl);
 		}
@@ -136,7 +136,7 @@ namespace videodromm
 		void mToggleShowFbos() {
 			mShowFbos = !mShowFbos;
 		}
-		void setValue(unsigned int aCtrl, float aValue) {
+		void setFloatValue(unsigned int aCtrl, float aValue) {
 			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
 		}
 		float getMinUniformValueByIndex(unsigned int aIndex) {
@@ -145,6 +145,11 @@ namespace videodromm
 		float getMaxUniformValueByIndex(unsigned int aIndex) {
 			return mVDSession->getMaxUniformValueByIndex(aIndex);
 		}
-		
+		float							getFloatValue(unsigned int aCtrl) {
+			return mVDSession->getFloatUniformValueByIndex(aCtrl);
+		};
+		// mouse
+		float						mouseX, mouseY;
+		bool						mouseZ;
 	};
 }

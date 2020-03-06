@@ -117,18 +117,7 @@ namespace videodromm {
 			}
 			i++;
 		}
-		
-		/*mGlslMixette->uniform("iWeight0", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0));	// weight of channel 0
-		mGlslMixette->uniform("iWeight1", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT1));	// weight of channel 1
-		mGlslMixette->uniform("iWeight2", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT2));	// weight of channel 2
-		mGlslMixette->uniform("iWeight3", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT3));
-		mGlslMixette->uniform("iWeight4", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT4));
-		mGlslMixette->uniform("iWeight5", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT5));
-		mGlslMixette->uniform("iWeight6", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT6));
-		mGlslMixette->uniform("iWeight7", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT7));
-		mGlslMixette->uniform("iWeight8", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT8));*/
 
-		//gl::drawSolidRect(getWindowBounds());
 		gl::drawSolidRect(Rectf(0, 0, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY)));
 		// setup the viewport to match the dimensions of the FBO
 		gl::ScopedViewport scpVp(ivec2(0), mMixetteFbo->getSize());

@@ -106,44 +106,6 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
 		style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.00f, 0.00f, 1.00f, 0.35f);
 		style.Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(0.20f, 0.20f, 0.20f, 0.35f);
-
-
-		/*style.Colors[ImGuiCol_Text] = ImVec4(0.89f, 0.92f, 0.94f, 1.00f);
-		style.Colors[ImGuiCol_WindowBg] = ImVec4(0.05f, 0.05f, 0.05f, 1.00f);
-		style.Colors[ImGuiCol_Border] = ImVec4(0.40f, 0.40f, 0.40f, 1.00f);
-		style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.38f);
-		style.Colors[ImGuiCol_FrameBg] = ImVec4(0.18f, 0.18f, 0.18f, 1.00f);
-		style.Colors[ImGuiCol_TitleBg] = ImVec4(0.4f, 0.0f, 0.21f, 1.00f);
-		style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.17f, 0.17f, 0.17f, 1.00f);
-		style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.97f, 0.0f, 0.17f, 1.00f);
-		style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.10f, 0.10f, 0.10f, 1.00f);
-		style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
-		style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
-		style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.26f, 0.26f, 0.26f, 1.00f);
-		// style.Colors[ImGuiCol_ComboBg] = ImVec4(0.13f, 0.13f, 0.13f, 1.00f);
-		style.Colors[ImGuiCol_CheckMark] = ImVec4(0.99f, 0.22f, 0.22f, 0.50f);
-		style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.65f, 0.25f, 0.25f, 1.00f);
-		style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.8f, 0.35f, 0.35f, 1.00f);
-		style.Colors[ImGuiCol_Button] = ImVec4(0.17f, 0.17f, 0.17f, 1.00f);
-		style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.27f, 0.27f, 0.27f, 1.00f);
-		style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.38f, 0.38f, 0.38f, 1.00f);
-		style.Colors[ImGuiCol_Header] = ImVec4(0.11f, 0.11f, 0.11f, 1.00f);
-		style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
-		style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.27f, 0.27f, 0.27f, 1.00f);
-		style.Colors[ImGuiCol_Column] = ImVec4(0.04f, 0.04f, 0.04f, 0.22f);
-		style.Colors[ImGuiCol_ColumnHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
-		style.Colors[ImGuiCol_ColumnActive] = ImVec4(0.27f, 0.27f, 0.27f, 1.00f);
-		style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.65f, 0.25f, 0.25f, 1.00f);
-		style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.8f, 0.35f, 0.35f, 1.00f);
-		style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.9f, 0.45f, 0.45f, 1.00f);
-		style.Colors[ImGuiCol_CloseButton] = ImVec4(0.28f, 0.28f, 0.28f, 1.00f);
-		style.Colors[ImGuiCol_CloseButtonHovered] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
-		style.Colors[ImGuiCol_CloseButtonActive] = ImVec4(0.49f, 0.49f, 0.49f, 1.00f);
-		style.Colors[ImGuiCol_PlotLines] = ImVec4(0.65f, 0.25f, 0.25f, 1.00f);
-		style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.8f, 0.35f, 0.35f, 1.00f);
-		style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.65f, 0.25f, 0.25f, 1.00f);
-		style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.8f, 0.35f, 0.35f, 1.00f);
-		style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.24f, 0.24f, 0.24f, 1.00f);*/
 #pragma endregion style
 	}
 #pragma region menu
@@ -287,6 +249,28 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		hue++;
 		ImGui::SameLine();
 
+		// post flip		
+		ctrl = mVDSettings->IFLIPPOSTH;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("flipPostH")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+		ctrl = mVDSettings->IFLIPPOSTV;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("flipPostV")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
@@ -296,7 +280,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::PopStyleColor(3);
 		hue++;
 		ImGui::SameLine();
-		
+
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
@@ -306,7 +290,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::PopStyleColor(3);
 		hue++;
 		ImGui::SameLine();
-		
+
 		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
@@ -315,15 +299,144 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		}
 		ImGui::PopStyleColor(3);
 		hue++;
-		
 		ImGui::SameLine();
-		
-			ImGui::TextColored(ImColor(255, 150, 0), "Mode: %d - %s", mVDSession->getMode(), mVDSession->getModeName(mVDSession->getMode()).c_str());
 
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.9f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.9f, 0.8f, 0.8f));
+
+		if (ImGui::Button("Auto Layout")) {
+			mVDSession->toggleAutoLayout();
+		}
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Auto Layout for render window");
+
+		// Auto Layout for render window
+		if (mVDSession->isAutoLayout()) {
+			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.9f, 1.0f, 0.5f));
+		}
+		else {
+			ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.0f, 0.1f, 0.1f));
+			// render window width
+			static int rw = mVDSettings->mRenderWidth;
+			if (ImGui::SliderInt("rdr w", &rw, 640, 4080))
+			{
+				//mVDSession->setRenderWidth(rw);
+				mVDSettings->mRenderWidth = rw;
+			}
+			ImGui::SameLine();
+			// render window height
+			static int rh = mVDSettings->mRenderHeight;
+			if (ImGui::SliderInt("rdr h", &rh, 480, 1280))
+			{
+				//mVDSession->setRenderHeight(rh);
+				mVDSettings->mRenderHeight = rh;
+			}
+		}
+		ImGui::PopStyleColor(3);
+
+
+
+		ctrl = mVDSettings->IGLITCH;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("glitch")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+
+		ctrl = mVDSettings->ITOGGLE;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("toggle")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+
+		ctrl = mVDSettings->IINVERT;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("invert")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+
+		(mVDSettings->iGreyScale) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		mVDSettings->iGreyScale ^= ImGui::Button("greyscale");
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+
+		if (ImGui::Button("blackout"))
+		{
+			setFloatValue(1, 0.0);
+			setFloatValue(2, 0.0);
+			setFloatValue(3, 0.0);
+			setFloatValue(4, 0.0);
+		}
+
+		ImGui::TextColored(ImColor(255, 150, 0), "Mode: %d - %s", mVDSession->getMode(), mVDSession->getModeName(mVDSession->getMode()).c_str());
+		ImGui::SameLine();
+		ImGui::Text("fp %dx%d f %dx%d", mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight, mVDSettings->mFboWidth, mVDSettings->mFboHeight);
+		ImGui::SameLine();
+		ImGui::Text("main %dx%d", mVDSettings->mMainWindowWidth, mVDSettings->mMainWindowHeight);
+		ImGui::SameLine();
+		// windows
+		ImGui::Text("render window %dx%d", mVDSettings->mRenderWidth, mVDSettings->mRenderHeight);
+
+		ImGui::SameLine();
+		ImGui::Text("Position: %.1f,%.1f", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
+		ImGui::Text("Clic %d", ImGui::GetIO().MouseDown[0]);
+
+		// mouse
+		mouseX = getFloatValue(mVDSettings->IMOUSEX);
+		if (ImGui::SliderFloat("MouseX", &mouseX, 0.0f, mVDSettings->mFboWidth, "%.4f", 3.0f))
+		{
+			setFloatValue(mVDSettings->IMOUSEX, mouseX);
+		}
+		mouseY = getFloatValue(mVDSettings->IMOUSEY);
+		if (ImGui::SliderFloat("MouseY", &mouseY, 0.0f, mVDSettings->mFboHeight, "%.4f", 0.3f))
+		{
+			setFloatValue(mVDSettings->IMOUSEY, mouseY);
+		}
+		mouseZ ^= ImGui::Button("mouse click");
+		if (mouseZ)
+		{
+			setFloatValue(mVDSettings->IMOUSEZ, 1.0f);
+		}
+		else
+		{
+			setFloatValue(mVDSettings->IMOUSEZ, 0.0f);
+		}
+ImGui::SameLine();
+		ImGui::Text("beat %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBEAT));
+		ImGui::SameLine();
+		ImGui::Text("bar %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBAR));
+		ImGui::SameLine();
+		ImGui::Text("bb %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBARBEAT));
+		ImGui::SameLine();
+		ImGui::Text("Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITIME));
+		ImGui::SameLine();
+		ImGui::Text("Tempo Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->ITEMPOTIME));
+		ImGui::SameLine();
+		ImGui::Text("Delta Time %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->IDELTATIME));
+		// LiveOSC Obsolete ImGui::Text("Trk %s %.2f", mVDSettings->mTrackName.c_str(), mVDSettings->liveMeter);
+		ImGui::SameLine();
+		//			ImGui::Checkbox("Playing", &mVDSettings->mIsPlaying);
+		ImGui::Text("Tempo %.2f ", mVDSession->getBpm());
 
 
 		// line 3
-		ImGui::RadioButton("Warp", &currentWindowRow1, 0); ImGui::SameLine();
+		/*ImGui::RadioButton("Warp", &currentWindowRow1, 0); ImGui::SameLine();
 		ImGui::RadioButton("Anim", &currentWindowRow1, 1); ImGui::SameLine();
 		ImGui::RadioButton("Mouse", &currentWindowRow1, 2);  ImGui::SameLine();
 		ImGui::RadioButton("Render", &currentWindowRow1, 3); ImGui::SameLine();
@@ -331,7 +444,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::RadioButton("Color", &currentWindowRow1, 5); ImGui::SameLine();
 		ImGui::RadioButton("Network", &currentWindowRow1, 6); ImGui::SameLine();
 		ImGui::RadioButton("Hydra", &currentWindowRow1, 7); ImGui::SameLine();
-		ImGui::RadioButton("Midi", &currentWindowRow1, 8);
+		ImGui::RadioButton("Midi", &currentWindowRow1, 8);*/
 
 		// modes
 		/*for (int m = 0; m < mVDSession->getModesCount(); m++) {
@@ -374,7 +487,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			sprintf(buf, "W%d##modew", m);
 			if (ImGui::DragFloat(buf, &iWeight, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
-				setValue(ctrl, iWeight);
+				setFloatValue(ctrl, iWeight);
 			}
 			if (mVDSession->getMode() == m) {
 				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 16.0f, 1.0f, 0.5f));
@@ -394,81 +507,81 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 		}*/
-		
-		
-			const float spacing = 4;
-			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
 
-			ImGui::PushID("fbomixes");
-			for (int m = 0; m < mVDSession->getFboListSize(); m++)//mVDSession->getModesCount()
-			{
-				if (m > 0) ImGui::SameLine();
-				/*if (mVDSession->getMode() == m) {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 16.0f, 1.0f, 0.5f));
-				}
-				else {
-					ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 16.0f, 0.1f, 0.1f));
-				}
-				ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(m / 16.0f, 0.7f, 0.7f));
-				ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(m / 16.0f, 0.8f, 0.8f));
-				sprintf(buf, "%s##mode", mVDSession->getModeName(m).c_str());
-				if (ImGui::Button(buf)) mVDSession->setMode(m);
-				sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-				ImGui::PopStyleColor(3);
-				ImGui::SameLine();*/
-				//ctrl = mVDSettings->IWEIGHT0 + m;
-				ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
-				float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
-				ImGui::PushID(m);
-				ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
-				ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 16.0f, 0.6f, 0.5f));
-				ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 16.0f, 0.7f, 0.5f));
-				ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 16.0f, 0.9f, 0.9f));
-				ImGui::Image((void*)mVDSession->getFboRenderedTexture(m)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-				string tooltip = mVDSession->getFboName(m) + " - " + mVDSession->getFboInputTextureName(m);
-				sprintf(buf, "%s", tooltip.c_str());
-				if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
-				
 
-				ImGui::SameLine();
-				if (ImGui::VSliderFloat("##v", ImVec2(18, 60), &iWeight, 0.0f, 1.0f, ""))
-				{
-					setValue(ctrl, iWeight);
-				};
-				if (ImGui::IsItemActive() || ImGui::IsItemHovered())
-					ImGui::SetTooltip("%.3f", iWeight);
-				ImGui::PopStyleColor(4);
-				ImGui::PopID();
-				//ImGui::SameLine();
-				//ImGui::TextColored(ImColor(255, 150, 0), "%d - %s", mVDSession->getMode(), mVDSession->getModeName(m).c_str());
+		const float spacing = 4;
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(spacing, spacing));
+
+		ImGui::PushID("fbomixes");
+		for (int m = 0; m < mVDSession->getFboListSize(); m++)//mVDSession->getModesCount()
+		{
+			if (m > 0) ImGui::SameLine();
+			/*if (mVDSession->getMode() == m) {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 16.0f, 1.0f, 0.5f));
 			}
+			else {
+				ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(m / 16.0f, 0.1f, 0.1f));
+			}
+			ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(m / 16.0f, 0.7f, 0.7f));
+			ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(m / 16.0f, 0.8f, 0.8f));
+			sprintf(buf, "%s##mode", mVDSession->getModeName(m).c_str());
+			if (ImGui::Button(buf)) mVDSession->setMode(m);
+			sprintf(buf, "Set mode to %s", mVDSession->getModeName(m).c_str());
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
+			ImGui::PopStyleColor(3);
+			ImGui::SameLine();*/
+			//ctrl = mVDSettings->IWEIGHT0 + m;
+			ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
+			float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
+			ImGui::PushID(m);
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImColor::HSV(m / 16.0f, 0.6f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBgActive, ImColor::HSV(m / 16.0f, 0.7f, 0.5f));
+			ImGui::PushStyleColor(ImGuiCol_SliderGrab, ImColor::HSV(m / 16.0f, 0.9f, 0.9f));
+			ImGui::Image((void*)mVDSession->getFboRenderedTexture(m)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+			string tooltip = mVDSession->getFboName(m) + " - " + mVDSession->getFboInputTextureName(m);
+			sprintf(buf, "%s", tooltip.c_str());
+			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
+
+
+			ImGui::SameLine();
+			if (ImGui::VSliderFloat("##v", ImVec2(18, 60), &iWeight, 0.0f, 1.0f, ""))
+			{
+				setFloatValue(ctrl, iWeight);
+			};
+			if (ImGui::IsItemActive() || ImGui::IsItemHovered())
+				ImGui::SetTooltip("%.3f", iWeight);
+			ImGui::PopStyleColor(4);
 			ImGui::PopID();
-			ImGui::PopStyleVar();
+			//ImGui::SameLine();
+			//ImGui::TextColored(ImColor(255, 150, 0), "%d - %s", mVDSession->getMode(), mVDSession->getModeName(m).c_str());
+		}
+		ImGui::PopID();
+		ImGui::PopStyleVar();
 
-			ImGui::Indent();
+		ImGui::Indent();
 
-/*
-		ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
-		ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
-		ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
-		ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());
-		ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
-		hue++;
+		/*
+				ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
+				ImGui::TextWrapped("Msg: %s", mVDSettings->mMsg.c_str());
+				ImGui::TextWrapped("Midi: %s", mVDSettings->mMidiMsg.c_str());
+				ImGui::TextWrapped("WS Msg: %s", mVDSettings->mWebSocketsMsg.c_str());
+				ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
+				hue++;
 
-		ImGui::RadioButton("Textures", &currentWindowRow2, 0); ImGui::SameLine();
-		ImGui::RadioButton("Fbos", &currentWindowRow2, 1); ImGui::SameLine();
-		ImGui::RadioButton("Shaders", &currentWindowRow2, 2); ImGui::SameLine();
-		ImGui::RadioButton("Blend", &currentWindowRow2, 3); */
+				ImGui::RadioButton("Textures", &currentWindowRow2, 0); ImGui::SameLine();
+				ImGui::RadioButton("Fbos", &currentWindowRow2, 1); ImGui::SameLine();
+				ImGui::RadioButton("Shaders", &currentWindowRow2, 2); ImGui::SameLine();
+				ImGui::RadioButton("Blend", &currentWindowRow2, 3); */
 
 		ImGui::PopItemWidth();
 	}
 	ImGui::End();
 
-
-	switch (currentWindowRow1) {
+	mUIAnimation->Run("Animation");
+	/*switch (currentWindowRow1) {
 	case 0:
-		
+
 		break;
 	case 1:
 		// Animation
@@ -505,7 +618,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		mUIMidi->Run("Midi");
 		break;
 	}
-	mVDSession->blendRenderEnable(currentWindowRow1 == 3);
+	mVDSession->blendRenderEnable(currentWindowRow1 == 3);*/
 	// Warps
 	if (mShowWarps) {
 		mUIWarps->Run("Warps");

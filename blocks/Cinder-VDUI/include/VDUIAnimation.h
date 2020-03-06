@@ -17,7 +17,8 @@ namespace videodromm
 {
 	// stores the pointer to the VDUIAnimation instance
 	typedef std::shared_ptr<class VDUIAnimation> VDUIAnimationRef;
-
+	typedef std::shared_ptr<class VDUIOsc> VDUIOscRef;
+#define IM_ARRAYSIZE(_ARR)			((int)(sizeof(_ARR)/sizeof(*_ARR)))
 	class VDUIAnimation
 	{
 	public:
@@ -35,10 +36,10 @@ namespace videodromm
 		VDSessionRef					mVDSession;
 
 		// imgui
-		float							getValue(unsigned int aCtrl) {
+		float							getFloatValue(unsigned int aCtrl) {
 			return mVDSession->getFloatUniformValueByIndex(aCtrl);
 		};
-		void							setValue(unsigned int aCtrl, float aValue) {
+		void							setFloatValue(unsigned int aCtrl, float aValue) {
 			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
 		};
 		void							toggleValue(unsigned int aCtrl) {
@@ -72,7 +73,9 @@ namespace videodromm
 			return mVDSession->getMaxUniformValueByIndex(aIndex);
 		};
 
-		
+		void							setIntValue(unsigned int aCtrl, int aValue) {
+			mVDSession->setIntUniformValueByIndex(aCtrl, aValue);
+		}
 
 		unsigned int					ctrl;
 		map<int, float>					localValues;
@@ -81,5 +84,19 @@ namespace videodromm
 		// zoom
 		float							minZoom;
 		float							maxZoom;
+		// tempo
+		void						toggleSpinalTap() { spinalTap = !spinalTap; };
+		bool						spinalTap = false;
+
+		// render
+		float							contour, iVAmount, iVFallOff;
+		int								iResolutionX, iResolutionY;
+		int								iOutW, iOutH;
+		// contour
+		float							minContour;
+		float							maxContour;
+		// color
+		float							color[4];
+		float							backcolor[4];
 	};
 }

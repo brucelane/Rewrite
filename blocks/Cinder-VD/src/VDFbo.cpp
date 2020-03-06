@@ -230,8 +230,9 @@ namespace videodromm {
 			case IMAGE:
 				break;
 			case SEQUENCE:
-				if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 19) {
-					// TODO IBARBEAT 
+				if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 0) {
+					// 20200306 if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 19) {
+						// TODO IBARBEAT 
 					mCurrentSeqFilename = mTextureName + " (" + toString(mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT)) + ").jpg";
 				}
 				if (mCachedTextures[mCurrentSeqFilename]) {

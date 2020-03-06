@@ -119,7 +119,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createFloatUniform("iResolutionY", mVDSettings->IRESY, mVDSettings->mRenderHeight, 240.01f, 2160.0f); // 30
 
 		// weight mix fbo texture 0
-		createFloatUniform("iWeight0", mVDSettings->IWEIGHT0, 0.0f); // 31
+		createFloatUniform("iWeight0", mVDSettings->IWEIGHT0, 1.0f); // 31
 		// weight texture 1
 		createFloatUniform("iWeight1", mVDSettings->IWEIGHT1, 0.0f); // 32
 		// weight texture 2

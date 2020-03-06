@@ -47,6 +47,22 @@ namespace videodromm {
 		bool							handleKeyDown(KeyEvent &event);
 		bool							handleKeyUp(KeyEvent &event);
 		void							update(unsigned int aClassIndex = 0);
+		//! Mix
+		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {
+			return mVDMix->getFboRenderedTexture(aFboIndex);
+		}
+		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex) {
+			return mVDMix->getFboTexture(aFboIndex);
+		}
+		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex) {
+			return mVDMix->getMixetteTexture(aFboIndex);
+		};
+		ci::gl::TextureRef				getPostFboTexture() {
+			return mPostFbo->getColorTexture();
+		};
+		ci::gl::TextureRef				getWarpFboTexture() {
+			return mWarpsFbo->getColorTexture();
+		};
 		//!
 		void							reset();
 		void							resetSomeParams();
@@ -121,22 +137,7 @@ namespace videodromm {
 			// save warp settings
 			Warp::writeSettings(mWarpList, writeFile(mSettings));*/
 		}
-		// Mix
-		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {
-			return mVDMix->getFboRenderedTexture(aFboIndex);
-		}
-		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex) {
-			return mVDMix->getFboTexture(aFboIndex);
-		}
-		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex) {
-			return mVDMix->getMixetteTexture(aFboIndex);
-		};
-		ci::gl::TextureRef				getPostFboTexture() {
-			return mPostFbo->getColorTexture();
-		};
-		ci::gl::TextureRef				getWarpFboTexture() {
-			return mWarpsFbo->getColorTexture();
-		};
+
 		bool							handleMouseMove(MouseEvent &event);
 		bool							handleMouseDown(MouseEvent &event);
 		bool							handleMouseDrag(MouseEvent &event);
@@ -687,35 +688,7 @@ namespace videodromm {
 		}
 		void							loadFbos();
 
-		void							loadWarps() {
-			/*int i = 0;
-			for (auto &warp : mWarpList) {
-				i = math<int>::min(i, mWarpList.size() - 1);
-				string jsonFileName = "warp" + toString(i) + ".json";
-				fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
-				if (fs::exists(jsonFile)) {
-					JsonTree json(loadFile(jsonFile));
-					warp->fromJson(json);
-					if (json[0].hasChild("warp")) {
-						JsonTree warpJsonTree(json[0].getChild("warp"));
-						string shaderFileName = (warpJsonTree.hasChild("ashaderfilename")) ? warpJsonTree.getValueForKey<string>("ashaderfilename") : "inputImage.fs";
-						string textureFileName = (warpJsonTree.hasChild("atexturefilename")) ? warpJsonTree.getValueForKey<string>("atexturefilename") : "audio";
-						createFboShaderTexture(shaderFileName, textureFileName);
-						//mVDSession->fboFromJson(warpJsonTree);
-						warp->setName(shaderFileName + "-" + textureFileName);
-						warp->setAFboIndex(i);
-						warp->setBFboIndex(i);
-						warp->setAShaderIndex(i);
-						warp->setBShaderIndex(i);
-						warp->setAShaderFilename(shaderFileName);
-						warp->setBShaderFilename(shaderFileName);
-						warp->setATextureFilename(textureFileName);
-						warp->setBTextureFilename(textureFileName);
-					}
-					i++;
-				}
-			}*/
-		}
+		
 	};
 
 }
