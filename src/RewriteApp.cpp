@@ -242,7 +242,7 @@ void RewriteApp::resize()
 }
 void RewriteApp::draw()
 {
-	// clear the window and set the drawing color to white
+	// clear the window and set the drawing color to black
 	gl::clear();
 	gl::color(Color::white());
 	if (mFadeInDelay) {
@@ -256,14 +256,16 @@ void RewriteApp::draw()
 		//gl::setMatricesWindow(mVDSettings->mFboWidth, mVDSettings->mFboHeight, false);
 		gl::setMatricesWindow(mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTW), mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTH), true);
 		int m = mVDSession->getMode();
-		if (m < mVDSession->getModesCount()) {
+		if (m < mVDSession->getModesCount() && m < mVDSession->getFboListSize()) {
 			gl::draw(mVDSession->getFboTexture(m), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+			mSpoutOut.sendTexture(mVDSession->getFboRenderedTexture(m));
 		}
 		else {
 			gl::draw(mVDSession->getPostFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+		// ok gl::draw(mVDSession->getWarpFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
+			mSpoutOut.sendTexture(mVDSession->getPostFboTexture());
 		}
 
-		// ok gl::draw(mVDSession->getWarpFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
 		/*vec2 videoSize = vec2(mVideo.getWidth(), mVideo.getHeight());
 		mGlslVideoTexture->uniform("uVideoSize", videoSize);
 		videoSize *= 0.25f;
@@ -277,7 +279,7 @@ void RewriteApp::draw()
 	// Spout Send
 	// KO mSpoutOut.sendViewport();
 	// OK mSpoutOut.sendTexture(mVDSession->getFboRenderedTexture(1));
-	mSpoutOut.sendTexture(mVDSession->getPostFboTexture());
+	
 	// imgui
 	if (mVDSession->showUI()) {
 		mVDUI->Run("UI", (int)getAverageFps());

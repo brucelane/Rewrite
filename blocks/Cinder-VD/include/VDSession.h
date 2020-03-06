@@ -121,6 +121,16 @@ namespace videodromm {
 			// save warp settings
 			Warp::writeSettings(mWarpList, writeFile(mSettings));*/
 		}
+		// Mix
+		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {
+			return mVDMix->getFboRenderedTexture(aFboIndex);
+		}
+		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex) {
+			return mVDMix->getFboTexture(aFboIndex);
+		}
+		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex) {
+			return mVDMix->getMixetteTexture(aFboIndex);
+		};
 		ci::gl::TextureRef				getPostFboTexture() {
 			return mPostFbo->getColorTexture();
 		};
@@ -390,16 +400,7 @@ namespace videodromm {
 			return mVDAnimation->getUniformIndexForName(aName);
 		};
 		
-		// Mix
-		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {
-			return mVDMix->getFboRenderedTexture(aFboIndex);
-		}
-		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex) {
-			return mVDMix->getFboTexture(aFboIndex);
-		}
-		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex) {
-			return mVDMix->getMixetteTexture(aFboIndex);
-		};
+
 		// RTE in release mode? 
 		//ci::gl::Texture2dRef			getRenderedTexture(bool reDraw = true) { return mVDMix->getRenderedTexture(reDraw); };
 		//string							getFboFragmentShaderText(unsigned int aFboIndex);
