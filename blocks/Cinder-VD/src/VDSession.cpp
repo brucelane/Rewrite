@@ -67,6 +67,7 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mModesList[7] = "Fbo7";
 	mModesList[8] = "Fbo8";
 	mModesList[9] = "Fbo9";
+	mMode = 1;
 	// Websocket
 	mVDWebsocket = VDWebsocket::create(mVDSettings, mVDAnimation);
 	// Message router

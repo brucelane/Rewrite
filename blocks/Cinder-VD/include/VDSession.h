@@ -557,7 +557,7 @@ namespace videodromm {
 			return mModesList[aMode];
 		}
 	private:
-		int								mMode;
+		int								mMode = 1;
 
 		// Settings
 		VDSettingsRef					mVDSettings;

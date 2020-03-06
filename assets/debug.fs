@@ -162,6 +162,7 @@ vec4 tex(vec2 uv) {
 void main(void)
 {
    	vec2 uv = gl_FragCoord.xy / RENDERSIZE.xy;
+
     if (iFlipH)
 	{
 		uv.x = 1.0 - uv.x;
@@ -179,23 +180,26 @@ void main(void)
         // Multiples of 4x5 work best
         vec2 vFontSize = vec2(20.0, 40.0);
         vec4 vColour = vec4(0.7);
-        vColour = mix( vColour, vec4(1.0, 1.0, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(30.0, 150.0), vFontSize, RENDERSIZE.x, 2.0, 0.0));
+        vColour = mix( vColour, vec4(1.0, 1.0, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(10.0, 150.0), vFontSize, RENDERSIZE.x, 2.0, 0.0));
         vColour = mix( vColour, vec4(0.7, 0.5, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(100.0, 150.0), vFontSize, RENDERSIZE.y, 2.0, 0.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(350.0, 150.0), vFontSize, iBar, 2.0, 0.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(450.0, 150.0), vFontSize, iBarBeat, 2.0, 0.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(550.0, 150.0), vFontSize, iExposure, 2.0, 2.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(750.0, 150.0), vFontSize, iTimeFactor, 2.0, 3.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(930.0, 150.0), vFontSize, TIME, 2.0, 1.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(1070.0, 150.0), vFontSize, iBpm, 2.0, 2.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(200.0, 150.0), vFontSize, iBar, 2.0, 0.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(300.0, 150.0), vFontSize, iBarBeat, 2.0, 0.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(400.0, 150.0), vFontSize, iExposure, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(500.0, 150.0), vFontSize, iTimeFactor, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(600.0, 150.0), vFontSize, TIME, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(700.0, 150.0), vFontSize, iBpm, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(800.0, 150.0), vFontSize, float(iFlipH), 2.0, 0.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(900.0, 150.0), vFontSize, float(iFlipV), 2.0, 0.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(1000.0, 150.0), vFontSize, iZoom, 2.0, 1.0));
 
-        vColour = mix( vColour, vec4(1.0, 1.0, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(30.0, 350.0), vFontSize, iWeight0, 2.0, 0.0));
-        vColour = mix( vColour, vec4(0.7, 0.5, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(100.0, 350.0), vFontSize, iWeight1, 2.0, 0.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(350.0, 350.0), vFontSize, iWeight2, 2.0, 0.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(450.0, 350.0), vFontSize, iWeight3, 2.0, 0.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(550.0, 350.0), vFontSize, iWeight4, 2.0, 2.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(750.0, 350.0), vFontSize, iWeight5, 2.0, 3.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(930.0, 350.0), vFontSize, iWeight6, 2.0, 1.0));
-        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(1070.0, 350.0), vFontSize, iWeight7, 2.0, 2.0));
+        vColour = mix( vColour, vec4(1.0, 1.0, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(0.0, 350.0), vFontSize, iWeight0, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.5, 0.0, 0.0), PrintValue(gl_FragCoord.xy, vec2(100.0, 350.0), vFontSize, iWeight1, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(200.0, 350.0), vFontSize, iWeight2, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(300.0, 350.0), vFontSize, iWeight3, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(400.0, 350.0), vFontSize, iWeight4, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(500.0, 350.0), vFontSize, iWeight5, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(600.0, 350.0), vFontSize, iWeight6, 2.0, 1.0));
+        vColour = mix( vColour, vec4(0.7, 0.0, 0.5, 0.0), PrintValue(gl_FragCoord.xy, vec2(700.0, 350.0), vFontSize, iWeight7, 2.0, 1.0));
 
         fragColor = mix( vec4(1.0, 0.0, 0.2, 0.5), tex(uv), vColour);
     }  else {

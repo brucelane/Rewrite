@@ -162,7 +162,7 @@ namespace videodromm {
 		}
 		mShaderName = mName + ".fs";
 
-		string mNotFoundmUniformsString = "/* " + mName + "\n";
+		string mNotFoundUniformsString = "/* " + mName + "\n";
 		// filename to save
 		mValid = false;
 		// load fragment shader
