@@ -266,6 +266,7 @@ void VDUIAnimation::Run(const char* title) {
 			{
 				mVDSession->setFreqIndex(3, iFreq3);
 			}
+			ImGui::PopItemWidth();
 		}
 		if (ImGui::CollapsingHeader("Tempo", NULL, true, true))
 		{
@@ -763,7 +764,7 @@ void VDUIAnimation::Run(const char* title) {
 			ImGui::PopItemWidth();
 		}
 
-		ImGui::PopItemWidth();
+		
 	}
 	ImGui::End();
 }

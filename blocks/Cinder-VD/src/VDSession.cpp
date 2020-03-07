@@ -142,7 +142,8 @@ void VDSession::loadFbos() {
 		fs::path jsonFile = getAssetPath("") / mVDSettings->mAssetsPath / jsonFileName;
 		if (fs::exists(jsonFile)) {
 			JsonTree json(loadFile(jsonFile));
-			if (json.hasChild("shader")) {
+			fboFromJson(json);
+			/* 20200307 if (json.hasChild("shader")) {
 				JsonTree shaderJsonTree(json.getChild("shader"));
 				shaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
 			}
@@ -150,7 +151,7 @@ void VDSession::loadFbos() {
 				JsonTree textureJsonTree(json.getChild("texture"));
 				textureFileName = (textureJsonTree.hasChild("texturename")) ? textureJsonTree.getValueForKey<string>("texturename") : "audio";
 			}
-			createFboShaderTexture(shaderFileName, textureFileName);
+			createFboShaderTexture(shaderFileName, textureFileName);*/
 			f++;
 		}
 		else {
