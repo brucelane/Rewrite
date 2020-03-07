@@ -35,6 +35,7 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	mUIWarps = VDUIWarps::create(mVDSettings, mVDSession);
 	// imgui
 	mouseGlobal = false;
+	mouseZ = false;
 	mIsResizing = true;
 	mShowWarps = true;
 	mShowFbos = true;
@@ -138,7 +139,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
 	//ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
 	ImGui::TextColored(ImColor(255, 0, 0), "Last error: %s", mVDSettings->mErrorMsg.c_str());
-	ImGui::SetNextWindowSize(ImVec2(1000, mVDSettings->uiLargeH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(700, mVDSettings->uiLargeH), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
 	//sprintf(buf, "Fps %c %d (%.2f)###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps, mVDSession->getTargetFps());
 	sprintf(buf, "Fps %c %d ###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps);
@@ -268,16 +269,11 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			toggleValue(ctrl);
 		}
 		ImGui::PopStyleColor(3);
-		hue++;
-		ImGui::SameLine();
 
-		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+	
 		if (ImGui::Button("CreateWarp")) {
 			mVDSession->createWarp();
-		}
-		ImGui::PopStyleColor(3);
+		}	
 		hue++;
 		ImGui::SameLine();
 
@@ -333,7 +329,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		}
 		ImGui::PopStyleColor(3);
 
-
+		ImGui::SameLine();
 
 		ctrl = mVDSettings->IGLITCH;
 		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
@@ -374,7 +370,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		mVDSettings->iGreyScale ^= ImGui::Button("greyscale");
 		ImGui::PopStyleColor(3);
 		hue++;
-		ImGui::SameLine();
+		/*ImGui::SameLine();
 
 		if (ImGui::Button("blackout"))
 		{
@@ -382,7 +378,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			setFloatValue(2, 0.0);
 			setFloatValue(3, 0.0);
 			setFloatValue(4, 0.0);
-		}
+		}*/
 
 		ImGui::TextColored(ImColor(255, 150, 0), "Mode: %d - %s", mVDSession->getMode(), mVDSession->getModeName(mVDSession->getMode()).c_str());
 		ImGui::SameLine();
@@ -417,7 +413,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		{
 			setFloatValue(mVDSettings->IMOUSEZ, 0.0f);
 		}
-ImGui::SameLine();
+		ImGui::SameLine();
 		ImGui::Text("beat %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBEAT));
 		ImGui::SameLine();
 		ImGui::Text("bar %d ", mVDSession->getIntUniformValueByIndex(mVDSettings->IBAR));

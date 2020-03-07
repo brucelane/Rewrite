@@ -35,13 +35,13 @@ namespace videodromm
 		int								getIntValue(unsigned int aCtrl) {
 			return mVDSession->getIntUniformValueByIndex(aCtrl);
 		}
-		float							getValueByName(string aCtrlName) {
+		float							getFloatValueByName(string aCtrlName) {
 			return mVDSession->getFloatUniformValueByName(aCtrlName);
 		}
-		float							getValue(unsigned int aCtrl) {
+		float							getFloatValue(unsigned int aCtrl) {
 			return mVDSession->getFloatUniformValueByIndex(aCtrl);
 		}
-		void							setValue(unsigned int aCtrl, float aValue) {
+		void							setFloatValue(unsigned int aCtrl, float aValue) {
 			mVDSession->setFloatUniformValueByIndex(aCtrl, aValue);
 		}
 		void							setIntValue(unsigned int aCtrl, int aValue) {

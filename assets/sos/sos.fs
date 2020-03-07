@@ -119,10 +119,10 @@ void main( void ){
 	//vec3 pos = vec3(iMouse.xy/RENDERSIZE.xy + vec2(0.32, 0.530),iMouse.z-.5);
 	//vec3 pos = vec3(iMouse.xy/RENDERSIZE.xy + vec2(0.3, 0.530),iMouse.z-.5);
 	vec3 pos = vec3(iMouse.xy/RENDERSIZE.xy + vec2(iMouse.x, iMouse.y),iMouse.z-.5);
-	if (iMouse.z>.5) {
+	/*if (iMouse.z>.5) {
 		pos.x=sin(TIME*.09)*.95;
 		pos.y=sin(TIME*.09)*.95;
-	}
+	}*/
 	pos.x *= RENDERSIZE.x/RENDERSIZE.y; //fix aspect ratio
 	if (iToggle) {		
 		fragColor = crepuscular_rays(uv, pos.xy);

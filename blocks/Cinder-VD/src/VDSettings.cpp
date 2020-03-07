@@ -405,8 +405,6 @@ void VDSettings::resetSomeParams() {
 	autoInvert = false;
 	// imgui
 	uiMargin = 3;
-	uiElementWidth = mPreviewFboWidth + uiMargin;
-	uiElementHeight = mPreviewFboHeight * 2.3;
 	// mPreviewFboWidth 80 mPreviewFboHeight 60 margin 10 inBetween 15 mPreviewWidth = 160;mPreviewHeight = 120;
 	uiPreviewH = mPreviewHeight + uiMargin;
 	uiLargeW = (mPreviewFboWidth + uiMargin) * 3;
@@ -415,7 +413,7 @@ void VDSettings::resetSomeParams() {
 	uiLargePreviewH = mPreviewHeight * 2.8;
 
 	uiXPosCol1 = uiLargeW + uiMargin * 2;
-	uiXPosCol2 = uiXPosCol1 + uiMargin + uiElementWidth;
+	uiXPosCol2 = uiXPosCol1 + uiMargin * 2 + mPreviewFboWidth;
 	uiXPosCol3 = uiXPosCol2 + uiMargin;
 	//uiYPos;
 	uiYPosRow1 = 18;

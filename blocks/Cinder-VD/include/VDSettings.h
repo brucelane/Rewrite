@@ -303,9 +303,6 @@ namespace videodromm {
 		// imgui positions and sizes
 		int							uiMargin;
 		// mPreviewFboWidth 80 mPreviewFboHeight 60 margin 10 inBetween 15
-		int							uiElementWidth;
-		int							uiElementHeight;
-
 		int							uiXPosCol1;
 		int							uiXPosCol2;
 		int							uiXPosCol3;

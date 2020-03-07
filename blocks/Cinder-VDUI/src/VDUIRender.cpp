@@ -9,8 +9,8 @@ VDUIRender::VDUIRender(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	// contour
 	minContour = getMinUniformValueByIndex(mVDSettings->ICONTOUR);
 	maxContour = getMaxUniformValueByIndex(mVDSettings->ICONTOUR);
-	iResolutionX = (int)getValueByName("iResolutionX");
-	iResolutionY = (int)getValueByName("iResolutionY");
+	iResolutionX = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESX);//(int)getFloatValueByName("iResolutionX");
+	iResolutionY = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESY);//(int)getFloatValueByName("iResolutionY");
 	iOutW = getIntValue(mVDSettings->IOUTW);
 	iOutH = getIntValue(mVDSettings->IOUTH);
 }
@@ -35,28 +35,28 @@ void VDUIRender::Run(const char* title) {
 			setIntValue(ctrl, iOutW);
 		}
 		ctrl = mVDSettings->IOUTH;
-		if (ImGui::Button("x##iouth")) { iOutH = 800; setIntValue(ctrl, 800); }
+		if (ImGui::Button("x##iouth")) { iOutH = 720; setIntValue(ctrl, iOutH); }
 		ImGui::SameLine();
-		if (ImGui::SliderInt("iOutH", &iOutH, 240, 2000))
+		if (ImGui::SliderInt("iOutH", &iOutH, 480, 2000))
 		{
 			setIntValue(ctrl, iOutH);
 		}
 		// iResolution
 		ctrl = mVDSettings->IRESX;
 		//iResolutionX = getValueByName("iResolutionX");
-		if (ImGui::Button("x##iresx")) { iResolutionX = 1280; setValue(ctrl, 1280); }
+		if (ImGui::Button("x##iresx")) { iResolutionX = 1280; setFloatValue(ctrl, 1280); }
 		ImGui::SameLine();
 		if (ImGui::SliderInt("iResolutionX", &iResolutionX, (int)getMinUniformValueByIndex(ctrl), (int)getMaxUniformValueByIndex(ctrl)))
 		{
-			setValue(ctrl, (float)iResolutionX);
+			setFloatValue(ctrl, (float)iResolutionX);
 		}
 		ctrl = mVDSettings->IRESY;
 		//iResolutionY = getValueByName("iResolutionY");
-		if (ImGui::Button("x##iresy")) { iResolutionY = 720; setValue(ctrl, 720); }
+		if (ImGui::Button("x##iresy")) { iResolutionY = 720; setFloatValue(ctrl, 720); }
 		ImGui::SameLine();
 		if (ImGui::SliderInt("iResolutionY", &iResolutionY, (int)getMinUniformValueByIndex(ctrl), (int)getMaxUniformValueByIndex(ctrl)))
 		{
-			setValue(ctrl, (float)iResolutionY);
+			setFloatValue(ctrl, (float)iResolutionY);
 		}
 		// post flip		
 		ctrl = mVDSettings->IFLIPPOSTH;
@@ -157,13 +157,13 @@ void VDUIRender::Run(const char* title) {
 		iVAmount = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("Amount", &iVAmount, 0.001f, 0.0f, 1.0f))
 		{
-			setValue(ctrl, iVAmount);
+			setFloatValue(ctrl, iVAmount);
 		}
 		ctrl = mVDSettings->IVFALLOFF;
 		iVFallOff = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("FallOff", &iVFallOff, 0.001f, 0.0f, 0.99f))
 		{
-			setValue(ctrl, iVFallOff);
+			setFloatValue(ctrl, iVFallOff);
 		}
 
 		// iContour
@@ -177,7 +177,7 @@ void VDUIRender::Run(const char* title) {
 		contour = mVDSession->getFloatUniformValueByIndex(ctrl);
 		if (ImGui::DragFloat("contour", &contour, 0.001f, minContour, maxContour))
 		{
-			setValue(ctrl, contour);
+			setFloatValue(ctrl, contour);
 		}
 		ImGui::DragFloat("mincr", &minContour, 0.001f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl));
 		ImGui::SameLine();

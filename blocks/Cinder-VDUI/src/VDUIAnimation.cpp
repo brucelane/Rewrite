@@ -12,13 +12,21 @@ VDUIAnimation::VDUIAnimation(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
 	{
 		localValues[c] = mVDSession->getFloatUniformValueByIndex(c);
 	}
+	// contour
+	minContour = getMinUniformValueByIndex(mVDSettings->ICONTOUR);
+	maxContour = getMaxUniformValueByIndex(mVDSettings->ICONTOUR);
+	iResolutionX = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESX);//(int)getFloatValueByName("iResolutionX");
+	iResolutionY = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESY);//(int)getFloatValueByName("iResolutionY");
+	iOutW = getIntValue(mVDSettings->IOUTW);
+	iOutH = getIntValue(mVDSettings->IOUTH);
+
 }
 VDUIAnimation::~VDUIAnimation() {
 
 }
 
 void VDUIAnimation::Run(const char* title) {
-	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 3.5), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(mVDSettings->uiLargeW, mVDSettings->uiLargeH * 3.4), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiMargin, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
 	int hue = 0;
 	ImGui::Begin("Animation", NULL, ImVec2(0, 0), ImGui::GetStyle().Alpha, ImGuiWindowFlags_NoSavedSettings);
@@ -276,7 +284,13 @@ void VDUIAnimation::Run(const char* title) {
 
 			ImGui::SliderFloat("iTimeFactor", &mVDSettings->iTimeFactor, 0.01f, 1.0f, "%.4f");
 			*/
-
+			// iTimeFactor
+			ctrl = mVDSettings->ITIMEFACTOR;
+			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
+			if (ImGui::SliderFloat("timeFactor", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+			{
+				mVDSession->setFloatUniformValueByIndex(ctrl, localValues[ctrl]);
+			}
 
 			//ImGui::Text("Elapsed %.2f", mVDSession->getFloatUniformValueByIndex(mVDSettings->IELAPSED));
 			// duration			
@@ -527,9 +541,9 @@ void VDUIAnimation::Run(const char* title) {
 				setIntValue(ctrl, iOutW);
 			}
 			ctrl = mVDSettings->IOUTH;
-			if (ImGui::Button("x##iouth")) { iOutH = 800; setIntValue(ctrl, 800); }
+			if (ImGui::Button("x##iouth")) { iOutH = 720; setIntValue(ctrl, iOutH); }
 			ImGui::SameLine();
-			if (ImGui::SliderInt("iOutH", &iOutH, 240, 2000))
+			if (ImGui::SliderInt("iOutH", &iOutH, 480, 2000))
 			{
 				setIntValue(ctrl, iOutH);
 			}
