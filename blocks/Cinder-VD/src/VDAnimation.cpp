@@ -142,7 +142,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		// contour
 		createFloatUniform("iContour", mVDSettings->ICONTOUR, 0.0f, 0.0f, 0.5f); // 40
 		// RotationSpeed
-		createFloatUniform("iRotationSpeed", mVDSettings->IROTATIONSPEED, 0.0f, -0.4f, 0.4f); // 41
+		createFloatUniform("iRotationSpeed", mVDSettings->IROTATIONSPEED, 0.02f, -0.4f, 0.4f); // 41
 
 		// iMouseX  
 		createFloatUniform("iMouseX", mVDSettings->IMOUSEX, 320.0f, 0.0f, 1280.0f); // 42
@@ -259,7 +259,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 
 	}
 	// textures
-	for (size_t i = 0; i < 8; i++)
+	for (size_t i = 0; i < 9; i++)
 	{
 		createSampler2DUniform("iChannel" + toString(i), 300 + i, i);// TODO verify doesn't mess up type (uint!)
 	}

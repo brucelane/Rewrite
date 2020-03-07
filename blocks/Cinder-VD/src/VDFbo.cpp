@@ -17,7 +17,6 @@ namespace videodromm {
 		// init texture
 		mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
-		//mUseBeginEnd = false;
 		isReady = false;
 		mType = UNKNOWN;
 		mStatus = "";
@@ -64,7 +63,6 @@ namespace videodromm {
 			mTexture = mVDAnimation->getAudioTexture(); // init with audio texture
 		}
 		mStatus = mTextureName;
-		//mSrcArea = mTexture->getBounds();
 		// init texture
 		// init the fbo whatever happens next
 		fboFmt.setColorTextureFormat(fmt);
@@ -74,10 +72,10 @@ namespace videodromm {
 		mValid = loadFragmentStringFromFile(mShaderName);
 
 		if (mValid) {
-			CI_LOG_V("VDShaders constructor success");
+			CI_LOG_V("VDFbo constructor success");
 		}
-		else {
-			CI_LOG_V("VDShaders constructor failed, do not use");
+		else {		
+			mVDSettings->mErrorMsg = "VDFbo constructor failed\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
 		}
 	}
 	VDFbo::~VDFbo(void) {
