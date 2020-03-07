@@ -6,8 +6,10 @@ namespace videodromm {
 	{
 		CI_LOG_V("VDFbo constructor");
 
-		string shaderFileName = "inputImage.fs";
-		string textureFileName = "0.jpg";
+		string shaderFileName = "inputImage.fs"; 
+		mShaderName = mShaderFileName;
+		string textureFileName = "0.jpg"; 
+		mTextureName = mCurrentSeqFilename = mLastCachedFilename = textureFileName;
 		string shaderType = "fs";
 		string mTypestr = "";
 		if (json.hasChild("shader")) {
@@ -291,6 +293,21 @@ namespace videodromm {
 			else {
 				mTexture->bind(0);
 
+			}*/
+			/*int f = 0;
+			for (auto &fbo : mTextureList) {
+				if (fbo->isValid() && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.05f) {
+					fbo->getTexture()->bind(f);
+				}
+				f++;
+			}
+			int t = 0;
+			for (auto &tex : mTextureList) {
+				if (tex->isValid() && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + t) > 0.1f) {
+					mGlslMixette->uniform("iChannel" + toString(t), t);
+					mGlslMixette->uniform("iWeight" + toString(t), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + t));
+				}
+				t++;
 			}*/
 			if (mTexture) mTexture->bind(0);
 			string name;
