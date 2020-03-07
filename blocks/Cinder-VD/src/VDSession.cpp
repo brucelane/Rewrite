@@ -57,17 +57,17 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mZoom = 1.0f;
 	mSelectedWarp = 0;*/
 	// Modes
-	mModesList[0] = "Fbo0";
-	mModesList[1] = "Fbo1";
-	mModesList[2] = "Fbo2";
-	mModesList[3] = "Fbo3";
-	mModesList[4] = "Fbo4";
-	mModesList[5] = "Fbo5";
-	mModesList[6] = "Fbo6";
-	mModesList[7] = "Fbo7";
-	mModesList[8] = "Fbo8";
-	mModesList[9] = "Fbo9";
-	mMode = 1;
+	mModesList[0] = "Mixette";
+	mModesList[1] = "Fbo0";
+	mModesList[2] = "Fbo1";
+	mModesList[3] = "Fbo2";
+	mModesList[4] = "Fbo3";
+	mModesList[5] = "Fbo4";
+	mModesList[6] = "Fbo5";
+	mModesList[7] = "Fbo6";
+	mModesList[8] = "Fbo7";
+	mModesList[9] = "Fbo8";
+	mMode = 0;
 	// Websocket
 	mVDWebsocket = VDWebsocket::create(mVDSettings, mVDAnimation);
 	// Message router
@@ -507,8 +507,8 @@ void VDSession::renderWarpsToFbo()
 		i = math<int>::min(a, getFboListSize() - 1);
 		s = getFboListSize(); // TMP
 		if (isFboValid(i)) {
-			//warp->draw(getFboRenderedTexture(i));/
-			warp->draw(getMixetteTexture(i));
+			//warp->draw(getFboRenderedTexture(i));getMixetteTexture/
+			warp->draw(getFboTexture(i));
 		}
 
 	}
