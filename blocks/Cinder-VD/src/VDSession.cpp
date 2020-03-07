@@ -1270,7 +1270,7 @@ void VDSession::updateHydraUniforms() {
 	}*/
 unsigned int VDSession::fboFromJson(const JsonTree &json) {
 	unsigned int rtn = 0;
-	string shaderFileName = "inputImage.fs";
+	/*string shaderFileName = "inputImage.fs";
 	string textureFileName = "0.jpg";
 	string shaderType = "fs";
 
@@ -1282,8 +1282,8 @@ unsigned int VDSession::fboFromJson(const JsonTree &json) {
 	if (json.hasChild("texture")) {
 		JsonTree textureJsonTree(json.getChild("texture"));
 		textureFileName = (textureJsonTree.hasChild("texturename")) ? textureJsonTree.getValueForKey<string>("texturename") : "0.jpg";
-	}
-	rtn = createFboShaderTexture(shaderFileName, textureFileName);
+	}*/
+	rtn = createFboShaderTexture(json);
 	return rtn;
 }
 

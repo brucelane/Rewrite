@@ -38,10 +38,10 @@ namespace videodromm
 
 	class VDFbo { // TODO : public VDTexture ?
 	public:
-		VDFbo(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aShaderFilename, string aTextureFilename);
+		VDFbo(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const JsonTree &json);
 		~VDFbo(void);
-		static VDFboRef create(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aShaderFilename, string aTextureFilename) {
-			return std::make_shared<VDFbo>(aVDSettings, aVDAnimation, aShaderFilename, aTextureFilename);
+		static VDFboRef create(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const JsonTree &json) {
+			return std::make_shared<VDFbo>(aVDSettings, aVDAnimation, json);
 		}
 		typedef enum { UNKNOWN, IMAGE, SEQUENCE, MOVIE, CAMERA, SHARED, AUDIO, STREAM } TextureType;
 		// get live rendered texture

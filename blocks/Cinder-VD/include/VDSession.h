@@ -335,8 +335,8 @@ namespace videodromm {
 		};
 
 		unsigned int					getFboListSize() { return mVDMix->getFboListSize(); };
-		unsigned int 					createFboShaderTexture(string aShaderFilename, string aTextureFilename) {
-			return mVDMix->createFboShaderTexture(aShaderFilename, aTextureFilename);
+		unsigned int 					createFboShaderTexture(const JsonTree &json) {
+			return mVDMix->createFboShaderTexture(json);
 		};
 		unsigned int					fboFromJson(const JsonTree &json);
 

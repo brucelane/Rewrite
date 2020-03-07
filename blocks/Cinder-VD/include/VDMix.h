@@ -158,9 +158,9 @@ namespace videodromm
 			}
 			
 		}
-		unsigned int									createFboShaderTexture(string aShaderFilename, string aTextureFilename) {
+		unsigned int									createFboShaderTexture(const JsonTree &json) {
 			unsigned int rtn = 0;
-			VDFboRef fboRef = VDFbo::create(mVDSettings, mVDAnimation, aShaderFilename, aTextureFilename);
+			VDFboRef fboRef = VDFbo::create(mVDSettings, mVDAnimation, json);
 			mFboList.push_back(fboRef);
 			rtn = mFboList.size() - 1;
 			return rtn;

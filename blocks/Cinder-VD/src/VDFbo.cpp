@@ -1,15 +1,30 @@
 #include "VDFbo.h"
 
 namespace videodromm {
-	VDFbo::VDFbo(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aShaderFilename, string aTextureFilename)
+	VDFbo::VDFbo(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const JsonTree &json)
 		:mValid(false)
 	{
 		CI_LOG_V("VDFbo constructor");
-		mShaderName = aShaderFilename;
-		mShaderFileName = aShaderFilename;
-		mTextureName = aTextureFilename;
-		mCurrentSeqFilename = aTextureFilename;
-		mLastCachedFilename = aTextureFilename;
+
+		string shaderFileName = "inputImage.fs";
+		string textureFileName = "0.jpg";
+		string shaderType = "fs";
+		string mTypestr = "";
+		if (json.hasChild("shader")) {
+			JsonTree shaderJsonTree(json.getChild("shader"));
+			mShaderName = mShaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
+			shaderType = (json.hasChild("shadertype")) ? json.getValueForKey<string>("shadertype") : "fs";
+		}
+		if (json.hasChild("texture")) {
+			JsonTree textureJsonTree(json.getChild("texture"));
+			mTextureName = mCurrentSeqFilename = mLastCachedFilename = (textureJsonTree.hasChild("texturename")) ? textureJsonTree.getValueForKey<string>("texturename") : "0.jpg";
+			mTypestr = (textureJsonTree.hasChild("texturetype")) ? textureJsonTree.getValueForKey<string>("texturetype") : "UNKNOWN";
+		}
+
+
+
+		//mShaderName = mShaderFileName = aShaderFilename;
+		//mTextureName =  mCurrentSeqFilename = mLastCachedFilename = aTextureFilename;
 		shaderInclude = loadString(loadAsset("shadertoy.vd"));
 
 		mVDSettings = aVDSettings;
