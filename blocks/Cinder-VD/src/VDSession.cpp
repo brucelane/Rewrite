@@ -315,8 +315,8 @@ void VDSession::updateMixUniforms() {
 	mGlslMix->uniform("iBlueMultiplier", mVDAnimation->getFloatUniformValueByName("iBlueMultiplier"));
 	mGlslMix->uniform("iFlipH", (int)mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH));
 	mGlslMix->uniform("iFlipV", (int)mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV));
-	mGlslMix->uniform("pixelX", mVDAnimation->getFloatUniformValueByName("pixelX"));
-	mGlslMix->uniform("pixelY", mVDAnimation->getFloatUniformValueByName("pixelY"));
+	mGlslMix->uniform("iPixelX", mVDAnimation->getFloatUniformValueByName("iPixelX"));
+	mGlslMix->uniform("iPixelY", mVDAnimation->getFloatUniformValueByName("iPixelY"));
 	mGlslMix->uniform("iXorY", mVDSettings->iXorY);
 	mGlslMix->uniform("iBadTv", mVDAnimation->getFloatUniformValueByName("iBadTv"));
 	mGlslMix->uniform("iFps", mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IFPS));
@@ -384,8 +384,8 @@ void VDSession::updateBlendUniforms() {
 	mGlslBlend->uniform("iBlueMultiplier", mVDAnimation->getFloatUniformValueByName("iBlueMultiplier"));
 	mGlslBlend->uniform("iFlipH", (int)mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH));
 	mGlslBlend->uniform("iFlipV", (int)mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPV));
-	mGlslBlend->uniform("pixelX", mVDAnimation->getFloatUniformValueByName("IPIXELX"));
-	mGlslBlend->uniform("pixelY", mVDAnimation->getFloatUniformValueByName("IPIXELY"));
+	mGlslBlend->uniform("iPixelX", mVDAnimation->getFloatUniformValueByName("IPIXELX"));
+	mGlslBlend->uniform("iPixelY", mVDAnimation->getFloatUniformValueByName("IPIXELY"));
 	mGlslBlend->uniform("iXorY", mVDSettings->iXorY);
 	mGlslBlend->uniform("iBadTv", mVDAnimation->getFloatUniformValueByName("iBadTv"));
 	mGlslBlend->uniform("iContour", mVDAnimation->getFloatUniformValueByName("iContour"));

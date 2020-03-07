@@ -1,6 +1,6 @@
 {
    "shader" : {
-      "shadername" : "transparent.fs",
+      "shadername" : "matrix01.fs",
       "shadertype" : "fs"
    },
    "texture" : {

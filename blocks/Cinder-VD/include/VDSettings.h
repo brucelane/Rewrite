@@ -48,6 +48,8 @@ namespace videodromm {
 
 		static const int			IBPM = 21;
 		static const int			ISPEED = 22;
+		static const int			IPIXELX = 23;
+		static const int			IPIXELY = 24;
 		static const int			IDELTATIME = 25;
 		static const int			IBR = 26;
 		static const int			IBG = 27;

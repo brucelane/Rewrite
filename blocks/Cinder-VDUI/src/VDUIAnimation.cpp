@@ -183,26 +183,26 @@ void VDUIAnimation::Run(const char* title) {
 			if (ImGui::DragFloat("badTv", &localValues[ctrl], 0.01f, getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
-			}
-			// pixelX
+			}*/
+			// iPixelX
 			ctrl = mVDSettings->IPIXELX;
-			if (ImGui::Button("x##pixelX")) { resetAutoAnimation(ctrl); }
+			if (ImGui::Button("x##iPixelX")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
 			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
-			if (ImGui::SliderFloat("pixelX/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+			if (ImGui::SliderFloat("iPixelX/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
 			}
-			// pixelY
+			// iPixelY
 			ctrl = mVDSettings->IPIXELY;
-			if (ImGui::Button("x##pixelY")) { resetAutoAnimation(ctrl); }
+			if (ImGui::Button("x##iPixelY")) { resetAutoAnimation(ctrl); }
 			ImGui::SameLine();
 			localValues[ctrl] = mVDSession->getFloatUniformValueByIndex(ctrl);
-			if (ImGui::SliderFloat("pixelY/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
+			if (ImGui::SliderFloat("iPixelY/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
 			}
-			sprintf(buf, "XorY");
+			/*sprintf(buf, "XorY");
 			mVDSettings->iXorY ^= ImGui::Button(buf);*/
 
 			// steps

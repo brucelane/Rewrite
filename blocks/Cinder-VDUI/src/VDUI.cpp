@@ -139,7 +139,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	ImGui::TextWrapped("OSC Msg: %s", mVDSettings->mOSCMsg.c_str());
 	//ImGui::TextWrapped("Last error: %s", mVDSettings->mErrorMsg.c_str());
 	ImGui::TextColored(ImColor(255, 0, 0), "Last error: %s", mVDSettings->mErrorMsg.c_str());
-	ImGui::SetNextWindowSize(ImVec2(700, mVDSettings->uiLargeH), ImGuiSetCond_Once);
+	ImGui::SetNextWindowSize(ImVec2(800, mVDSettings->uiLargeH), ImGuiSetCond_Once);
 	ImGui::SetNextWindowPos(ImVec2(mVDSettings->uiXPosCol1, mVDSettings->uiYPosRow1), ImGuiSetCond_Once);
 	//sprintf(buf, "Fps %c %d (%.2f)###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps, mVDSession->getTargetFps());
 	sprintf(buf, "Fps %c %d ###fps", "|/-\\"[(int)(ImGui::GetTime() / 0.25f) & 3], fps);
@@ -251,16 +251,6 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::SameLine();
 
 		// post flip		
-		ctrl = mVDSettings->IFLIPPOSTH;
-		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
-		if (ImGui::Button("flipPostH")) {
-			toggleValue(ctrl);
-		}
-		ImGui::PopStyleColor(3);
-		hue++;
-		ImGui::SameLine();
 		ctrl = mVDSettings->IFLIPPOSTV;
 		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
@@ -269,7 +259,17 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			toggleValue(ctrl);
 		}
 		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
 
+		ctrl = mVDSettings->IFLIPPOSTH;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("flipPostH")) {
+			toggleValue(ctrl);
+		}		
+		ImGui::PopStyleColor(3);
 	
 		if (ImGui::Button("CreateWarp")) {
 			mVDSession->createWarp();
