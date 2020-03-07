@@ -10,40 +10,12 @@
 			"TYPE" : "image"
 		},
 		{
-			"NAME": "iZoom",
-			"TYPE" : "float",
-			"MIN" : 0.1,
-			"MAX" : 2.0,
-			"DEFAULT" : 1.0
-		},
-		{
-			"NAME": "iSteps",
-			"TYPE" : "float",
-			"MIN" : 2.0,
-			"MAX" : 128.0,
-			"DEFAULT" : 64.0
-		},
-		{
-			"NAME": "iTimeMultiplier",
-			"TYPE" : "float",
-			"MIN" : 0.01,
-			"MAX" : 10.0,
-			"DEFAULT" : 1.0
-		},
-		{
-			"NAME" :"iMouse",
-			"TYPE" : "point2D",
-			"DEFAULT" : [0.0, 0.0],
-			"MAX" : [640.0, 480.0],
-			"MIN" : [0.0, 0.0]
-		},
-		{
 			"NAME": "iColor", 
 			"TYPE" : "color", 
 			"DEFAULT" : [
-				0.9, 
 				0.6, 
 				0.0, 
+				0.9, 
 				1.0
 			]
 		}

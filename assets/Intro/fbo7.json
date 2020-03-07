@@ -5,6 +5,6 @@
    },
    "texture" : {
       "texturename" : "audio",
-      "texturetype" : "image"
+      "texturetype" : "audio"
    }
 }

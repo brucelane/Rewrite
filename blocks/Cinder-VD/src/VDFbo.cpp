@@ -5,22 +5,23 @@ namespace videodromm {
 		:mValid(false)
 	{
 		CI_LOG_V("VDFbo constructor");
-
+		mVDSettings = aVDSettings;
+		mVDAnimation = aVDAnimation;
 		string shaderFileName = "inputImage.fs"; 
 		mShaderName = mShaderFileName;
-		string textureFileName = "0.jpg"; 
-		mTextureName = mCurrentSeqFilename = mLastCachedFilename = textureFileName;
 		string shaderType = "fs";
-		string mTypestr = "";
+		string textureFileName = "0.jpg"; 
+		//mTextureName = mCurrentSeqFilename = mLastCachedFilename = textureFileName;
+		mInputTextureIndex = 0;
 		if (json.hasChild("shader")) {
 			JsonTree shaderJsonTree(json.getChild("shader"));
 			mShaderName = mShaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
 			shaderType = (json.hasChild("shadertype")) ? json.getValueForKey<string>("shadertype") : "fs";
 		}
 		if (json.hasChild("texture")) {
+
 			JsonTree textureJsonTree(json.getChild("texture"));
-			mTextureName = mCurrentSeqFilename = mLastCachedFilename = (textureJsonTree.hasChild("texturename")) ? textureJsonTree.getValueForKey<string>("texturename") : "0.jpg";
-			mTypestr = (textureJsonTree.hasChild("texturetype")) ? textureJsonTree.getValueForKey<string>("texturetype") : "UNKNOWN";
+			createInputTexture(textureJsonTree);
 		}
 
 
@@ -29,57 +30,12 @@ namespace videodromm {
 		//mTextureName =  mCurrentSeqFilename = mLastCachedFilename = aTextureFilename;
 		shaderInclude = loadString(loadAsset("shadertoy.vd"));
 
-		mVDSettings = aVDSettings;
-		mVDAnimation = aVDAnimation;
+
 		// init texture
-		mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
+		//mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		isReady = false;
-		mType = UNKNOWN;
-		mStatus = "";
-		mLastCachedFilename = mTextureName;
-		if (mTextureName == "" || mTextureName == "audio") {
-			mTextureName = "audio";
-			mType = AUDIO;
-			mTexture = mVDAnimation->getAudioTexture();
-
-		}
-		fs::path texFileOrPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName;
-		if (fs::exists(texFileOrPath)) {
-			if (fs::is_directory(texFileOrPath)) {
-				mType = SEQUENCE;
-				mCurrentSeqFilename = mTextureName + " (1).jpg";
-				mLastCachedFilename = mTextureName + " (1).jpg";
-			}
-			else {
-				string ext = "";
-				int dotIndex = texFileOrPath.filename().string().find_last_of(".");
-				if (dotIndex != std::string::npos)  ext = texFileOrPath.filename().string().substr(dotIndex + 1);
-				if (ext == "jpg" || ext == "png") {
-					mTexture = gl::Texture::create(loadImage(texFileOrPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
-					mType = IMAGE;
-				}
-				else {
-					/*if (ext == "mp4" || ext == "wmv" || ext == "avi" || ext == "mov") {
-						if (!mVideo.isStopped()) {
-							mVideo.stop();
-						}
-
-						mIsVideoLoaded = mVideo.loadMovie(texFileOrPath);
-						mType = MOVIE;
-						mVideoDuration = mVideo.getDuration();
-						mVideoPos = mVideo.getPosition();
-						mVideo.play();
-					}*/
-				}
-			}
-		}
-		else {
-			mTextureName = "audio";
-			mType = AUDIO;
-			mTexture = mVDAnimation->getAudioTexture(); // init with audio texture
-		}
-		mStatus = mTextureName;
+		
 		// init texture
 		// init the fbo whatever happens next
 		fboFmt.setColorTextureFormat(fmt);
@@ -101,8 +57,8 @@ namespace videodromm {
 	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
 		mValid = false;
 		if (aFileName.length() > 0) {
-			if (mType == MOVIE) {
-				/*try {
+			/*if (mType == MOVIE) {
+				try {
 					mShaderName = mShaderFileName = "video_texture.fs.glsl";
 					// TODO VDShaderRef shaderToLoad instance
 					mShader = gl::GlslProg::create(gl::GlslProg::Format()
@@ -118,11 +74,11 @@ namespace videodromm {
 				catch (const std::exception &e) {
 					mError = string(e.what());
 					CI_LOG_V("fbo unable to load vtx-frag video_texture shader:" + string(e.what()));
-				}*/
+				}
 			}
-			else {
+			else {*/
 				// load fragment shader
-				shaderToLoad = VDShader::create(mVDSettings, mVDAnimation, aFileName, mTexture);
+				shaderToLoad = VDShader::create(mVDSettings, mVDAnimation, aFileName, getInputTexture());
 				if (shaderToLoad->isValid()) {
 					mShaderFileName = mFileNameWithExtension = shaderToLoad->getFileNameWithExtension();//was mFragFile.filename().string();
 					mFragmentShaderString = shaderToLoad->getFragmentString();//was loadString(loadFile(mFragFile));
@@ -147,7 +103,7 @@ namespace videodromm {
 						CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
 					}
 				}
-			}
+			//}
 		}
 		else {
 			mError = "aFileName empty";
@@ -227,73 +183,8 @@ namespace videodromm {
 
 			gl::ScopedFramebuffer fbScp(mFbo);
 			gl::clear(Color::black());
-			//gl::clear(ColorA(0.0f, 0.4f, 0.8f, 0.3f));
-			switch (mType)
-			{
-			case AUDIO:
-				mTexture = mVDAnimation->getAudioTexture();
-				break;
-				/*case MOVIE:
-					mVideo.update();
-					mVideoPos = mVideo.getPosition();
-					if (mVideo.isStopped() || mVideo.isPaused()) {
-						mVideo.setPosition(0.0);
-						mVideo.play();
-					}
-					//mTexture = mVideo.mPlayer->mSources-> mEVRPresenter->;
-					break;*/
-			case IMAGE:
-				break;
-			case SEQUENCE:
-				if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 0) {
-					// 20200306 if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 19) {
-						// TODO IBARBEAT 
-					mCurrentSeqFilename = mTextureName + " (" + toString(mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT)) + ").jpg";
-				}
-				if (mCachedTextures[mCurrentSeqFilename]) {
-					//CI_LOG_V(mCurrentSeqFilename + " in cache");
-					mLastCachedFilename = mCurrentSeqFilename;
-					mTexture = mCachedTextures[mCurrentSeqFilename];
-				}
-				else {
-					// mTextureName is the path
-					fs::path fullPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName / mCurrentSeqFilename;
-					if (fs::exists(fullPath)) {
-						// start profiling
-						auto start = Clock::now();
-						mCachedTextures[mCurrentSeqFilename] = ci::gl::Texture::create(loadImage(fullPath), gl::Texture::Format().loadTopDown());
-						auto end = Clock::now();
-						auto msdur = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
-						int milli = msdur.count();
-						mLastCachedFilename = mCurrentSeqFilename;
-						mTexture = mCachedTextures[mCurrentSeqFilename];
-						mStatus = mCurrentSeqFilename + " " + toString(milli) + "ms";
-						CI_LOG_V(mStatus);
-						mVDSettings->mMsg = mStatus + "\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
-					}
-					else {
-						// we want the last texture repeating
-						//CI_LOG_V(mCurrentSeqFile + " does not exist");
-						mTexture = mCachedTextures[mLastCachedFilename];
-					}
-				}
-				break;
-			default:
-				break;
-			}
-			/*if (mType == MOVIE)
-			{
-				vec2 videoSize = vec2(mVideo.getWidth(), mVideo.getHeight());
-				mShader->uniform("uVideoSize", videoSize);
-				videoSize *= 0.25f;
-				videoSize *= 0.5f;
-				ciWMFVideoPlayer::ScopedVideoTextureBind scopedVideoTex(mVideo, 0);
-				gl::scale(vec3(videoSize, 1.0f));
-			}
-			else {
-				mTexture->bind(0);
-
-			}*/
+			
+			
 			/*int f = 0;
 			for (auto &fbo : mTextureList) {
 				if (fbo->isValid() && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.05f) {
@@ -309,7 +200,7 @@ namespace videodromm {
 				}
 				t++;
 			}*/
-			if (mTexture) mTexture->bind(0);
+			mTextureList[0]->getTexture()->bind(0);
 			string name;
 			mUniforms = mShader->getActiveUniforms();
 			for (const auto &uniform : mUniforms) {
@@ -397,7 +288,7 @@ namespace videodromm {
 			gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			mRenderedTexture = mFbo->getColorTexture();
 			if (!isReady) {
-				string filename = mName + "-" + mTextureName + ".jpg";
+				string filename = mName + "-" + mTextureList[0]->getTextureName() + ".jpg";
 				fs::path fr = getAssetPath("") / "thumbs" / filename;
 
 				if (!fs::exists(fr)) {
@@ -430,8 +321,8 @@ namespace videodromm {
 		shader.pushBack(ci::JsonTree("shadertype", "fs"));
 		json.addChild(shader);
 		JsonTree texture = ci::JsonTree::makeArray("texture");
-		texture.addChild(ci::JsonTree("texturename", mTextureName));
-		texture.pushBack(ci::JsonTree("texturetype", "image"));
+		texture.addChild(ci::JsonTree("texturename", mTextureList[0]->getTextureName()));
+		texture.pushBack(ci::JsonTree("texturetype", mTextureList[0]->getType()));
 		json.addChild(texture);
 
 		if (save) {

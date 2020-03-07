@@ -100,7 +100,7 @@ namespace videodromm {
 		gl::clear(Color::black());
 		int f = 0;
 		for (auto &fbo : mFboList) {
-			if (fbo->isValid()) {// && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.05f) {
+			if (fbo->isValid()) {// white mix bug && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.05f) {
 				fbo->getTexture()->bind(f);
 			}
 			f++;
@@ -111,7 +111,7 @@ namespace videodromm {
 		mGlslMixette->uniform("iResolution", vec3(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY), 1.0));
 		int i = 0;
 		for (auto &fbo : mFboList) {
-			if (fbo->isValid()) {// && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + i) > 0.1f) {
+			if (fbo->isValid()) {// white mix bug && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + i) > 0.1f) {
 				mGlslMixette->uniform("iChannel" + toString(i), i);
 				mGlslMixette->uniform("iWeight" + toString(i), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + i));
 			}

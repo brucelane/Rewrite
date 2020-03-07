@@ -16,7 +16,7 @@
 // shader
 #include "VDShader.h"
 // textures
-//#include "VDTexture.h"
+#include "VDTexture.h"
 // video
 //#include "ciWMFVideoPlayer.h"
 
@@ -36,7 +36,7 @@ namespace videodromm
 	// for profiling
 	typedef std::chrono::high_resolution_clock		Clock;
 
-	class VDFbo { // TODO : public VDTexture ?
+	class VDFbo {
 	public:
 		VDFbo(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const JsonTree &json);
 		~VDFbo(void);
@@ -65,17 +65,11 @@ namespace videodromm
 		bool									isFlipV() { return mVDAnimation->getBoolUniformValueByIndex(mVDSettings->IFLIPH); };*/
 		std::string								getName() { return mName; };
 		std::string								getShaderName() { return mShaderName; };
-		std::string								getTextureName() { return mTextureName; };
-		ci::gl::Texture2dRef					getInputTexture() { return mTexture; };
-		string									getStatus() { return mStatus; };
+		std::string								getTextureName() { return mTextureList[0]->getTextureName(); };
+		ci::gl::Texture2dRef					getInputTexture() { return mTextureList[0]->getTexture(); };
+		string									getStatus() { return mTextureList[0]->getStatus(); };
 		void									setImageInputTexture(ci::gl::Texture2dRef aTextureRef, string aTextureFilename) { 
-			mType = IMAGE; 
-			mTexture = aTextureRef; 
-			mTextureName = aTextureFilename;
-			if (shaderToLoad) {
-				shaderToLoad->setInputTexture(aTextureRef);
-				shaderToLoad->getThumbTexture();
-			}
+			mTextureList[0]->setImageInputTexture( aTextureRef, aTextureFilename);
 		};
 		void									updateThumbFile() {
 			isReady = false;
@@ -166,12 +160,16 @@ namespace videodromm
 		// Animation
 		VDAnimationRef					mVDAnimation;
 		//! Input textures
-		gl::TextureRef					mTexture;
-		map<string, ci::gl::TextureRef>	mCachedTextures;
-		string							mLastCachedFilename;
-		string							mCurrentSeqFilename;
-		string							mStatus;
-		TextureType						mType;
+		VDTextureList					mTextureList;
+		unsigned int					mInputTextureIndex;
+		unsigned int					createInputTexture(const JsonTree &json) {
+			unsigned int rtn = 0;
+			VDTextureRef texRef = VDTexture::create(mVDSettings, mVDAnimation, json);
+			mTextureList.push_back(texRef);
+			rtn = mTextureList.size() - 1;
+			return rtn;
+
+		}
 		// video
 		/*ciWMFVideoPlayer				mVideo;
 		float							mVideoPos;
@@ -185,7 +183,7 @@ namespace videodromm
 		string							mShaderName = "";
 		string							mName = "";
 		string							mShaderFileName = "";
-		string							mTextureName = "";
+
 		std::string						mFragmentShaderString;
 		std::string						mFileNameWithExtension;
 		//fs::path						mFragFile;
@@ -202,7 +200,6 @@ namespace videodromm
 
 		gl::Texture::Format				fmt;
 		gl::Fbo::Format					fboFmt;
-		//bool							mUseBeginEnd;
 		bool							isReady;
 		ci::gl::Texture2dRef			mRenderedTexture;
 		ci::gl::Texture2dRef			getFboTexture();
