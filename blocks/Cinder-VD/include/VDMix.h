@@ -52,7 +52,9 @@ namespace videodromm
 		// RTE in release mode 
 		//ci::gl::Texture2dRef			getRenderedTexture(bool reDraw = true);
 		// fbolist
-		unsigned int					getFboListSize() { return mFboList.size(); };
+		unsigned int					getFboListSize() { 
+			return mFboList.size(); 
+		};
 		bool							isFboValid(unsigned int aFboIndex) {
 			bool valid = false;
 			if (mFboList.size() > 0) {

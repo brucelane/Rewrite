@@ -85,17 +85,11 @@ void VDUIWarps::Run(const char* title) {
 					}
 					ImGui::PopID();
 
-
 					ImGui::PopStyleVar();
 
-					ImGui::Indent();
-
-			
+					ImGui::Indent();		
 			}
 			else {
-
-
-
 				ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
 				ImGui::PushID(w);
 				int fboa = mVDSession->getWarpAFboIndex(w);
@@ -129,10 +123,6 @@ void VDUIWarps::Run(const char* title) {
 				ImGui::PopItemWidth();
 			}
 		}
-
-
-
-
 
 		ImGui::End();
 	}

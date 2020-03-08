@@ -12,7 +12,7 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	// UIAnimation
 	mUIAnimation = VDUIAnimation::create(mVDSettings, mVDSession);
 	// UIMidi
-	mUIMidi = VDUIMidi::create(mVDSettings, mVDSession);
+	/*mUIMidi = VDUIMidi::create(mVDSettings, mVDSession);
 	// UIAudio
 	mUIAudio = VDUIAudio::create(mVDSettings, mVDSession);
 	// UIColor
@@ -30,7 +30,7 @@ VDUI::VDUI(VDSettingsRef aVDSettings, VDSessionRef aVDSession) {
 	// UIShaders
 	mUIShaders = VDUIShaders::create(mVDSettings, mVDSession);
 	// UIRender
-	mUIRender = VDUIRender::create(mVDSettings, mVDSession);
+	mUIRender = VDUIRender::create(mVDSettings, mVDSession);*/
 	// UIWarps
 	mUIWarps = VDUIWarps::create(mVDSettings, mVDSession);
 	// imgui
@@ -147,6 +147,9 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	{
 		// line 1
 		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
+		ImGui::Image((void*)mVDSession->getMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Mixette");
+		ImGui::SameLine();
 		// fps
 		static ImVector<float> values; if (values.empty()) { values.resize(100); memset(&values.front(), 0, values.size() * sizeof(float)); }
 		static int values_offset = 0;
@@ -213,7 +216,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		}
 		ImGui::PopStyleColor(3);
 		hue++;
-		ImGui::SameLine();
+		
 		// debug
 		ctrl = mVDSettings->IDEBUG;
 		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
@@ -226,50 +229,7 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		hue++;
 		ImGui::SameLine();
 
-		// iflipv
-		ctrl = mVDSettings->IFLIPV;
-		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
-		if (ImGui::Button("FlipV")) {
-			toggleValue(ctrl);
-		}
-		ImGui::PopStyleColor(3);
-		hue++;
-		ImGui::SameLine();
 
-		// debug
-		ctrl = mVDSettings->IFLIPH;
-		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
-		if (ImGui::Button("FlipH")) {
-			toggleValue(ctrl);
-		}
-		ImGui::PopStyleColor(3);
-		hue++;
-		ImGui::SameLine();
-
-		// post flip		
-		ctrl = mVDSettings->IFLIPPOSTV;
-		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
-		if (ImGui::Button("flipPostV")) {
-			toggleValue(ctrl);
-		}
-		ImGui::PopStyleColor(3);
-		hue++;
-		ImGui::SameLine();
-
-		ctrl = mVDSettings->IFLIPPOSTH;
-		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
-		if (ImGui::Button("flipPostH")) {
-			toggleValue(ctrl);
-		}		
-		ImGui::PopStyleColor(3);
 	
 		if (ImGui::Button("CreateWarp")) {
 			mVDSession->createWarp();
@@ -370,8 +330,52 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		mVDSettings->iGreyScale ^= ImGui::Button("greyscale");
 		ImGui::PopStyleColor(3);
 		hue++;
-		/*ImGui::SameLine();
+		ImGui::SameLine();
+		// iflipv
+		ctrl = mVDSettings->IFLIPV;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("FlipV")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
 
+		// ifliph
+		ctrl = mVDSettings->IFLIPH;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("FlipH")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+
+		// post flip		
+		ctrl = mVDSettings->IFLIPPOSTV;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("flipPostV")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+		hue++;
+		ImGui::SameLine();
+
+		ctrl = mVDSettings->IFLIPPOSTH;
+		(getBoolValue(ctrl)) ? ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(hue / 16.0f, 1.0f, 0.5f)) : ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(1.0f, 0.1f, 0.1f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(hue / 16.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(hue / 16.0f, 0.8f, 0.8f));
+		if (ImGui::Button("flipPostH")) {
+			toggleValue(ctrl);
+		}
+		ImGui::PopStyleColor(3);
+/*
 		if (ImGui::Button("blackout"))
 		{
 			setFloatValue(1, 0.0);

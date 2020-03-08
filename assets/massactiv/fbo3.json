@@ -5,6 +5,6 @@
    },
    "texture" : {
       "texturename" : "love",
-      "texturetype" : "image"
+      "texturetype" : "sequence"
    }
 }

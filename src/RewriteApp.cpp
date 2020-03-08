@@ -256,13 +256,14 @@ void RewriteApp::draw()
 		//gl::setMatricesWindow(mVDSettings->mFboWidth, mVDSettings->mFboHeight, false);
 		gl::setMatricesWindow(mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTW), mVDSession->getIntUniformValueByIndex(mVDSettings->IOUTH), true);
 		int m = mVDSession->getMode();
-		if (m > 0 && m < mVDSession->getModesCount() && m < mVDSession->getFboListSize()) {
+		if (m < mVDSession->getModesCount() && m < mVDSession->getFboListSize() + 1) {
 			gl::draw(mVDSession->getFboTexture(m), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			mSpoutOut.sendTexture(mVDSession->getFboRenderedTexture(m));
 		}
 		else {
-			gl::draw(mVDSession->getPostFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
-		// ok gl::draw(mVDSession->getWarpFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
+			//gl::draw(mVDSession->getPostFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+			gl::draw(mVDSession->getMixetteTexture(0), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+			// ok gl::draw(mVDSession->getWarpFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
 			mSpoutOut.sendTexture(mVDSession->getPostFboTexture());
 		}
 

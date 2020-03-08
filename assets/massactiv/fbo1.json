@@ -5,6 +5,6 @@
    },
    "texture" : {
       "texturename" : "red",
-      "texturetype" : "image"
+      "texturetype" : "sequence"
    }
 }

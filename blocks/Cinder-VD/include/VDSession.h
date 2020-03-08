@@ -49,20 +49,20 @@ namespace videodromm {
 		void							update(unsigned int aClassIndex = 0);
 		//! Mix
 		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {
-			return mVDMix->getFboRenderedTexture(aFboIndex);
+			
+				return mVDMix->getFboRenderedTexture(aFboIndex);
+			
+			
 		}
 		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex) {
-			if (aFboIndex < 1) {
-				return mVDMix->getMixetteTexture(aFboIndex);
-			}
-			else {
-				return mVDMix->getFboTexture(aFboIndex - 1);
-			}
+			
+				return mVDMix->getFboTexture(aFboIndex);
+		
 
 		}
-		/*ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex) {
+		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex) {
 			return mVDMix->getMixetteTexture(aFboIndex);
-		};*/
+		}
 		ci::gl::TextureRef				getPostFboTexture() {
 			return mPostFbo->getColorTexture();
 		};

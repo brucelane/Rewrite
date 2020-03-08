@@ -16,25 +16,25 @@
 // Animation
 #include "VDUIAnimation.h"
 // Midi
-#include "VDUIMidi.h"
+//#include "VDUIMidi.h"
 // Audio
-#include "VDUIAudio.h"
+//#include "VDUIAudio.h"
 // Color
-#include "VDUIColor.h"
+//#include "VDUIColor.h"
 // Tempo
 //#include "VDUITempo.h"
 // Blend
-#include "VDUIBlend.h"
+//#include "VDUIBlend.h"
 // Websockets
-#include "VDUIWebsockets.h"
+//#include "VDUIWebsockets.h"
 // Osc
-#include "VDUIOsc.h"
+//#include "VDUIOsc.h"
 // Mouse
-#include "VDUIMouse.h"
+//#include "VDUIMouse.h"
 // Shaders
-#include "VDUIShaders.h"
+//#include "VDUIShaders.h"
 // Render
-#include "VDUIRender.h"
+//#include "VDUIRender.h"
 // Warps
 #include "VDUIWarps.h"
 
@@ -80,7 +80,7 @@ namespace videodromm
 		VDUIAnimationRef			mUIAnimation;
 		bool						showUIAnimation;
 		// UIMidi
-		VDUIMidiRef					mUIMidi;
+		/*VDUIMidiRef					mUIMidi;
 		bool						showUIMidi;
 		// UIAudio
 		VDUIAudioRef				mUIAudio;
@@ -89,8 +89,8 @@ namespace videodromm
 		VDUIColorRef				mUIColor;
 		bool						showUIColor;
 		// UITempo
-		//VDUITempoRef				mUITempo;
-		//bool						showUITempo;
+		VDUITempoRef				mUITempo;
+		bool						showUITempo;
 		// UIBlend
 		VDUIBlendRef				mUIBlend;
 		bool						showUIBlend;
@@ -108,7 +108,7 @@ namespace videodromm
 		bool						showUIShaders;
 		// UIRender
 		VDUIRenderRef				mUIRender;
-		bool						showUIRender;
+		bool						showUIRender;*/
 		// UIWarps
 		VDUIWarpsRef				mUIWarps;
 		bool						showUIWarps;

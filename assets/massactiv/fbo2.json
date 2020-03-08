@@ -5,6 +5,6 @@
    },
    "texture" : {
       "texturename" : "green",
-      "texturetype" : "image"
+      "texturetype" : "sequence"
    }
 }
