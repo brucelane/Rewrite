@@ -198,12 +198,12 @@ void VDSession::renderPostToFbo()
 	gl::ScopedViewport scpVp(ivec2(0), mPostFbo->getSize());
 
 	// texture binding must be before ScopedGlslProg
-	mWarpsFbo->getColorTexture()->bind(0);
+	mWarpsFbo->getColorTexture()->bind(40);
 	gl::ScopedGlslProg prog(mGlslPost);
 
 	// not used yet mGlslPost->uniform("TIME", getFloatUniformValueByIndex(mVDSettings->ITIME) - mVDSettings->iStart);;
 	mGlslPost->uniform("iResolution", vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
-	mGlslPost->uniform("iChannel0", 0); // texture 0
+	mGlslPost->uniform("iChannel0", 40); // texture 0
 	mGlslPost->uniform("iSobel", getFloatUniformValueByIndex(mVDSettings->ISOBEL));
 	mGlslPost->uniform("iExposure", getFloatUniformValueByIndex(mVDSettings->IEXPOSURE));
 	mGlslPost->uniform("iTrixels", getFloatUniformValueByIndex(mVDSettings->ITRIXELS)); // trixels if > 0.
@@ -218,8 +218,8 @@ void VDSession::renderWarpsToFbo()
 {
 	gl::ScopedFramebuffer fbScp(mWarpsFbo);
 	// clear out the FBO with black
-	gl::clear(Color::black());
-	//gl::clear(ColorA(0.4f, 0.0f, 0.8f, 0.3f));
+	//gl::clear(Color::black());
+	gl::clear(ColorA(0.4f, 0.0f, 0.8f, 0.3f));
 
 	// setup the viewport to match the dimensions of the FBO
 	gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());
@@ -232,14 +232,15 @@ void VDSession::renderWarpsToFbo()
 		if (a < 0) a = 0; // TODO 20200228 a could be negative if warps3.xml > warps01.json
 		i = math<int>::min(a, getFboListSize() - 1);
 		s = getFboListSize(); // TMP
-		if (isFboValid(i)) {
-			//warp->draw(getFboRenderedTexture(i));getMixetteTexture/
-			warp->draw(getFboTexture(i));
-		}
+		//if (isFboValid(i)) {
+			warp->draw(getFboRenderedTexture(i));
+			//warp->draw(getFboTexture(0)); bind to 0 broken
+			//warp->draw(getMixetteTexture(0));
+		//}
 
 	}
-	//gl::color(0.5, 0.0, 1.0, 0.4f);
-	//gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+	gl::color(0.5, 0.0, 1.0, 0.4f);
+	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth/2, mVDSettings->mFboHeight/2));
 
 }
 bool VDSession::save()

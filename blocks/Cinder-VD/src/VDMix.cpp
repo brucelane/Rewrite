@@ -99,7 +99,7 @@ namespace videodromm {
 		// clear out the FBO with black
 		gl::clear(Color::black());
 		
-		// nasty bug bind to 100+f!
+		// nasty bug! bind to 100+f
 		int f = 0;
 		for (auto &fbo : mFboList) {
 			if (mFboList[f]->isValid()) {// white mix bug && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.05f) {

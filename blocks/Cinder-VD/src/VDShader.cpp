@@ -435,7 +435,7 @@ ci::gl::Texture2dRef VDShader::getFboTexture() {
 		gl::ScopedFramebuffer fbScp(mThumbFbo);
 		gl::clear(Color::black());
 
-		if (mTexture) mTexture->bind(0);
+		if (mTexture) mTexture->bind(254);
 		string name;
 
 		mUniforms = mShader->getActiveUniforms();
@@ -453,7 +453,7 @@ ci::gl::Texture2dRef VDShader::getFboTexture() {
 					}
 					break;
 				case 1: // sampler2D
-					mShader->uniform(name, 0);
+					mShader->uniform(name, 254);
 					break;
 				case 2: // vec2
 					if (name == "RENDERSIZE") {

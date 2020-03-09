@@ -150,14 +150,12 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::Image((void*)mVDSession->getMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Mixette");
 		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->getFboTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("FboTex");
+		ImGui::Image((void*)mVDSession->getPostFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Post");
 		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->getFboRenderedTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("FboRenderedTex");
-		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->getFboInputTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
-		if (ImGui::IsItemHovered()) ImGui::SetTooltip("FboInputTex");
+		ImGui::Image((void*)mVDSession->getWarpFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Warp");
+
 		ImGui::SameLine();
 		// fps
 		static ImVector<float> values; if (values.empty()) { values.resize(100); memset(&values.front(), 0, values.size() * sizeof(float)); }

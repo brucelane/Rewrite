@@ -264,7 +264,7 @@ void RewriteApp::draw()
 			//gl::draw(mVDSession->getPostFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			gl::draw(mVDSession->getMixetteTexture(0), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
 			// ok gl::draw(mVDSession->getWarpFboTexture(), Area(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));//getWindowBounds()
-			mSpoutOut.sendTexture(mVDSession->getPostFboTexture());
+			mSpoutOut.sendTexture(mVDSession->getMixetteTexture(0));
 		}
 
 		/*vec2 videoSize = vec2(mVideo.getWidth(), mVideo.getHeight());

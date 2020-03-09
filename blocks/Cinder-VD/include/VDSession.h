@@ -48,17 +48,11 @@ namespace videodromm {
 		bool							handleKeyUp(KeyEvent &event);
 		void							update(unsigned int aClassIndex = 0);
 		//! Mix
-		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {
-			
+		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {			
 				return mVDMix->getFboRenderedTexture(aFboIndex);
-			
-			
 		}
-		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex) {
-			
+		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex) {			
 				return mVDMix->getFboTexture(aFboIndex);
-		
-
 		}
 		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex) {
 			return mVDMix->getMixetteTexture(aFboIndex);

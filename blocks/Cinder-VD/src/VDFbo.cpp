@@ -203,7 +203,7 @@ namespace videodromm {
 				}
 				t++;
 			}*/
-			mTextureList[0]->getTexture()->bind(0);
+			mTextureList[0]->getTexture()->bind(253);
 			string name;
 			mUniforms = mShader->getActiveUniforms();
 			for (const auto &uniform : mUniforms) {
@@ -230,7 +230,7 @@ namespace videodromm {
 						}
 						break;
 					case 1: // sampler2D
-						mShader->uniform(name, 0);
+						mShader->uniform(name, 253);
 						break;
 					case 2://GL_FLOAT_VEC2: // vec2
 						if (name == "RENDERSIZE") {

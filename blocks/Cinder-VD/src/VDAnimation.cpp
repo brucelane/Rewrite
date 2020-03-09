@@ -142,7 +142,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		// contour
 		createFloatUniform("iContour", mVDSettings->ICONTOUR, 0.0f, 0.0f, 0.5f); // 40
 		// RotationSpeed
-		createFloatUniform("iRotationSpeed", mVDSettings->IROTATIONSPEED, -0.02f, -0.1f, 0.1f); // 41
+		createFloatUniform("iRotationSpeed", mVDSettings->IROTATIONSPEED, 0.02f, -0.1f, 0.1f); // 41
 
 		// iMouseX  
 		createFloatUniform("iMouseX", mVDSettings->IMOUSEX, 320.0f, 0.0f, 1280.0f); // 42
