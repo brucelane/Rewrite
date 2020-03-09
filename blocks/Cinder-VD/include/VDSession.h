@@ -140,8 +140,8 @@ namespace videodromm {
 				json.write(jsonFile);
 				i++;
 			}
-			// save warp settings
-			Warp::writeSettings(mWarpList, writeFile(mSettings));*/
+			// save warp settings*/
+			Warp::writeSettings(mWarpList, writeFile(mSettings));
 		}
 
 		bool							handleMouseMove(MouseEvent &event);

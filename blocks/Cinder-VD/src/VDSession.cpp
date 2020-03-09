@@ -228,7 +228,7 @@ void VDSession::renderWarpsToFbo()
 
 		// setup the viewport to match the dimensions of the FBO
 		gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());
-		// iterate over the fbos and draw their content
+		// iterate over the warps and draw their content
 		int i = 0;
 		int a = 0;
 		int s = 0;
@@ -238,9 +238,9 @@ void VDSession::renderWarpsToFbo()
 			i = math<int>::min(a, getFboListSize() - 1);
 			s = getFboListSize(); // TMP
 			//if (isFboValid(i)) {
-				 warp->draw(getFboRenderedTexture(i));
+				//ko  warp->draw(getFboRenderedTexture(0));
 				//ko warp->draw(getFboTexture(0)); bind to 0 broken
-			//kowarp->draw(mVDMix->getRenderedMixetteTexture(0));
+			warp->draw(mVDMix->getRenderedMixetteTexture(0));
 			//}
 
 		}
