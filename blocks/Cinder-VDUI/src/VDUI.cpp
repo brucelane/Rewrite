@@ -150,6 +150,15 @@ void VDUI::Run(const char* title, unsigned int fps) {
 		ImGui::Image((void*)mVDSession->getMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Mixette");
 		ImGui::SameLine();
+		ImGui::Image((void*)mVDSession->getFboTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("FboTex");
+		ImGui::SameLine();
+		ImGui::Image((void*)mVDSession->getFboRenderedTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("FboRenderedTex");
+		ImGui::SameLine();
+		ImGui::Image((void*)mVDSession->getFboInputTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("FboInputTex");
+		ImGui::SameLine();
 		// fps
 		static ImVector<float> values; if (values.empty()) { values.resize(100); memset(&values.front(), 0, values.size() * sizeof(float)); }
 		static int values_offset = 0;
@@ -530,8 +539,8 @@ void VDUI::Run(const char* title, unsigned int fps) {
 			if (ImGui::IsItemHovered()) ImGui::SetTooltip(buf);
 			ImGui::PopStyleColor(3);
 			ImGui::SameLine();*/
-			//ctrl = mVDSettings->IWEIGHT0 + m;
-			ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
+			ctrl = mVDSettings->IWEIGHT0 + m;
+			//ctrl = math<int>::min(mVDSettings->IWEIGHT8, mVDSettings->IWEIGHT0 + m);
 			float iWeight = mVDSession->getFloatUniformValueByIndex(ctrl);
 			ImGui::PushID(m);
 			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImColor::HSV(m / 16.0f, 0.5f, 0.5f));

@@ -100,7 +100,7 @@ namespace videodromm {
 				if (fs::exists(fullPath)) {
 					// start profiling
 					auto start = Clock::now();
-					mCachedTextures[mCurrentSeqFilename] = ci::gl::Texture::create(loadImage(fullPath), gl::Texture::Format().loadTopDown());
+					mCachedTextures[mCurrentSeqFilename] = ci::gl::Texture::create(loadImage(fullPath), gl::Texture::Format().loadTopDown(false));
 					auto end = Clock::now();
 					auto msdur = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 					int milli = msdur.count();

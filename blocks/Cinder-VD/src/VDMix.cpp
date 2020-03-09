@@ -98,31 +98,32 @@ namespace videodromm {
 		gl::ScopedFramebuffer fbScp(mMixetteFbo);
 		// clear out the FBO with black
 		gl::clear(Color::black());
+		
+		// nasty bug bind to 100+f!
 		int f = 0;
 		for (auto &fbo : mFboList) {
-			if (fbo->isValid()) {// white mix bug && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.05f) {
-				fbo->getTexture()->bind(f);
+			if (mFboList[f]->isValid()) {// white mix bug && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.05f) {
+				//fbo->getTexture()->bind(f); not in right order
+				mFboList[f]->getTexture()->bind(100 + f);
 			}
 			f++;
 		}
-
-		//mImage->bind(0);
 		gl::ScopedGlslProg prog(mGlslMixette);
 		mGlslMixette->uniform("iResolution", vec3(mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY), 1.0));
 		int i = 0;
 		for (auto &fbo : mFboList) {
 			if (fbo->isValid()) {// white mix bug && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + i) > 0.1f) {
-				mGlslMixette->uniform("iChannel" + toString(i), i);
+				mGlslMixette->uniform("iChannel" + toString(i), 100 + i);
 				mGlslMixette->uniform("iWeight" + toString(i), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + i));
 			}
 			i++;
 		}
-
+		
 		gl::drawSolidRect(Rectf(0, 0, mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESX), mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IRESY)));
 		// setup the viewport to match the dimensions of the FBO
 		gl::ScopedViewport scpVp(ivec2(0), mMixetteFbo->getSize());
 		mMixetteTexture = mMixetteFbo->getColorTexture();
-		return mMixetteTexture;// 20200303 was mMixetteFbo->getColorTexture();
+		return mMixetteFbo->getColorTexture();
 	}
 #pragma region blendmodes
 	/*unsigned int VDMix::getFboBlendCount() {

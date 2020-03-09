@@ -10,7 +10,7 @@ namespace videodromm {
 		string shaderFileName = "inputImage.fs"; 
 		mShaderName = mShaderFileName;
 		string shaderType = "fs";
-		string textureFileName = "0.jpg"; 
+		//string textureFileName = "0.jpg"; 
 		//mTextureName = mCurrentSeqFilename = mLastCachedFilename = textureFileName;
 		mInputTextureIndex = 0;
 		if (json.hasChild("shader")) {
@@ -21,6 +21,9 @@ namespace videodromm {
 		if (json.hasChild("texture")) {
 
 			JsonTree textureJsonTree(json.getChild("texture"));
+			//tmp
+			//string tx = (textureJsonTree.hasChild("texturename")) ? textureJsonTree.getValueForKey<string>("texturename") : "0.jpg";
+
 			createInputTexture(textureJsonTree);
 		}
 

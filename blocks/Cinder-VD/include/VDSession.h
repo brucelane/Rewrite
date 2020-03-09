@@ -645,21 +645,7 @@ namespace videodromm {
 		//! Fbos
 		map<int, VDMixFbo>				mMixFbos;
 		*/
-		// maintain a list of fbos specific to this mix
-		//VDFboList						mFboList;
-
-
-		/*fs::path						mMixesFilepath;
-		//unsigned int					mAFboIndex;
-		//unsigned int					mBFboIndex;
-
-		//! Shaders
-		VDShaderList					mShaderList;
-		void							initShaderList();*/
-		//! Textures
-		//VDTextureList					mTextureList;
-		//fs::path						mTexturesFilepath;
-		bool							initTextureList();
+		
 		//! Modes
 		map<int, string>				mModesList;
 		// blendmodes fbos

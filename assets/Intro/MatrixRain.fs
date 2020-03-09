@@ -110,7 +110,8 @@ void main( void ) {
 			
 			float b = rchar(vec2(rx, floor((ry) / 15.0)), vec2(mx, my) / 12.0, globalTime);
 			float col = max(mod(-y, 24.0) - 4.0, 0.0) / 20.0;
-			vec3 c = col < 0.8 ? vec3( col / 0.8, 0.0,0.0) : mix(vec3(0.0, 0.0, 0.5), vec3(1.0), (col - 0.8) / 0.2); // TODO red to purple
+			//vec3 c = col < 0.8 ? vec3( col / 0.8, 0.0,0.0) : mix(vec3(0.0, 0.0, 0.5), vec3(1.0), (col - 0.8) / 0.2); // TODO red to purple
+			vec3 c = col < 0.8 ? vec3( col / 0.8, 0.0,0.0) : mix(iColor.rgb, vec3(1.0), (col - 0.8) / 0.2); // TODO red to purple
 			
 			result = vec4(c * b, 1.0)  ;
 		}
@@ -140,14 +141,15 @@ void main( void ) {
 			
 			float b = rchar(vec2(rx, floor((ry) / 15.0)), vec2(mx, my) / 12.0, globalTime);
 			float col = max(mod(-y, 24.0) - 4.0, 0.0) / 20.0;
-			vec3 c = col < 0.8 ? vec3(0.0, col / 0.8, 0.0) : mix(vec3(0.0, 1.0, 0.0), vec3(1.0), (col - 0.8) / 0.2);
+			//vec3 c = col < 0.8 ? vec3(0.0, col / 0.8, 0.0) : mix(vec3(iBackgroundColor.rgb), vec3(1.0), (col - 0.8) / 0.2);
+			vec3 c = col < 0.8 ? vec3(col / 0.8,0.0,  0.5) : mix(vec3(iBackgroundColor.rgb), vec3(1.0), (col - 0.8) / 0.2);
 			
 			result += vec4(c * b, 1.0)  ;
 		}
 	}
-	
-	result = result * length(IMG_NORM_PIXEL(iChannel1,uv).rgb) + 0.22 * vec4(0.,IMG_NORM_PIXEL(iChannel1,uv).r,0.,1.);
-	if(result.b < 0.5) result.b = result.g * 0.5 ;
-	fragColor = result;
+	// UNIQUEMENT VIOLET
+	//remettre result = result * length(IMG_NORM_PIXEL(iChannel1,uv).rgb) + 0.22 * vec4(0.,IMG_NORM_PIXEL(iChannel1,uv).r,0.,1.);
+	//if(result.b < 0.5) result.b = result.g * 0.5 ;
+	fragColor = vec4(result.r*0.5, 0.0, result.b, 1.0);
 }
 
