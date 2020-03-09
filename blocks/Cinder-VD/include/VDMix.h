@@ -180,6 +180,7 @@ namespace videodromm
 
 		}
 		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex);
+		ci::gl::TextureRef				getRenderedMixetteTexture(unsigned int aFboIndex) { return mMixetteTexture; };
 		/*void							update();
 		void							updateAudio();
 		void							resize();

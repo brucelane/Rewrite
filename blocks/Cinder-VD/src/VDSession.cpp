@@ -30,9 +30,9 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	mWarpsFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, format.depthTexture());
 	mPostFbo = gl::Fbo::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, format.depthTexture());
 	mGlslPost = gl::GlslProg::create(gl::GlslProg::Format().vertex(loadAsset("passthrough.vs")).fragment(loadAsset("post.glsl")));
-
+	mWarpTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 	// adjust the content size of the warps
-	
+
 	// TODO 20200305 was 20200302 if (getFboRenderedTexture(0)) Warp::setSize(mWarpList, getFboRenderedTexture(0)->getSize());
 	Warp::setSize(mWarpList, ivec2(mVDSettings->mFboWidth, mVDSettings->mFboHeight)); //
 	// initialize warps
@@ -93,10 +93,10 @@ VDSession::VDSession(VDSettingsRef aVDSettings)
 	}
 }
 void VDSession::loadFbos() {
-	
+
 	int f = 0;
-	bool found = true; 
-	string shaderFileName; 
+	bool found = true;
+	string shaderFileName;
 	string textureFileName;
 	while (found) {
 		string jsonFileName = "fbo" + toString(f) + ".json";
@@ -184,64 +184,70 @@ void VDSession::update(unsigned int aClassIndex) {
 		updateBlendUniforms();
 		renderBlend();
 	}*/
-	renderPostToFbo();
+	mVDMix->getMixetteTexture(0);
 	renderWarpsToFbo();
+	renderPostToFbo();
 }
 void VDSession::renderPostToFbo()
 {
-	gl::ScopedFramebuffer fbScp(mPostFbo);
-	// clear out the FBO with black
-	gl::clear(Color::black());
-	//gl::clear(ColorA(0.4f, 0.8f, 0.0f, 0.3f));
+	{
+		gl::ScopedFramebuffer fbScp(mPostFbo);
+		// clear out the FBO with black
+		gl::clear(Color::black());
+		//gl::clear(ColorA(0.4f, 0.8f, 0.0f, 0.3f));
 
-	// setup the viewport to match the dimensions of the FBO
-	gl::ScopedViewport scpVp(ivec2(0), mPostFbo->getSize());
+		// setup the viewport to match the dimensions of the FBO
+		gl::ScopedViewport scpVp(ivec2(0), mPostFbo->getSize());
 
-	// texture binding must be before ScopedGlslProg
-	mWarpsFbo->getColorTexture()->bind(40);
-	gl::ScopedGlslProg prog(mGlslPost);
+		// texture binding must be before ScopedGlslProg
+		//mWarpsFbo->getColorTexture()
+		mWarpTexture->bind(40);
+		gl::ScopedGlslProg prog(mGlslPost);
 
-	// not used yet mGlslPost->uniform("TIME", getFloatUniformValueByIndex(mVDSettings->ITIME) - mVDSettings->iStart);;
-	mGlslPost->uniform("iResolution", vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
-	mGlslPost->uniform("iChannel0", 40); // texture 0
-	mGlslPost->uniform("iSobel", getFloatUniformValueByIndex(mVDSettings->ISOBEL));
-	mGlslPost->uniform("iExposure", getFloatUniformValueByIndex(mVDSettings->IEXPOSURE));
-	mGlslPost->uniform("iTrixels", getFloatUniformValueByIndex(mVDSettings->ITRIXELS)); // trixels if > 0.
-	mGlslPost->uniform("iZoom", getFloatUniformValueByIndex(mVDSettings->IZOOM));
-	mGlslPost->uniform("iChromatic", getFloatUniformValueByIndex(mVDSettings->ICHROMATIC));
-	mGlslPost->uniform("iFlipV", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTV));
-	mGlslPost->uniform("iFlipH", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTH));
-	mGlslPost->uniform("iInvert", (int)getBoolUniformValueByIndex(mVDSettings->IINVERT));
-	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+		// not used yet mGlslPost->uniform("TIME", getFloatUniformValueByIndex(mVDSettings->ITIME) - mVDSettings->iStart);;
+		mGlslPost->uniform("iResolution", vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
+		mGlslPost->uniform("iChannel0", 40); // texture 0
+		mGlslPost->uniform("iSobel", getFloatUniformValueByIndex(mVDSettings->ISOBEL));
+		mGlslPost->uniform("iExposure", getFloatUniformValueByIndex(mVDSettings->IEXPOSURE));
+		mGlslPost->uniform("iTrixels", getFloatUniformValueByIndex(mVDSettings->ITRIXELS)); // trixels if > 0.
+		mGlslPost->uniform("iZoom", getFloatUniformValueByIndex(mVDSettings->IZOOM));
+		mGlslPost->uniform("iChromatic", getFloatUniformValueByIndex(mVDSettings->ICHROMATIC));
+		mGlslPost->uniform("iFlipV", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTV));
+		mGlslPost->uniform("iFlipH", (int)getBoolUniformValueByIndex(mVDSettings->IFLIPPOSTH));
+		mGlslPost->uniform("iInvert", (int)getBoolUniformValueByIndex(mVDSettings->IINVERT));
+		gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth, mVDSettings->mFboHeight));
+	}
 }
 void VDSession::renderWarpsToFbo()
 {
-	gl::ScopedFramebuffer fbScp(mWarpsFbo);
-	// clear out the FBO with black
-	//gl::clear(Color::black());
-	gl::clear(ColorA(0.4f, 0.0f, 0.8f, 0.3f));
+	{
+		gl::ScopedFramebuffer fbScp(mWarpsFbo);
+		// clear out the FBO with black
+		//gl::clear(Color::black());
+		gl::clear(ColorA(0.4f, 0.0f, 0.8f, 0.3f));
 
-	// setup the viewport to match the dimensions of the FBO
-	gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());
-	// iterate over the fbos and draw their content
-	int i = 0;
-	int a = 0;
-	int s = 0;
-	for (auto &warp : mWarpList) {
-		a = warp->getAFboIndex();
-		if (a < 0) a = 0; // TODO 20200228 a could be negative if warps3.xml > warps01.json
-		i = math<int>::min(a, getFboListSize() - 1);
-		s = getFboListSize(); // TMP
-		//if (isFboValid(i)) {
-			warp->draw(getFboRenderedTexture(i));
-			//warp->draw(getFboTexture(0)); bind to 0 broken
-			//warp->draw(getMixetteTexture(0));
-		//}
+		// setup the viewport to match the dimensions of the FBO
+		gl::ScopedViewport scpVp(ivec2(0), mWarpsFbo->getSize());
+		// iterate over the fbos and draw their content
+		int i = 0;
+		int a = 0;
+		int s = 0;
+		for (auto &warp : mWarpList) {
+			a = warp->getAFboIndex();
+			if (a < 0) a = 0; // TODO 20200228 a could be negative if warps3.xml > warps01.json
+			i = math<int>::min(a, getFboListSize() - 1);
+			s = getFboListSize(); // TMP
+			//if (isFboValid(i)) {
+				 warp->draw(getFboRenderedTexture(i));
+				//ko warp->draw(getFboTexture(0)); bind to 0 broken
+			//kowarp->draw(mVDMix->getRenderedMixetteTexture(0));
+			//}
 
+		}
+		//gl::color(0.5, 0.0, 1.0, 0.4f);
+		//gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth/2, mVDSettings->mFboHeight/2));
+		mWarpTexture = mWarpsFbo->getColorTexture();
 	}
-	gl::color(0.5, 0.0, 1.0, 0.4f);
-	gl::drawSolidRect(Rectf(0, 0, mVDSettings->mFboWidth/2, mVDSettings->mFboHeight/2));
-
 }
 bool VDSession::save()
 {
@@ -990,7 +996,7 @@ void VDSession::updateHydraUniforms() {
 
 
 	*/
-	
+
 unsigned int VDSession::fboFromJson(const JsonTree &json) {
 	unsigned int rtn = 0;
 

@@ -57,11 +57,17 @@ namespace videodromm {
 		ci::gl::TextureRef				getMixetteTexture(unsigned int aFboIndex) {
 			return mVDMix->getMixetteTexture(aFboIndex);
 		}
+		ci::gl::TextureRef				getRenderedMixetteTexture(unsigned int aFboIndex) {
+			return mVDMix->getRenderedMixetteTexture(aFboIndex);
+		}
 		ci::gl::TextureRef				getPostFboTexture() {
 			return mPostFbo->getColorTexture();
 		};
 		ci::gl::TextureRef				getWarpFboTexture() {
 			return mWarpsFbo->getColorTexture();
+		};
+		ci::gl::TextureRef				getRenderedWarpFboTexture() {
+			return mWarpTexture;
 		};
 		//!
 		void							reset();
@@ -663,6 +669,7 @@ namespace videodromm {
 		gl::GlslProgRef					mGlslPost;
 		void							renderPostToFbo();
 		void							renderWarpsToFbo();
+		ci::gl::Texture2dRef			mWarpTexture;
 		// warps
 
 		WarpList						mWarpList;

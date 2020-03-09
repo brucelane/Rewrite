@@ -147,13 +147,16 @@ void VDUI::Run(const char* title, unsigned int fps) {
 	{
 		// line 1
 		ImGui::PushItemWidth(mVDSettings->mPreviewFboWidth);
-		ImGui::Image((void*)mVDSession->getMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		/*ImGui::Image((void*)mVDSession->getMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Mixette");
+		ImGui::SameLine();*/
+		ImGui::Image((void*)mVDSession->getRenderedMixetteTexture(0)->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		if (ImGui::IsItemHovered()) ImGui::SetTooltip("RenderedMixette");
 		ImGui::SameLine();
 		ImGui::Image((void*)mVDSession->getPostFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Post");
 		ImGui::SameLine();
-		ImGui::Image((void*)mVDSession->getWarpFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
+		ImGui::Image((void*)mVDSession->getRenderedWarpFboTexture()->getId(), ivec2(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight));
 		if (ImGui::IsItemHovered()) ImGui::SetTooltip("Warp");
 
 		ImGui::SameLine();

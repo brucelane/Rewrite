@@ -19,6 +19,7 @@ namespace videodromm {
 		mVDAnimation = aVDAnimation;
 
 		mDefaultTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
+		mMixetteTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		// init fbo format
 		fmt.setWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
 		fmt.setBorderColor(Color::black());
@@ -123,7 +124,7 @@ namespace videodromm {
 		// setup the viewport to match the dimensions of the FBO
 		gl::ScopedViewport scpVp(ivec2(0), mMixetteFbo->getSize());
 		mMixetteTexture = mMixetteFbo->getColorTexture();
-		return mMixetteFbo->getColorTexture();
+		return mMixetteTexture;// mMixetteFbo->getColorTexture();
 	}
 #pragma region blendmodes
 	/*unsigned int VDMix::getFboBlendCount() {
