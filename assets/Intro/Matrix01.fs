@@ -46,6 +46,7 @@ void main(void)
 	//uv = rotate * (uv - 0.5) + 0.5;
     //vec3 rgb = IMG_NORM_PIXEL(inputImage, uv + vec2(iPixelX,hash11(iPixelY-sin(TIME*0.000001)))).xyz;
     //vec3 rgb = IMG_NORM_PIXEL(inputImage, uv + vec2( iPixelX,sin (TIME*0.000001) ) ).xyz;
-    fragColor=IMG_NORM_PIXEL(inputImage, uv + vec2( iPixelX, hash11(iPixelY-(sin(TIME*0.000001)) )*2.0 ) );	
+    //fragColor=IMG_NORM_PIXEL(inputImage, uv + vec2( iPixelX, hash11(iPixelY-(sin(TIME*0.000001)) )*2.0 ) );	
+    fragColor=IMG_NORM_PIXEL(inputImage, uv + vec2( iPixelX, iPixelY) );	
     	
 }

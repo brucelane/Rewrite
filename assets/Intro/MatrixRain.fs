@@ -148,7 +148,7 @@ void main( void ) {
 		}
 	}
 	// UNIQUEMENT VIOLET
-	//remettre result = result * length(IMG_NORM_PIXEL(iChannel1,uv).rgb) + 0.22 * vec4(0.,IMG_NORM_PIXEL(iChannel1,uv).r,0.,1.);
+	 result = result * length(IMG_NORM_PIXEL(iChannel1,uv).rgb) + 0.22 * vec4(0.,IMG_NORM_PIXEL(iChannel1,uv).r,0.,1.);
 	//if(result.b < 0.5) result.b = result.g * 0.5 ;
 	fragColor = vec4(result.r*0.5, 0.0, result.b, 1.0);
 }
