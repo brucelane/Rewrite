@@ -606,7 +606,7 @@ void VDWebsocket::changeFloatValue(unsigned int aControl, float aValue, bool for
 	}
 	/*
 		createVec3Uniform("iResolution", mVDSettings->IRESOLUTION, vec3(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"), 1.0));
-		createVec3Uniform("iColor", mVDSettings->ICOLOR, vec3(1.0, 0.5, 0.0));
+		createVec3Uniform("iColor", mVDSettings->ICOLOR, vec3(0.56, 0.0, 1.0));
 		createVec3Uniform("iBackgroundColor", mVDSettings->IBACKGROUNDCOLOR);
 		//createVec3Uniform("iChannelResolution[0]", 63, vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
 		static const int			IMOUSEX = 42;

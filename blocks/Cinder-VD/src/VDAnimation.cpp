@@ -53,11 +53,11 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createFloatUniform("TIME", mVDSettings->ITIME, 0.0f); // 0
 		// sliders
 		// red
-		createFloatUniform("r", mVDSettings->IFR, 1.0f); // 1
+		createFloatUniform("r", mVDSettings->IFR, 0.45f); // 1
 		// green
-		createFloatUniform("g", mVDSettings->IFG, 0.3f); // 2
+		createFloatUniform("g", mVDSettings->IFG, 0.0f); // 2
 		// blue
-		createFloatUniform("b", mVDSettings->IFB, 0.0f); // 3
+		createFloatUniform("b", mVDSettings->IFB, 1.0f); // 3
 		// Alpha 
 		createFloatUniform("iAlpha", mVDSettings->IFA, 1.0f); // 4
 		// red multiplier 
@@ -107,11 +107,11 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createFloatUniform("iDeltaTime", mVDSettings->IDELTATIME, 60.0f / 160.0f); // 25
 
 		 // background red
-		createFloatUniform("iBR", mVDSettings->IBR, 0.1f); // 26
+		createFloatUniform("iBR", mVDSettings->IBR, 0.56f); // 26
 		// background green
-		createFloatUniform("iBG", mVDSettings->IBG, 0.5f); // 27
+		createFloatUniform("iBG", mVDSettings->IBG, 0.0f); // 27
 		// background blue
-		createFloatUniform("iBB", mVDSettings->IBB, 0.1f); // 28
+		createFloatUniform("iBB", mVDSettings->IBB, 1.0f); // 28
 
 		// iResolutionX (should be fbowidth?) 
 		createFloatUniform("iResolutionX", mVDSettings->IRESX, mVDSettings->mRenderWidth, 320.01f, 4280.0f); // 29
@@ -184,7 +184,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 
 		// vec3
 		createVec3Uniform("iResolution", mVDSettings->IRESOLUTION, vec3(getFloatUniformValueByName("iResolutionX"), getFloatUniformValueByName("iResolutionY"), 1.0)); // 60
-		createVec3Uniform("iColor", mVDSettings->ICOLOR, vec3(1.0, 0.5, 0.0)); // 61
+		createVec3Uniform("iColor", mVDSettings->ICOLOR, vec3(0.45, 0.0, 1.0)); // 61
 		createVec3Uniform("iBackgroundColor", mVDSettings->IBACKGROUNDCOLOR); // 62
 		//createVec3Uniform("iChannelResolution[0]", 63, vec3(mVDSettings->mFboWidth, mVDSettings->mFboHeight, 1.0));
 
