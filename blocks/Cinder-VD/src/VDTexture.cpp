@@ -31,14 +31,24 @@ namespace videodromm {
 			if (fs::is_directory(texFileOrPath)) {
 				mType = SEQUENCE;
 				mTypestr = "sequence";
-				mCurrentSeqFilename = mTextureName + " (1).jpg";
-				mLastCachedFilename = mTextureName + " (1).jpg";
+				mExt = "jpg";
+				mCurrentSeqFilename = mTextureName + " (1)." + mExt;
+				mLastCachedFilename = mTextureName + " (1)." + mExt;
+
+				fs::path jpgPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName / mCurrentSeqFilename;
+				if (!fs::exists(jpgPath)) {
+					// try with png
+					mExt = "png";
+					mCurrentSeqFilename = mTextureName + " (1)." + mExt;
+					mLastCachedFilename = mTextureName + " (1)." + mExt;
+				}
+				
 			}
 			else {
-				string ext = "";
+				mExt = "";
 				int dotIndex = texFileOrPath.filename().string().find_last_of(".");
-				if (dotIndex != std::string::npos)  ext = texFileOrPath.filename().string().substr(dotIndex + 1);
-				if (ext == "jpg" || ext == "png") {
+				if (dotIndex != std::string::npos)  mExt = texFileOrPath.filename().string().substr(dotIndex + 1);
+				if (mExt == "jpg" || mExt == "png") {
 					mTexture = gl::Texture::create(loadImage(texFileOrPath), gl::Texture2d::Format().loadTopDown().mipmap(true).minFilter(GL_LINEAR_MIPMAP_LINEAR));
 					mType = IMAGE;
 					mTypestr = "image";
@@ -87,7 +97,7 @@ namespace videodromm {
 			if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 0) {
 				// 20200306 if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 19) {
 					// TODO IBARBEAT 
-				mCurrentSeqFilename = mTextureName + " (" + toString(mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT)) + ").jpg";
+				mCurrentSeqFilename = mTextureName + " (" + toString(mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT)) + ")." + mExt;
 			}
 			if (mCachedTextures[mCurrentSeqFilename]) {
 				//CI_LOG_V(mCurrentSeqFilename + " in cache");
@@ -95,7 +105,7 @@ namespace videodromm {
 				mTexture = mCachedTextures[mCurrentSeqFilename];
 			}
 			else {
-				// mTextureName is the path
+				// mTextureName is the folder name
 				fs::path fullPath = getAssetPath("") / mVDSettings->mAssetsPath / mTextureName / mCurrentSeqFilename;
 				if (fs::exists(fullPath)) {
 					// start profiling

@@ -91,7 +91,7 @@ void main( void ) {
 	float rx = gl_FragCoord.x / (40.0 * scaledown);
 	float mx = 40.0*scaledown*fract(uv.x * 30.0 * scaledown);
 	vec4 result;
-	
+	/*
 	if (mx > 12.0 * scaledown) {
 		result = vec4(0.0);
 	} else 
@@ -116,7 +116,7 @@ void main( void ) {
 			result = vec4(c * b, 1.0)  ;
 		}
 	}
-	
+	*/
 	uv.x += 0.05;
 
 	scaledown = DROP_SIZE;
@@ -142,7 +142,8 @@ void main( void ) {
 			float b = rchar(vec2(rx, floor((ry) / 15.0)), vec2(mx, my) / 12.0, globalTime);
 			float col = max(mod(-y, 24.0) - 4.0, 0.0) / 20.0;
 			//vec3 c = col < 0.8 ? vec3(0.0, col / 0.8, 0.0) : mix(vec3(iBackgroundColor.rgb), vec3(1.0), (col - 0.8) / 0.2);
-			vec3 c = col < 0.8 ? vec3(col / 0.8,0.0,  0.5) : mix(vec3(iBackgroundColor.rgb), vec3(1.0), (col - 0.8) / 0.2);
+			//vec3 c = col < 0.8 ? vec3(col / 0.8,0.0,  0.5) : mix(vec3(iBackgroundColor.rgb), vec3(1.0), (col - 0.8) / 0.2);
+			vec3 c = vec3(1.0);
 			
 			result += vec4(c * b, 1.0)  ;
 		}

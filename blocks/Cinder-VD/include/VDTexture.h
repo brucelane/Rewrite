@@ -72,6 +72,7 @@ namespace videodromm
 		string							mStatus = "";
 		TextureType						mType = UNKNOWN;
 		string							mTypestr = "";
+		string							mExt = "jpg";
 
 	};
 }

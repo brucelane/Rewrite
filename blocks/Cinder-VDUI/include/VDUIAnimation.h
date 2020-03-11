@@ -93,13 +93,13 @@ namespace videodromm
 		float							minZoom;
 		float							maxZoom;
 		// tempo
-		void						toggleSpinalTap() { spinalTap = !spinalTap; };
-		bool						spinalTap = false;
+		void							toggleSpinalTap() { spinalTap = !spinalTap; };
+		bool							spinalTap = false;
 
 		// render
 		float							contour, iVAmount, iVFallOff;
 		int								iResolutionX, iResolutionY;
-		int								iOutW, iOutH;
+		int								iOutW, iOutH, iBarBeat;
 		// contour
 		float							minContour;
 		float							maxContour;

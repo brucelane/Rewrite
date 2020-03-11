@@ -19,7 +19,7 @@ VDUIAnimation::VDUIAnimation(VDSettingsRef aVDSettings, VDSessionRef aVDSession)
 	iResolutionY = (int)mVDSession->getFloatUniformValueByIndex(mVDSettings->IRESY);//(int)getFloatValueByName("iResolutionY");
 	iOutW = getIntValue(mVDSettings->IOUTW);
 	iOutH = getIntValue(mVDSettings->IOUTH);
-
+	iBarBeat = getIntValue(mVDSettings->IBARBEAT);
 }
 VDUIAnimation::~VDUIAnimation() {
 
@@ -159,7 +159,7 @@ void VDUIAnimation::Run(const char* title) {
 				setFloatValue(ctrl, localValues[ctrl]);
 			} */
 			// rotation speed 
-			/*ctrl = mVDSettings->IROTATIONSPEED;
+			ctrl = mVDSettings->IROTATIONSPEED;
 			if (ImGui::Button("a##rotationspeed")) { toggleAuto(ctrl); }
 			ImGui::SameLine();
 			if (ImGui::Button("f##rotationspeed")) { toggleTempo(ctrl); }
@@ -172,7 +172,7 @@ void VDUIAnimation::Run(const char* title) {
 				setFloatValue(ctrl, localValues[ctrl]);
 			}
 			// badTv
-			ctrl = mVDSettings->IBADTV;
+			/*ctrl = mVDSettings->IBADTV;
 			if (ImGui::Button("a##badtv")) { toggleAuto(ctrl); }
 			ImGui::SameLine();
 			if (ImGui::Button("f##badtv")) { toggleTempo(ctrl); }
@@ -201,6 +201,14 @@ void VDUIAnimation::Run(const char* title) {
 			if (ImGui::SliderFloat("iPixelY/min/max", &localValues[ctrl], getMinUniformValueByIndex(ctrl), getMaxUniformValueByIndex(ctrl)))
 			{
 				setFloatValue(ctrl, localValues[ctrl]);
+			}
+			// iBarBeat
+			ctrl = mVDSettings->IBARBEAT;
+			if (ImGui::Button("x##iBarBeat")) { iBarBeat = 1; setIntValue(ctrl, 1); }
+			ImGui::SameLine();
+			if (ImGui::SliderInt("iBarBeat", &iBarBeat, 1, 50))
+			{
+				setIntValue(ctrl, iBarBeat);
 			}
 			/*sprintf(buf, "XorY");
 			mVDSettings->iXorY ^= ImGui::Button(buf);*/
@@ -592,7 +600,6 @@ void VDUIAnimation::Run(const char* title) {
 			{
 				mVDSettings->mTexMult.x = texMultH;
 			}
-
 
 			// rect mxLeft
 			static int mxLeft = mVDSettings->mxLeft;

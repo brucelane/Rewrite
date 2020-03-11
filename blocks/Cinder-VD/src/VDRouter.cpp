@@ -14,6 +14,11 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 	// Osc
 	if (mVDSettings->mOSCEnabled) {
 		mOscReceiver = std::make_shared<osc::ReceiverUdp>(mVDSettings->mOSCReceiverPort);
+		// Romina
+		mOscReceiver->setListener("*",
+			[&](const osc::Message &msg) {
+			string addr = msg.getAddress();
+		});
 		mOscReceiver->setListener("/*",
 			[&](const osc::Message &msg) {
 			// touchosc

@@ -168,7 +168,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		// bar 
 		createFloatUniform("iBar", mVDSettings->IBAR, 0.0f, 0.0f, 8.0f); // 52
 		// bar 
-		createFloatUniform("iBarBeat", mVDSettings->IBARBEAT, 0.0f, 0.0f, 1200.0f); // 53		
+		createFloatUniform("iBarBeat", mVDSettings->IBARBEAT, 1.0f, 1.0f, 1200.0f); // 53		
 		// fbo A
 		createIntUniform("iFboA", mVDSettings->IFBOA, 0); // 54
 		// fbo B
