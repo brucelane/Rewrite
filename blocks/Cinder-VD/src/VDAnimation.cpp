@@ -177,8 +177,6 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createIntUniform("iOutW", mVDSettings->IOUTW, mVDSettings->mRenderWidth); // 56
 		// iOutH  
 		createIntUniform("iOutH", mVDSettings->IOUTH, mVDSettings->mRenderHeight); // 57
-		// greyscale 
-		createIntUniform("iGreyScale", mVDSettings->IGREYSCALE, 0); //58
 		// beats per bar 
 		createIntUniform("iBeatsPerBar", mVDSettings->IBEATSPERBAR, 4); // 59
 
@@ -202,6 +200,10 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		createBoolUniform("iToggle", mVDSettings->ITOGGLE); // 83
 		// invert
 		createBoolUniform("iInvert", mVDSettings->IINVERT); // 86
+		// greyscale 
+		createBoolUniform("iGreyScale", mVDSettings->IGREYSCALE); //87
+
+		createBoolUniform("iClear", mVDSettings->ICLEAR, true); // 88
 		createBoolUniform("iDebug", mVDSettings->IDEBUG); // 129
 		createBoolUniform("iXorY", mVDSettings->IXORY); // 130
 		createBoolUniform("iFlipH", mVDSettings->IFLIPH); // 131

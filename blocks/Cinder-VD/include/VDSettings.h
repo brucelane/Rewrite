@@ -86,7 +86,6 @@ namespace videodromm {
 		static const int			IFBOB = 55;
 		static const int			IOUTW = 56;
 		static const int			IOUTH = 57;	
-		static const int			IGREYSCALE = 58;
 		static const int			IBEATSPERBAR = 59;
 		static const int			IRESOLUTION = 60;
 		static const int			ICOLOR = 61;
@@ -97,6 +96,8 @@ namespace videodromm {
 		static const int			IVIGN = 82;		// A#4
 		static const int			ITOGGLE = 83;	// B4 for sos
 		static const int			IINVERT = 86;	// D5
+		static const int			IGREYSCALE = 87;
+		static const int			ICLEAR = 88;	// 
 
 		
 		static const int			IDEBUG = 129;
@@ -203,7 +204,6 @@ namespace videodromm {
 		string						mAssetsPath;
 		bool						iShowFps;
 		string						sFps;
-		bool						iGreyScale;
 		unsigned int				shaderEditIndex;
 		// transition
 		int							iTransition;

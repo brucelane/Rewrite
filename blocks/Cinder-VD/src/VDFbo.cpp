@@ -185,7 +185,10 @@ namespace videodromm {
 		if (mValid) {
 
 			gl::ScopedFramebuffer fbScp(mFbo);
-			gl::clear(Color::black());
+			if (mVDAnimation->getBoolUniformValueByIndex(mVDSettings->ICLEAR)) {
+				gl::clear(Color::black());
+			}
+			
 			
 			
 			/*int f = 0;

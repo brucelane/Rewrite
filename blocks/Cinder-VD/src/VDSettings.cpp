@@ -392,8 +392,6 @@ void VDSettings::resetSomeParams() {
 	// unicorns
 	iAlpha = 1.0f;
 	iSpeedMultiplier = 1.0f;// = 0.0985f;// nearly ok for 160 = 0.0985f;
-
-	iGreyScale = false;
 	iFade = mSendToOutput = iRepeat = false;
 
 	// transition
