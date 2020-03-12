@@ -11,11 +11,11 @@ namespace videodromm {
 		mVDSettings = aVDSettings;
 		mVDAnimation = aVDAnimation;
 
-
 		mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 
 		mTextureName = mCurrentSeqFilename = mLastCachedFilename = (json.hasChild("texturename")) ? json.getValueForKey<string>("texturename") : "0.jpg";
 		mTypestr = (json.hasChild("texturetype")) ? json.getValueForKey<string>("texturetype") : "UNKNOWN";
+		mMode =  (json.hasChild("texturemode")) ? json.getValueForKey<int>("texturemode") : 0;
 
 		mType = UNKNOWN;
 		mStatus = "";
@@ -76,7 +76,7 @@ namespace videodromm {
 		}
 		mStatus = mTextureName;
 	}
-	ci::gl::Texture2dRef VDTexture::getTexture() {
+	ci::gl::Texture2dRef VDTexture::getTexture(int aPosition) {
 		switch (mType)
 		{
 		case AUDIO:
@@ -94,10 +94,16 @@ namespace videodromm {
 		case IMAGE:
 			break;
 		case SEQUENCE:
-			if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 0) {
-				// 20200306 if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 19) {
-					// TODO IBARBEAT 
-				mCurrentSeqFilename = mTextureName + " (" + toString(mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT)) + ")." + mExt;
+			if (mMode = 0) {
+				if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 0) {
+					// 20200306 if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 19) {
+						// TODO IBARBEAT 
+					mCurrentSeqFilename = mTextureName + " (" + toString(mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT)) + ")." + mExt;
+				}
+
+			}
+			else {
+				mCurrentSeqFilename = mTextureName + " (" + toString(aPosition) + ")." + mExt;
 			}
 			if (mCachedTextures[mCurrentSeqFilename]) {
 				//CI_LOG_V(mCurrentSeqFilename + " in cache");

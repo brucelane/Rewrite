@@ -100,9 +100,9 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		// Speed 
 		createFloatUniform("speed", mVDSettings->ISPEED, 0.01f, 0.01f, 12.0f); // 22
 		// slitscan / matrix (or other) Param1 
-		createFloatUniform("iPixelX", mVDSettings->IPIXELX, 0.01f, 0.001f, 1.0f); // 23
+		createFloatUniform("iPixelX", mVDSettings->IPIXELX, 0.01f, -1.5f, 1.5f); // 23
 		// slitscan / matrix(or other) Param2 
-		createFloatUniform("iPixelY", mVDSettings->IPIXELY, 0.01f, 0.001f, 1.0f); // 24
+		createFloatUniform("iPixelY", mVDSettings->IPIXELY, 0.01f, -1.5f, 1.5f); // 24
 		// delta time in seconds
 		createFloatUniform("iDeltaTime", mVDSettings->IDELTATIME, 60.0f / 160.0f); // 25
 

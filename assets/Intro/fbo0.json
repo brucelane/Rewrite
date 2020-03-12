@@ -4,6 +4,7 @@
       "shadertype" : "fs"
    },
    "texture" : {
+      "texturemode" : 1,
       "texturename" : "1",
       "texturetype" : "sequence"
    }

@@ -206,7 +206,7 @@ namespace videodromm {
 				}
 				t++;
 			}*/
-			mTextureList[0]->getTexture()->bind(253);
+			mTextureList[0]->getTexture(1)->bind(253);
 			string name;
 			mUniforms = mShader->getActiveUniforms();
 			for (const auto &uniform : mUniforms) {
@@ -329,6 +329,7 @@ namespace videodromm {
 		JsonTree texture = ci::JsonTree::makeArray("texture");
 		texture.addChild(ci::JsonTree("texturename", mTextureList[0]->getTextureName()));
 		texture.pushBack(ci::JsonTree("texturetype", mTextureList[0]->getType()));
+		texture.pushBack(ci::JsonTree("texturemode", mTextureList[0]->getMode()));
 		json.addChild(texture);
 
 		if (save) {

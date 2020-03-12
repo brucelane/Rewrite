@@ -42,13 +42,14 @@ namespace videodromm
 		
 		typedef enum { UNKNOWN, IMAGE, SEQUENCE, CAMERA, SHARED, AUDIO, STREAM } TextureType;
 	
-		VDTexture(TextureType aType = UNKNOWN);
+		//VDTexture(TextureType aType = UNKNOWN);
 		~VDTexture(void) { };
-		ci::gl::Texture2dRef					getTexture();
+		ci::gl::Texture2dRef					getTexture(int aPosition = 0);
 		std::string								getTextureName() { return mTextureName; };
-		ci::gl::Texture2dRef					getCachedTexture(string aFilename);
+		//ci::gl::Texture2dRef					getCachedTexture(string aFilename);
 		string									getStatus() { return mStatus; };
 		string									getType() { return mTypestr; };
+		int										getMode() { return mMode; };
 
 		void									setImageInputTexture(ci::gl::Texture2dRef aTextureRef, string aTextureFilename) {
 			mType = IMAGE;
@@ -73,6 +74,7 @@ namespace videodromm
 		TextureType						mType = UNKNOWN;
 		string							mTypestr = "";
 		string							mExt = "jpg";
+		int								mMode = 0;
 
 	};
 }
