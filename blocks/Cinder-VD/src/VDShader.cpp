@@ -226,12 +226,11 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			ISFReplacement = { "IMG_NORM_PIXEL" };
 			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
 
+			/* 20200312 
 			ISFPattern = { "iChannel0" };
 			ISFReplacement = { "inputImage" };
 			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
-			/*ISFPattern = { "iChannel1" };
-			ISFReplacement = { "inputImage" };
-			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);*/
+			*/
 
 			mOFISFString = mISFString;
 

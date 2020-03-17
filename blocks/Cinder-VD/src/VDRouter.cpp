@@ -61,7 +61,7 @@ VDRouter::VDRouter(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, VDWeb
 				if (index != std::string::npos)
 				{
 					found = true;
-					mVDAnimation->setAutoBeatAnimation(false);
+					//mVDAnimation->setAutoBeatAnimation(false);
 					mVDAnimation->setBpm(msg[0].flt());
 				}
 			}

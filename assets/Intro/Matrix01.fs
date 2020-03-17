@@ -48,7 +48,12 @@ void main(void)
     //vec3 rgb = IMG_NORM_PIXEL(inputImage, uv + vec2( iPixelX,sin (TIME*0.000001) ) ).xyz;
     //fragColor=IMG_NORM_PIXEL(inputImage, uv + vec2( iPixelX, hash11(iPixelY-(sin(TIME*0.000001)) )*2.0 ) );	
     fragColor=iColor.rgbr * (IMG_NORM_PIXEL(iChannel0, uv + vec2( iPixelX-0.3, iPixelY) ) 
-		+ IMG_NORM_PIXEL(iChannel0, uv + vec2( iPixelX-0.2, iPixelY) ) )
-		;	
+		+ IMG_NORM_PIXEL(iChannel1, uv + vec2( iPixelX-0.2, iPixelY) )
+		+ IMG_NORM_PIXEL(iChannel2, uv + vec2( iPixelX-0.1, iPixelY) )
+		+ IMG_NORM_PIXEL(iChannel3, uv + vec2( iPixelX-0.05, iPixelY) )
+		+ IMG_NORM_PIXEL(iChannel4, uv + vec2( iPixelX+0.02, iPixelY) )
+		+ IMG_NORM_PIXEL(iChannel5, uv + vec2( iPixelX+0.1, iPixelY) )
+		+ IMG_NORM_PIXEL(iChannel6, uv + vec2( iPixelX+0.2, iPixelY) )
+		);	
     	
 }

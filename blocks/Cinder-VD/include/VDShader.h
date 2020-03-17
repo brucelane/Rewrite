@@ -13,8 +13,6 @@
 #include "VDSettings.h"
 // Animation
 #include "VDAnimation.h"
-// Watchdog
-#include "Watchdog.h"
 // std regex
 #include <regex>
 

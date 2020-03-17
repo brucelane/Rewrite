@@ -233,9 +233,6 @@
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-MIDI2\lib\RtMidi.cpp">
       <Filter>Blocks\Midi2\lib</Filter>
     </ClCompile>
-    <ClInclude Include="..\blocks\Cinder-VD\include\LiveParam.h">
-      <Filter>Blocks\Cinder-VD\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\blocks\Cinder-VD\include\VDAnimation.h">
       <Filter>Blocks\Cinder-VD\include</Filter>
     </ClInclude>
@@ -266,12 +263,6 @@
     <ClInclude Include="..\blocks\Cinder-VD\include\VDWebsocket.h">
       <Filter>Blocks\Cinder-VD\include</Filter>
     </ClInclude>
-    <ClInclude Include="..\blocks\Cinder-VD\include\Watchdog.h">
-      <Filter>Blocks\Cinder-VD\include</Filter>
-    </ClInclude>
-    <ClCompile Include="..\blocks\Cinder-VD\src\LiveParam.cpp">
-      <Filter>Blocks\Cinder-VD\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\blocks\Cinder-VD\src\VDAnimation.cpp">
       <Filter>Blocks\Cinder-VD\src</Filter>
     </ClCompile>

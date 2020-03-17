@@ -6,6 +6,7 @@
 #include "cinder/gl/Fbo.h"
 #include "cinder/Timeline.h"
 #include "cinder/Xml.h"
+#include "cinder/Log.h"
 
 using namespace ci;
 using namespace ci::app;

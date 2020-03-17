@@ -148,7 +148,6 @@
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-MIDI2\include\MidiOut.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-MIDI2\lib\RtError.h" />
     <ClInclude Include="..\..\..\Cinder\blocks\Cinder-MIDI2\lib\RtMidi.h" />
-    <ClInclude Include="..\blocks\Cinder-VD\include\LiveParam.h" />
     <ClInclude Include="..\blocks\Cinder-VD\include\VDAnimation.h" />
     <ClInclude Include="..\blocks\Cinder-VD\include\VDFbo.h" />
     <ClInclude Include="..\blocks\Cinder-VD\include\VDLog.h" />
@@ -159,7 +158,6 @@
     <ClInclude Include="..\blocks\Cinder-VD\include\VDTexture.h" />
     <ClInclude Include="..\blocks\Cinder-VD\include\VDUtils.h" />
     <ClInclude Include="..\blocks\Cinder-VD\include\VDWebsocket.h" />
-    <ClInclude Include="..\blocks\Cinder-VD\include\Watchdog.h" />
     <ClInclude Include="..\blocks\Cinder-VDUI\include\VDUI.h" />
     <ClInclude Include="..\blocks\Cinder-VDUI\include\VDUIAnimation.h" />
     <ClInclude Include="..\blocks\Cinder-VDUI\include\VDUIAudio.h" />
@@ -216,7 +214,6 @@
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-MIDI2\src\MidiMessage.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-MIDI2\src\MidiOut.cpp" />
     <ClCompile Include="..\..\..\Cinder\blocks\Cinder-MIDI2\lib\RtMidi.cpp" />
-    <ClCompile Include="..\blocks\Cinder-VD\src\LiveParam.cpp" />
     <ClCompile Include="..\blocks\Cinder-VD\src\VDAnimation.cpp" />
     <ClCompile Include="..\blocks\Cinder-VD\src\VDFbo.cpp" />
     <ClCompile Include="..\blocks\Cinder-VD\src\VDLog.cpp" />

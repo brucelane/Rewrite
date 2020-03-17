@@ -22,7 +22,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		iFreqs[i] = 0.0f;
 	}
 	// live json params
-	mJsonFilePath = app::getAssetPath("") / mVDSettings->mAssetsPath / "live_params.json";
+	/*mJsonFilePath = app::getAssetPath("") / mVDSettings->mAssetsPath / "live_params.json";
 	JsonBag::add(&mBackgroundColor, "background_color");
 	JsonBag::add(&mExposure, "exposure", []() {
 		app::console() << "Updated exposure" << endl;
@@ -32,7 +32,7 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 		app::console() << "Updated text" << endl;
 	});
 	mAutoBeatAnimation = true;
-	JsonBag::add(&mAutoBeatAnimation, "autobeatanimation");
+	JsonBag::add(&mAutoBeatAnimation, "autobeatanimation");*/
 	currentScene = 0;
 
 	previousTime = 0.0f;
@@ -261,11 +261,11 @@ VDAnimation::VDAnimation(VDSettingsRef aVDSettings) {
 
 	}
 	// textures
-	for (size_t i = 0; i < 9; i++)
+	for (size_t i = 0; i < 30; i++)
 	{
 		createSampler2DUniform("iChannel" + toString(i), 300 + i, i);// TODO verify doesn't mess up type (uint!)
 	}
-	createSampler2DUniform("inputImage", 310, 0);// TODO verify doesn't mess up type (uint!)
+	createSampler2DUniform("inputImage", 399, 0);// TODO verify doesn't mess up type (uint!)
 
 	// iRHandX  
 	//createFloatUniform("iRHandX", mVDSettings->IRHANDX, 320.0f, 0.0f, 1280.0f);
@@ -641,7 +641,7 @@ int VDAnimation::getUniformType(string aName) {
 }
 void VDAnimation::load() {
 	// Create json file if it doesn't already exist.
-#if defined( CINDER_MSW )
+/*#if defined( CINDER_MSW )
 	if (fs::exists(mJsonFilePath)) {
 		bag()->load(mJsonFilePath);
 	}
@@ -649,14 +649,11 @@ void VDAnimation::load() {
 		bag()->save(mJsonFilePath);
 		bag()->load(mJsonFilePath);
 	}
-#endif
+#endif*/
 }
 void VDAnimation::save() {
-#if defined( CINDER_MSW )
-	bag()->save(mJsonFilePath);
 	saveAnimation();
 	saveUniforms();
-#endif
 }
 void VDAnimation::saveAnimation() {
 	// save 
@@ -700,13 +697,13 @@ void VDAnimation::loadAnimation() {
 		CI_LOG_W("Failed to parse json file.");
 	} */
 }
-
+/*
 void VDAnimation::setExposure(float aExposure) {
 	mExposure = aExposure;
 }
 void VDAnimation::setAutoBeatAnimation(bool aAutoBeatAnimation) {
 	mAutoBeatAnimation = aAutoBeatAnimation;
-}
+}*/
 bool VDAnimation::handleKeyDown(KeyEvent &event)
 {
 	//float newValue;

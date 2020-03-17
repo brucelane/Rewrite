@@ -7,7 +7,7 @@ namespace videodromm {
 		CI_LOG_V("VDFbo constructor");
 		mVDSettings = aVDSettings;
 		mVDAnimation = aVDAnimation;
-		string shaderFileName = "inputImage.fs"; 
+		string shaderFileName = "inputImage.fs";
 		mShaderName = mShaderFileName;
 		string shaderType = "fs";
 		//string textureFileName = "0.jpg"; 
@@ -38,7 +38,7 @@ namespace videodromm {
 		//mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		mRenderedTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
 		isReady = false;
-		
+
 		// init texture
 		// init the fbo whatever happens next
 		fboFmt.setColorTextureFormat(fmt);
@@ -50,7 +50,7 @@ namespace videodromm {
 		if (mValid) {
 			CI_LOG_V("VDFbo constructor success");
 		}
-		else {		
+		else {
 			mVDSettings->mErrorMsg = "VDFbo constructor failed\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
 		}
 	}
@@ -80,32 +80,32 @@ namespace videodromm {
 				}
 			}
 			else {*/
-				// load fragment shader
-				shaderToLoad = VDShader::create(mVDSettings, mVDAnimation, aFileName, getInputTexture());
-				if (shaderToLoad->isValid()) {
-					mShaderFileName = mFileNameWithExtension = shaderToLoad->getFileNameWithExtension();//was mFragFile.filename().string();
-					mFragmentShaderString = shaderToLoad->getFragmentString();//was loadString(loadFile(mFragFile));
-					mValid = setFragmentString(mFragmentShaderString, shaderToLoad->getFileNameWithExtension());// was mFragFile.filename().string());
-				}
+			// load fragment shader
+			shaderToLoad = VDShader::create(mVDSettings, mVDAnimation, aFileName, getInputTexture());
+			if (shaderToLoad->isValid()) {
+				mShaderFileName = mFileNameWithExtension = shaderToLoad->getFileNameWithExtension();//was mFragFile.filename().string();
+				mFragmentShaderString = shaderToLoad->getFragmentString();//was loadString(loadFile(mFragFile));
+				mValid = setFragmentString(mFragmentShaderString, shaderToLoad->getFileNameWithExtension());// was mFragFile.filename().string());
+			}
 
-				else {
-					mError = "Invalid shader file " + aFileName;
-					// load default fragment shader
-					try {
-						mShaderName = mShaderFileName = "default.fs";
-						mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getDefaultFragmentShaderString());
-						mValid = true;
-						CI_LOG_V("fbo default vtx-frag compiled");
-					}
-					catch (gl::GlslProgCompileExc &exc) {
-						mError = string(exc.what());
-						CI_LOG_V("fbo unable to load/compile vtx-frag shader:" + string(exc.what()));
-					}
-					catch (const std::exception &e) {
-						mError = string(e.what());
-						CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
-					}
+			else {
+				mError = "Invalid shader file " + aFileName;
+				// load default fragment shader
+				try {
+					mShaderName = mShaderFileName = "default.fs";
+					mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mVDSettings->getDefaultFragmentShaderString());
+					mValid = true;
+					CI_LOG_V("fbo default vtx-frag compiled");
 				}
+				catch (gl::GlslProgCompileExc &exc) {
+					mError = string(exc.what());
+					CI_LOG_V("fbo unable to load/compile vtx-frag shader:" + string(exc.what()));
+				}
+				catch (const std::exception &e) {
+					mError = string(e.what());
+					CI_LOG_V("fbo unable to load vtx-frag shader:" + string(e.what()));
+				}
+			}
 			//}
 		}
 		else {
@@ -188,9 +188,6 @@ namespace videodromm {
 			if (mVDAnimation->getBoolUniformValueByIndex(mVDSettings->ICLEAR)) {
 				gl::clear(Color::black());
 			}
-			
-			
-			
 			/*int f = 0;
 			for (auto &fbo : mTextureList) {
 				if (fbo->isValid() && mVDAnimation->getFloatUniformValueByIndex(mVDSettings->IWEIGHT0 + f) > 0.05f) {
@@ -206,8 +203,15 @@ namespace videodromm {
 				}
 				t++;
 			}*/
-			mTextureList[0]->getTexture(1)->bind(253);
+			for (size_t i = 1; i < 14; i++)
+			{
+				mTextureList[0]->getTexture(i)->bind(253 + i);
+			}
 			string name;
+			string texName;
+			int texNameEndIndex;
+			int texIndex;
+			int channelIndex = 0;
 			mUniforms = mShader->getActiveUniforms();
 			for (const auto &uniform : mUniforms) {
 				name = uniform.getName();
@@ -233,7 +237,22 @@ namespace videodromm {
 						}
 						break;
 					case 1: // sampler2D
-						mShader->uniform(name, 253);
+						texNameEndIndex = name.find_last_of("iChannel");
+						if (texNameEndIndex != std::string::npos) {
+							texName = name.substr(0, texNameEndIndex + 1);
+							texIndex = 0;// (int)(name.substr(texNameEndIndex + 1));
+							CI_LOG_V(toString(texNameEndIndex) + texName);
+							mShader->uniform(texName + toString(channelIndex), (uint32_t)(253 + channelIndex));
+							channelIndex++;
+						}
+						else {
+							mShader->uniform(name, (uint32_t)(0));
+						}
+						//mShader->uniform(name, 253);
+						for (size_t i = 1; i < 14; i++)
+						{
+							mShader->uniform(name, (uint32_t)(253 + i));
+						}
 						break;
 					case 2://GL_FLOAT_VEC2: // vec2
 						if (name == "RENDERSIZE") {
@@ -306,7 +325,7 @@ namespace videodromm {
 		}
 		return mRenderedTexture;
 	}
-	
+
 	ci::gl::Texture2dRef VDFbo::getTexture() {
 		if (mValid) {
 			if (!isReady) {

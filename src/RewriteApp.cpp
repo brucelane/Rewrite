@@ -93,7 +93,7 @@ RewriteApp::RewriteApp() : mSpoutOut("rewrite", app::getWindowSize())
 	toggleCursorVisibility(mVDSettings->mCursorVisible);
 	mVDSession->toggleUI();
 	mVDSession->setMode(8);
-	mVDSession->toggleValue(132); //flipv
+	//mVDSession->toggleValue(132); //flipv
 	// sos
 	//mVDSession->setBpm(160.0f);
 	mVDSession->setFloatUniformValueByIndex(mVDSettings->IMOUSEX, 0.27710f);

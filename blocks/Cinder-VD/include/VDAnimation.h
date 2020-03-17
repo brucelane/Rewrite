@@ -17,13 +17,10 @@
 #include "cinder/Json.h"
 // Settings
 #include "VDSettings.h"
-// Live json params
-#include "LiveParam.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-using namespace live;
 
 namespace videodromm
 {
@@ -68,11 +65,11 @@ namespace videodromm
 		string							getAssetsPath() {
 			return mVDSettings->mAssetsPath;
 		}
-		Color							getBackgroundColor() { return mBackgroundColor; };
+		/*Color							getBackgroundColor() { return mBackgroundColor; };
 		float							getExposure() { return mExposure; };
-		void							setExposure(float aExposure);
 		bool							getAutoBeatAnimation() { return mAutoBeatAnimation; };
-		void							setAutoBeatAnimation(bool aAutoBeatAnimation);
+		void							setExposure(float aExposure);
+		void							setAutoBeatAnimation(bool aAutoBeatAnimation);*/
 
 		const int						mBlendModes = 28;
 		void							blendRenderEnable(bool render) { mBlendRender = render; };
@@ -327,11 +324,11 @@ namespace videodromm
 		gl::Texture2d::Format			mAudioFormat;
 		unsigned char					dTexture[256];// MUST be < mWindowSize
 		// Live json params
-		fs::path						mJsonFilePath;
+		/*fs::path						mJsonFilePath;
 		Parameter<Color>				mBackgroundColor;
 		Parameter<float>				mExposure;
 		Parameter<string>				mText;
-		Parameter<bool>					mAutoBeatAnimation;
+		Parameter<bool>					mAutoBeatAnimation;*/
 		// shaders
 		map<int, string>				controlIndexes;
 		map<string, VDUniform>			shaderUniforms;

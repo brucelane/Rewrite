@@ -95,12 +95,11 @@ namespace videodromm {
 			break;
 		case SEQUENCE:
 			if (mMode = 0) {
+				// use IBARBEAT else direct access
 				if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 0) {
-					// 20200306 if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 19) {
-						// TODO IBARBEAT 
+					// 20200306 if (mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT) > 19) {					
 					mCurrentSeqFilename = mTextureName + " (" + toString(mVDAnimation->getIntUniformValueByIndex(mVDSettings->IBARBEAT)) + ")." + mExt;
 				}
-
 			}
 			else {
 				mCurrentSeqFilename = mTextureName + " (" + toString(aPosition) + ")." + mExt;
