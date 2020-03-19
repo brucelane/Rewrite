@@ -10,12 +10,15 @@ namespace videodromm {
 		string shaderFileName = "inputImage.fs";
 		mShaderName = mShaderFileName;
 		string shaderType = "fs";
+		mShaderFragmentString = "";
 		//string textureFileName = "0.jpg"; 
 		//mTextureName = mCurrentSeqFilename = mLastCachedFilename = textureFileName;
 		mInputTextureIndex = 0;
+		
 		if (json.hasChild("shader")) {
 			JsonTree shaderJsonTree(json.getChild("shader"));
 			mShaderName = mShaderFileName = (shaderJsonTree.hasChild("shadername")) ? shaderJsonTree.getValueForKey<string>("shadername") : "inputImage.fs";
+			mShaderFragmentString = (shaderJsonTree.hasChild("shadertext")) ? shaderJsonTree.getValueForKey<string>("shadertext") : "";
 			shaderType = (json.hasChild("shadertype")) ? json.getValueForKey<string>("shadertype") : "fs";
 		}
 		if (json.hasChild("texture")) {
@@ -27,12 +30,9 @@ namespace videodromm {
 			createInputTexture(textureJsonTree);
 		}
 
-
-
 		//mShaderName = mShaderFileName = aShaderFilename;
 		//mTextureName =  mCurrentSeqFilename = mLastCachedFilename = aTextureFilename;
 		shaderInclude = loadString(loadAsset("shadertoy.vd"));
-
 
 		// init texture
 		//mTexture = ci::gl::Texture::create(mVDSettings->mFboWidth, mVDSettings->mFboHeight, ci::gl::Texture::Format().loadTopDown());
@@ -59,6 +59,7 @@ namespace videodromm {
 
 	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
 		mValid = false;
+		
 		if (aFileName.length() > 0) {
 			/*if (mType == MOVIE) {
 				try {
@@ -81,11 +82,11 @@ namespace videodromm {
 			}
 			else {*/
 			// load fragment shader
-			shaderToLoad = VDShader::create(mVDSettings, mVDAnimation, aFileName, getInputTexture());
+			shaderToLoad = VDShader::create(mVDSettings, mVDAnimation, aFileName, mShaderFragmentString, getInputTexture());
 			if (shaderToLoad->isValid()) {
 				mShaderFileName = mFileNameWithExtension = shaderToLoad->getFileNameWithExtension();//was mFragFile.filename().string();
-				mFragmentShaderString = shaderToLoad->getFragmentString();//was loadString(loadFile(mFragFile));
-				mValid = setFragmentString(mFragmentShaderString, shaderToLoad->getFileNameWithExtension());// was mFragFile.filename().string());
+				mShaderFragmentString = shaderToLoad->getFragmentString();//was loadString(loadFile(mFragFile));
+				mValid = setFragmentString(mShaderFragmentString, shaderToLoad->getFileNameWithExtension());// was mFragFile.filename().string());
 			}
 
 			else {
@@ -162,7 +163,7 @@ namespace videodromm {
 			// try to compile a first time to get active mUniforms
 			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
 			// update only if success
-			mFragmentShaderString = aFragmentShaderString;
+			mShaderFragmentString = aFragmentShaderString;
 			mVDSettings->mMsg = mName + " compiled(fbo)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 			mValid = true;
 		}

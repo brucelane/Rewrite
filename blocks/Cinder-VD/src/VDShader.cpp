@@ -11,50 +11,58 @@ using namespace videodromm;
 	save isf in assets session subfolder
 was VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, string aFragmentShaderString) {
 */
-VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, gl::TextureRef aTexture) {
+VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, string aShaderFragmentString, gl::TextureRef aTexture) {
 	mVDSettings = aVDSettings;
 	mVDAnimation = aVDAnimation;
+	mFragmentShaderString = aShaderFragmentString;
 	mTexture = aTexture;
 	mValid = false;
 	mError = "";
 	bool fileExists = true;
-	if (aFileOrPath.length() > 0) {
-		if (fs::exists(aFileOrPath)) {
-			// it's a full path
-			mFragFilePath = aFileOrPath;
+	// shadertoy include
+	shaderInclude = loadString(loadAsset("shadertoy.vd"));
+	mFragFilePath = getAssetPath("") / mVDSettings->mAssetsPath / aFileOrPath;
+	// priority to string 
+	if (mFragmentShaderString.length() > 0) {
+		mFileNameWithExtension = mFragFilePath.filename().string();
+		mValid = setFragmentString(mFragmentShaderString, mFileNameWithExtension);
+	}
+	else {
+		if (aFileOrPath.length() > 0) {
+			if (fs::exists(aFileOrPath)) {
+				// it's a full path
+				mFragFilePath = aFileOrPath;
+			}
+			else {
+				// try in assets folder			
+				if (!fs::exists(mFragFilePath)) {
+					mFragFilePath = getAssetPath("") / aFileOrPath;
+					if (!fs::exists(mFragFilePath)) {
+						fileExists = false;
+						mError = "shader file does not exist in assets root or current subfolder:" + aFileOrPath;
+					}
+				}
+
+			}
 		}
 		else {
-			// try in assets folder
-			mFragFilePath = getAssetPath("") / mVDSettings->mAssetsPath / aFileOrPath;
-			if (!fs::exists(mFragFilePath)) {
-				mFragFilePath = getAssetPath("") / aFileOrPath;
-				if (!fs::exists(mFragFilePath)) {
-					fileExists = false;
-					mError = "shader file does not exist in assets root or current subfolder:" + aFileOrPath;
-				}
+			mError = "shader file empty";
+		}
+		if (fileExists) {
+			// file exists
+			if (loadFragmentStringFromFile()) {
+				fboFmt.setColorTextureFormat(fmt);
+				mRenderedTexture = ci::gl::Texture::create(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight, ci::gl::Texture::Format().loadTopDown());
+				mThumbFbo = gl::Fbo::create(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight, fboFmt);
+				getThumbTexture();
+			}
+			else {
+				mError = "could not compile:" + aFileOrPath;
 			}
 
 		}
 	}
-	else {
-		mError = "shader file empty";
-	}
-	if (fileExists) {
-		// file exists
-		// shadertoy include
-		shaderInclude = loadString(loadAsset("shadertoy.vd"));
 
-		if (loadFragmentStringFromFile()) {
-			fboFmt.setColorTextureFormat(fmt);
-			mRenderedTexture = ci::gl::Texture::create(mVDSettings->mPreviewFboWidth, mVDSettings->mPreviewFboHeight, ci::gl::Texture::Format().loadTopDown());
-			mThumbFbo = gl::Fbo::create(mVDSettings->mPreviewWidth, mVDSettings->mPreviewHeight, fboFmt);
-			getThumbTexture();
-		}
-		else {
-			mError = "could not compile:" + aFileOrPath;
-		}
-
-	}
 	mVDSettings->mErrorMsg = mError + "\n" + mVDSettings->mErrorMsg.substr(0, mVDSettings->mMsgLength);
 	CI_LOG_V("VDShaders constructor " + mError);
 
@@ -87,7 +95,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 	string mOriginalFragmentString = aFragmentShaderString;
 	string mISFString = aFragmentShaderString;
 	string mOFISFString = "";
-	string fileName = "";
+	//string fileName = "";
 	string mCurrentUniformsString = "// active uniforms start\n";
 	string mProcessedShaderString = "";
 	ext = "";
@@ -119,7 +127,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 		{
 			std::size_t foundUniform = mOriginalFragmentString.find("uniform ");
 			if (foundUniform == std::string::npos) {
-				CI_LOG_V("loadFragmentStringFromFile, no mUniforms found, we add from shadertoy.inc");
+				CI_LOG_V("loadFragmentStringFromFile, no mUniforms found, we add from shadertoy.vd");
 				aFragmentShaderString = "/* " + aName + " */\n" + shaderInclude + mOriginalFragmentString;
 			}
 			else {
@@ -134,9 +142,36 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 
 		}
 		else {
-			// from Hydra
-			std::regex pattern{ "time" };
+			// from Bonzomatic
+			std::regex pattern{ "fGlobalTime" };
 			std::string replacement{ "TIME" };
+			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
+			pattern = { "uniform" };
+			replacement = { "//" };
+			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
+			pattern = { "v2Resolution" };
+			replacement = { "RENDERSIZE" };
+			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
+			pattern = { "#version 410 core" };
+			replacement = { "// from Bonzomatic" };
+			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
+			pattern = { "layout" };// ( don't work
+			replacement = { "// from Bonzomatic 1" };
+			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
+			pattern = { "out_color" };
+			replacement = { "fragColor" };
+			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
+			// save in assetspath
+			/*fileName = aName + ".fs";
+			fs::path fsFile = getAssetPath("") / mVDSettings->mAssetsPath / fileName;
+
+			ofstream mFS(fsFile.string(), std::ofstream::binary);
+			mFS << mOriginalFragmentString;
+			mFS.close();
+			CI_LOG_V("ISF file saved:" + fsFile.string());*/
+			// from Hydra
+			pattern = { "time" };
+			replacement = { "TIME" };
 			mOriginalFragmentString = std::regex_replace(mOriginalFragmentString, pattern, replacement);
 			pattern = { "uniform vec2 resolution;" };
 			replacement = { "uniform vec3 iResolution ;" }; //keep the space
@@ -226,7 +261,7 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			ISFReplacement = { "IMG_NORM_PIXEL" };
 			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
 
-			/* 20200312 
+			/* 20200312
 			ISFPattern = { "iChannel0" };
 			ISFReplacement = { "inputImage" };
 			mISFString = std::regex_replace(mISFString, ISFPattern, ISFReplacement);
@@ -280,67 +315,67 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 				"			]\n"
 				"		}\n";
 			auto &uniforms = mShader->getActiveUniforms();
-			string name;
+			string uniformnName;
 			for (const auto &uniform : uniforms) {
-				name = uniform.getName();
-				CI_LOG_V(aName + ", uniform name:" + name);
+				uniformnName = uniform.getName();
+				CI_LOG_V(aName + ", uniform name:" + uniformnName);
 				// if uniform is handled
-				if (mVDAnimation->isExistingUniform(name)) {
-					int uniformType = mVDAnimation->getUniformType(name);
+				if (mVDAnimation->isExistingUniform(uniformnName)) {
+					int uniformType = mVDAnimation->getUniformType(uniformnName);
 					switch (uniformType)
 					{
 					case 0:
 						// float
-						mShader->uniform(name, mVDAnimation->getFloatUniformValueByName(name));
-						mCurrentUniformsString += "uniform float " + name + "; // " + toString(mVDAnimation->getFloatUniformValueByName(name)) + "\n";
-						if (name != "TIME") {
+						mShader->uniform(uniformnName, mVDAnimation->getFloatUniformValueByName(uniformnName));
+						mCurrentUniformsString += "uniform float " + uniformnName + "; // " + toString(mVDAnimation->getFloatUniformValueByName(uniformnName)) + "\n";
+						if (uniformnName != "TIME") {
 							mISFUniforms += ",\n"
 								"		{\n"
-								"			\"NAME\": \"" + name + "\", \n"
+								"			\"NAME\": \"" + uniformnName + "\", \n"
 								"			\"TYPE\" : \"float\", \n"
-								"			\"MIN\" : " + toString(mVDAnimation->getMinUniformValueByName(name)) + ",\n"
-								"			\"MAX\" : " + toString(mVDAnimation->getMaxUniformValueByName(name)) + ",\n"
-								"			\"DEFAULT\" : " + toString(mVDAnimation->getFloatUniformValueByName(name)) + "\n"
+								"			\"MIN\" : " + toString(mVDAnimation->getMinUniformValueByName(uniformnName)) + ",\n"
+								"			\"MAX\" : " + toString(mVDAnimation->getMaxUniformValueByName(uniformnName)) + ",\n"
+								"			\"DEFAULT\" : " + toString(mVDAnimation->getFloatUniformValueByName(uniformnName)) + "\n"
 								"		}\n";
 						}
 						break;
 					case 1:
 						// sampler2D
-						mShader->uniform(name, mVDAnimation->getSampler2DUniformValueByName(name));
-						mCurrentUniformsString += "uniform sampler2D " + name + "; // " + toString(mVDAnimation->getSampler2DUniformValueByName(name)) + "\n";
+						mShader->uniform(uniformnName, mVDAnimation->getSampler2DUniformValueByName(uniformnName));
+						mCurrentUniformsString += "uniform sampler2D " + uniformnName + "; // " + toString(mVDAnimation->getSampler2DUniformValueByName(uniformnName)) + "\n";
 						break;
 					case 2:
 						// vec2
-						mShader->uniform(name, mVDAnimation->getVec2UniformValueByName(name));
-						mCurrentUniformsString += "uniform vec2 " + name + "; // " + toString(mVDAnimation->getVec2UniformValueByName(name)) + "\n";
+						mShader->uniform(uniformnName, mVDAnimation->getVec2UniformValueByName(uniformnName));
+						mCurrentUniformsString += "uniform vec2 " + uniformnName + "; // " + toString(mVDAnimation->getVec2UniformValueByName(uniformnName)) + "\n";
 						break;
 					case 3:
 						// vec3
-						mShader->uniform(name, mVDAnimation->getVec3UniformValueByName(name));
-						mCurrentUniformsString += "uniform vec3 " + name + "; // " + toString(mVDAnimation->getVec3UniformValueByName(name)) + "\n";
+						mShader->uniform(uniformnName, mVDAnimation->getVec3UniformValueByName(uniformnName));
+						mCurrentUniformsString += "uniform vec3 " + uniformnName + "; // " + toString(mVDAnimation->getVec3UniformValueByName(uniformnName)) + "\n";
 						break;
 					case 4:
 						// vec4
-						mShader->uniform(name, mVDAnimation->getVec4UniformValueByName(name));
-						mCurrentUniformsString += "uniform vec4 " + name + "; // " + toString(mVDAnimation->getVec4UniformValueByName(name)) + "\n";
+						mShader->uniform(uniformnName, mVDAnimation->getVec4UniformValueByName(uniformnName));
+						mCurrentUniformsString += "uniform vec4 " + uniformnName + "; // " + toString(mVDAnimation->getVec4UniformValueByName(uniformnName)) + "\n";
 						break;
 					case 5:
 						// int
-						mShader->uniform(name, mVDAnimation->getIntUniformValueByName(name));
-						mCurrentUniformsString += "uniform int " + name + "; // " + toString(mVDAnimation->getIntUniformValueByName(name)) + "\n";
+						mShader->uniform(uniformnName, mVDAnimation->getIntUniformValueByName(uniformnName));
+						mCurrentUniformsString += "uniform int " + uniformnName + "; // " + toString(mVDAnimation->getIntUniformValueByName(uniformnName)) + "\n";
 						break;
 					case 6:
 						// bool
-						mShader->uniform(name, mVDAnimation->getBoolUniformValueByName(name));
-						mCurrentUniformsString += "uniform bool " + name + "; // " + toString(mVDAnimation->getBoolUniformValueByName(name)) + "\n";
+						mShader->uniform(uniformnName, mVDAnimation->getBoolUniformValueByName(uniformnName));
+						mCurrentUniformsString += "uniform bool " + uniformnName + "; // " + toString(mVDAnimation->getBoolUniformValueByName(uniformnName)) + "\n";
 						break;
 					default:
 						break;
 					}
 				}
 				else {
-					if (name != "ciModelViewProjection") {
-						mNotFoundUniformsString += "not found " + name + "\n";
+					if (uniformnName != "ciModelViewProjection") {
+						mNotFoundUniformsString += "not found " + uniformnName + "\n";
 					}
 				}
 			}
@@ -389,29 +424,32 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			mOFISFString = mISFHeader + mOFISFString;
 
 			// ifs for openFrameworks ISFGif project
-			fileName = aName + ".fs";
-			fs::path OFIsfFile = getAssetPath("") / "glsl" / "osf" / fileName;
+			//fileName = aName + ".fs";
+			mFileNameWithExtension = aName + ".fs";
+			mFragFilePath = getAssetPath("") / mVDSettings->mAssetsPath / mFileNameWithExtension;
+			/*fs::path OFIsfFile = getAssetPath("") / "glsl" / "osf" / mFileNameWithExtension;
 			ofstream mOFISF(OFIsfFile.string(), std::ofstream::binary);
 			mOFISF << mOFISFString;
 			mOFISF.close();
-			CI_LOG_V("OF ISF file saved:" + OFIsfFile.string());
+			CI_LOG_V("OF ISF file saved:" + OFIsfFile.string());*/
 
 			// ifs for HeavyM, save in assetspath if not exists already
-			fileName = aName + ".fs";
+			//fileName = aName + ".fs";
 			//fs::path isfFile = getAssetPath("") / "glsl" / "isf" / fileName;
-			fs::path isfFile = getAssetPath("") / mVDSettings->mAssetsPath / fileName;
-			if (fs::exists(isfFile)) {
+			//fs::path isfFile = getAssetPath("") / mVDSettings->mAssetsPath / mFileNameWithExtension;
+			/*if (fs::exists(isfFile)) {
 				isfFile = getAssetPath("") / "glsl" / "isf" / fileName;
 				ofstream mISF(isfFile.string(), std::ofstream::binary);
 				mISF << mISFString;
 				mISF.close();
 				CI_LOG_V("ISF file saved:" + isfFile.string());
-			} else {
-				ofstream mISF(isfFile.string(), std::ofstream::binary);
-				mISF << mISFString;
-				mISF.close();
-				CI_LOG_V("ISF file saved:" + isfFile.string());
 			}
+			else {*/
+			ofstream mISF(mFragFilePath.string(), std::ofstream::binary);
+			mISF << mISFString;
+			mISF.close();
+			CI_LOG_V("ISF file saved:" + mFragFilePath.string());
+			//}
 		}
 	}
 	catch (gl::GlslProgCompileExc &exc)

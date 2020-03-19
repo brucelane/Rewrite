@@ -184,7 +184,7 @@ namespace videodromm
 		string							mName = "";
 		string							mShaderFileName = "";
 
-		std::string						mFragmentShaderString;
+		std::string						mShaderFragmentString;
 		std::string						mFileNameWithExtension;
 		//fs::path						mFragFile;
 		bool							mActive;

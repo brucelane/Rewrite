@@ -119,6 +119,33 @@ VDSessionRef VDSession::create(VDSettingsRef aVDSettings)
 }
 
 void VDSession::update(unsigned int aClassIndex) {
+	if (mVDWebsocket->hasReceivedShader()) {
+		string receivedShader = mVDWebsocket->getReceivedShader();
+		// save file
+		/*string mShaderFileName = "received.fs";
+		
+		fs::path fsFile = getAssetPath("") / mVDSettings->mAssetsPath / mShaderFileName;
+		ofstream mFS(fsFile.string(), std::ofstream::binary);
+		mFS << receivedShader;
+		mFS.close();*/
+
+		// save fbo file
+		JsonTree		json;
+		JsonTree shader = ci::JsonTree::makeArray("shader");
+		shader.addChild(ci::JsonTree("shadername", "received.txt"));
+		shader.pushBack(ci::JsonTree("shadertype", "fs"));
+		shader.pushBack(ci::JsonTree("shadertext", receivedShader));
+		json.addChild(shader);
+		JsonTree texture = ci::JsonTree::makeArray("texture");
+		texture.addChild(ci::JsonTree("texturename", "audio"));
+		texture.pushBack(ci::JsonTree("texturetype", "audio"));
+		texture.pushBack(ci::JsonTree("texturemode", 0));
+		json.addChild(texture);
+
+		// load fbo
+		fboFromJson(json, getFboListSize());
+	}
+
 	/*if (mVDRouter->hasFBOAChanged()) {
 		setFboFragmentShaderIndex(0, mVDRouter->selectedFboA());
 	}
@@ -997,10 +1024,10 @@ void VDSession::updateHydraUniforms() {
 
 	*/
 
-unsigned int VDSession::fboFromJson(const JsonTree &json) {
+unsigned int VDSession::fboFromJson(const JsonTree &json, unsigned int aFboIndex) {
 	unsigned int rtn = 0;
 
-	rtn = createFboShaderTexture(json);
+	rtn = createFboShaderTexture(json, aFboIndex);
 	return rtn;
 }
 

@@ -86,7 +86,7 @@ void VDWebsocket::parseMessage(string msg) {
 	// mVDSettings->mWebSocketsNewMsg = true;
 	if (!msg.empty()) {
 		mVDSettings->mWebSocketsMsg += ": " + msg.substr(0, mVDSettings->mMsgLength);
-		CI_LOG_V("ws msg: " + msg);
+		//CI_LOG_V("ws msg: " + msg);
 		string first = msg.substr(0, 1);
 		if (first == "{") {
 			// json
@@ -161,6 +161,14 @@ void VDWebsocket::parseMessage(string msg) {
 							CI_LOG_V("VDWebsocket unknown event: " + val);
 						}
 						//string evt = json.getChild("event").getValue<string>();
+					}
+				}
+				if (json.hasChild("Data")) {
+					JsonTree jsonData = json.getChild("Data");
+					if (jsonData.hasChild("Code")) {
+						JsonTree jsonCode = jsonData.getChild("Code");
+						receivedFragString = jsonCode.getValue<string>();
+						shaderReceived = true;
 					}
 				}
 				if (json.hasChild("cmd")) {
@@ -503,7 +511,12 @@ void VDWebsocket::wsClientConnect()
 		s << mVDSettings->mWebSocketsProtocol << mVDSettings->mWebSocketsHost;
 	}
 	else {
-		s << mVDSettings->mWebSocketsProtocol << mVDSettings->mWebSocketsHost << ":" << mVDSettings->mWebSocketsPort;
+		if (mVDSettings->mWebSocketsPort == 9000) {
+			s << mVDSettings->mWebSocketsProtocol << mVDSettings->mWebSocketsHost << ":" << mVDSettings->mWebSocketsPort << "/roomtest/bruce";
+		}
+		else {
+			s << mVDSettings->mWebSocketsProtocol << mVDSettings->mWebSocketsHost << ":" << mVDSettings->mWebSocketsPort;
+		}
 	}
 	// BL TEMP s << "https://" << mVDSettings->mWebSocketsHost << ":" << mVDSettings->mWebSocketsPort;
 	mClient.connect(s.str());

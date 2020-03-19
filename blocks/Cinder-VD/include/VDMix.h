@@ -160,11 +160,18 @@ namespace videodromm
 			}
 			
 		}
-		unsigned int									createFboShaderTexture(const JsonTree &json) {
+		unsigned int									createFboShaderTexture(const JsonTree &json, unsigned int aFboIndex = 0) {
 			unsigned int rtn = 0;
-			VDFboRef fboRef = VDFbo::create(mVDSettings, mVDAnimation, json);
-			mFboList.push_back(fboRef);
-			rtn = mFboList.size() - 1;
+			VDFboRef fboRef = VDFbo::create(mVDSettings, mVDAnimation, json); 
+			if (aFboIndex == 0) {
+				mFboList.push_back(fboRef);
+				rtn = mFboList.size() - 1;
+			}
+			else {
+				rtn = math<int>::min(aFboIndex, mFboList.size() - 1);
+				mFboList[rtn] = fboRef;			
+			}
+
 			return rtn;
 		}
 		ci::gl::TextureRef				getFboRenderedTexture(unsigned int aFboIndex) {
