@@ -294,6 +294,8 @@ namespace videodromm {
 		bool						mIsWebSocketsServer;
 		string						mWebSocketsProtocol;
 		string						mWebSocketsHost;
+		string						mWebSocketsRoom;
+		string						mWebSocketsNickname;
 		uint16_t					mWebSocketsPort;
 		std::string					mWebSocketsMsg;
 		// midi

@@ -424,7 +424,7 @@ void VDUIAnimation::Run(const char* title) {
 			// websockets
 			if (mVDSettings->mIsWebSocketsServer)
 			{
-				ImGui::Text("WS Server %s%s:%d", mVDSettings->mWebSocketsProtocol.c_str(), mVDSettings->mWebSocketsHost.c_str(), mVDSettings->mWebSocketsPort);
+				ImGui::Text("WS Server %s%s:%d/%s/%s", mVDSettings->mWebSocketsProtocol.c_str(), mVDSettings->mWebSocketsHost.c_str(), mVDSettings->mWebSocketsPort, mVDSettings->mWebSocketsRoom.c_str(), mVDSettings->mWebSocketsNickname.c_str());
 				if (ImGui::Button("srv->clt"))
 				{
 					mVDSettings->mIsWebSocketsServer = false;
@@ -434,7 +434,7 @@ void VDUIAnimation::Run(const char* title) {
 			}
 			else
 			{
-				ImGui::Text("WS Client %s%s:%d", mVDSettings->mWebSocketsProtocol.c_str(), mVDSettings->mWebSocketsHost.c_str(), mVDSettings->mWebSocketsPort);
+				ImGui::Text("WS Client %s%s:%d/%s/%s", mVDSettings->mWebSocketsProtocol.c_str(), mVDSettings->mWebSocketsHost.c_str(), mVDSettings->mWebSocketsPort, mVDSettings->mWebSocketsRoom.c_str(), mVDSettings->mWebSocketsNickname.c_str());
 				if (ImGui::Button("clt->srv"))
 				{
 					mVDSettings->mIsWebSocketsServer = true;
@@ -460,15 +460,33 @@ void VDUIAnimation::Run(const char* title) {
 			if (ImGui::Button("Connect")) { mVDSession->wsConnect(); }
 			ImGui::SameLine();
 			if (ImGui::Button("Ping")) { mVDSession->wsPing(); }
+			// host
 			static char host[128] = "127.0.0.1";
 			std::copy(mVDSettings->mWebSocketsHost.begin(), (mVDSettings->mWebSocketsHost.size() >= 128 ? mVDSettings->mWebSocketsHost.begin() + 128 : mVDSettings->mWebSocketsHost.end()), host);
-
-			static int port = mVDSettings->mWebSocketsPort;
 			if (ImGui::InputText("address", host, IM_ARRAYSIZE(host)))
 			{
-				mVDSettings->mWebSocketsHost = host; // CHECK if ok
+				mVDSettings->mWebSocketsHost = host;
 			}
+			// port
+			static int port = mVDSettings->mWebSocketsPort;
 			if (ImGui::InputInt("port", &port)) mVDSettings->mWebSocketsPort = port;
+			// room
+			static char room[128] = "roomtest";
+			std::copy(mVDSettings->mWebSocketsRoom.begin(), (mVDSettings->mWebSocketsRoom.size() >= 128 ? mVDSettings->mWebSocketsRoom.begin() + 128 : mVDSettings->mWebSocketsRoom.end()), room);
+
+			if (ImGui::InputText("room", room, IM_ARRAYSIZE(room)))
+			{
+				mVDSettings->mWebSocketsRoom = room;
+			}
+			// nickname
+			static char nick[128] = "bruce";
+			std::copy(mVDSettings->mWebSocketsNickname.begin(), (mVDSettings->mWebSocketsNickname.size() >= 128 ? mVDSettings->mWebSocketsNickname.begin() + 128 : mVDSettings->mWebSocketsNickname.end()), nick);
+
+			if (ImGui::InputText("nick", nick, IM_ARRAYSIZE(nick)))
+			{
+				mVDSettings->mWebSocketsNickname = nick;
+			}
+
 			//ImGui::PushItemWidth(mVDSettings->uiLargeW/3); // useless?
 			ImGui::TextWrapped(">%s", mVDSettings->mWebSocketsMsg.c_str());
 			//ImGui::PopItemWidth();

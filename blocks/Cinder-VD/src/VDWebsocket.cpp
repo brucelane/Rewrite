@@ -512,7 +512,7 @@ void VDWebsocket::wsClientConnect()
 	}
 	else {
 		if (mVDSettings->mWebSocketsPort == 9000) {
-			s << mVDSettings->mWebSocketsProtocol << mVDSettings->mWebSocketsHost << ":" << mVDSettings->mWebSocketsPort << "/roomtest/bruce";
+			s << mVDSettings->mWebSocketsProtocol << mVDSettings->mWebSocketsHost << ":" << mVDSettings->mWebSocketsPort << "/" << mVDSettings->mWebSocketsRoom << "/" << mVDSettings->mWebSocketsNickname;
 		}
 		else {
 			s << mVDSettings->mWebSocketsProtocol << mVDSettings->mWebSocketsHost << ":" << mVDSettings->mWebSocketsPort;

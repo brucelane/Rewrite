@@ -163,6 +163,14 @@ bool VDSettings::save()
 	WebSocketsPort.setAttribute("value", toString(mWebSocketsPort));
 	settings.push_back(WebSocketsPort);
 
+	XmlTree WebSocketsRoom("WebSocketsRoom", "");
+	WebSocketsRoom.setAttribute("value", mWebSocketsRoom);
+	settings.push_back(WebSocketsRoom);
+
+	XmlTree WebSocketsNickname("WebSocketsNickname", "");
+	WebSocketsNickname.setAttribute("value", mWebSocketsNickname);
+	settings.push_back(WebSocketsNickname);
+
 	XmlTree Info("Info", "");
 	Info.setAttribute("value", toString(mInfo));
 	settings.push_back(Info);
@@ -295,6 +303,15 @@ bool VDSettings::restore()
 				XmlTree WebSocketsPort = settings.getChild("WebSocketsPort");
 				mWebSocketsPort = WebSocketsPort.getAttributeValue<int>("value");
 			}
+			if (settings.hasChild("WebSocketsRoom")) {
+				XmlTree WebSocketsRoom = settings.getChild("WebSocketsRoom");
+				mWebSocketsRoom = WebSocketsRoom.getAttributeValue<string>("value");
+			}
+			if (settings.hasChild("WebSocketsNickname")) {
+				XmlTree WebSocketsNickname = settings.getChild("WebSocketsNickname");
+				mWebSocketsNickname = WebSocketsNickname.getAttributeValue<string>("value");
+			}
+
 			if (settings.hasChild("Info")) {
 				XmlTree Info = settings.getChild("Info");
 				mInfo = Info.getAttributeValue<string>("value");
@@ -538,6 +555,8 @@ void VDSettings::reset()
 	mWebSocketsProtocol = "ws://";
 	mWebSocketsHost = "127.0.0.1";
 	mWebSocketsPort = 8088;
+	mWebSocketsRoom = "roomtest"; 
+	mWebSocketsNickname = "bruce";
 	// Blendmode 
 	iBlendmode = 0;
 	
