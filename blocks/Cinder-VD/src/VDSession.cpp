@@ -122,12 +122,12 @@ void VDSession::update(unsigned int aClassIndex) {
 	if (mVDWebsocket->hasReceivedShader()) {
 		string receivedShader = mVDWebsocket->getReceivedShader();
 		// save file
-		/*string mShaderFileName = "received.fs";
+		string mShaderFileName = mVDSettings->mWebSocketsNickname + toString((int)getElapsedSeconds())+ ".fs";
 		
 		fs::path fsFile = getAssetPath("") / mVDSettings->mAssetsPath / mShaderFileName;
 		ofstream mFS(fsFile.string(), std::ofstream::binary);
 		mFS << receivedShader;
-		mFS.close();*/
+		mFS.close();
 
 		// save fbo file
 		JsonTree		json;
