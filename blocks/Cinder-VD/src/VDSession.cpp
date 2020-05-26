@@ -746,7 +746,7 @@ bool VDSession::handleKeyUp(KeyEvent &event) {
 // fbos
 #pragma region fbos
 
-/*unsigned int VDSession::createShaderFboFromString(string aFragmentShaderString, string aShaderFilename) {
+/*unsigned int VDSession::createShaderFboFromString(const string& aFragmentShaderString, string aShaderFilename) {
 	unsigned int rtn = 0;
 	// create new shader
 	VDShaderRef s(new VDShader(mVDSettings, mVDAnimation, aShaderFilename, aFragmentShaderString));
@@ -805,7 +805,7 @@ void VDSession::setFboBIndex(unsigned int aIndex, unsigned int aFboIndex) {
 #pragma endregion fbos
 // shaders
 #pragma region shaders
-/*bool VDSession::loadShaderFolder(string aFolder) {
+/*bool VDSession::loadShaderFolder(const string& aFolder) {
 	string ext = "";
 	fs::path p(aFolder);
 	for (fs::directory_iterator it(p); it != fs::directory_iterator(); ++it)
@@ -928,7 +928,7 @@ void VDSession::setFragmentShaderString(unsigned int aShaderIndex, string aFragm
 		if (mFboList[i]->getShaderIndex() == aShaderIndex) setFboFragmentShaderIndex(i, aShaderIndex);
 	}
 }
-void VDSession::setHydraFragmentShaderString(string aFragmentShaderString, string aName) {
+void VDSession::setHydraFragmentShaderString(const string& aFragmentShaderString, string aName) {
 
 	//mShaderList[0]->setFragmentString(aFragmentShaderString, aName);
 	//setFboFragmentShaderIndex(0, 0);
@@ -1100,7 +1100,7 @@ void VDSession::togglePlayPause(unsigned int aTextureIndex) {
 string VDSession::getStatus(unsigned int aTextureIndex) {
 	return mTextureList[math<int>::min(aTextureIndex, mTextureList.size() - 1)]->getStatus();
 }
-bool VDSession::loadImageSequence(string aFolder, unsigned int aTextureIndex) {
+bool VDSession::loadImageSequence(const string& aFolder, unsigned int aTextureIndex) {
 	//if (aTextureIndex > mTextureList.size() - 1) aTextureIndex = mTextureList.size() - 1;
 	CI_LOG_V("loadImageSequence " + aFolder + " at textureIndex " + toString(aTextureIndex));
 	// add texture xml
@@ -1118,12 +1118,12 @@ bool VDSession::loadImageSequence(string aFolder, unsigned int aTextureIndex) {
 		return false;
 	}
 }
-void VDSession::loadMovie(string aFile, unsigned int aTextureIndex) {
+void VDSession::loadMovie(const string& aFile, unsigned int aTextureIndex) {
 
 }*/
 
 /*
-void VDSession::loadAudioFile(string aFile) {
+void VDSession::loadAudioFile(const string& aFile) {
 	mTextureList[0]->loadFromFullPath(aFile);
 }
 bool VDSession::isMovie(unsigned int aTextureIndex) {

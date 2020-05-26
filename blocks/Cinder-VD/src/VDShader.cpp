@@ -90,9 +90,10 @@ bool VDShader::loadFragmentStringFromFile() {
 	CI_LOG_V(mFragFilePath.string() + " loaded and compiled");
 	return mValid;
 }// aName = fullpath
-bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
+bool VDShader::setFragmentString(const string& aFragmentShaderString, string aName) {
 
 	string mOriginalFragmentString = aFragmentShaderString;
+	string mOutputFragmentString = aFragmentShaderString;
 	string mISFString = aFragmentShaderString;
 	string mOFISFString = "";
 	//string fileName = "";
@@ -128,15 +129,15 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			std::size_t foundUniform = mOriginalFragmentString.find("uniform ");
 			if (foundUniform == std::string::npos) {
 				CI_LOG_V("loadFragmentStringFromFile, no mUniforms found, we add from shadertoy.vd");
-				aFragmentShaderString = "/* " + aName + " */\n" + shaderInclude + mOriginalFragmentString;
+				mOutputFragmentString = "/* " + aName + " */\n" + shaderInclude + mOriginalFragmentString;
 			}
 			else {
-				aFragmentShaderString = "/* " + aName + " */\n" + mOriginalFragmentString;
+				mOutputFragmentString = "/* " + aName + " */\n" + mOriginalFragmentString;
 			}
 			// try to compile a first time to get active uniforms
-			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
+			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mOutputFragmentString);
 			// update only if success
-			mFragmentShaderString = aFragmentShaderString;
+			mFragmentShaderString = mOutputFragmentString;
 			mValid = true;
 			mVDSettings->mMsg = aName + " compiled(fs)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 
@@ -287,17 +288,17 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 			if (foundUniform == std::string::npos) {
 				CI_LOG_V("loadFragmentStringFromFile, no uniforms found, we add from shadertoy.vd");
 				//aFragmentShaderString = "/* " + aName + " */\n" + shaderInclude + mOriginalFragmentString;
-				aFragmentShaderString = "/* " + aName + " */\n" + shaderInclude + mISFString;
+				mOutputFragmentString = "/* " + aName + " */\n" + shaderInclude + mISFString;
 			}
 			else {
 				//aFragmentShaderString = "/* " + aName + " */\n" + mOriginalFragmentString;
-				aFragmentShaderString = "/* " + aName + " */\n" + mISFString;
+				mOutputFragmentString = "/* " + aName + " */\n" + mISFString;
 			}
 
 			// try to compile a first time to get active uniforms
-			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
+			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mOutputFragmentString);
 			// update only if success
-			mFragmentShaderString = aFragmentShaderString;
+			mFragmentShaderString = mOutputFragmentString;
 			mVDSettings->mMsg = aName + " compiled(shader)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 
 			// name of the shader
@@ -455,12 +456,12 @@ bool VDShader::setFragmentString(string aFragmentShaderString, string aName) {
 	catch (gl::GlslProgCompileExc &exc)
 	{
 		mError = aName + string(exc.what());
-		CI_LOG_V("setFragmentString, unable to compile live fragment shader:" + mError + " frag:" + aFragmentShaderString);
+		CI_LOG_V("setFragmentString, unable to compile live fragment shader:" + mError + " frag:" + mOutputFragmentString);
 	}
 	catch (const std::exception &e)
 	{
 		mError = aName + string(e.what());
-		CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + aFragmentShaderString);
+		CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + mOutputFragmentString);
 	}
 	if (mError.length() > 0) mVDSettings->mShaderMsg = mError + "\n" + mVDSettings->mShaderMsg.substr(0, mVDSettings->mMsgLength);
 	return mValid;

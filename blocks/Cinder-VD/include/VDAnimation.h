@@ -147,12 +147,12 @@ namespace videodromm
 		void							toggleAudioBuffered() { mAudioBuffered = !mAudioBuffered; };
 
 		// shaders
-		bool							isExistingUniform(string aName);
-		int								getUniformType(string aName);
+		bool							isExistingUniform(const string& aName);
+		int								getUniformType(const string& aName);
 		string							getUniformNameForIndex(int aIndex) {
 			return controlIndexes[aIndex];
 		};
-		int								getUniformIndexForName(string aName) {
+		int								getUniformIndexForName(const string& aName) {
 			return shaderUniforms[aName].index;
 		};
 		bool							toggleAuto(unsigned int aIndex);
@@ -173,7 +173,7 @@ namespace videodromm
 			}
 			return aValue;
 		}
-		void							setIntUniformValueByName(string aName, int aValue) {
+		void							setIntUniformValueByName(const string& aName, int aValue) {
 			if (aName == "") {
 				CI_LOG_V("empty error");
 			}
@@ -195,7 +195,7 @@ namespace videodromm
 				shaderUniforms[getUniformNameForIndex(aIndex)].intValue = aValue;
 			}
 		}
-		void							setFloatUniformValueByName(string aName, float aValue) {
+		void							setFloatUniformValueByName(const string& aName, float aValue) {
 			if (aName == "") {
 				CI_LOG_V("empty error");
 			}
@@ -203,7 +203,7 @@ namespace videodromm
 				shaderUniforms[aName].floatValue = aValue;
 			}
 		}
-		void setVec2UniformValueByName(string aName, vec2 aValue) {
+		void setVec2UniformValueByName(const string& aName, vec2 aValue) {
 			if (aName == "") {
 				CI_LOG_V("empty error");
 			}
@@ -214,7 +214,7 @@ namespace videodromm
 		void setVec2UniformValueByIndex(unsigned int aIndex, vec2 aValue) {
 			shaderUniforms[getUniformNameForIndex(aIndex)].vec2Value = aValue;
 		}
-		void setVec3UniformValueByName(string aName, vec3 aValue) {
+		void setVec3UniformValueByName(const string& aName, vec3 aValue) {
 			if (aName == "") {
 				CI_LOG_V("empty error");
 			}
@@ -225,7 +225,7 @@ namespace videodromm
 		void setVec3UniformValueByIndex(unsigned int aIndex, vec3 aValue) {
 			shaderUniforms[getUniformNameForIndex(aIndex)].vec3Value = aValue;
 		}
-		void setVec4UniformValueByName(string aName, vec4 aValue) {
+		void setVec4UniformValueByName(const string& aName, vec4 aValue) {
 			if (aName == "") {
 				CI_LOG_V("empty error");
 			}
@@ -245,14 +245,14 @@ namespace videodromm
 		float							getMaxUniformValueByIndex(unsigned int aIndex) {
 			return shaderUniforms[getUniformNameForIndex(aIndex)].maxValue;
 		}
-		float							getMinUniformValueByName(string aName) {
+		float							getMinUniformValueByName(const string& aName) {
 			if (aName == "") {
 				CI_LOG_V("empty error");
 			}
 			
 				return shaderUniforms[aName].minValue;
 		}
-		float							getMaxUniformValueByName(string aName) {
+		float							getMaxUniformValueByName(const string& aName) {
 			if (aName == "") {
 				CI_LOG_V("empty error");
 			}
@@ -261,7 +261,7 @@ namespace videodromm
 		}
 
 
-		bool							getBoolUniformValueByName(string aName) {
+		bool							getBoolUniformValueByName(const string& aName) {
 			return shaderUniforms[aName].boolValue;
 		}
 		vec2							getVec2UniformValueByIndex(unsigned int aIndex) {
@@ -282,10 +282,10 @@ namespace videodromm
 		int								getIntUniformValueByIndex(unsigned int aIndex) {
 			return shaderUniforms[getUniformNameForIndex(aIndex)].intValue;
 		}
-		int								getSampler2DUniformValueByName(string aName) {
+		int								getSampler2DUniformValueByName(const string& aName) {
 			return shaderUniforms[aName].textureIndex;
 		}
-		float							getFloatUniformValueByName(string aName) {
+		float							getFloatUniformValueByName(const string& aName) {
 			if (aName == "") {
 				CI_LOG_V("getFloatUniformValueByName name empty");
 				return 1.0f;
@@ -294,16 +294,16 @@ namespace videodromm
 				return shaderUniforms[aName].floatValue;
 			}
 		}
-		vec2							getVec2UniformValueByName(string aName) {
+		vec2							getVec2UniformValueByName(const string& aName) {
 			return shaderUniforms[aName].vec2Value;
 		}
-		vec3							getVec3UniformValueByName(string aName) {
+		vec3							getVec3UniformValueByName(const string& aName) {
 			return shaderUniforms[aName].vec3Value;
 		}
-		vec4							getVec4UniformValueByName(string aName) {
+		vec4							getVec4UniformValueByName(const string& aName) {
 			return shaderUniforms[aName].vec4Value;
 		}
-		int								getIntUniformValueByName(string aName) {
+		int								getIntUniformValueByName(const string& aName) {
 			return shaderUniforms[aName].intValue;
 		};
 
@@ -323,8 +323,8 @@ namespace videodromm
 		void							setFreqIndex(unsigned int aFreqIndex, unsigned int aFreq) { freqIndexes[aFreqIndex] = aFreq; };
 		//float							getFreq(unsigned int aFreqIndex) { return iFreqs[freqIndexes[aFreqIndex]]; };
 		// public for hydra
-		void							createFloatUniform(string aName, int aCtrlIndex, float aValue = 0.01f, float aMin = 0.0f, float aMax = 1.0f);
-		void							createSampler2DUniform(string aName, int aCtrlIndex, int aTextureIndex = 0);
+		void							createFloatUniform(const string& aName, int aCtrlIndex, float aValue = 0.01f, float aMin = 0.0f, float aMax = 1.0f);
+		void							createSampler2DUniform(const string& aName, int aCtrlIndex, int aTextureIndex = 0);
 	private:
 		// Settings
 		VDSettingsRef					mVDSettings;
@@ -352,11 +352,11 @@ namespace videodromm
 		void							intFromJson(const ci::JsonTree &json);
 		void							boolFromJson(const ci::JsonTree &json);
 		fs::path						mUniformsJson;
-		void							createVec2Uniform(string aName, int aCtrlIndex, vec2 aValue = vec2(0.0));
-		void							createVec3Uniform(string aName, int aCtrlIndex, vec3 aValue = vec3(0.0));
-		void							createVec4Uniform(string aName, int aCtrlIndex, vec4 aValue = vec4(0.0));
-		void							createIntUniform(string aName, int aCtrlIndex, int aValue = 1);
-		void							createBoolUniform(string aName, int aCtrlIndex, bool aValue = false);
+		void							createVec2Uniform(const string& aName, int aCtrlIndex, vec2 aValue = vec2(0.0));
+		void							createVec3Uniform(const string& aName, int aCtrlIndex, vec3 aValue = vec3(0.0));
+		void							createVec4Uniform(const string& aName, int aCtrlIndex, vec4 aValue = vec4(0.0));
+		void							createIntUniform(const string& aName, int aCtrlIndex, int aValue = 1);
+		void							createBoolUniform(const string& aName, int aCtrlIndex, bool aValue = false);
 		//! write a uniforms json file
 		void							saveUniforms();
 		ci::JsonTree					uniformToJson(int i);

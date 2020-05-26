@@ -858,7 +858,7 @@ namespace videodromm {
 			if (aTextureIndex > mTextureList.size() - 1) aTextureIndex = mTextureList.size() - 1;
 			mTextureList[aTextureIndex]->togglePlayPause();
 		}
-		bool VDMix::loadImageSequence(string aFolder, unsigned int aTextureIndex) {
+		bool VDMix::loadImageSequence(const string& aFolder, unsigned int aTextureIndex) {
 			if (aTextureIndex > mTextureList.size() - 1) aTextureIndex = mTextureList.size() - 1;
 			CI_LOG_V("loadImageSequence " + aFolder + " at textureIndex " + toString(aTextureIndex));
 			// add texture xml
@@ -876,7 +876,7 @@ namespace videodromm {
 				return false;
 			}
 		}
-		void VDMix::loadMovie(string aFile, unsigned int aTextureIndex) {
+		void VDMix::loadMovie(const string& aFile, unsigned int aTextureIndex) {
 	#if defined( CINDER_MSW )
 			if (aTextureIndex > mTextureList.size() - 1) aTextureIndex = mTextureList.size() - 1;
 			CI_LOG_V("loadMovie " + aFile + " at textureIndex " + toString(aTextureIndex));
@@ -890,12 +890,12 @@ namespace videodromm {
 			mTextureList.push_back(t);
 	#endif
 		}
-		void VDMix::loadImageFile(string aFile, unsigned int aTextureIndex) {
+		void VDMix::loadImageFile(const string& aFile, unsigned int aTextureIndex) {
 			if (aTextureIndex > mTextureList.size() - 1) aTextureIndex = mTextureList.size() - 1;
 			CI_LOG_V("loadImageFile " + aFile + " at textureIndex " + toString(aTextureIndex));
 			mTextureList[aTextureIndex]->loadFromFullPath(aFile);
 		}
-		void VDMix::loadAudioFile(string aFile) {
+		void VDMix::loadAudioFile(const string& aFile) {
 			mTextureList[0]->loadFromFullPath(aFile);
 		}
 		bool VDMix::isMovie(unsigned int aTextureIndex) {
@@ -965,7 +965,7 @@ namespace videodromm {
 				if (mFboList[i]->getShaderIndex() == aShaderIndex) setFboFragmentShaderIndex(i, aShaderIndex);
 			}
 		}
-		unsigned int VDMix::createShaderFboFromString(string aFragmentShaderString, string aShaderFilename, string aName) {
+		unsigned int VDMix::createShaderFboFromString(const string& aFragmentShaderString, string aShaderFilename, string aName) {
 			unsigned int rtn = 0;
 			unsigned int shaderId = 0;
 			// create new shader
@@ -1037,7 +1037,7 @@ namespace videodromm {
 		}
 		*/
 
-		/*unsigned int VDMix::createShaderFbo(string aShaderFilename, unsigned int aFboShaderIndex) {
+		/*unsigned int VDMix::createShaderFbo(const string& aShaderFilename, unsigned int aFboShaderIndex) {
 			// initialize rtn to 0 to force creation
 			unsigned int rtn = 0;
 			string fName = aShaderFilename;

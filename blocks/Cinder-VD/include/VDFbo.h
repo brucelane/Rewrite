@@ -56,8 +56,8 @@ namespace videodromm
 			//last frame rendered
 			return mRenderedTexture;
 		}
-		bool									setFragmentString(string aFragmentShaderString, string aName = "");
-		bool									loadFragmentStringFromFile(string aFileName);
+		bool									setFragmentString(const string& aFragmentShaderString, string aName = "");
+		bool									loadFragmentStringFromFile(const string& aFileName);
 		bool									isValid() {
 			return mValid;
 		};
@@ -94,7 +94,7 @@ namespace videodromm
 		string									getUniformNameForIndex(int aIndex) {
 			return controlIndexes[aIndex];
 		};
-		int										getUniformIndexForName(string aName) {
+		int										getUniformIndexForName(const string& aName) {
 			return shaderUniforms[aName].index;
 		};
 		// bool
@@ -103,7 +103,7 @@ namespace videodromm
 			//132 mVDSettings->IFLIPV
 			return shaderUniforms[getUniformNameForIndex(aIndex)].boolValue;
 		};
-		bool									getBoolUniformValueByName(string aName) {
+		bool									getBoolUniformValueByName(const string& aName) {
 			return shaderUniforms[aName].boolValue;
 		}
 		bool									toggleValue(unsigned int aIndex) {
@@ -111,13 +111,13 @@ namespace videodromm
 			return shaderUniforms[getUniformNameForIndex(aIndex)].boolValue;
 		};
 		// int
-		int										getIntUniformValueByName(string aName) {
+		int										getIntUniformValueByName(const string& aName) {
 			return shaderUniforms[aName].intValue;
 		};
 		int										getIntUniformValueByIndex(unsigned int aIndex) {
 			return shaderUniforms[getUniformNameForIndex(aIndex)].intValue;
 		};
-		float									getFloatUniformValueByName(string aName) {
+		float									getFloatUniformValueByName(const string& aName) {
 			if (aName.length() > 0) {
 				return shaderUniforms[aName].floatValue;
 			}
@@ -212,20 +212,20 @@ namespace videodromm
 		// uniforms
 		map<int, string>				controlIndexes;
 		map<string, VDUniform>			shaderUniforms;
-		void							createBoolUniform(string aName, int aCtrlIndex, bool aValue = false) {
+		void							createBoolUniform(const string& aName, int aCtrlIndex, bool aValue = false) {
 			controlIndexes[aCtrlIndex] = aName;
 			shaderUniforms[aName].boolValue = aValue;
 			shaderUniforms[aName].index = aCtrlIndex;
 			shaderUniforms[aName].uniformType = GL_BOOL;
 		}
-		void							createIntUniform(string aName, int aCtrlIndex, int aValue = 1) {
+		void							createIntUniform(const string& aName, int aCtrlIndex, int aValue = 1) {
 			controlIndexes[aCtrlIndex] = aName;
 			shaderUniforms[aName].index = aCtrlIndex;
 			shaderUniforms[aName].uniformType = 5;
 			shaderUniforms[aName].isValid = true;
 			shaderUniforms[aName].intValue = aValue;
 		};
-		void							createFloatUniform(string aName, int aCtrlIndex, float aValue, float aMin, float aMax) {
+		void							createFloatUniform(const string& aName, int aCtrlIndex, float aValue, float aMin, float aMax) {
 			controlIndexes[aCtrlIndex] = aName;
 			shaderUniforms[aName].minValue = aMin;
 			shaderUniforms[aName].maxValue = aMax;

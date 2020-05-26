@@ -65,8 +65,8 @@ namespace videodromm
 		// TODO ci::gl::Texture2dRef			getThumb();
 		/* 
 		NO: gl::GlslProgRef					getShader();
-		PRIVATE NOW bool							loadFragmentStringFromFile(string aFileName);
-		PRIVATE bool							setFragmentString(string aFragmentShaderString, string aName = "");
+		PRIVATE NOW bool							loadFragmentStringFromFile(const string& aFileName);
+		PRIVATE bool							setFragmentString(const string& aFragmentShaderString, string aName = "");
 		bool							isActive() { return mActive; };
 		void							setActive(bool active) { mActive = active; };
 		void							removeShader();*/
@@ -87,7 +87,7 @@ namespace videodromm
 		fs::path mFragFilePath;
 		string							mError;
 		bool							loadFragmentStringFromFile();// keep PRIVATE
-		bool							setFragmentString(string aFragmentShaderString, string aName = "");// keep PRIVATE
+		bool							setFragmentString(const string& aFragmentShaderString, string aName = "");// keep PRIVATE
 		std::string						mFileNameWithExtension;
 		std::string						mFragmentShaderString;
 		string							ext;

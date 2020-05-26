@@ -675,7 +675,7 @@ void VDWebsocket::changeWarpFboIndex(unsigned int aWarpIndex, unsigned int aWarp
 	string strParams = sParams.str();
 	sendJSON(strParams);
 }
-void VDWebsocket::changeFragmentShader(string aFragmentShaderText) {
+void VDWebsocket::changeFragmentShader(const string& aFragmentShaderText) {
 
 	stringstream sParams;
 	sParams << "{\"event\" : \"frag\",\"message\" : \"" << aFragmentShaderText << "\"}";

@@ -209,25 +209,25 @@ namespace videodromm {
 		vec4							getVec4UniformValueByIndex(unsigned int aIndex) {
 			return mVDAnimation->getVec4UniformValueByIndex(aIndex);
 		};
-		int								getSampler2DUniformValueByName(string aName) {
+		int								getSampler2DUniformValueByName(const string& aName) {
 			return mVDAnimation->getSampler2DUniformValueByName(aName);
 		};
-		vec2							getVec2UniformValueByName(string aName) {
+		vec2							getVec2UniformValueByName(const string& aName) {
 			return mVDAnimation->getVec2UniformValueByName(aName);
 		};
-		vec3							getVec3UniformValueByName(string aName) {
+		vec3							getVec3UniformValueByName(const string& aName) {
 			return mVDAnimation->getVec3UniformValueByName(aName);
 		};
-		vec4							getVec4UniformValueByName(string aName) {
+		vec4							getVec4UniformValueByName(const string& aName) {
 			return mVDAnimation->getVec4UniformValueByName(aName);
 		};
-		int								getIntUniformValueByName(string aName) {
+		int								getIntUniformValueByName(const string& aName) {
 			return mVDAnimation->getIntUniformValueByName(aName);
 		};
 		int								getIntUniformValueByIndex(unsigned int aCtrl) {
 			return mVDAnimation->getIntUniformValueByIndex(aCtrl);
 		};
-		bool							getBoolUniformValueByName(string aName) {
+		bool							getBoolUniformValueByName(const string& aName) {
 			return mVDAnimation->getBoolUniformValueByName(aName);
 		};
 		bool							getBoolUniformValueByIndex(unsigned int aCtrl) {
@@ -236,7 +236,7 @@ namespace videodromm {
 		float							getFloatUniformValueByIndex(unsigned int aCtrl) {
 			return mVDAnimation->getFloatUniformValueByIndex(aCtrl);
 		};
-		float							getFloatUniformValueByName(string aCtrlName) {
+		float							getFloatUniformValueByName(const string& aCtrlName) {
 			return mVDAnimation->getFloatUniformValueByName(aCtrlName);
 		};
 		void							setFloatUniformValueByIndex(unsigned int aCtrl, float aValue) {
@@ -273,7 +273,7 @@ namespace videodromm {
 		bool							getUseLineIn() { return mVDAnimation->getUseLineIn(); };
 		void							setUseLineIn(bool useLineIn) { mVDAnimation->setUseLineIn(useLineIn); };
 		void							toggleUseLineIn() { mVDAnimation->toggleUseLineIn(); };
-		int								loadFragmentShader(string aFilePath, unsigned int aFboShaderIndex = 4) {
+		int								loadFragmentShader(const string& aFilePath, unsigned int aFboShaderIndex = 4) {
 			return mVDMix->loadFragmentShader(aFilePath, aFboShaderIndex);
 		};
 		/*bool							getFreqWSSend() { return mFreqWSSend; };
@@ -294,7 +294,7 @@ namespace videodromm {
 
 		void							setFboFragmentShaderIndex(unsigned int aFboIndex, unsigned int aFboShaderIndex);
 		unsigned int					getFboFragmentShaderIndex(unsigned int aFboIndex);
-		bool							loadShaderFolder(string aFolder);
+		bool							loadShaderFolder(const string& aFolder);
 
 		unsigned int					getShadersCount() { return mShaderList.size(); };
 		string							getShaderName(unsigned int aShaderIndex);
@@ -304,19 +304,19 @@ namespace videodromm {
 		//string							getVertexShaderString(unsigned int aShaderIndex) { return mVDMix->getVertexShaderString(aShaderIndex); };
 		string							getFragmentShaderString(unsigned int aShaderIndex);
 		//string							getVertexShaderString(unsigned int aShaderIndex) { return mVDMix->getVertexShaderString(aShaderIndex); };
-		void							setHydraFragmentShaderString(string aFragmentShaderString, string aName = "");
+		void							setHydraFragmentShaderString(const string& aFragmentShaderString, string aName = "");
 		string							getHydraFragmentShaderString();
 		void							updateShaderThumbFile(unsigned int aShaderIndex);
 		void							removeShader(unsigned int aShaderIndex);
 
 		// file operations (filedrop, etc)
-		//int								loadFileFromAbsolutePath(string aAbsolutePath, int aIndex = 0);
+		//int								loadFileFromAbsolutePath(const string& aAbsolutePath, int aIndex = 0);
 
 		unsigned int					getFboInputTextureIndex(unsigned int aFboIndex) ;
 
 		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex = 0);
 		ci::gl::TextureRef				getFboThumb(unsigned int aBlendIndex) { return mBlendFbos[aBlendIndex]->getColorTexture(); };
-		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename);*/
+		unsigned int					createShaderFboFromString(const string& aFragmentShaderString, string aShaderFilename);*/
 		int								getFboTextureWidth(unsigned int aFboIndex) {
 			return mVDMix->getFboInputTextureWidth(aFboIndex);
 		};
@@ -410,7 +410,7 @@ namespace videodromm {
 		std::vector<ci::gl::GlslProg::Uniform>			getUniforms(unsigned int aFboIndex = 0) {
 			return mVDMix->getUniforms(aFboIndex);
 		}
-		int								getUniformIndexForName(string aName) {
+		int								getUniformIndexForName(const string& aName) {
 			return mVDAnimation->getUniformIndexForName(aName);
 		};
 
@@ -446,7 +446,7 @@ namespace videodromm {
 		bool							isAutoLayout() { return mVDSettings->mAutoLayout; };
 		void							toggleAutoLayout() { mVDSettings->mAutoLayout = !mVDSettings->mAutoLayout; }
 		// textures
-		void							loadImageFile(string aFile, unsigned int aTextureIndex) {
+		void							loadImageFile(const string& aFile, unsigned int aTextureIndex) {
 			mVDMix->loadImageFile(aFile, aTextureIndex);
 		};
 		/*unsigned int					getInputTexturesCount() {
@@ -460,9 +460,9 @@ namespace videodromm {
 		/*ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, string aFilename);
 		//ci::gl::TextureRef				getNextInputTexture(unsigned int aTextureIndex);
 
-		void							loadAudioFile(string aFile);
-		void							loadMovie(string aFile, unsigned int aTextureIndex);
-		bool							loadImageSequence(string aFolder, unsigned int aTextureIndex);
+		void							loadAudioFile(const string& aFile);
+		void							loadMovie(const string& aFile, unsigned int aTextureIndex);
+		bool							loadImageSequence(const string& aFolder, unsigned int aTextureIndex);
 		//void							toggleSharedOutput(unsigned int aMixFboIndex = 0);
 		//bool							isSharedOutputActive() { return mVDMix->isSharedOutputActive(); };
 		//unsigned int					getSharedMixIndex() { return mVDMix->getSharedMixIndex(); };

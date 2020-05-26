@@ -35,7 +35,7 @@ namespace videodromm
 		int								getIntValue(unsigned int aCtrl) {
 			return mVDSession->getIntUniformValueByIndex(aCtrl);
 		}
-		float							getFloatValueByName(string aCtrlName) {
+		float							getFloatValueByName(const string& aCtrlName) {
 			return mVDSession->getFloatUniformValueByName(aCtrlName);
 		}
 		float							getFloatValue(unsigned int aCtrl) {

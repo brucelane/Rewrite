@@ -57,7 +57,7 @@ namespace videodromm {
 	VDFbo::~VDFbo(void) {
 	}
 
-	bool VDFbo::loadFragmentStringFromFile(string aFileName) {
+	bool VDFbo::loadFragmentStringFromFile(const string& aFileName) {
 		mValid = false;
 		
 		if (aFileName.length() > 0) {
@@ -116,10 +116,10 @@ namespace videodromm {
 		return mValid;
 	}
 
-	bool VDFbo::setFragmentString(string aFragmentShaderString, string aName) {
+	bool VDFbo::setFragmentString(const string& aFragmentShaderString, string aName) {
 
 		string mOriginalFragmentString = aFragmentShaderString;
-		//string fileName = "";
+		string mOutputFragmentString = aFragmentShaderString;
 		mError = "";
 
 		// we would like a name without extension
@@ -155,15 +155,15 @@ namespace videodromm {
 			std::size_t foundUniform = mOriginalFragmentString.find("uniform ");
 			if (foundUniform == std::string::npos) {
 				CI_LOG_V("loadFragmentStringFromFile, no mUniforms found, we add from shadertoy.inc");
-				aFragmentShaderString = "/* " + mName + " */\n" + shaderInclude + mOriginalFragmentString;
+				mOutputFragmentString = "/* " + mName + " */\n" + shaderInclude + mOriginalFragmentString;
 			}
 			else {
-				aFragmentShaderString = "/* " + mName + " */\n" + mOriginalFragmentString;
+				mOutputFragmentString = "/* " + mName + " */\n" + mOriginalFragmentString;
 			}
 			// try to compile a first time to get active mUniforms
-			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), aFragmentShaderString);
+			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mOutputFragmentString);
 			// update only if success
-			mShaderFragmentString = aFragmentShaderString;
+			mShaderFragmentString = mOutputFragmentString;
 			mVDSettings->mMsg = mName + " compiled(fbo)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 			mValid = true;
 		}

@@ -130,7 +130,7 @@ namespace videodromm
 		std::vector<ci::gl::GlslProg::Uniform>			getUniforms(unsigned int aFboIndex = 0) {
 			return mFboList[math<int>::min(aFboIndex, mFboList.size() - 1)]->getUniforms();
 		}
-		int												loadFragmentShader(string aFilePath, unsigned int aFboShaderIndex) {
+		int												loadFragmentShader(const string& aFilePath, unsigned int aFboShaderIndex) {
 			int rtn = -1;
 			mVDSettings->mMsg = "load " + aFilePath + " at index " + toString(aFboShaderIndex) + "\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 			bool loaded = false;
@@ -152,7 +152,7 @@ namespace videodromm
 
 			return rtn;
 		}
-		void											loadImageFile(string aFile, unsigned int aTextureIndex) {
+		void											loadImageFile(const string& aFile, unsigned int aTextureIndex) {
 			int rtn = math<int>::min(aTextureIndex, mFboList.size() - 1);
 			fs::path texFileOrPath = aFile;
 			if (fs::exists(texFileOrPath)) {
@@ -262,8 +262,8 @@ namespace videodromm
 		void							save();
 		void							load();
 		// fbos
-		unsigned int 					createShaderFbo(string aShaderFilename, unsigned int aFboShaderIndex = 4);
-		unsigned int					createShaderFboFromString(string aFragmentShaderString, string aShaderFilename, string aName);
+		unsigned int 					createShaderFbo(const string& aShaderFilename, unsigned int aFboShaderIndex = 4);
+		unsigned int					createShaderFboFromString(const string& aFragmentShaderString, string aShaderFilename, string aName);
 		string							getFboName(unsigned int aFboIndex) { return mFboList[aFboIndex]->getName(); };
 		void							setFboInputTexture(unsigned int aFboIndex, unsigned int aInputTextureIndex);
 		unsigned int					getFboInputTextureIndex(unsigned int aFboIndex);
@@ -294,10 +294,10 @@ namespace videodromm
 		unsigned int					getInputTextureOriginalWidth(unsigned int aTextureIndex);
 		unsigned int					getInputTextureOriginalHeight(unsigned int aTextureIndex);
 		void							togglePlayPause(unsigned int aTextureIndex);
-		void							loadImageFile(string aFile, unsigned int aTextureIndex);
-		void							loadAudioFile(string aFile);
-		void							loadMovie(string aFile, unsigned int aTextureIndex);
-		bool							loadImageSequence(string aFolder, unsigned int aTextureIndex);
+		void							loadImageFile(const string& aFile, unsigned int aTextureIndex);
+		void							loadAudioFile(const string& aFile);
+		void							loadMovie(const string& aFile, unsigned int aTextureIndex);
+		bool							loadImageSequence(const string& aFolder, unsigned int aTextureIndex);
 		void							updateStream(string * aStringPtr);
 
 		// movie

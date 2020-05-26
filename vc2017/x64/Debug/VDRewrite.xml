@@ -28,14 +28,14 @@
 	<IsRouter value="0"/>
 	<IsWebSocketsServer value="0"/>
 	<WebSocketsProtocol value="ws://"/>
-  <WebSocketsHost value="drone.alkama.com"/>
-  <WebSocketsPort value="9000"/>
-  <WebSocketsRoom value="roomtest"/>
-  <WebSocketsNickname value="anton"/>
-  <Info value=""/>
-  <AssetsPath value="bonzo"/>
+	<WebSocketsHost value="drone.alkama.com"/>
+	<WebSocketsPort value="9000"/>
+	<WebSocketsRoom value="roomtest"/>
+	<WebSocketsNickname value="anton"/>
+	<Info value=""/>
+	<AssetsPath value="bonzo"/>
 	<UseAudio value="1"/>
-	<UseLineIn value="1"/>
+	<UseLineIn value="0"/>
 	<SplitWarpH value="0"/>
 	<SplitWarpV value="0"/>
 </settings>

@@ -54,7 +54,7 @@ namespace videodromm
 		~VDTexture(void) { };
 		ci::gl::Texture2dRef					getTexture(int aPosition = 0);
 		std::string								getTextureName() { return mTextureName; };
-		//ci::gl::Texture2dRef					getCachedTexture(string aFilename);
+		//ci::gl::Texture2dRef					getCachedTexture(const string& aFilename);
 		string									getStatus() { return mStatus; };
 		string									getType() { return mTypestr; };
 		int										getMode() { return mMode; };
