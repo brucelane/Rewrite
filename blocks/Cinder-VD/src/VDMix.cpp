@@ -956,7 +956,7 @@ namespace videodromm {
 			if (aShaderIndex > mShaderList.size() - 1) aShaderIndex = mShaderList.size() - 1;
 			mShaderList[aShaderIndex]->removeShader();
 		}
-		void VDMix::setFragmentShaderString(unsigned int aShaderIndex, string aFragmentShaderString, string aName) {
+		void VDMix::setFragmentShaderString(unsigned int aShaderIndex, const string& aFragmentShaderString, const string& aName) {
 			if (aShaderIndex > mShaderList.size() - 1) aShaderIndex = mShaderList.size() - 1;
 			mShaderList[aShaderIndex]->setFragmentString(aFragmentShaderString, aName);
 			// if live coding shader compiles and is used by a fbo reload it
@@ -965,7 +965,7 @@ namespace videodromm {
 				if (mFboList[i]->getShaderIndex() == aShaderIndex) setFboFragmentShaderIndex(i, aShaderIndex);
 			}
 		}
-		unsigned int VDMix::createShaderFboFromString(const string& aFragmentShaderString, string aShaderFilename, string aName) {
+		unsigned int VDMix::createShaderFboFromString(const string& aFragmentShaderString, const string& aShaderFilename, const string& aName) {
 			unsigned int rtn = 0;
 			unsigned int shaderId = 0;
 			// create new shader

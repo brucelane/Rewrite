@@ -56,7 +56,7 @@ namespace videodromm
 			//last frame rendered
 			return mRenderedTexture;
 		}
-		bool									setFragmentString(const string& aFragmentShaderString, string aName = "");
+		bool									setFragmentString(const string& aFragmentShaderString, const string& aName = "");
 		bool									loadFragmentStringFromFile(const string& aFileName);
 		bool									isValid() {
 			return mValid;
@@ -74,7 +74,7 @@ namespace videodromm
 		std::string								getTextureName() { return mTextureList[0]->getTextureName(); };
 		ci::gl::Texture2dRef					getInputTexture() { return mTextureList[0]->getTexture(); };
 		string									getStatus() { return mTextureList[0]->getStatus(); };
-		void									setImageInputTexture(ci::gl::Texture2dRef aTextureRef, string aTextureFilename) { 
+		void									setImageInputTexture(ci::gl::Texture2dRef aTextureRef, const string& aTextureFilename) { 
 			mTextureList[0]->setImageInputTexture( aTextureRef, aTextureFilename);
 		};
 		void									updateThumbFile() {

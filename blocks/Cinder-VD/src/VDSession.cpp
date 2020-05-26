@@ -746,7 +746,7 @@ bool VDSession::handleKeyUp(KeyEvent &event) {
 // fbos
 #pragma region fbos
 
-/*unsigned int VDSession::createShaderFboFromString(const string& aFragmentShaderString, string aShaderFilename) {
+/*unsigned int VDSession::createShaderFboFromString(const string& aFragmentShaderString, const string& aShaderFilename) {
 	unsigned int rtn = 0;
 	// create new shader
 	VDShaderRef s(new VDShader(mVDSettings, mVDAnimation, aShaderFilename, aFragmentShaderString));
@@ -919,7 +919,7 @@ void VDSession::removeShader(unsigned int aShaderIndex) {
 	if (aShaderIndex > mShaderList.size() - 1) aShaderIndex = mShaderList.size() - 1;
 	mShaderList[aShaderIndex]->removeShader();
 }
-void VDSession::setFragmentShaderString(unsigned int aShaderIndex, string aFragmentShaderString, string aName) {
+void VDSession::setFragmentShaderString(unsigned int aShaderIndex, const string& aFragmentShaderString, const string& aName) {
 	if (aShaderIndex > mShaderList.size() - 1) aShaderIndex = mShaderList.size() - 1;
 	mShaderList[aShaderIndex]->setFragmentString(aFragmentShaderString, aName);
 	// if live coding shader compiles and is used by a fbo reload it
@@ -928,7 +928,7 @@ void VDSession::setFragmentShaderString(unsigned int aShaderIndex, string aFragm
 		if (mFboList[i]->getShaderIndex() == aShaderIndex) setFboFragmentShaderIndex(i, aShaderIndex);
 	}
 }
-void VDSession::setHydraFragmentShaderString(const string& aFragmentShaderString, string aName) {
+void VDSession::setHydraFragmentShaderString(const string& aFragmentShaderString, const string& aName) {
 
 	//mShaderList[0]->setFragmentString(aFragmentShaderString, aName);
 	//setFboFragmentShaderIndex(0, 0);

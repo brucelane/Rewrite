@@ -59,7 +59,7 @@ namespace videodromm
 		string									getType() { return mTypestr; };
 		int										getMode() { return mMode; };
 
-		void									setImageInputTexture(ci::gl::Texture2dRef aTextureRef, string aTextureFilename) {
+		void									setImageInputTexture(ci::gl::Texture2dRef aTextureRef, const string& aTextureFilename) {
 			mType = IMAGE;
 			mTexture = aTextureRef;
 			mTextureName = aTextureFilename;

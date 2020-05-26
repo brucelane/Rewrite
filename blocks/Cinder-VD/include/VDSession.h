@@ -300,11 +300,11 @@ namespace videodromm {
 		string							getShaderName(unsigned int aShaderIndex);
 		ci::gl::TextureRef				getShaderThumb(unsigned int aShaderIndex);
 		string							getFragmentString(unsigned int aShaderIndex) { return mShaderList[aShaderIndex]->getFragmentString(); };
-		void							setFragmentShaderString(unsigned int aShaderIndex, string aFragmentShaderString, string aName = "");
+		void							setFragmentShaderString(unsigned int aShaderIndex, const string& aFragmentShaderString, const string& aName = "");
 		//string							getVertexShaderString(unsigned int aShaderIndex) { return mVDMix->getVertexShaderString(aShaderIndex); };
 		string							getFragmentShaderString(unsigned int aShaderIndex);
 		//string							getVertexShaderString(unsigned int aShaderIndex) { return mVDMix->getVertexShaderString(aShaderIndex); };
-		void							setHydraFragmentShaderString(const string& aFragmentShaderString, string aName = "");
+		void							setHydraFragmentShaderString(const string& aFragmentShaderString, const string& aName = "");
 		string							getHydraFragmentShaderString();
 		void							updateShaderThumbFile(unsigned int aShaderIndex);
 		void							removeShader(unsigned int aShaderIndex);
@@ -316,7 +316,7 @@ namespace videodromm {
 
 		ci::gl::TextureRef				getFboTexture(unsigned int aFboIndex = 0);
 		ci::gl::TextureRef				getFboThumb(unsigned int aBlendIndex) { return mBlendFbos[aBlendIndex]->getColorTexture(); };
-		unsigned int					createShaderFboFromString(const string& aFragmentShaderString, string aShaderFilename);*/
+		unsigned int					createShaderFboFromString(const string& aFragmentShaderString, const string& aShaderFilename);*/
 		int								getFboTextureWidth(unsigned int aFboIndex) {
 			return mVDMix->getFboInputTextureWidth(aFboIndex);
 		};
@@ -457,7 +457,7 @@ namespace videodromm {
 		}*/
 
 		//ci::gl::TextureRef				getInputTexture(unsigned int aTextureIndex);
-		/*ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, string aFilename);
+		/*ci::gl::TextureRef				getCachedTexture(unsigned int aTextureIndex, const string& aFilename);
 		//ci::gl::TextureRef				getNextInputTexture(unsigned int aTextureIndex);
 
 		void							loadAudioFile(const string& aFile);

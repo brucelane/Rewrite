@@ -116,23 +116,22 @@ namespace videodromm {
 		return mValid;
 	}
 
-	bool VDFbo::setFragmentString(const string& aFragmentShaderString, string aName) {
+	bool VDFbo::setFragmentString(const string& aFragmentShaderString, const string& aName) {
 
 		string mOriginalFragmentString = aFragmentShaderString;
 		string mOutputFragmentString = aFragmentShaderString;
 		mError = "";
-
+		mName = aName;
 		// we would like a name without extension
-		if (aName.length() == 0) {
-			aName = toString((int)getElapsedSeconds());
-			mName = aName;
+		if (mName.length() == 0) {
+			mName = toString((int)getElapsedSeconds());
 		}
 		else {
-			int dotIndex = aName.find_last_of(".");
-			int slashIndex = aName.find_last_of("\\");
+			int dotIndex = mName.find_last_of(".");
+			int slashIndex = mName.find_last_of("\\");
 
 			if (dotIndex != std::string::npos && dotIndex > slashIndex) {
-				mName = aName.substr(slashIndex + 1, dotIndex - slashIndex - 1);
+				mName = mName.substr(slashIndex + 1, dotIndex - slashIndex - 1);
 			}
 		}
 		mShaderName = mName + ".fs";

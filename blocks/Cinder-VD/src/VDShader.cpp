@@ -9,9 +9,9 @@ using namespace videodromm;
 	run
 	create thumb using fbo
 	save isf in assets session subfolder
-was VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, string aFragmentShaderString) {
+was VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const string& aFileOrPath, const string& aFragmentShaderString) {
 */
-VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, string aShaderFragmentString, gl::TextureRef aTexture) {
+VDShader::VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const string& aFileOrPath, const string& aShaderFragmentString, gl::TextureRef aTexture) {
 	mVDSettings = aVDSettings;
 	mVDAnimation = aVDAnimation;
 	mFragmentShaderString = aShaderFragmentString;
@@ -90,12 +90,13 @@ bool VDShader::loadFragmentStringFromFile() {
 	CI_LOG_V(mFragFilePath.string() + " loaded and compiled");
 	return mValid;
 }// aName = fullpath
-bool VDShader::setFragmentString(const string& aFragmentShaderString, string aName) {
+bool VDShader::setFragmentString(const string& aFragmentShaderString, const string& aName) {
 
 	string mOriginalFragmentString = aFragmentShaderString;
 	string mOutputFragmentString = aFragmentShaderString;
 	string mISFString = aFragmentShaderString;
 	string mOFISFString = "";
+	mName = aName;
 	//string fileName = "";
 	string mCurrentUniformsString = "// active uniforms start\n";
 	string mProcessedShaderString = "";
@@ -103,25 +104,25 @@ bool VDShader::setFragmentString(const string& aFragmentShaderString, string aNa
 	mError = "";
 
 	// we would like a name without extension
-	if (aName.length() == 0) {
-		aName = toString((int)getElapsedSeconds()); // + ".frag" 
+	if (mName.length() == 0) {
+		mName = toString((int)getElapsedSeconds()); // + ".frag" 
 	}
 	else {
-		int dotIndex = aName.find_last_of(".");
-		int slashIndex = aName.find_last_of("\\");
+		int dotIndex = mName.find_last_of(".");
+		int slashIndex = mName.find_last_of("\\");
 
 		if (dotIndex != std::string::npos && dotIndex > slashIndex) {
-			ext = aName.substr(dotIndex + 1);
-			aName = aName.substr(slashIndex + 1, dotIndex - slashIndex - 1);
+			ext = mName.substr(dotIndex + 1);
+			mName = mName.substr(slashIndex + 1, dotIndex - slashIndex - 1);
 		}
 
 	}
-	mName = aName;
-	string mNotFoundUniformsString = "/* " + aName + "\n";
+	
+	string mNotFoundUniformsString = "/* " + mName + "\n";
 	// filename to save
 	mValid = false;
 	// load fragment shader
-	CI_LOG_V("setFragmentString, loading" + aName);
+	CI_LOG_V("setFragmentString, loading" + mName);
 	try
 	{
 		if (ext == "fs")
@@ -129,17 +130,17 @@ bool VDShader::setFragmentString(const string& aFragmentShaderString, string aNa
 			std::size_t foundUniform = mOriginalFragmentString.find("uniform ");
 			if (foundUniform == std::string::npos) {
 				CI_LOG_V("loadFragmentStringFromFile, no mUniforms found, we add from shadertoy.vd");
-				mOutputFragmentString = "/* " + aName + " */\n" + shaderInclude + mOriginalFragmentString;
+				mOutputFragmentString = "/* " + mName + " */\n" + shaderInclude + mOriginalFragmentString;
 			}
 			else {
-				mOutputFragmentString = "/* " + aName + " */\n" + mOriginalFragmentString;
+				mOutputFragmentString = "/* " + mName + " */\n" + mOriginalFragmentString;
 			}
 			// try to compile a first time to get active uniforms
 			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mOutputFragmentString);
 			// update only if success
 			mFragmentShaderString = mOutputFragmentString;
 			mValid = true;
-			mVDSettings->mMsg = aName + " compiled(fs)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
+			mVDSettings->mMsg = mName + " compiled(fs)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 
 		}
 		else {
@@ -288,18 +289,18 @@ bool VDShader::setFragmentString(const string& aFragmentShaderString, string aNa
 			if (foundUniform == std::string::npos) {
 				CI_LOG_V("loadFragmentStringFromFile, no uniforms found, we add from shadertoy.vd");
 				//aFragmentShaderString = "/* " + aName + " */\n" + shaderInclude + mOriginalFragmentString;
-				mOutputFragmentString = "/* " + aName + " */\n" + shaderInclude + mISFString;
+				mOutputFragmentString = "/* " + mName + " */\n" + shaderInclude + mISFString;
 			}
 			else {
 				//aFragmentShaderString = "/* " + aName + " */\n" + mOriginalFragmentString;
-				mOutputFragmentString = "/* " + aName + " */\n" + mISFString;
+				mOutputFragmentString = "/* " + mName + " */\n" + mISFString;
 			}
 
 			// try to compile a first time to get active uniforms
 			mShader = gl::GlslProg::create(mVDSettings->getDefaultVextexShaderString(), mOutputFragmentString);
 			// update only if success
 			mFragmentShaderString = mOutputFragmentString;
-			mVDSettings->mMsg = aName + " compiled(shader)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
+			mVDSettings->mMsg = mName + " compiled(shader)\n" + mVDSettings->mMsg.substr(0, mVDSettings->mMsgLength);
 
 			// name of the shader
 			//mName = aName;
@@ -319,7 +320,7 @@ bool VDShader::setFragmentString(const string& aFragmentShaderString, string aNa
 			string uniformnName;
 			for (const auto &uniform : uniforms) {
 				uniformnName = uniform.getName();
-				CI_LOG_V(aName + ", uniform name:" + uniformnName);
+				CI_LOG_V(mName + ", uniform name:" + uniformnName);
 				// if uniform is handled
 				if (mVDAnimation->isExistingUniform(uniformnName)) {
 					int uniformType = mVDAnimation->getUniformType(uniformnName);
@@ -383,7 +384,7 @@ bool VDShader::setFragmentString(const string& aFragmentShaderString, string aNa
 
 			// save ISF
 			string mISFHeader = "/*{\n"
-				"	\"CREDIT\" : \"" + aName + " by \",\n"
+				"	\"CREDIT\" : \"" + mName + " by \",\n"
 				"	\"CATEGORIES\" : [\n"
 				"		\"ci\"\n"
 				"	],\n"
@@ -426,7 +427,7 @@ bool VDShader::setFragmentString(const string& aFragmentShaderString, string aNa
 
 			// ifs for openFrameworks ISFGif project
 			//fileName = aName + ".fs";
-			mFileNameWithExtension = aName + ".fs";
+			mFileNameWithExtension = mName + ".fs";
 			mFragFilePath = getAssetPath("") / mVDSettings->mAssetsPath / mFileNameWithExtension;
 			/*fs::path OFIsfFile = getAssetPath("") / "glsl" / "osf" / mFileNameWithExtension;
 			ofstream mOFISF(OFIsfFile.string(), std::ofstream::binary);
@@ -455,12 +456,12 @@ bool VDShader::setFragmentString(const string& aFragmentShaderString, string aNa
 	}
 	catch (gl::GlslProgCompileExc &exc)
 	{
-		mError = aName + string(exc.what());
+		mError = mName + string(exc.what());
 		CI_LOG_V("setFragmentString, unable to compile live fragment shader:" + mError + " frag:" + mOutputFragmentString);
 	}
 	catch (const std::exception &e)
 	{
-		mError = aName + string(e.what());
+		mError = mName + string(e.what());
 		CI_LOG_V("setFragmentString, error on live fragment shader:" + mError + " frag:" + mOutputFragmentString);
 	}
 	if (mError.length() > 0) mVDSettings->mShaderMsg = mError + "\n" + mVDSettings->mShaderMsg.substr(0, mVDSettings->mMsgLength);

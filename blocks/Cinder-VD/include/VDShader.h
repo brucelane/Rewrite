@@ -40,15 +40,15 @@ namespace videodromm
 
 	class VDShader {
 	public:
-		VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, string aShaderFragmentString, gl::TextureRef aTexture );
+		VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const string& aFileOrPath, const string& aShaderFragmentString, gl::TextureRef aTexture );
 		//void update();
-		static VDShaderRef	create(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, string aShaderFragmentString, gl::TextureRef aTexture)
+		static VDShaderRef	create(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const string& aFileOrPath, const string& aShaderFragmentString, gl::TextureRef aTexture)
 		{
 			return shared_ptr<VDShader>(new VDShader(aVDSettings, aVDAnimation, aFileOrPath, aShaderFragmentString, aTexture));
 		}
-		/*VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, string aFragmentShaderString = "");
+		/*VDShader(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const string& aFileOrPath, const string& aFragmentShaderString = "");
 		//void update();
-		static VDShaderRef	create(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, string aFileOrPath, string aFragmentShaderString = "")
+		static VDShaderRef	create(VDSettingsRef aVDSettings, VDAnimationRef aVDAnimation, const string& aFileOrPath, const string& aFragmentShaderString = "")
 		{
 			return shared_ptr<VDShader>(new VDShader(aVDSettings, aVDAnimation, aFileOrPath, aFragmentShaderString));
 		}*/
@@ -66,7 +66,7 @@ namespace videodromm
 		/* 
 		NO: gl::GlslProgRef					getShader();
 		PRIVATE NOW bool							loadFragmentStringFromFile(const string& aFileName);
-		PRIVATE bool							setFragmentString(const string& aFragmentShaderString, string aName = "");
+		PRIVATE bool							setFragmentString(const string& aFragmentShaderString, const string& aName = "");
 		bool							isActive() { return mActive; };
 		void							setActive(bool active) { mActive = active; };
 		void							removeShader();*/
@@ -87,7 +87,7 @@ namespace videodromm
 		fs::path mFragFilePath;
 		string							mError;
 		bool							loadFragmentStringFromFile();// keep PRIVATE
-		bool							setFragmentString(const string& aFragmentShaderString, string aName = "");// keep PRIVATE
+		bool							setFragmentString(const string& aFragmentShaderString, const string& aName = "");// keep PRIVATE
 		std::string						mFileNameWithExtension;
 		std::string						mFragmentShaderString;
 		string							ext;

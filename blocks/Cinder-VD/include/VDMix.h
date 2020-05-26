@@ -263,7 +263,7 @@ namespace videodromm
 		void							load();
 		// fbos
 		unsigned int 					createShaderFbo(const string& aShaderFilename, unsigned int aFboShaderIndex = 4);
-		unsigned int					createShaderFboFromString(const string& aFragmentShaderString, string aShaderFilename, string aName);
+		unsigned int					createShaderFboFromString(const string& aFragmentShaderString, const string& aShaderFilename, const string& aName);
 		string							getFboName(unsigned int aFboIndex) { return mFboList[aFboIndex]->getName(); };
 		void							setFboInputTexture(unsigned int aFboIndex, unsigned int aInputTextureIndex);
 		unsigned int					getFboInputTextureIndex(unsigned int aFboIndex);
@@ -317,7 +317,7 @@ namespace videodromm
 		// shaders
 		void							updateShaderThumbFile(unsigned int aShaderIndex);
 		void							removeShader(unsigned int aShaderIndex);
-		void							setFragmentShaderString(unsigned int aShaderIndex, string aFragmentShaderString, string aName = "");
+		void							setFragmentShaderString(unsigned int aShaderIndex, const string& aFragmentShaderString, const string& aName = "");
 		//string							getVertexShaderString(unsigned int aShaderIndex);
 		string							getFragmentShaderString(unsigned int aShaderIndex);
 		unsigned int					getShadersCount() { return mShaderList.size(); };
