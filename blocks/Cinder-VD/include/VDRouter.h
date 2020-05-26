@@ -1,3 +1,12 @@
+/*
+	VDRouter
+	Handles routing of messages from the network and midi.
+	Input: websockets, osc, midi
+	Output: websockets
+*/
+// TODO separate websockets, osc, midi into different classes
+// TODO implement lazy loading for websockets, osc, midi
+// TODO choose output : OSC or websockets?
 #pragma once
 #include "cinder/Cinder.h"
 #include "cinder/app/App.h"

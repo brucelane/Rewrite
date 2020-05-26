@@ -1,3 +1,10 @@
+/*
+	VDMix
+	Handles mixing shaders.
+	Maintains a Fbo list
+	Outputs severals Fbos depending on the context: mix 2 shaders or several with weights
+*/
+
 #pragma once
 
 #include "cinder/app/App.h"

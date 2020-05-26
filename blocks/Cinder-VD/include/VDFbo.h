@@ -1,5 +1,11 @@
-#pragma once
+/*
+	VDFbo
+	Handles the frame buffer objects to draw into, from shaders, images, video.
+*/
+// TODO avoid duplicate get(Float/Int/Bool)UniformValueBy(Name/Index) which exist in VDAnimation too
+// TODO recycle using object pool
 
+#pragma once
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"

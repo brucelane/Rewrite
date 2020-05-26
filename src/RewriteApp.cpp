@@ -17,7 +17,18 @@
  You should have received a copy of the GNU General Public License
  along with Cinder-Warping.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+/*
+	TODO
+	migrate to vs2019, thus remove boost dependencies in websocket block
+	MVC project from scratch
+	Lazy Loading for MIDI and network
+	double map
+	mutex
+	factory
+	builder
+	unit tests
+	object pool
+*/
 #include "cinder/app/App.h"
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"

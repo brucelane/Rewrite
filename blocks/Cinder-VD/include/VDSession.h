@@ -1,4 +1,11 @@
 #pragma once
+/*
+	VDSession
+	Top hierarchy class to use all the child classes
+*/
+// TODO implement factory or builder?
+
+
 
 #include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
@@ -681,7 +688,7 @@ namespace videodromm {
 		}
 		void							loadFbos();
 
-
+		bool							odd = false;
 	};
 
 }

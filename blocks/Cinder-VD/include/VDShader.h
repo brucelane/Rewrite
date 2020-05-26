@@ -1,3 +1,11 @@
+/*
+	VDShader
+	Handles shaders loading and sanitizing
+	Input from different sources: filesystem, hydra, bonzorezo, glsleditor, websockets
+	Output ISF format (Interactive Shader Format)
+*/
+// TODO store in database though api
+
 #pragma once
 
 #include "cinder/Cinder.h"

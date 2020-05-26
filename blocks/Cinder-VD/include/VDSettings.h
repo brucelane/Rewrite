@@ -1,3 +1,11 @@
+/*
+	VDSettings
+	Global settings for the app
+*/
+// TODO switch from xml to json
+// TODO remove public
+// TODO create enum
+
 #pragma once
 
 #include "cinder/app/App.h"

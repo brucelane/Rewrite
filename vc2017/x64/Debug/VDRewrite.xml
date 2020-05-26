@@ -2,13 +2,13 @@
 <settings>
 	<AutoLayout value="1"/>
 	<Standalone value="0"/>
-	<MainWindowWidth value="1280"/>
-	<MainWindowHeight value="720"/>
+	<MainWindowWidth value="1920"/>
+	<MainWindowHeight value="1080"/>
 	<MainWindowX value="0"/>
 	<MainWindowY value="0"/>
-	<RenderWidth value="1280"/>
-	<RenderHeight value="720"/>
-	<RenderX value="1024"/>
+	<RenderWidth value="4640"/>
+	<RenderHeight value="900"/>
+	<RenderX value="1920"/>
 	<RenderY value="0"/>
 	<AspectRatio value="0.5625"/>
 	<FboWidth value="1280"/>
@@ -28,10 +28,12 @@
 	<IsRouter value="0"/>
 	<IsWebSocketsServer value="0"/>
 	<WebSocketsProtocol value="ws://"/>
-	<WebSocketsHost value="10.0.7.49"/>
-	<WebSocketsPort value="8088"/>
-	<Info value=""/>
-	<AssetsPath value="Intro"/>
+  <WebSocketsHost value="drone.alkama.com"/>
+  <WebSocketsPort value="9000"/>
+  <WebSocketsRoom value="roomtest"/>
+  <WebSocketsNickname value="anton"/>
+  <Info value=""/>
+  <AssetsPath value="bonzo"/>
 	<UseAudio value="1"/>
 	<UseLineIn value="1"/>
 	<SplitWarpH value="0"/>

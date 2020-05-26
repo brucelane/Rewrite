@@ -1,3 +1,9 @@
+/*
+	VDLog
+	Handles logging to the filesystem and console.
+*/
+// TODO rewrite as a singleton
+
 #pragma once
 
 #include "cinder/Cinder.h"

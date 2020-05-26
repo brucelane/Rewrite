@@ -122,8 +122,8 @@ void VDSession::update(unsigned int aClassIndex) {
 	if (mVDWebsocket->hasReceivedShader()) {
 		string receivedShader = mVDWebsocket->getReceivedShader();
 		// save file
-		string mShaderFileName = mVDSettings->mWebSocketsNickname + toString((int)getElapsedSeconds())+ ".fs";
-		
+		string mShaderFileName = mVDSettings->mWebSocketsNickname + toString((int)getElapsedSeconds()) + ".fs";
+
 		fs::path fsFile = getAssetPath("") / mVDSettings->mAssetsPath / mShaderFileName;
 		ofstream mFS(fsFile.string(), std::ofstream::binary);
 		mFS << receivedShader;
@@ -143,7 +143,13 @@ void VDSession::update(unsigned int aClassIndex) {
 		json.addChild(texture);
 
 		// load fbo
-		fboFromJson(json, getFboListSize());
+		if (odd) {
+			fboFromJson(json, getFboListSize() + 1);
+		}
+		else {
+			fboFromJson(json, getFboListSize());
+		}
+		odd = !odd;
 	}
 
 	/*if (mVDRouter->hasFBOAChanged()) {

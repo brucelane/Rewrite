@@ -1,3 +1,8 @@
+/*
+	VDUtil
+	Global utilities
+*/
+
 #pragma once
 #include "cinder/Cinder.h"
 #include "cinder/app/App.h"

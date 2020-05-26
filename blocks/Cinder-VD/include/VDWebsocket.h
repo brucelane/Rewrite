@@ -1,3 +1,10 @@
+/*
+	VDWebsocket
+	Handles websocket connection (client)
+*/
+// TODO websocket server?
+// TODO support Socket.io?
+
 #pragma once
 #include "cinder/Cinder.h"
 #include "cinder/app/App.h"

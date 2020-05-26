@@ -1,3 +1,11 @@
+/*
+	VDTexture
+	Handles texture loading
+	Input: image, video, shared from spout, image sequence,  webcam
+	
+*/
+// TODO webrtc, fbo textures?
+
 #pragma once
 
 #include "cinder/app/App.h"

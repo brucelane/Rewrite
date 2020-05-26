@@ -1,8 +1,18 @@
+/*
+	VDAnimation
+	Handles all uniform variables for shaders: index, name, type, bounds and their animation.
+*/
+// TODO put audio in a separate class
+// TODO put timing in separate class?
+// TODO Implement a double map to replace map<int, string> controlIndexes and map<string, VDUniform> shaderUniforms
+// TODO remove struct
+// TODO implement lazy loading for audio
+
 #pragma once
 
 #include "cinder/Cinder.h"
 #include "cinder/app/App.h"
-// audio
+//!  audio
 #include "cinder/audio/Context.h"
 #include "cinder/audio/MonitorNode.h"
 #include "cinder/audio/Utilities.h"
@@ -13,9 +23,9 @@
 #include "cinder/audio/SampleRecorderNode.h"
 #include "cinder/audio/NodeEffects.h"
 #include "cinder/Rand.h"
-// json
+//!  json
 #include "cinder/Json.h"
-// Settings
+//!  Settings
 #include "VDSettings.h"
 
 using namespace ci;
