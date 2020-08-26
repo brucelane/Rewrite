@@ -5,7 +5,7 @@
    },
    "texture" : {
       "texturemode" : 0,
-      "texturename" : "1",
-      "texturetype" : "sequence"
+      "texturename" : "audio",
+      "texturetype" : "audio"
    }
 }
