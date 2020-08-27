@@ -28,7 +28,7 @@
 	<IsRouter value="0"/>
 	<IsWebSocketsServer value="0"/>
 	<WebSocketsProtocol value="ws://"/>
-	<WebSocketsHost value="localhost"/>
+	<WebSocketsHost value="51.210.25.82"/>
 	<WebSocketsPort value="8088"/>
 	<WebSocketsRoom value="roomtest"/>
 	<WebSocketsNickname value="anton"/>
